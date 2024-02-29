@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/02/27 17:19:46 by iassil           ###   ########.fr       */
+/*   Updated: 2024/02/29 16:11:10 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,11 @@ typedef struct s_container
     char				*holder;
     struct s_container	*next;
 }						t_container;
+
+/*==========SIGNAL FUNCIONS==========*/
+void ctrl_c_handler(int sig);
+void ctrl_d_handler(int sig);
+void ctrl___handler(int sig);
 
 /*==========LIBFT FUNCIONS==========*/
 t_container	*ft_lstnew(void *content);

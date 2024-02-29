@@ -6,13 +6,13 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 20:25:23 by iassil            #+#    #+#             */
-/*   Updated: 2024/02/27 16:20:34 by iassil           ###   ########.fr       */
+/*   Updated: 2024/02/29 16:06:53 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static int	ft_isspace(char c)
+static int	ft_isspace_(char c)
 {
 	if ((c >= 9 && c <= 13) || c == 32)
 		return (1);
@@ -42,7 +42,7 @@ int	ft_atoi(const char *str)
 
 	i = 0;
 	result = 0;
-	while (ft_isspace(str[i]) == 1)
+	while (ft_isspace_(str[i]) == 1)
 		i++;
 	sign = ft_sign(str, &i);
 	while (ft_isdigit(str[i]) > 0)
