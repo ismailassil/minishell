@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 17:39:34 by iassil            #+#    #+#             */
-/*   Updated: 2024/02/27 16:20:34 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/01 14:02:02 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	*ft_memmove(void *dst, const void *src, size_t len)
 			i--;
 		}
 	}
-	else 
+	else
 		ft_memcpy(dst, src, len);
 	return (dst);
 }

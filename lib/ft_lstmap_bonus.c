@@ -6,13 +6,14 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 19:24:38 by iassil            #+#    #+#             */
-/*   Updated: 2024/02/27 16:29:17 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/01 14:01:31 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_container	*ft_lstmap(t_container *lst, void *(*f)(void *), void (*del)(void *))
+t_container	*ft_lstmap(t_container *lst, void *(*f)(void *),
+	void (*del)(void *))
 {
 	t_container	*ptr;
 	t_container	*current;

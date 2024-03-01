@@ -6,11 +6,14 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:06 by iassil            #+#    #+#             */
-/*   Updated: 2024/02/29 17:12:35 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/01 19:09:12 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <stdlib.h>
+#include <sys/syslimits.h>
+#include <unistd.h>
 
 /*	Checks if there is any space char	*/
 bool	ft_isspace(char c)
@@ -74,37 +77,59 @@ void	ft_parse_input_from_shell(char *input)
 	ft_print(spart);
 }
 
-/*	Read the line from the shell using the readline function	*/
-void	ft_get_input(void)
+bool	ft_find_exit(char *line)
+{
+	int	i;
+
+	i = 0;
+	while (line[i] != '\0')
+	{
+		if (line[i] == 'e' && line[i + 1] == 'x' && line[i + 2] == 'i' && line[i + 3] == 't')
+			return (true);
+		i++;
+	}
+	return (false);
+}
+
+void	ft_check_env(t_env **envp, char **env)
+{
+	char	pwd[PATH_MAX];
+	char	*name;
+	char	*value;
+
+	if (env != NULL)
+	{
+		printf("NO ENV\n");
+		*envp = NULL;
+	}
+	else
+	{
+		getcwd(pwd, sizeof(pwd));
+		name = ft_strdup("PATH");
+		value = ft_strdup("/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin");
+		ft_lstadd_back_env(envp, ft_lstnew_env(name, value));
+		name = ft_strdup("PWD");
+		value = ft_strdup(pwd);
+		ft_lstadd_back_env(envp, ft_lstnew_env(name, value));
+	}
+}
+
+int	main(int argc, char **argv, char **env)
 {
 	char	*line;
+	t_env	**envp;
 
+	((void)argc, (void)argv, (void)env);
+	ft_signal_handler();
+	ft_check_env(envp, env);
 	while (true)
 	{
 		line = readline(YELLOW"minishell$ "RESET);
-		if (line == NULL)
-			break ;
+		if (line == NULL || ft_find_exit(line) == true)
+			ft_exit();
 		if (ft_strlen(line) > 0)
 			add_history(line);
 		ft_parse_input_from_shell(line);
 		free(line);
 	}
-}
-
-int	main(void)
-{
-	struct sigaction	ctrl_c;
-	struct sigaction	ctrl_d;
-	struct sigaction	ctrl__;
-
-	ctrl_c.sa_handler = ctrl_c_handler;
-	ctrl_d.sa_handler = ctrl_d_handler;
-	ctrl__.sa_handler = ctrl___handler;
-	// if (sigaction(SIGINT, &ctrl_c, NULL) == -1)
-	// 	(perror("Error"), exit(EXIT_FAILURE));
-	// if (sigaction(SIGTERM, &ctrl_d, NULL) == -1)
-	// 	(perror("Error"), exit(EXIT_FAILURE));
-	// if (sigaction(SIGQUIT, &ctrl__, NULL) == -1)
-	// 	(perror("Error"), exit(EXIT_FAILURE));
-	ft_get_input();
 }

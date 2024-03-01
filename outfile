@@ -1,0 +1,10 @@
+Makefile
+README.md
+lib
+minishell
+minishell.c
+minishell.h
+outfile
+parse.c
+parsing.txt
+signals.c
