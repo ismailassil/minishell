@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 19:41:44 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/02 19:50:29 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/02 20:30:16 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,4 @@ void	ft_env(char **env)
 		printf("%s\n", *env);
 		env++;
 	}
-}
-
-int	main(int ac, char **av, char **env)
-{
-	env = ft_check_env(env);
-	ft_env(env);
 }
