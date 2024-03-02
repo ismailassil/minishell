@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 16:33:28 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/02 16:41:28 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/02 18:00:51 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,6 @@ static void	*ft_parse_space(char *input, char **shell)
 char	*ft_add_space_to_input(char *input)
 {
 	int			i;
-	int			j;
 	int			count;
 	char		*shell;
 

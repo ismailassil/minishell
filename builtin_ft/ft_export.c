@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:47:07 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/02 17:51:31 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/02 18:00:08 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 *	export hello"hwol"=asdf		==>	hellohwol=asdf
 *	export hello				==>	hello=
 */
-
 
 int	ft_fetch_arguments(char *arg, char **name, char **value)
 {

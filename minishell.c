@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:06 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/02 17:19:19 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/02 18:01:56 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	ft_parse_input_from_shell(char *input)
 	init_tokens(&head, shell);
 	while (head != NULL)
 	{
-		printf("%s\n", head->token);
+		printf("====={%s}=====\n", head->token);
 		head = head->next;
 	}
 }
