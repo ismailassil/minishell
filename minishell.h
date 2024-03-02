@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/02 17:23:36 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/02 22:03:54 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,15 @@
 # include <signal.h>
 # include <stdbool.h>
 # include <sys/syslimits.h>
-# define WORD       0
-# define PIPE	    1
-# define GREAT	    2
-# define LESS	    3
-# define GGREAT	    4
-# define HEREDOC    5
+# define CMD		0
+# define PIPE		1
+# define OUTFILE	2
+# define INFILE		3
+# define APPEND		4
+# define HEREDOC	5
+# define FILENAME	6
+# define ARG		7
+# define DELIMITER	8
 # define GREEN		"\x1b[32m"
 # define YELLOW		"\x1b[33m"
 # define RESET		"\x1b[0m"
@@ -37,10 +40,17 @@ typedef struct start_end
 	int	end;	
 }		t_stend;
 
-typedef struct tokens
+typedef struct s_env
+{
+	char			*value;
+	struct s_env	*next;
+}					t_env;
+
+typedef struct s_tokens
 {
 	char			*token;
-	struct tokens	*next;
+	int				type;
+	struct s_tokens	*next;
 }					t_token;
 
 typedef struct s_container
@@ -58,6 +68,7 @@ void	ft_pwd(void);
 /*==========PARSING FUNCIONS==========*/
 char	*ft_add_space_to_input(char *input);
 void	init_tokens(t_token **head, char *str);
+void	ft_tokenize(t_token **str);
 
 /*==========SIGNAL FUNCIONS==========*/
 void	ft_signal_handler(void);
