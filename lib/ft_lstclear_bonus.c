@@ -6,16 +6,16 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 15:39:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/02/27 16:29:02 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/02 17:23:30 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_lstclear(t_container **lst, void (*del)(void *))
+void	ft_lstclear(t_cont **lst, void (*del)(void *))
 {
-	t_container	*ptr;
-	t_container	*index;
+	t_cont	*ptr;
+	t_cont	*index;
 
 	if (lst == NULL || del == NULL)
 		return ;

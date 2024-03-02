@@ -6,7 +6,7 @@
 #    By: iassil <iassil@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/27 14:35:22 by iassil            #+#    #+#              #
-#    Updated: 2024/03/01 15:20:30 by iassil           ###   ########.fr        #
+#    Updated: 2024/03/02 16:39:17 by iassil           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ SRC 	=	lib/ft_atoi.c			lib/ft_bzero.c					lib/ft_calloc.c				\
 			lib/ft_lstlast_bonus.c	lib/ft_lstadd_back_bonus.c		lib/ft_lstdelone_bonus.c	\
 			lib/ft_lstclear_bonus.c	lib/ft_lstiter_bonus.c			lib/ft_lstmap_bonus.c		\
 			lib/ft_split.c			signals.c						builtin_ft/ft_exit.c		\
-			minishell.c
+			struct_utils.c			parsing.c						minishell.c
 
 OBJ			=	$(SRC:.c=.o)
 

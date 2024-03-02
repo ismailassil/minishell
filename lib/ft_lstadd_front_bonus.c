@@ -6,13 +6,13 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 22:39:53 by iassil            #+#    #+#             */
-/*   Updated: 2024/02/27 16:28:20 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/02 17:23:30 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_lstadd_front(t_container **lst, t_container *new)
+void	ft_lstadd_front(t_cont **lst, t_cont *new)
 {
 	if (lst == NULL || new == NULL)
 		return ;

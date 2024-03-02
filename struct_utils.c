@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   struct_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 10:52:06 by aibn-che          #+#    #+#             */
-/*   Updated: 2024/03/01 18:42:09 by aibn-che         ###   ########.fr       */
+/*   Updated: 2024/03/02 15:59:48 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mini_shell.h"
+#include "minishell.h"
 
 int	stack_len(t_token *head)
 {
@@ -37,7 +37,6 @@ t_token	*last_node(t_token *top)
 t_token	*new_node(char *token)
 {
 	t_token	*new;
-	static int		id;
 
 	new = malloc(sizeof(t_token));
 	if (!new)

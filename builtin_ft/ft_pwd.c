@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:37:37 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/01 17:46:25 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/02 17:12:58 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 void	ft_pwd(void)
 {
 	char	pwd[PATH_MAX];
-	
+
 	getcwd(pwd, sizeof(pwd));
 	printf("%s\n", pwd);
 }
-
