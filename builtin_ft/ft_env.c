@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_check_env.c                                     :+:      :+:    :+:   */
+/*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/01 21:00:12 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/02 19:50:22 by iassil           ###   ########.fr       */
+/*   Created: 2024/03/02 19:41:44 by iassil            #+#    #+#             */
+/*   Updated: 2024/03/02 19:50:29 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 char	**ft_check_env(char **env)
 {
@@ -33,4 +33,19 @@ char	**ft_check_env(char **env)
 		return (envp);
 	}
 	return (env);
+}
+
+void	ft_env(char **env)
+{
+	while (*env)
+	{
+		printf("%s\n", *env);
+		env++;
+	}
+}
+
+int	main(int ac, char **av, char **env)
+{
+	env = ft_check_env(env);
+	ft_env(env);
 }
