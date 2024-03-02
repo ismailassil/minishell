@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:47:07 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/01 21:49:14 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/02 14:34:28 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	ft_export(char *argument, char ***env)
 
 int	main(int ac, char **av, char **env)
 {
-	if (ft_export("SAYMYNAME='ismail'", &env) == 1)
+	if (ft_export("SAYMYNAME", &env) == 1)
 		printf("Error\n");
 	while (*env)
 		(printf("%s\n", *env), env++);

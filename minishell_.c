@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:06 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/01 19:09:12 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/02 15:29:46 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ bool	ft_isspace(char c)
 /*	Checks if there is any special char	*/
 bool	ft_special_char(char c)
 {
-	if (c == '>' || c == '<' || c == '|' || c == '\'' || c == '\"')
+	if (c == '>' || c == '<' || c == '|')
 		return (true);
 	return (false);
 }
@@ -57,24 +57,53 @@ void	ft_add_holder_to_container(t_container	**spart, char *input, int i, int ind
 	// printf("===={%s}====\n", holder->holder);
 }
 
+char	*ft_add_space_to_input(char *input)
+{
+	int			i;
+	int			j;
+	int			count;
+	char		*shell;
+
+	(1) && (i = 0, count = 0);
+	while (input[i] != '\0')
+	{
+		if ((input[i] == '>' && input[i + 1] == '>') || (input[i] == '<' && input[i + 1] == '<'))
+			(count++);
+		else if (input[i] == '>' || input[i] == '<' || input[i] == '|')
+			(count++);
+		i++;
+	}
+	shell = (char *)malloc((i + 1 + (count * 2)) * sizeof(char));
+	if (!shell)
+		exit(EXIT_FAILURE);
+	(1) && (i = 0, j = 0);
+	while (input[j] != 0)
+	{
+		if ((input[j] == '>' && input[j + 1] == '>') || (input[j] == '<' && input[j + 1] == '<'))
+		{
+			shell[i] = ' ';
+			shell[i + 1] = input[j];
+			shell[i + 2] = input[j + 1];
+			shell[i + 3] = ' ';
+			i += 4;
+			j += 2;
+		}
+		else if (input[j] == '>' || input[j] == '<' || input[j] == '|' )
+			(shell[i] = ' ', shell[i + 1] = input[j], shell[i + 2] = ' ', i += 3, j++);
+		else
+			(shell[i] = input[j], i++, j++);
+	}
+	shell[i] = '\0';
+	return (shell);
+}
+
 /*	Parse the input from the shell	*/
 void	ft_parse_input_from_shell(char *input)
 {
-	int			i;
-	int			index;
-	t_container	*spart;
+	char	*shell;
 
-	spart = NULL;
-	(1) && (i = 0, index = 0);
-	while (input[i] != '\0')
-	{
-		while (ft_isspace(input[i]) == true && input[i] != '\0')
-			i++;
-		while (ft_isspace(input[i]) == false && ft_special_char(input[i]) == false && input[i] != '\0')
-			(index++, i++);
-		ft_add_holder_to_container(&spart, input, i, index);
-	}
-	ft_print(spart);
+	shell = ft_add_space_to_input(input);
+	printf("======={%s}=======\n", shell);
 }
 
 bool	ft_find_exit(char *line)
@@ -91,37 +120,12 @@ bool	ft_find_exit(char *line)
 	return (false);
 }
 
-void	ft_check_env(t_env **envp, char **env)
-{
-	char	pwd[PATH_MAX];
-	char	*name;
-	char	*value;
-
-	if (env != NULL)
-	{
-		printf("NO ENV\n");
-		*envp = NULL;
-	}
-	else
-	{
-		getcwd(pwd, sizeof(pwd));
-		name = ft_strdup("PATH");
-		value = ft_strdup("/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin");
-		ft_lstadd_back_env(envp, ft_lstnew_env(name, value));
-		name = ft_strdup("PWD");
-		value = ft_strdup(pwd);
-		ft_lstadd_back_env(envp, ft_lstnew_env(name, value));
-	}
-}
-
 int	main(int argc, char **argv, char **env)
 {
 	char	*line;
-	t_env	**envp;
 
 	((void)argc, (void)argv, (void)env);
 	ft_signal_handler();
-	ft_check_env(envp, env);
 	while (true)
 	{
 		line = readline(YELLOW"minishell$ "RESET);
