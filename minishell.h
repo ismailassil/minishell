@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/02 22:03:54 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/03 15:24:16 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,12 @@
 # define DELIMITER	8
 # define GREEN		"\x1b[32m"
 # define YELLOW		"\x1b[33m"
+# define RED		"\x1b[31m"
+# define GREEN		"\x1b[32m"
+# define BLUE		"\x1b[34m"
+# define MAGENTA	"\x1b[35m"
+# define CYAN		"\x1b[36m"
+# define WHT		"\e[0;37m"
 # define RESET		"\x1b[0m"
 
 typedef struct start_end
@@ -60,6 +66,8 @@ typedef struct s_container
 	struct s_container	*next;
 }						t_cont;
 
+void	ft_print_types(t_token *str);
+
 /*==========BUILTIN FUNCIONS==========*/
 void	ft_exit(void);
 int		ft_cd(char *path);
@@ -69,6 +77,7 @@ void	ft_pwd(void);
 char	*ft_add_space_to_input(char *input);
 void	init_tokens(t_token **head, char *str);
 void	ft_tokenize(t_token **str);
+void	ft_check_syntax(t_token *str);
 
 /*==========SIGNAL FUNCIONS==========*/
 void	ft_signal_handler(void);

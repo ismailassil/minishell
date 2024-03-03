@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 16:34:02 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/02 17:23:49 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/03 15:23:49 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,37 @@ void	ft_print(t_cont *lst)
 	while (head != NULL)
 	{
 		printf("====={%s}=====\n", head->holder);
+		head = head->next;
+	}
+}
+
+void	ft_print_types(t_token *str)
+{
+	t_token	*head;
+	
+	head = str;
+	while (head != NULL)
+	{
+		if (head->type == CMD)
+			printf(RED"[CMD]"RESET);
+		else if (head->type == OUTFILE)
+			printf(GREEN"[OUTFILE]"RESET);
+		else if (head->type == INFILE)
+			printf(YELLOW"[INFILE]"RESET);
+		else if (head->type == APPEND)
+			printf(BLUE"[APPEND]"RESET);
+		else if (head->type == FILENAME)
+			printf(MAGENTA"[FILENAME]"RESET);
+		else if (head->type == DELIMITER)
+			printf(CYAN"[DELIMITER]"RESET);
+		else if (head->type == HEREDOC)
+			printf(WHT"[HEREDOC]"RESET);
+		else if (head->type == PIPE)
+			printf(MAGENTA"[PIPE]"RESET);
+		else if (head->type == ARG)
+		 	printf("[ARG]");
+		else
+			printf("%s", head->token);
 		head = head->next;
 	}
 }
