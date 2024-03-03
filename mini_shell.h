@@ -6,7 +6,7 @@
 /*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 18:40:17 by aibn-che          #+#    #+#             */
-/*   Updated: 2024/03/02 15:32:23 by aibn-che         ###   ########.fr       */
+/*   Updated: 2024/03/03 11:46:05 by aibn-che         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,27 @@ char	**ft_split(char const *s, char c);
 
 typedef struct start_end
 {
-	int	start;	
-	int	end;	
+	int	start;
+	int	end;
 }	t_stend;
+
+typedef struct tree_st
+{
+	char			*cmd;
+	struct tree_st	*left;
+	struct tree_st	*right;
+}	t_tree;
+
+/**
+ * 0 = option
+ * 1 = cmd
+ * 2 = operator
+*/
 
 typedef struct tokens
 {
 	char			*token;
+	int				type;
 	struct tokens	*next;
 }	t_token;
 
