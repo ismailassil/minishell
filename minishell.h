@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/03 15:24:16 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/03 17:47:45 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@
 # define GREEN		"\x1b[32m"
 # define YELLOW		"\x1b[33m"
 # define RED		"\x1b[31m"
-# define GREEN		"\x1b[32m"
 # define BLUE		"\x1b[34m"
 # define MAGENTA	"\x1b[35m"
 # define CYAN		"\x1b[36m"
