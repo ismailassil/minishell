@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:47:07 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/02 18:00:08 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/03 15:46:44 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	ft_fetch_arguments(char *arg, char **name, char **value)
 	while (arg[i] != '=' && arg[i] != '\0')
 		(1) && (index++, i++);
 	if (arg[i] == '=')
-		(i++, index++);
+		(1) && (i++, index++);
 	*name = ft_substr(arg, i - index, index);
 	if (!*name)
 		return (1);

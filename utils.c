@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 16:34:02 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/03 15:23:49 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/03 15:53:32 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	ft_print(t_cont *lst)
 void	ft_print_types(t_token *str)
 {
 	t_token	*head;
-	
+
 	head = str;
 	while (head != NULL)
 	{
@@ -65,7 +65,7 @@ void	ft_print_types(t_token *str)
 		else if (head->type == PIPE)
 			printf(MAGENTA"[PIPE]"RESET);
 		else if (head->type == ARG)
-		 	printf("[ARG]");
+			printf("[ARG]");
 		else
 			printf("%s", head->token);
 		head = head->next;
