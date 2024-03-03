@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/03 17:47:45 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/03 17:55:17 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,14 @@
 # define FILENAME	6
 # define ARG		7
 # define DELIMITER	8
-# define GREEN		"\x1b[32m"
-# define YELLOW		"\x1b[33m"
-# define RED		"\x1b[31m"
-# define BLUE		"\x1b[34m"
-# define MAGENTA	"\x1b[35m"
-# define CYAN		"\x1b[36m"
-# define WHT		"\e[0;37m"
+# define GREEN		"\x1b[1;32m"
+# define YELLOW_	"\x1b[0;33m"
+# define YELLOW		"\x1b[1;33m"
+# define RED		"\x1b[1;31m"
+# define BLUE		"\x1b[1;34m"
+# define MAGENTA	"\x1b[1;35m"
+# define CYAN		"\x1b[1;36m"
+# define WHT		"\e[1;37m"
 # define RESET		"\x1b[0m"
 
 typedef struct start_end

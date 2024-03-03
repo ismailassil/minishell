@@ -6,27 +6,11 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 16:34:02 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/03 15:53:32 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/03 17:58:50 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/*	Checks if there is any space char	*/
-bool	ft_isspace(char c)
-{
-	if ((c >= 9 && c <= 13) || c == 32)
-		return (true);
-	return (false);
-}
-
-/*	Checks if there is any special char	*/
-bool	ft_special_char(char c)
-{
-	if (c == '>' || c == '<' || c == '|')
-		return (true);
-	return (false);
-}
 
 /*	Print the data in the Linked list imported from the shell	*/
 void	ft_print(t_cont *lst)
@@ -39,6 +23,18 @@ void	ft_print(t_cont *lst)
 		printf("====={%s}=====\n", head->holder);
 		head = head->next;
 	}
+}
+
+static void	ft_else_print(t_token *head)
+{
+	if (head->type == HEREDOC)
+		printf(WHT"[HEREDOC]"RESET);
+	else if (head->type == PIPE)
+		printf(MAGENTA"[PIPE]"RESET);
+	else if (head->type == ARG)
+		printf("[ARG]");
+	else
+		printf("%s", head->token);
 }
 
 void	ft_print_types(t_token *str)
@@ -60,14 +56,8 @@ void	ft_print_types(t_token *str)
 			printf(MAGENTA"[FILENAME]"RESET);
 		else if (head->type == DELIMITER)
 			printf(CYAN"[DELIMITER]"RESET);
-		else if (head->type == HEREDOC)
-			printf(WHT"[HEREDOC]"RESET);
-		else if (head->type == PIPE)
-			printf(MAGENTA"[PIPE]"RESET);
-		else if (head->type == ARG)
-			printf("[ARG]");
 		else
-			printf("%s", head->token);
+			ft_else_print(head);
 		head = head->next;
 	}
 }
