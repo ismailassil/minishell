@@ -6,30 +6,33 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 21:05:24 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/03 16:17:43 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/03 17:42:32 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static void	ft_check_rest_of_else(t_token *head)
+static void	ft_check_rest_of_else(t_token *head, int *flag)
 {
 	if (head->type == FILENAME || head->type == DELIMITER || head->type == ARG)
 	{
+		if (*flag == 1 && head->type == FILENAME && head->next != NULL)
+			(1) && (head->next->type = ARG, *flag = 0);
 		if (head->type == ARG && head->next != NULL)
 			head->next->type = ARG;
-		else if (head->type != ARG && head->next != NULL)
+		else if (head->type != ARG
+			&& head->next != NULL && head->next->type != ARG)
 			head->next->type = CMD;
 	}
 	else
 	{
-		head->type = CMD;
+		(1) && (head->type = CMD, *flag = 1);
 		if (head->next != NULL)
 			head->next->type = ARG;
 	}
 }
 
-static void	ft_check_else(t_token *head)
+static void	ft_check_else(t_token *head, int *flag)
 {
 	if (ft_strncmp(head->token, ">>", ft_strlen(head->token)) == 0)
 	{
@@ -41,21 +44,23 @@ static void	ft_check_else(t_token *head)
 	{
 		if (head->next != NULL)
 			head->next->type = DELIMITER;
-		head->type = HEREDOC;
+		(1) && (head->type = HEREDOC, *flag = 0);
 	}
 	else if (ft_strncmp(head->token, "|", ft_strlen(head->token)) == 0)
-		head->type = PIPE;
+		(1) && (head->type = PIPE, *flag = 0);
 	else
-		ft_check_rest_of_else(head);
+		ft_check_rest_of_else(head, flag);
 }
 
 void	ft_tokenize(t_token **str)
 {
 	t_token	*head;
+	int		flag;
 	int		i;
 
 	i = 0;
 	head = *str;
+	flag = 0;
 	while (head != NULL)
 	{
 		if (ft_strncmp(head->token, ">", ft_strlen(head->token)) == 0)
@@ -71,7 +76,7 @@ void	ft_tokenize(t_token **str)
 			head->type = INFILE;
 		}
 		else
-			ft_check_else(head);
+			ft_check_else(head, &flag);
 		head = head->next;
 	}
 }

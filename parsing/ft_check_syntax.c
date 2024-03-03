@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 14:55:19 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/03 16:17:47 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/03 17:27:00 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,27 @@
 
 static int	check_quotes(char *str)
 {
-	int	i;
-	int	c;
+	int	i[2];
 	int	count_quotes;
 
-	i = 0;
+	i[0] = 0;
 	count_quotes = 0;
-	while (str[i] != '\0')
+	while (str[i[0]] != '\0')
 	{
-		if (str[i] == '\'' || str[i] == '\"')
+		if (str[i[0]] == '\'' || str[i[0]] == '\"')
 		{
 			count_quotes++;
-			c = str[i++];
-			while (str[i])
+			i[1] = str[i[0]++];
+			while (str[i[0]] != '\0')
 			{
-				if (c == str[i])
+				if (i[1] == str[i[0]])
 					count_quotes++;
-				i++;
+				i[0]++;
 			}
+			if (str[i[0]] == '\0')
+				break ;
 		}
-		i++;
+		i[0]++;
 	}
 	if ((count_quotes % 2) == 0)
 		return (1);
