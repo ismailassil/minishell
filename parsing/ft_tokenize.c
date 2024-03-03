@@ -6,11 +6,11 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 21:05:24 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/03 14:53:28 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/03 16:17:43 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 static void	ft_check_rest_of_else(t_token *head)
 {

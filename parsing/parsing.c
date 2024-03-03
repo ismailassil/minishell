@@ -6,11 +6,11 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 16:33:28 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/02 18:00:51 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/03 16:17:40 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 t_stend	*extract_start_end_of_token(char *str, int s)
 {
