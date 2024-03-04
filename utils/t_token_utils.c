@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   struct_utils.c                                     :+:      :+:    :+:   */
+/*   t_token_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 10:52:06 by aibn-che          #+#    #+#             */
-/*   Updated: 2024/03/02 15:59:48 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/03 19:32:36 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
-int	stack_len(t_token *head)
+int	ft_t_token_len(t_token *head)
 {
 	int	i;
 
@@ -25,7 +25,7 @@ int	stack_len(t_token *head)
 	return (i);
 }
 
-t_token	*last_node(t_token *top)
+static t_token	*ft_last_node(t_token *top)
 {
 	while (top->next)
 	{
@@ -34,7 +34,7 @@ t_token	*last_node(t_token *top)
 	return (top);
 }
 
-t_token	*new_node(char *token)
+static t_token	*ft_new_node(char *token)
 {
 	t_token	*new;
 
@@ -46,25 +46,25 @@ t_token	*new_node(char *token)
 	return (new);
 }
 
-int	push(char *token, t_token **head)
+int	ft_push_token(char *token, t_token **head)
 {
 	t_token	*newnode;
 	t_token	*last;
 
-	newnode = new_node(token);
+	newnode = ft_new_node(token);
 	if (!newnode)
 		return (0);
 	if (!head || !(*head))
 		*head = newnode;
 	else
 	{
-		last = last_node(*head);
+		last = ft_last_node(*head);
 		last->next = newnode;
 	}
 	return (1);
 }
 
-void	free_linked_list(t_token **head)
+void	ft_free_tokens(t_token **head)
 {
 	t_token	*current;
 

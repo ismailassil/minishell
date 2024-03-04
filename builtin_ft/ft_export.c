@@ -6,101 +6,144 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:47:07 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/03 15:46:44 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/04 10:42:18 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 /*
-*	This Code is about 75%/100% it only need some adjustement like:
-*	export hello"hwol"=asdf		==>	hellohwol=asdf
-*	export hello				==>	hello=
+*	export string"s"=value		==>	strings=value
+*	export hello=				==>	hello=
+*	export string				==>	'\0'
 */
 
-int	ft_fetch_arguments(char *arg, char **name, char **value)
-{
-	int	index;
-	int	i;
-
-	i = 0;
-	index = 0;
-	while (arg[i] != '=' && arg[i] != '\0')
-		(1) && (index++, i++);
-	if (arg[i] == '=')
-		(1) && (i++, index++);
-	*name = ft_substr(arg, i - index, index);
-	if (!*name)
-		return (1);
-	if (arg[i] == '\'' || arg[i] == '\"')
-		i++;
-	index = 0;
-	while (arg[i] != '\'' && arg[i] != '\"' && arg[i] != '\0')
-		(1) && (index++, i++);
-	*value = ft_substr(arg, i - index, index);
-	if (!*value)
-		return (1);
-	return (0);
-}
-
-size_t	ft_strlenptr(char **envp)
-{
-	size_t	i;
-
-	i = 0;
-	while (envp[i] != NULL)
-		i++;
-	return (i);
-}
-
-static void	ft_check_env(char **envp, char ***env, char **name, char **value)
+bool	ft_check_argument_validity(char *argument)
 {
 	int	i;
-	int	len;
 
-	len = ft_strlenptr(*env);
 	i = 0;
-	envp = (char **)malloc((len + 2) * sizeof(char *));
-	if (!envp)
-		(write(2, "Error: Allocation failed\n", 25), exit(EXIT_FAILURE));
-	envp[len + 2] = NULL;
-	while ((*env)[i] != NULL)
-		(1) && (envp[i] = ft_strdup((*env)[i]), i++);
-	envp[i] = ft_strjoin(*name, *value);
-	if (!envp[i])
-		(write(2, "Error: Allocation failed\n", 25), exit(EXIT_FAILURE));
-	*env = envp;
+	while (argument[i] != '\0')
+		if (argument[i++] == '=')
+			return (false);
+	return (true);
 }
 
-int	ft_export(char *argument, char ***env)
+bool	ft_check_if_exists(char *argument, t_env *envp)
 {
-	char	*name;
-	char	*value;
-	char	**envp;
+	t_env	*head;
 	int		i;
 
 	i = 0;
-	if (ft_fetch_arguments(argument, &name, &value) == 1)
-		return (1);
-	while ((*env)[i] != NULL)
-	{
-		if (ft_strncmp(name, (*env)[i], ft_strlen(name)) == 0)
-		{
-			(*env)[i] = ft_strjoin(name, value);
-			if (!(*env)[i])
-				return (1);
-			return (0);
-		}
+	head = envp;
+	while (argument[i] != '\0' && argument[i] != '=')
 		i++;
+	while (head != NULL)
+	{
+		if (ft_strncmp(argument, head->value, i) == 0)
+			return (true);
+		head = head->next;
 	}
-	ft_check_env(envp, env, &name, &value);
+	return (false);
+}
+
+int	ft_add_already_exits(char *argument, t_env *envp)
+{
+	t_env	*head;
+	char	*tmp;
+	int		i;
+
+	i = 0;
+	head = envp;
+	while (argument[i] != '\0' && argument[i] != '=')
+		i++;
+	while (head != NULL)
+	{
+		if (ft_strncmp(argument, head->value, i) == 0)
+		{
+			free(head->value);
+			head->value = ft_strdup(argument);
+			if (!head->value)
+				return (1);
+		}
+		head = head->next;
+	}
 	return (0);
 }
 
-int	main(int ac, char **av, char **env)
+char	*ft_filter_argument(char *argument, t_env *envp)
 {
-	if (ft_export("name\"value\"", &env) == 1)
-		printf("Error\n");
-	while (*env)
-		(printf("%s\n", *env), env++);
+	char	*value;
+	int		i;
+	int		j;
+	int		count;
+
+	(1) && (i = 0, count = 0);
+	while (argument[i] != '\0')
+	{
+		if (argument[i] == '\"' || argument[i] == '\"')
+			count++;
+		i++;
+	}
+	value = (char *)malloc((i - count + 1) * sizeof(char));
+	if (!value)
+		return (NULL);
+	(1) && (i = 0, j = 0);
+	while (argument[i] != '\0')
+	{
+		if (argument[i] == '\"' || argument[i] == '\'')
+			i++;
+		else
+			(1) && (value[j] = argument[i], i++, j++);
+	}
+	value[j] = '\0';
+	return (value);
 }
+
+int	ft_add_new_env(char *argument, t_env *envp)
+{
+	char	*value;
+
+	value = ft_filter_argument(argument, envp);
+	if (!value)
+		return (1);
+	if (ft_push_value(value, &envp) == 0)
+		return (1);
+	return (0);
+}
+
+int	ft_export(char *argument, t_env *envp)
+{
+	int		i;
+
+	i = 0;
+	if (ft_check_argument_validity(argument) == true)
+		return (1);
+	if (ft_check_if_exists(argument, envp) == true)
+	{
+		if (ft_add_already_exits(argument, envp) == 0)
+			return (1);
+	}
+	else
+		if (ft_add_new_env(argument, envp) == 1)
+			return (1);
+	return (0);
+}
+
+// int	main(int ac, char **av, char **env)
+// {
+// 	t_env	*envp;
+// 	t_env	*head;
+
+// 	envp = ft_check_env(env);
+// 	printf(YELLOW"=====Before=====\n"RESET);
+// 	head = envp;
+// 	while (head)
+// 		(1) && (printf("%s\n", head->value), head = head->next);
+// 	printf(YELLOW"\n=====After=====\n"RESET);
+// 	if (ft_export(av[1], envp) == 1)
+// 		(printf("Error\n"), exit(1));
+// 	head = envp;
+// 	while (head)
+// 		(1) && (printf("%s\n", head->value), head = head->next);
+// }

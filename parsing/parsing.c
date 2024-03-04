@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 16:33:28 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/03 16:17:40 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/03 19:28:33 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	init_tokens(t_token **head, char *str)
 			break ;
 		cord = extract_start_end_of_token(str, i);
 		token = alloc_str(head, str, cord);
-		push(token, head);
+		ft_push_token(token, head);
 		i = cord->end;
 		free(cord);
 		while (str[i] && str[i] == ' ')

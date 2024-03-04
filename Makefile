@@ -6,7 +6,7 @@
 #    By: iassil <iassil@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/27 14:35:22 by iassil            #+#    #+#              #
-#    Updated: 2024/03/03 16:28:14 by iassil           ###   ########.fr        #
+#    Updated: 2024/03/03 19:33:43 by iassil           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,8 @@ SRC 	=	lib/ft_atoi.c			lib/ft_bzero.c					lib/ft_calloc.c				\
 			lib/ft_lstclear_bonus.c	lib/ft_lstiter_bonus.c			lib/ft_lstmap_bonus.c		\
 			lib/ft_split.c			signals.c						builtin_ft/ft_exit.c		\
 			struct_utils.c			parsing/parsing.c				parsing/ft_check_syntax.c	\
-			parsing/ft_tokenize.c	utils.c							minishell.c
+			parsing/ft_tokenize.c	utils/t_env_utils.c				utils/t_token_utils.c		\
+			minishell.c
 
 OBJ			=	$(SRC:.c=.o)
 

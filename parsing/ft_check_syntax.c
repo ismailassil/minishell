@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 14:55:19 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/03 17:27:00 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/04 10:15:21 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static int	check_quotes(char *str)
 
 static void	ft_error(void)
 {
-	perror("msh: parse error");
+	write(2, "msh: parse error\n", 17);
 }
 
 static int	ft_check_rest(t_token *head)

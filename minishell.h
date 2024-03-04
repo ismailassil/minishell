@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/03 17:55:17 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/03 20:36:34 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,15 @@ typedef struct s_container
 void	ft_print_types(t_token *str);
 
 /*==========BUILTIN FUNCIONS==========*/
-void	ft_exit(void);
 int		ft_cd(char *path);
+void	ft_env(t_env *envp);
+void	ft_exit(void);
+int		ft_export(char *argument, t_env *envp);
 void	ft_pwd(void);
+void	ft_unset(t_env *envp, char *argument);
+// Utils function, it checks for the env if they exist
+// and return a linked list of the env
+t_env	*ft_check_env(char **env);
 
 /*==========PARSING FUNCIONS==========*/
 char	*ft_add_space_to_input(char *input);
@@ -85,9 +91,18 @@ void	ctrl_c_handler(int sig);
 void	ctrl_d_handler(int sig);
 void	ctrl___handler(int sig);
 
+/*==========ENV LINKED LIST FUNCIONS==========*/
+int		ft_t_env_len(t_env *head);
+int		ft_push_value(char *value, t_env **head);
+void	ft_free_env(t_env **head);
+
+/*==========ENV LINKED LIST FUNCIONS==========*/
+int		ft_t_token_len(t_token *head);
+int		ft_push_token(char *token, t_token **head);
+void	ft_free_tokens(t_token **head);
+
 /*==========LIBFT FUNCIONS==========*/
 t_cont	*ft_lstnew(void *content);
-int		push(char *token, t_token **head);
 void	ft_lstadd_back(t_cont **lst, t_cont *_new);
 void	ft_lstadd_front(t_cont **lst, t_cont *_new);
 void	ft_lstdelone(t_cont *lst, void (*del)(void *));
