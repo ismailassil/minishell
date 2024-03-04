@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 10:43:24 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/04 11:29:16 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/04 11:34:37 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ void	ft_echo(int n, char *argument)
 		write(1, "\n", 1);
 }
 
-int	main(int ac, char **av)
-{
-	ft_echo(atoi(av[1]), av[2]);
-	return (0);
-}
+// int	main(int ac, char **av)
+// {
+// 	ft_echo(atoi(av[1]), av[2]);
+// 	return (0);
+// }
