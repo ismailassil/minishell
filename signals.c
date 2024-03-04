@@ -6,41 +6,44 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 16:10:26 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/02 17:18:47 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/04 13:40:55 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void	ft_disable_attr(void)
+{
+	struct	termios	term;
+
+	if (tcgetattr(STDOUT_FILENO, &term) == -1)
+		(perror("Error"), exit(EXIT_FAILURE));
+	term.c_lflag &= ~(ICANON | ECHO);
+	if (tcsetattr(STDOUT_FILENO, TCSANOW, &term) == -1)
+		(perror("Error"), exit(EXIT_FAILURE));
+}
+
 void	ft_signal_handler(void)
 {
-	struct sigaction	ctrl_c;
-	struct sigaction	ctrl_d;
-	struct sigaction	ctrl__;
+	struct sigaction	sig1;
+	struct sigaction	sig2;
 
-	ctrl_c.sa_handler = ctrl_c_handler;
-	ctrl_d.sa_handler = ctrl_d_handler;
-	ctrl__.sa_handler = ctrl___handler;
-	if (sigaction(SIGINT, &ctrl_c, NULL) == -1)
-		(perror("Error"), exit(EXIT_FAILURE));
-	if (sigaction(SIGTERM, &ctrl_d, NULL) == -1)
-		(perror("Error"), exit(EXIT_FAILURE));
-	if (sigaction(SIGQUIT, &ctrl__, NULL) == -1)
+	sig1.sa_handler = ctrl_c;
+	sig2.sa_handler = ctrl_slash;
+	if (sigaction(SIGINT, &sig1, NULL) == -1
+		|| sigaction(SIGQUIT, &sig2, NULL) == -1)
 		(perror("Error"), exit(EXIT_FAILURE));
 }
 
-void	ctrl_c_handler(int sig)
+void	ctrl_c(int sig)
 {
 	(void)sig;
+	ft_putstr_fd(YELLOW_"\nminishell$ "RESET, STDOUT_FILENO);
+	signal(SIGINT, ctrl_c);
 }
 
-void	ctrl_d_handler(int sig)
+void	ctrl_slash(int sig)
 {
 	(void)sig;
-	exit(EXIT_FAILURE);
-}
-
-void	ctrl___handler(int sig)
-{
-	(void)sig;
+	signal(SIGQUIT, ctrl_slash);
 }

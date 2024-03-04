@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:06 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/03 17:53:15 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/04 13:35:26 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,23 +23,7 @@ void	ft_parse_input_from_shell(char *input)
 	init_tokens(&head, shell);
 	ft_tokenize(&head);
 	ft_print_types(head);
-	printf("\n");
 	ft_check_syntax(head);
-}
-
-bool	ft_find_exit(char *line)
-{
-	int	i;
-
-	i = 0;
-	while (line[i] != '\0')
-	{
-		if (line[i] == 'e' && line[i + 1] == 'x'
-			&& line[i + 2] == 'i' && line[i + 3] == 't')
-			return (true);
-		i++;
-	}
-	return (false);
 }
 
 int	main(int argc, char **argv, char **env)
@@ -47,15 +31,21 @@ int	main(int argc, char **argv, char **env)
 	char	*line;
 
 	((void)argc, (void)argv, (void)env);
+	ft_disable_attr();
 	ft_signal_handler();
 	while (true)
 	{
 		line = readline(YELLOW_"minishell$ "RESET);
-		if (line == NULL || ft_find_exit(line) == true)
+		if (line == NULL)
+		{
+			if (line == NULL)
+				printf("exit\n");
 			ft_exit();
+		}
 		if (ft_strlen(line) > 0)
 			add_history(line);
 		ft_parse_input_from_shell(line);
 		free(line);
+		printf("\n");
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:47:07 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/04 10:59:33 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/04 12:08:07 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,6 @@
 *	export hello=				==>	hello=
 *	export string				==>	'\0'
 */
-
-bool	ft_check_argument_validity(char *argument)
-{
-	int	i;
-
-	i = 0;
-	while (argument[i] != '\0')
-		if (argument[i++] == '=')
-			return (false);
-	return (true);
-}
 
 bool	ft_check_if_exists(char *argument, t_env *envp)
 {
@@ -114,13 +103,21 @@ int	ft_add_new_env(char *argument, t_env *envp)
 
 int	ft_export(char *argument, t_env *envp)
 {
-	int		i;
+	int	i;
+	int	count;
 
 	i = 0;
-	if (argument == NULL)
-		return (0);
-	if (ft_check_argument_validity(argument) == true)
+	count = 0;
+	if (argument == NULL || argument[0] == '=')
 		return (1);
+	while (argument[i] != '\0')
+	{
+		if (argument[i] == '=')
+			count++;
+		if (argument[i + 1] == '\0' && count == 0)
+			return (1);
+		i++;
+	}
 	if (ft_check_if_exists(argument, envp) == true)
 	{
 		if (ft_add_already_exits(argument, envp) == 0)
