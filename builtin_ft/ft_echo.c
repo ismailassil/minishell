@@ -6,13 +6,13 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 10:43:24 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/04 14:56:20 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/04 15:23:00 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_echo(int n, t_env *envp, char *argument)
+void	ft_echo(int n, char *argument)
 {
 	int	i;
 	int	len;

@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 14:55:19 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/04 10:15:21 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/04 15:48:07 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,11 @@ void	ft_check_syntax(t_token *str)
 	t_token	*head;
 
 	head = str;
+	if (head->type == PIPE)
+	{
+		ft_error();
+		return ;
+	}
 	while (head != NULL)
 	{
 		if (!check_quotes(head->token))

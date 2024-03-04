@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:06 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/04 13:35:26 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/04 16:29:59 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	main(int argc, char **argv, char **env)
 	char	*line;
 
 	((void)argc, (void)argv, (void)env);
-	ft_disable_attr();
+	// ft_disable_attr();
 	ft_signal_handler();
 	while (true)
 	{

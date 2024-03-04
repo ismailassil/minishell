@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 16:10:26 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/04 13:40:55 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/04 16:51:45 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,14 @@ void	ctrl_c(int sig)
 {
 	(void)sig;
 	ft_putstr_fd(YELLOW_"\nminishell$ "RESET, STDOUT_FILENO);
-	signal(SIGINT, ctrl_c);
+	rl_redisplay();
+	if (signal(SIGINT, ctrl_c) == SIG_ERR)
+		(perror("Error"), exit(EXIT_FAILURE));
 }
 
 void	ctrl_slash(int sig)
 {
 	(void)sig;
-	signal(SIGQUIT, ctrl_slash);
+	if (signal(SIGQUIT, ctrl_slash) == SIG_ERR)
+		(perror("Error"), exit(EXIT_FAILURE));
 }
