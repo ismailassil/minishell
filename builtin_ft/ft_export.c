@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:47:07 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/04 10:42:18 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/04 10:59:33 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,8 @@ int	ft_export(char *argument, t_env *envp)
 	int		i;
 
 	i = 0;
+	if (argument == NULL)
+		return (0);
 	if (ft_check_argument_validity(argument) == true)
 		return (1);
 	if (ft_check_if_exists(argument, envp) == true)
