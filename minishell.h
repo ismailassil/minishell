@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/04 13:34:44 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/04 19:57:51 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ typedef struct s_container
 void	ft_print_types(t_token *str);
 
 /*==========BUILTIN FUNCIONS==========*/
-int		ft_cd(char *path);
+int		ft_cd(char *argument, t_env *envp);
 void	ft_env(t_env *envp);
 void	ft_exit(void);
 int		ft_export(char *argument, t_env *envp);
