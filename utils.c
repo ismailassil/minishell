@@ -6,21 +6,31 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 16:34:02 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/03 17:58:50 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/05 19:56:51 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*	Print the data in the Linked list imported from the shell	*/
-void	ft_print(t_cont *lst)
+/*	Checks if a char is a special character or not				*/
+int	ft_check_if_chars_digit(int c)
 {
-	t_cont	*head;
+	if ((c >= 'a' && c <= 'z')
+		|| (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9'))
+		return (1);
+	return (0);
+}
+
+/*	Print the data in the Linked list imported from the shell	*/
+void	ft_print(t_token *lst)
+{
+	t_token	*head;
 
 	head = lst;
+	printf("\n");
 	while (head != NULL)
 	{
-		printf("====={%s}=====\n", head->holder);
+		printf(WHT"=={%s}=="RESET, head->token);
 		head = head->next;
 	}
 }
@@ -60,18 +70,4 @@ void	ft_print_types(t_token *str)
 			ft_else_print(head);
 		head = head->next;
 	}
-}
-
-/*	Add the input from shell to linked list	*/
-void	ft_add_holder_to_container(t_cont	**spart, \
-	char *input, int i, int index)
-{
-	char		*tmp;
-	t_cont		*holder;
-
-	tmp = ft_substr(input, i - index, index);
-	holder = ft_lstnew(tmp);
-	if (holder == NULL)
-		exit(EXIT_FAILURE);
-	ft_lstadd_back(spart, holder);
 }

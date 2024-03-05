@@ -6,19 +6,21 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 16:33:28 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/03 19:28:33 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/05 19:45:29 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_stend	*extract_start_end_of_token(char *str, int s)
+t_stend	*ft_extract_start_end_of_token(char *str, int s)
 {
 	t_stend	*cord;
 	int		i;
 	int		c;
 
 	cord = malloc(sizeof(t_stend));
+	if (!cord)
+		(write(2, "Error: Allocation failed\n", 25), exit(FAIL));
 	i = s;
 	c = 0;
 	cord->start = s;
@@ -36,7 +38,7 @@ t_stend	*extract_start_end_of_token(char *str, int s)
 	return (cord);
 }
 
-char	*alloc_str(t_token **tokens, char *str, t_stend *cord)
+char	*ft_alloc_str(t_token **tokens, char *str, t_stend *cord)
 {
 	int		len;
 	int		i;
@@ -47,7 +49,7 @@ char	*alloc_str(t_token **tokens, char *str, t_stend *cord)
 	i = 0;
 	tk = malloc(sizeof(char) * (len + 2));
 	if (!tk)
-		return (NULL);
+		(write(2, "Error: Allocation failed\n", 25), exit(FAIL));
 	str += cord->start;
 	while (cord->start <= cord->end)
 	{
@@ -59,7 +61,7 @@ char	*alloc_str(t_token **tokens, char *str, t_stend *cord)
 	return (tk);
 }
 
-void	init_tokens(t_token **head, char *str)
+void	ft_init_tokens(t_token **head, char *str)
 {
 	int		i;
 	char	*token;
@@ -72,13 +74,15 @@ void	init_tokens(t_token **head, char *str)
 			i++;
 		if (!str[i])
 			break ;
-		cord = extract_start_end_of_token(str, i);
-		token = alloc_str(head, str, cord);
+		cord = ft_extract_start_end_of_token(str, i);
+		token = ft_alloc_str(head, str, cord);
 		ft_push_token(token, head);
 		i = cord->end;
 		free(cord);
 		while (str[i] && str[i] == ' ')
 			i++;
+		if (str[i] == '\0')
+			break ;
 		i++;
 	}
 }

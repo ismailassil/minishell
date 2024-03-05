@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 14:55:19 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/05 11:07:27 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/05 19:21:58 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,26 +62,21 @@ static int	ft_check_rest(t_token *head)
 	return (0);
 }
 
-void	ft_check_syntax(t_token *str)
+bool	ft_check_syntax(t_token *str)
 {
 	t_token	*head;
 
 	head = str;
-	if (head->type == PIPE)
-	{
-		ft_error();
-		return ;
-	}
+	if (head && head->type == PIPE)
+		return (ft_error(), false);
 	while (head != NULL)
 	{
 		if (!check_quotes(head->token))
-		{
-			ft_error();
-			break ;
-		}
+			return (ft_error(), false);
 		else
 			if (ft_check_rest(head) == 1)
-				break ;
+				return (ft_error(), false);
 		head = head->next;
 	}
+	return (true);
 }

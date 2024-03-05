@@ -6,12 +6,13 @@
 #    By: iassil <iassil@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/27 14:35:22 by iassil            #+#    #+#              #
-#    Updated: 2024/03/05 17:05:35 by iassil           ###   ########.fr        #
+#    Updated: 2024/03/05 19:54:33 by iassil           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC			=	cc
-CC			+=	-Wall -Wextra -Werror -fsanitize=address -g
+CC			+=	-Wall -Wextra -Werror
+# CC			+=	-fsanitize=address -g
 LINKER		=	-lreadline -lncurses
 RM			=	rm -f
 NAME		=	minishell

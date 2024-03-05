@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/05 17:02:02 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/05 19:45:29 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,6 @@ typedef struct s_container
 	struct s_container	*next;
 }						t_cont;
 
-void	ft_print_types(t_token *str);
-
 /*==========BUILTIN FUNCIONS==========*/
 int		ft_cd(char *argument, t_env **envp);
 void	ft_echo(int n, char *argument);
@@ -89,10 +87,16 @@ void	ft_add_old_pwd(t_env **envp, char *argument);
 
 /*==========PARSING FUNCIONS==========*/
 char	*ft_add_space_to_input(char *input);
-void	init_tokens(t_token **head, char *str);
+void	ft_init_tokens(t_token **head, char *str);
 void	ft_tokenize(t_token **str);
 void	ft_expand_argument(t_env *env, t_token **linked_list);
-void	ft_check_syntax(t_token *str);
+bool	ft_check_syntax(t_token *str);
+
+/*==========UTILS FUNCIONS==========*/
+int		ft_check_if_chars_digit(int c);
+void	ft_print(t_token *lst);
+void	ft_print_types(t_token *str);
+
 /*==========SIGNAL FUNCIONS==========*/
 void	ft_signal_handler(void);
 void	ctrl_c(int sig);

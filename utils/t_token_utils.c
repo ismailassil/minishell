@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 10:52:06 by aibn-che          #+#    #+#             */
-/*   Updated: 2024/03/03 19:32:36 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/05 19:57:45 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,9 @@ static t_token	*ft_new_node(char *token)
 	new = malloc(sizeof(t_token));
 	if (!new)
 		return (NULL);
-	new->token = token;
+	new->token = ft_strdup(token);
+	if (!new->token)
+		return (NULL);
 	new->next = NULL;
 	return (new);
 }
@@ -71,7 +73,10 @@ void	ft_free_tokens(t_token **head)
 	while (*head)
 	{
 		current = *head;
-		*head = (*head)->next;
+		free(current->token);
+		current->token = NULL;
 		free(current);
+		current = NULL;
+		*head = (*head)->next;
 	}
 }
