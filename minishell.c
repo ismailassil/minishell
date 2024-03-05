@@ -6,14 +6,14 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:06 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/05 12:33:33 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/05 17:01:58 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*	Parse the input from the shell	*/
-void	ft_parse_input_from_shell(char *input)
+void	ft_parse_input_from_shell(t_env *env, char *input)
 {
 	char	*shell;
 	t_token	*head;
@@ -22,6 +22,7 @@ void	ft_parse_input_from_shell(char *input)
 	shell = ft_add_space_to_input(input);
 	init_tokens(&head, shell);
 	ft_tokenize(&head);
+	ft_expand_argument(env, &head);
 	ft_print_types(head);
 	ft_check_syntax(head);
 }
@@ -29,9 +30,11 @@ void	ft_parse_input_from_shell(char *input)
 int	main(int argc, char **argv, char **env)
 {
 	char	*line;
+	t_env	*envp;
 
-	((void)argc, (void)argv, (void)env);
+	((void)argc, (void)argv);
 	ft_signal_handler();
+	envp = ft_get_env(env);
 	while (true)
 	{
 		line = readline(YELLOW_"minishell$ "RESET);
@@ -43,7 +46,7 @@ int	main(int argc, char **argv, char **env)
 		}
 		if (ft_strlen(line) > 0)
 			add_history(line);
-		ft_parse_input_from_shell(line);
+		ft_parse_input_from_shell(envp, line);
 		free(line);
 		printf("\n");
 	}

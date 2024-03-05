@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:47:07 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/05 12:27:12 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/05 17:06:50 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 *	export string				==>	'\0'
 */
 
-bool	ft_check_if_exists(char *argument, t_env *envp)
+static bool	ft_check_if_exists(char *argument, t_env *envp)
 {
 	t_env	*head;
 	int		i;
@@ -36,7 +36,7 @@ bool	ft_check_if_exists(char *argument, t_env *envp)
 	return (false);
 }
 
-int	ft_add_already_exits(char *argument, t_env *envp)
+static int	ft_add_already_exits(char *argument, t_env *envp)
 {
 	t_env	*head;
 	char	*tmp;
@@ -50,17 +50,19 @@ int	ft_add_already_exits(char *argument, t_env *envp)
 	{
 		if (ft_strncmp(argument, head->value, i) == 0)
 		{
-			free(head->value);
-			head->value = ft_strdup(argument);
-			if (!head->value)
-				return (1);
+			(1) && (free(head->value), head->value = NULL);
+			tmp = ft_strdup(argument);
+			if (!tmp)
+				return (0);
+			head->value = tmp;
+			return (1);
 		}
 		head = head->next;
 	}
 	return (0);
 }
 
-char	*ft_filter_argument(char *argument, t_env *envp)
+static char	*ft_filter_argument(char *argument)
 {
 	char	*value;
 	int		i;
@@ -89,15 +91,17 @@ char	*ft_filter_argument(char *argument, t_env *envp)
 	return (value);
 }
 
-int	ft_add_new_env(char *argument, t_env *envp)
+static int	ft_add_new_env(char *argument, t_env *envp)
 {
 	char	*value;
 
-	value = ft_filter_argument(argument, envp);
+	value = ft_filter_argument(argument);
 	if (!value)
 		return (1);
 	if (ft_push_value(value, &envp) == 0)
 		return (1);
+	free(value);
+	value = NULL;
 	return (0);
 }
 
@@ -130,20 +134,27 @@ int	ft_export(char *argument, t_env *envp)
 	return (0);
 }
 
+// void	v(void)
+// {
+// 	system("leaks export");
+// }
+
 // int	main(int ac, char **av, char **env)
 // {
+// 	// atexit(v);`
 // 	t_env	*envp;
 // 	t_env	*head;
 
-// 	envp = ft_check_env(env);
+// 	envp = ft_get_env(env);
 // 	printf(YELLOW"=====Before=====\n"RESET);
 // 	head = envp;
 // 	while (head)
 // 		(1) && (printf("%s\n", head->value), head = head->next);
 // 	printf(YELLOW"\n=====After=====\n"RESET);
 // 	if (ft_export(av[1], envp) == 1)
-// 		(printf("Error\n"), exit(1));
+// 		printf(GREEN"Error\n\n"RESET);
 // 	head = envp;
 // 	while (head)
 // 		(1) && (printf("%s\n", head->value), head = head->next);
+// 	ft_free_env(&envp);
 // }

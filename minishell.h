@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/05 13:54:46 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/05 17:02:02 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,15 +82,17 @@ int		ft_export(char *argument, t_env *envp);
 void	ft_pwd(void);
 void	ft_unset(t_env *envp, char *argument);
 // Utils function for the builtin function
-t_env	*ft_check_env(char **env);
+t_env	*ft_get_env(char **env);
 void	ft_print_exported_variable(t_env *envp);
+void	ft_add_current_pwd(t_env **envp, char *argument);
+void	ft_add_old_pwd(t_env **envp, char *argument);
 
 /*==========PARSING FUNCIONS==========*/
 char	*ft_add_space_to_input(char *input);
 void	init_tokens(t_token **head, char *str);
 void	ft_tokenize(t_token **str);
+void	ft_expand_argument(t_env *env, t_token **linked_list);
 void	ft_check_syntax(t_token *str);
-
 /*==========SIGNAL FUNCIONS==========*/
 void	ft_signal_handler(void);
 void	ctrl_c(int sig);

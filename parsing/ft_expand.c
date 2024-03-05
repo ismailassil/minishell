@@ -6,13 +6,13 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 10:36:20 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/05 14:04:23 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/05 17:02:10 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	check_if_chars_digit(int c)
+static int	ft_check_if_chars_digit(int c)
 {
 	if ((c >= 'a' && c <= 'z')
 		|| (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9'))
@@ -30,7 +30,7 @@ char	*ft_arg_is_exist(t_env *env, char *var)
 		i = 0;
 		while (var[i] == env->value[i])
 			i++;
-		if (env->value[i] == '=' && !check_if_chars_digit(var[i]))
+		if (env->value[i] == '=' && !ft_check_if_chars_digit(var[i]))
 			break ;
 		env = env->next;
 	}
@@ -51,12 +51,12 @@ int	ft_surpass_chars(char *var)
 	int	i;
 
 	i = 0;
-	while (var[i] && check_if_chars_digit(var[i]))
+	while (var[i] && ft_check_if_chars_digit(var[i]))
 		i++;
 	return (i + 1);
 }
 
-void	append_char(char **str, int c)
+void	ft_append_char(char **str, int c)
 {
 	int		len;
 	char	*s;
@@ -99,22 +99,22 @@ char	*ft_handle_expand(t_env *env, char *arg)
 		{
 			(1) && (expa = ft_arg_is_exist(env, arg + (i + 1))), (s = new_str);
 			(1) && (new_str = ft_strjoin(new_str, expa)), free(s), free(expa);
-			(i += ft_surpass_chars(arg + (i + 1)));
+			i += ft_surpass_chars(arg + (i + 1));
 		}
 		else
-			append_char(&new_str, arg[i++]);
+			ft_append_char(&new_str, arg[i++]);
 	}
 	return (new_str);
 }
 
-int	main(int ac, char **av, char **envp)
+void	ft_expand_argument(t_env *env, t_token **linked_list)
 {
-	t_env	*env;
-	char	*str;
+	t_token	*head;
 
-	env = ft_check_env(envp);
-	str = ft_handle_expand(env, av[1]);
-	ft_free_env(&env);
-	printf("======%s======\n", str);
-	free(str);
+	head = *linked_list;
+	while (head != NULL)
+	{
+		head->token = ft_handle_expand(env, head->token);
+		head = head->next;
+	}
 }
