@@ -6,7 +6,7 @@
 /*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 19:23:30 by aibn-che          #+#    #+#             */
-/*   Updated: 2024/03/05 10:25:48 by aibn-che         ###   ########.fr       */
+/*   Updated: 2024/03/05 10:37:50 by aibn-che         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -272,8 +272,8 @@ void	handle_echo(char **env, char *token)
 		c = token[i++];
 	while (token[i])
 	{
-		if (token[i] == c)
-			i++;
+		// if (token[i] == c)
+		// 	i++;
 		if (!token[i])
 			break ;
 		if (token[i] == '$' && token[i - 1] != '\'')
@@ -293,7 +293,7 @@ void	handle_echo(char **env, char *token)
 		if (token[i] != c)
 		{
 			if (c == 0 && (token[i] == '\'' || token[i] == '\"'))
-				;
+				c = token[i];
 			else
 				printf("%c", token[i]);
 		}
@@ -323,8 +323,8 @@ int main(int argc, char** argv, char **env)
 		init_tokens(&head, buf);
 		while (head)
 		{
-			if (!check_quotes(head->token))
-				(printf("invalid quotes\n"), exit(0));
+			// if (!check_quotes(head->token))
+			// 	(printf("invalid quotes\n"), exit(0));
 			if (!str_cmp(head->token, "echo"))
 			{
 				handle_echo(env, head->token);
