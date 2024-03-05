@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_expand.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 10:36:20 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/05 10:59:53 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/05 13:48:12 by aibn-che         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,60 +56,93 @@ int	ft_surpass_chars(char *var)
 	return (i + 1);
 }
 
-void	handle_echo(t_env *env, char *argument)
+int	str_len(char *str)
 {
-	int		i;
-	int		flag;
-	int		quote;
-	char	*expanded;
-	char	*container;
+	int	i;
 
 	i = 0;
-	flag = 0;
-	quote = 0;
-	while (argument[i] == ' ')
+	while (str && str[i])
+	{
 		i++;
-	if (argument[i] == '\'' || argument[i] == '\"')
-		quote = argument[i++];
-	while (argument[i])
+	}
+	return (i);
+}
+
+char	*str_back_ward(char *str, int end)
+{
+	int		i;
+	char	*new_str;
+
+	new_str = malloc(sizeof(char) * (end + 2));
+	i = end;
+	new_str[end + 1] = '\0';
+	while (0 <= end)
 	{
-		if (argument[i] == quote)
+		new_str[end] = str[end];
+		end--;
+	}
+	return (new_str);
+}
+
+void	append_char(char **str, int c)
+{
+	int		len;
+	char	*s;
+	int		i;
+
+	i = 0;
+	len = str_len(*str);
+	s = *str;
+	*str = malloc(sizeof(char) * (len + 2));
+	if (!(*str))
+		return ;
+	while (s && s[i])
+	{
+		(*str)[i] = s[i];
+		i++;
+	}
+	(*str)[i++] = c;
+	(*str)[i] = '\0';
+	free(s);
+}
+
+char	*ft_handle_expand(t_env *env, char *arg)
+{
+	int		i;
+	int		quote;
+	char	*expa;
+	char	*new_str;
+	char	*s;
+
+	(1) && (new_str = NULL, i = 0);
+	if (arg[i] == '\'' || arg[i] == '\"')
+		quote = arg[i++];
+	while (arg[i])
+	{
+		if (arg[i] == quote)
 			i++;
-		if (!argument[i])
+		if (!arg[i])
 			break ;
-		if (argument[i] == '$' && argument[i - 1] != '\'')
+		if (arg[i] == '$' && quote == '\"')
 		{
-			flag = 1;
-			container = ft_substr(argument, 0, i);
-			if (!container)
-				(write(2, "Error: Allocation failed\n", 25), exit(FAIL));
-			expanded = ft_arg_is_exist(env, argument + (i + 1));
-			if (expanded != NULL)
-				(i += ft_surpass_chars(argument + (i + 1)));
-			else
-			{
-				expanded = ft_strjoin(container, expanded);
-				if (!expanded)
-					(write(2, "Error: Allocation failed\n", 25), exit(FAIL));
-			}
-			if (!argument[i])
-				break ;
-			while (argument [i] && argument[i] == ' ' && argument[i + 1] == ' ')
-				i++;
-			if (argument[i] != quote)
-			{
-				if (quote == 0 && (argument[i] == '\'' || argument[i] == '\"'))
-					;
-				else
-					printf("%c", argument[i]);
-			}
-			i++;
+			(1) && (expa = ft_arg_is_exist(env, arg + (i + 1))), (s = new_str);
+			(1) && (new_str = ft_strjoin(new_str, expa)), free(s), free(expa);
+			(i += ft_surpass_chars(arg + (i + 1)));
 		}
+		else
+			append_char(&new_str, arg[i++]);
 	}
-	if (flag == 0)
-	{
-		container = ft_strdup(argument);
-		if (!container)
-			(write(2, "Error: Allocation failed\n", 25), exit(FAIL));
-	}
+	return (new_str);
+}
+
+int	main(int ac, char **av, char **envp)
+{
+	t_env	*env;
+	char	*str;
+
+	env = ft_check_env(envp);
+	str = ft_handle_expand(env, av[1]);
+	free(str);
+	ft_free_env(&env);
+	printf("======%s======\n", str);
 }
