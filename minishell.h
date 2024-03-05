@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/04 19:57:51 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/05 10:11:11 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 # include <term.h>
 # include <curses.h>
 # include <sys/syslimits.h>
+# define SUCCESS	0
+# define FAIL		1
 # define CMD		0
 # define PIPE		1
 # define OUTFILE	2
