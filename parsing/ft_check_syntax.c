@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 14:55:19 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/04 15:48:07 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/05 11:07:27 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,18 +53,12 @@ static int	ft_check_rest(t_token *head)
 			|| head->type == APPEND || head->type == HEREDOC)
 		&& (head->next->type == INFILE || head->next->type == OUTFILE
 			|| head->next->type == APPEND || head->next->type == HEREDOC))
-	{
-		ft_error();
-		return (1);
-	}
+		return (ft_error(), 1);
 	else if (head->next == NULL
 		&& (head->type == PIPE || head->type == INFILE
 			|| head->type == OUTFILE || head->type == APPEND
 			|| head->type == HEREDOC))
-	{
-		ft_error();
-		return (1);
-	}
+		return (ft_error(), 1);
 	return (0);
 }
 

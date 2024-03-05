@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:47:07 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/04 12:08:07 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/05 12:27:12 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,9 +106,10 @@ int	ft_export(char *argument, t_env *envp)
 	int	i;
 	int	count;
 
-	i = 0;
-	count = 0;
-	if (argument == NULL || argument[0] == '=')
+	(1) && (i = 0, count = 0);
+	if (argument == NULL)
+		return (ft_print_exported_variable(envp), 0);
+	if (argument[0] == '=')
 		return (1);
 	while (argument[i] != '\0')
 	{

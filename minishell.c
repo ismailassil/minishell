@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:06 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/05 10:19:15 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/05 12:33:33 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	main(int argc, char **argv, char **env)
 	char	*line;
 
 	((void)argc, (void)argv, (void)env);
-	// ft_signal_handler();
+	ft_signal_handler();
 	while (true)
 	{
 		line = readline(YELLOW_"minishell$ "RESET);

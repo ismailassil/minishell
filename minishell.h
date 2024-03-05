@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/05 10:11:11 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/05 13:54:46 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,15 +74,16 @@ typedef struct s_container
 void	ft_print_types(t_token *str);
 
 /*==========BUILTIN FUNCIONS==========*/
-int		ft_cd(char *argument, t_env *envp);
+int		ft_cd(char *argument, t_env **envp);
+void	ft_echo(int n, char *argument);
 void	ft_env(t_env *envp);
 void	ft_exit(void);
 int		ft_export(char *argument, t_env *envp);
 void	ft_pwd(void);
 void	ft_unset(t_env *envp, char *argument);
-// Utils function, it checks for the env if they exist
-// and return a linked list of the env
+// Utils function for the builtin function
 t_env	*ft_check_env(char **env);
+void	ft_print_exported_variable(t_env *envp);
 
 /*==========PARSING FUNCIONS==========*/
 char	*ft_add_space_to_input(char *input);
