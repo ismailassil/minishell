@@ -6,7 +6,7 @@
 /*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 18:40:17 by aibn-che          #+#    #+#             */
-/*   Updated: 2024/03/03 11:46:05 by aibn-che         ###   ########.fr       */
+/*   Updated: 2024/03/04 15:27:00 by aibn-che         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINI_SHELL_H
 
 # include <stdio.h>
+# include <unistd.h>
 # include <stdlib.h>
 # include <string.h>
 # include <readline/readline.h>

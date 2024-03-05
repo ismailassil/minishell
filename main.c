@@ -6,7 +6,7 @@
 /*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 19:23:30 by aibn-che          #+#    #+#             */
-/*   Updated: 2024/03/03 10:30:42 by aibn-che         ###   ########.fr       */
+/*   Updated: 2024/03/05 10:25:48 by aibn-che         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,13 +114,16 @@ int	check_quotes(char *str)
 	{
 		if (str[i] == '\'' || str[i] == '\"')
 		{
-			count_quotes++;
 			c = str[i++];
+			count_quotes++;
 			while (str[i])
 			{
 				if (c == str[i])
 					count_quotes++;
+				i++;
 			}
+			if (str[i] == '\0')
+				break ;
 		}
 		i++;
 	}
@@ -158,7 +161,149 @@ void	insert_tree(t_tree *tr, char *str)
 	
 }
 
-int main(int argc, char** argv)
+int	str_len(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
+
+int	str_cmp(char *str1, char *str2)
+{
+	int i;
+
+	i = 0;
+	while (str1[i] && str2[i] && (str1[i] == str2[i]))
+		i++;
+	if (str_len(str1) > str_len(str2) && str1[i] == ' ')
+		return (0);
+	return (str1[i] - str2[i]);
+}
+
+int	check_if_chars_digit(int c)
+{
+	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9'))
+		return (1);
+	return (0);
+}
+
+char	*var_is_exist(char **env, char *var)
+{
+	int		i;
+	int		j;
+	char	*str;
+
+	i = 0;
+	while (env[i])
+	{
+		j = 0;
+		while (var[j] == env[i][j])
+		{
+			j++;
+		}
+		if (env[i][j] == '=' && !check_if_chars_digit(var[j]))
+			break ;
+		i++;
+	}
+	if (env[i])
+	{
+		env[i]+=(j + 1);
+		printf("%s", env[i]);
+		env[i]-=(j + 1);
+		return ("yes");
+	}
+	return (NULL);
+}
+
+int	surpass_chars(char **env, char *var)
+{
+	int	i;
+
+	i = 0;
+	while (var[i] && check_if_chars_digit(var[i]))
+	{
+		i++;
+	}
+	return (i + 1);
+}
+
+// int	update_c(char *str, int i, int c)
+// {
+// 	int	cc;
+
+// 	if (str[i] == '\'' || str[i] == '\"')
+// 	{
+// 		cc = str[i];
+// 		while (c == 0 && i >= 0)
+// 		{
+// 			i--;
+// 			if (str[i] == '\"' || str[i] == '\'')
+// 				c = 
+// 		}
+		
+// 		i++;
+// 		while (c != 0 && str[i])
+// 		{
+// 			if (str[i] == '\'' || str[i] == '\"')
+// 				return (str[i]);
+// 			i++;
+// 		}
+// 	}
+// 	return (0);
+// }
+//t_env*
+
+////////////////////////ECHO/////////////////////////////////////////////////
+void	handle_echo(char **env, char *token)
+{
+	int	i;
+	int	c;
+
+	i = 0;
+	c = 0;
+	i = 4;
+
+	while (token[i] == ' ')
+		i++;
+	if (token[i] == '\'' || token[i] == '\"')
+		c = token[i++];
+	while (token[i])
+	{
+		if (token[i] == c)
+			i++;
+		if (!token[i])
+			break ;
+		if (token[i] == '$' && token[i - 1] != '\'')
+		{
+			if (var_is_exist(env, token + (i + 1)))
+				(i += surpass_chars(env, token + (i + 1)));
+			else
+			{
+				(i += surpass_chars(env, token + (i + 1)));
+				i++;
+			}
+		}
+		if (!token[i])
+			break ;
+		while (token [i] && token[i] == ' ' && token[i + 1] == ' ')
+			i++;
+		if (token[i] != c)
+		{
+			if (c == 0 && (token[i] == '\'' || token[i] == '\"'))
+				;
+			else
+				printf("%c", token[i]);
+		}
+		i++;
+	}
+	printf("\n");
+}
+////////////////////////ECHO/////////////////////////////////////////////////
+
+int main(int argc, char** argv, char **env)
 {
 	t_token	*head;
 
@@ -167,6 +312,7 @@ int main(int argc, char** argv)
 	i = 0;
 
 	char	*buf;
+
 	while (1)
 	{
 		buf = readline("minishell$ ");
@@ -179,7 +325,10 @@ int main(int argc, char** argv)
 		{
 			if (!check_quotes(head->token))
 				(printf("invalid quotes\n"), exit(0));
-			printf("%s\n", head->token);
+			if (!str_cmp(head->token, "echo"))
+			{
+				handle_echo(env, head->token);
+			}
 			head = head->next;
 		}
 		free(buf);
