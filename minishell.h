@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/05 19:45:29 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/06 14:05:28 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,19 @@
 # define WHT		"\e[1;37m"
 # define RESET		"\x1b[0m"
 
-typedef struct start_end
+typedef struct s_start_end
 {
-	int	start;	
-	int	end;	
+	int	start;
+	int	end;
 }		t_stend;
+
+typedef struct s_expand
+{
+	int		quote;
+	char	*expa;
+	char	*new_str;
+	char	*s;
+}			t_expand;
 
 typedef struct s_env
 {
@@ -79,7 +87,7 @@ void	ft_exit(void);
 int		ft_export(char *argument, t_env *envp);
 void	ft_pwd(void);
 void	ft_unset(t_env *envp, char *argument);
-// Utils function for the builtin function
+// Utils function for builtin function
 t_env	*ft_get_env(char **env);
 void	ft_print_exported_variable(t_env *envp);
 void	ft_add_current_pwd(t_env **envp, char *argument);
@@ -91,6 +99,9 @@ void	ft_init_tokens(t_token **head, char *str);
 void	ft_tokenize(t_token **str);
 void	ft_expand_argument(t_env *env, t_token **linked_list);
 bool	ft_check_syntax(t_token *str);
+// Utils function for Parsing
+void	ft_append_char(char **str, int c);
+char	*ft_allocate_for_var(int flag, char *str, int i);
 
 /*==========UTILS FUNCIONS==========*/
 int		ft_check_if_chars_digit(int c);
@@ -103,12 +114,12 @@ void	ctrl_c(int sig);
 void	ctrl_slash(int sig);
 void	ft_disable_attr(void);
 
-/*==========ENV LINKED LIST FUNCIONS==========*/
+/*==========ENV LINKED LIST UTILS FUNCIONS==========*/
 int		ft_t_env_len(t_env *head);
 int		ft_push_value(char *value, t_env **head);
 void	ft_free_env(t_env **head);
 
-/*==========ENV LINKED LIST FUNCIONS==========*/
+/*==========TOKEN LINKED LIST UTILS FUNCIONS==========*/
 int		ft_t_token_len(t_token *head);
 int		ft_push_token(char *token, t_token **head);
 void	ft_free_tokens(t_token **head);

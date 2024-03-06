@@ -6,7 +6,7 @@
 #    By: iassil <iassil@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/27 14:35:22 by iassil            #+#    #+#              #
-#    Updated: 2024/03/05 19:54:33 by iassil           ###   ########.fr        #
+#    Updated: 2024/03/06 14:10:44 by iassil           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,14 @@ RM			=	rm -f
 NAME		=	minishell
 HEADER_H	=	minishell.h
 
-SRC 	=	lib/ft_atoi.c			lib/ft_bzero.c					lib/ft_calloc.c				\
+SRC 	=	parsing/parsing.c		parsing/ft_tokenize.c			parsing/ft_check_syntax.c	\
+			utils/t_env_utils.c		utils/t_token_utils.c			builtin_ft/ft_pwd.c			\
+			parsing/ft_expand.c		builtin_ft/utils.c				builtin_ft/ft_echo.c		\
+			builtin_ft/ft_exit.c	builtin_ft/ft_export.c			builtin_ft/ft_unset.c		\
+			builtin_ft/ft_cd.c		builtin_ft/ft_env.c				parsing/utils.c				\
+			utils.c					signals.c						minishell.c
+
+SRC		+=	lib/ft_atoi.c			lib/ft_bzero.c					lib/ft_calloc.c				\
 			lib/ft_isalnum.c		lib/ft_isalpha.c				lib/ft_isascii.c			\
 			lib/ft_isdigit.c		lib/ft_isprint.c				lib/ft_memchr.c				\
 			lib/ft_memcmp.c			lib/ft_memcpy.c					lib/ft_memmove.c			\
@@ -29,15 +36,10 @@ SRC 	=	lib/ft_atoi.c			lib/ft_bzero.c					lib/ft_calloc.c				\
 			lib/ft_tolower.c		lib/ft_toupper.c				lib/ft_itoa.c				\
 			lib/ft_strmapi.c		lib/ft_striteri.c				lib/ft_putchar_fd.c			\
 			lib/ft_putstr_fd.c		lib/ft_putendl_fd.c				lib/ft_putnbr_fd.c			\
-			lib/ft_lstnew_bonus.c	lib/ft_lstadd_front_bonus.c		lib/ft_lstsize_bonus.c		\
-			lib/ft_lstlast_bonus.c	lib/ft_lstadd_back_bonus.c		lib/ft_lstdelone_bonus.c	\
-			lib/ft_lstclear_bonus.c	lib/ft_lstiter_bonus.c			lib/ft_lstmap_bonus.c		\
-			lib/ft_split.c			signals.c						parsing/parsing.c			\
-			parsing/ft_tokenize.c	utils.c							parsing/ft_check_syntax.c	\
-			utils/t_env_utils.c		utils/t_token_utils.c			builtin_ft/ft_pwd.c			\
-			parsing/ft_expand.c		builtin_ft/builtin_utils.c		builtin_ft/ft_echo.c		\
-			builtin_ft/ft_exit.c	builtin_ft/ft_export.c			builtin_ft/ft_unset.c		\
-			builtin_ft/ft_cd.c		builtin_ft/ft_env.c				minishell.c
+			lib/ft_lstnew.c			lib/ft_lstadd_front.c			lib/ft_lstsize.c			\
+			lib/ft_lstlast.c		lib/ft_lstadd_back.c			lib/ft_lstdelone.c			\
+			lib/ft_lstclear.c		lib/ft_lstiter.c				lib/ft_lstmap.c				\
+			lib/ft_split.c
 
 OBJ			=	$(SRC:.c=.o)
 

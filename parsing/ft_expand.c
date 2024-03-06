@@ -6,30 +6,13 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 10:36:20 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/05 20:00:11 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/06 14:06:21 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*ft_allocate_for_var(int flag, char *str, int i)
-{
-	char	*ptr;
-
-	ptr = NULL;
-	if (flag == 1 && str != NULL)
-	{
-		str += (i + 1);
-		ptr = ft_strdup(str);
-		if (!ptr)
-			return (NULL);
-		str -= (i + 1);
-		return (ptr);
-	}
-	return (ptr);
-}
-
-char	*ft_arg_is_exist(t_env *env, char *var)
+static char	*ft_arg_is_exist(t_env *env, char *var)
 {
 	t_env	*head;
 	char	*ptr;
@@ -54,7 +37,7 @@ char	*ft_arg_is_exist(t_env *env, char *var)
 	return (ptr);
 }
 
-int	ft_surpass_chars(char *var)
+static int	ft_surpass_chars(char *var)
 {
 	int	i;
 
@@ -64,57 +47,33 @@ int	ft_surpass_chars(char *var)
 	return (i + 1);
 }
 
-void	ft_append_char(char **str, int c)
+static char	*ft_handle_expand(t_env *env, char *arg)
 {
-	int		len;
-	char	*s;
-	int		i;
+	int			i;
+	t_expand	exp;
 
-	i = 0;
-	len = ft_strlen(*str);
-	s = *str;
-	*str = malloc(sizeof(char) * (len + 2));
-	if (!(*str))
-		return ;
-	while (s && s[i])
-	{
-		(*str)[i] = s[i];
-		i++;
-	}
-	(1) && ((*str)[i++] = c, (*str)[i] = '\0');
-	free(s);
-}
-
-char	*ft_handle_expand(t_env *env, char *arg)
-{
-	int		i;
-	int		quote;
-	char	*expa;
-	char	*new_str;
-	char	*s;
-
-	(1) && (new_str = NULL, i = 0);
+	(1) && (exp.new_str = NULL, i = 0);
 	if (arg[i] == '\'' || arg[i] == '\"')
-		quote = arg[i++];
+		exp.quote = arg[i++];
 	while (arg[i] != '\0')
 	{
-		if (arg[i] == quote)
+		if (arg[i] == exp.quote)
 			i++;
 		if (!arg[i])
 			break ;
-		if ((arg[i] == '$' || arg[i] == '\"') && quote != '\'')
+		if ((arg[i] == '$' || arg[i] == '\"') && exp.quote != '\'')
 		{
-			expa = ft_arg_is_exist(env, arg + (i + 1));
-			s = new_str;
-			new_str = ft_strjoin(new_str, expa);
+			exp.expa = ft_arg_is_exist(env, arg + (i + 1));
+			exp.s = exp.new_str;
+			exp.new_str = ft_strjoin(exp.new_str, exp.expa);
 			i += ft_surpass_chars(arg + (i + 1));
 		}
 		else
-			ft_append_char(&new_str, arg[i++]);
+			ft_append_char(&exp.new_str, arg[i++]);
 		if (arg[i] == '\0')
 			break ;
 	}
-	return (new_str);
+	return (exp.new_str);
 }
 
 void	ft_expand_argument(t_env *env, t_token **linked_list)
