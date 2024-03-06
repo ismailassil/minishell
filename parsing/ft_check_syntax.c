@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_check_syntax.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 14:55:19 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/05 19:21:58 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/06 22:18:25 by aibn-che         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,29 @@
 
 static int	check_quotes(char *str)
 {
-	int	i[2];
-	int	count_quotes;
+	int	i;
+	int	c;
+	int	count;
 
-	i[0] = 0;
-	count_quotes = 0;
-	while (str[i[0]] != '\0')
+	i = 0;
+	c = 0;
+	count = 0;
+	while (str[i])
 	{
-		if (str[i[0]] == '\'' || str[i[0]] == '\"')
+		if (str[i] && (str[i] == '\'' || str[i] == '\"'))
 		{
-			count_quotes++;
-			i[1] = str[i[0]++];
-			while (str[i[0]] != '\0')
-			{
-				if (i[1] == str[i[0]])
-					count_quotes++;
-				i[0]++;
-			}
-			if (str[i[0]] == '\0')
-				break ;
+			count++;
+			c = str[i++]; 
+			while (str[i] && str[i] != c)
+				i++;
+			if (str[i] && str[i] == c)
+				count++;
 		}
-		i[0]++;
+		if (!str[i])
+			break ;
+		i++;
 	}
-	if ((count_quotes % 2) == 0)
+	if ((count % 2) == 0)
 		return (1);
 	return (0);
 }
