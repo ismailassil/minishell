@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/06 14:05:28 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/06 21:11:06 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 # define FILENAME	6
 # define ARG		7
 # define DELIMITER	8
+# define MAX		1024
 # define GREEN		"\x1b[1;32m"
 # define YELLOW_	"\x1b[0;33m"
 # define YELLOW		"\x1b[1;33m"
@@ -72,10 +73,22 @@ typedef struct s_tokens
 	struct s_tokens	*next;
 }					t_token;
 
+typedef struct s_tmp_cont
+{
+	char	*cmd;
+	char	*arg[MAX];
+	char	*infile[MAX];
+	char	*outfile[MAX];
+	char	*append[MAX];
+}			t_tmp_cont;
+
 typedef struct s_container
 {
-	char				*holder;
-	int					type;
+	char				*cmd;
+	char				**arg;
+	char				**infile;
+	char				**outfile;
+	char				**append;
 	struct s_container	*next;
 }						t_cont;
 
@@ -103,6 +116,9 @@ bool	ft_check_syntax(t_token *str);
 void	ft_append_char(char **str, int c);
 char	*ft_allocate_for_var(int flag, char *str, int i);
 
+/*==========EXECUTION FUNCIONS==========*/
+void	ft_execution(t_token **token);
+
 /*==========UTILS FUNCIONS==========*/
 int		ft_check_if_chars_digit(int c);
 void	ft_print(t_token *lst);
@@ -118,6 +134,11 @@ void	ft_disable_attr(void);
 int		ft_t_env_len(t_env *head);
 int		ft_push_value(char *value, t_env **head);
 void	ft_free_env(t_env **head);
+
+/*==========CONTAINER LINKED LIST UTILS FUNCIONS==========*/
+int		ft_t_cont_len(t_cont *head);
+int		ft_push_container(t_tmp_cont *tmp, t_cont **head);
+void	ft_free_containers(t_cont **head);
 
 /*==========TOKEN LINKED LIST UTILS FUNCIONS==========*/
 int		ft_t_token_len(t_token *head);

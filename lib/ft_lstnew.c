@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew_bonus.c                                  :+:      :+:    :+:   */
+/*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 22:18:17 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/02 17:23:30 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/06 21:11:47 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_cont	*ft_lstnew(void *content)
 	head = (t_cont *)malloc(sizeof(t_cont));
 	if (head == NULL)
 		return (NULL);
-	head->holder = content;
+	head->cmd = content;
 	head->next = NULL;
 	return (head);
 }
