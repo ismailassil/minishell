@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/06 14:05:28 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/06 16:24:36 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,12 @@ typedef struct s_tokens
 
 typedef struct s_container
 {
-	char				*holder;
-	int					type;
+	char				*cmd;
+	char				**arg;
+	char				*infile;
+	char				*outfile;
 	struct s_container	*next;
-}						t_cont;
+}					t_cont;
 
 /*==========BUILTIN FUNCIONS==========*/
 int		ft_cd(char *argument, t_env **envp);
@@ -102,6 +104,9 @@ bool	ft_check_syntax(t_token *str);
 // Utils function for Parsing
 void	ft_append_char(char **str, int c);
 char	*ft_allocate_for_var(int flag, char *str, int i);
+
+/*==========EXECUTION FUNCIONS==========*/
+void	ft_execution(t_token **token);
 
 /*==========UTILS FUNCIONS==========*/
 int		ft_check_if_chars_digit(int c);
