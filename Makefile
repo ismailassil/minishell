@@ -6,7 +6,7 @@
 #    By: iassil <iassil@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/27 14:35:22 by iassil            #+#    #+#              #
-#    Updated: 2024/03/06 16:34:53 by iassil           ###   ########.fr        #
+#    Updated: 2024/03/06 21:14:05 by iassil           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,13 +18,16 @@ RM			=	rm -f
 NAME		=	minishell
 HEADER_H	=	minishell.h
 
-SRC 	=	parsing/parsing.c		parsing/ft_tokenize.c			parsing/ft_check_syntax.c	\
-			t_utils/t_env_utils.c	t_utils/t_token_utils.c			builtin_ft/ft_pwd.c			\
-			parsing/ft_expand.c		builtin_ft/utils.c				builtin_ft/ft_echo.c		\
-			builtin_ft/ft_exit.c	builtin_ft/ft_export.c			builtin_ft/ft_unset.c		\
-			builtin_ft/ft_cd.c		builtin_ft/ft_env.c				parsing/utils.c				\
+SRC 	=	t_utils/t_env_utils.c	t_utils/t_token_utils.c			t_utils/t_cont_utils.c		\
 			execution/exec.c		utils.c							signals.c					\
 			minishell.c
+
+SRC		+=	parsing/parsing.c		parsing/ft_tokenize.c			parsing/ft_check_syntax.c	\
+			parsing/utils.c
+
+SRC		+=	parsing/ft_expand.c		builtin_ft/utils.c				builtin_ft/ft_echo.c		\
+			builtin_ft/ft_exit.c	builtin_ft/ft_export.c			builtin_ft/ft_unset.c		\
+			builtin_ft/ft_cd.c		builtin_ft/ft_env.c				builtin_ft/ft_pwd.c
 
 SRC		+=	lib/ft_atoi.c			lib/ft_bzero.c					lib/ft_calloc.c				\
 			lib/ft_isalnum.c		lib/ft_isalpha.c				lib/ft_isascii.c			\

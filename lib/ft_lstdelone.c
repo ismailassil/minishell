@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdelone_bonus.c                               :+:      :+:    :+:   */
+/*   ft_lstdelone.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 12:34:47 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/02 17:23:30 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/06 21:12:00 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	ft_lstdelone(t_cont *lst, void (*del)(void *))
 		return ;
 	ptr = lst;
 	lst = lst->next;
-	del(ptr->holder);
+	del(ptr->cmd);
 	free(ptr);
 	ptr = NULL;
 }
