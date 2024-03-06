@@ -37,7 +37,7 @@ For a list of built-in commands and their usage, you can use the `help` command 
 
 ## Contributing
 
-This project has been developed with Achref Ben Cheikh from the 1337 school project. If you find any bugs or have suggestions for improvements, feel free to open an issue or submit a pull request.
+This project has been developed with Achraf Ben Cheikh from the 1337 school project. If you find any bugs or have suggestions for improvements, feel free to open an issue or submit a pull request.
 
 ## Acknowledgements
 
