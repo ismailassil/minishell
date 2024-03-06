@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:47:07 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/05 17:06:50 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/06 15:07:32 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,10 +141,10 @@ int	ft_export(char *argument, t_env *envp)
 
 // int	main(int ac, char **av, char **env)
 // {
-// 	// atexit(v);`
 // 	t_env	*envp;
 // 	t_env	*head;
 
+// 	atexit(v);
 // 	envp = ft_get_env(env);
 // 	printf(YELLOW"=====Before=====\n"RESET);
 // 	head = envp;

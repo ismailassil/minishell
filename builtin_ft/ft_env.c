@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 19:41:44 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/05 17:07:26 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/06 15:04:01 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static t_env	*ft_create_new_env(void)
 	char	pwd[PATH_MAX];
 	char	*tmp;
 
-	getcwd(pwd, sizeof(pwd));
+	envp = NULL;
 	if (ft_push_value("PATH=/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:.", \
 		&envp) == 0)
 		return (NULL);
@@ -68,7 +68,7 @@ void	ft_env(t_env *envp)
 // {
 // 	t_env	*envp;
 
-// 	// atexit(v);
+// 	atexit(v);
 // 	envp = ft_get_env(env);
 // 	ft_env(envp);
 // 	ft_free_env(&envp);
