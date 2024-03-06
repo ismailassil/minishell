@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:06 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/05 20:00:22 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/06 15:19:39 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,17 @@ void	ft_parse_input_from_shell(t_env *env, char *input)
 	ft_print(head);
 }
 
-void	v(void)
-{
-	system("leaks minishell");
-}
+// void	v(void)
+// {
+// 	system("leaks minishell");
+// }
 
 int	main(int argc, char **argv, char **env)
 {
 	char	*line;
 	t_env	*envp;
 
-	atexit(v);
+	// atexit(v);
 	((void)argc, (void)argv);
 	ft_signal_handler();
 	envp = ft_get_env(env);
