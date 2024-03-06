@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:06 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/06 15:19:39 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/06 15:28:20 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,9 @@ int	main(int argc, char **argv, char **env)
 	t_env	*envp;
 
 	// atexit(v);
+	// ft_signal_handler();
 	((void)argc, (void)argv);
-	ft_signal_handler();
+	envp = NULL;
 	envp = ft_get_env(env);
 	while (true)
 	{
