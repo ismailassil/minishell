@@ -39,10 +39,6 @@ For a list of built-in commands and their usage, you can use the `help` command 
 
 Contributions to Minishell are welcome! If you find any bugs or have suggestions for improvements, feel free to open an issue or submit a pull request.
 
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
 ## Acknowledgements
 
 Minishell was developed by students at 1337School as part of their curriculum. Special thanks to the instructors and staff for their guidance and support.
