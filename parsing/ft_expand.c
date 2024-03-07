@@ -6,7 +6,7 @@
 /*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 10:36:20 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/06 22:19:56 by aibn-che         ###   ########.fr       */
+/*   Updated: 2024/03/07 13:26:43 by aibn-che         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,12 +112,19 @@ static char	*ft_handle_expand(t_env *env, char *arg)
 
 	(1) && (exp.new_str = NULL, i = 0);
 	if (arg[i] == '\'' || arg[i] == '\"')
-		exp.quote = arg[i++];
+		(exp.quote = arg[i++]);
 	while (arg[i] != '\0')
 	{
-		if (arg[i] == exp.quote
-			|| ((arg[i] == '\'' || arg[i] == '\"') && arg[i + 1] == '$'))
-			(1) && (exp.quote = arg[i], i++);
+		if ((arg[i] == '\'' || arg[i] == '\"'))
+		{
+			if (!exp.quote)
+				exp.quote = arg[i++];
+			else if (arg[i] == exp.quote)
+			{
+				i++;
+				exp.quote = 0;
+			}
+		}
 		if (arg[i] && arg[i] == '$' && exp.quote != '\'')
 		{
 			if (handle_inregulare_cases(&exp, arg[i + 1], &i))

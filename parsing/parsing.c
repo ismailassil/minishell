@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 16:33:28 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/05 19:45:29 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/07 16:54:07 by aibn-che         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,9 @@ t_stend	*ft_extract_start_end_of_token(char *str, int s)
 	i = s;
 	c = 0;
 	cord->start = s;
-	if (str[i] == '\'')
-		(1) && (i++, c = '\'');
-	else if (str[i] == '\"')
-		(1) && (i++, c = '\"');
-	while (!c && str[i] && str[i] != ' ')
+	if (str[i] == '\'' || str[i] == '\"')
+		(1) && (c = str[i], i++);
+	while (!c && str[i] && str[i] != '\'' && str[i] != '\"')
 		i++;
 	while (c && str[i] && str[i] != c)
 		i++;
@@ -79,9 +77,7 @@ void	ft_init_tokens(t_token **head, char *str)
 		ft_push_token(token, head);
 		i = cord->end;
 		free(cord);
-		while (str[i] && str[i] == ' ')
-			i++;
-		if (str[i] == '\0')
+		if (!str[i])
 			break ;
 		i++;
 	}
