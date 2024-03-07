@@ -6,84 +6,34 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 16:33:28 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/05 19:45:29 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/07 16:44:03 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_stend	*ft_extract_start_end_of_token(char *str, int s)
+void	ft_split_pro_max(t_token **head, char *str)
 {
 	t_stend	*cord;
-	int		i;
-	int		c;
-
-	cord = malloc(sizeof(t_stend));
-	if (!cord)
-		(write(2, "Error: Allocation failed\n", 25), exit(FAIL));
-	i = s;
-	c = 0;
-	cord->start = s;
-	if (str[i] == '\'')
-		(1) && (i++, c = '\'');
-	else if (str[i] == '\"')
-		(1) && (i++, c = '\"');
-	while (!c && str[i] && str[i] != ' ')
-		i++;
-	while (c && str[i] && str[i] != c)
-		i++;
-	if (c == 0)
-		i--;
-	cord->end = i;
-	return (cord);
-}
-
-char	*ft_alloc_str(t_token **tokens, char *str, t_stend *cord)
-{
-	int		len;
-	int		i;
-	char	*tk;
-
-	(void)tokens;
-	len = cord->end - cord->start;
-	i = 0;
-	tk = malloc(sizeof(char) * (len + 2));
-	if (!tk)
-		(write(2, "Error: Allocation failed\n", 25), exit(FAIL));
-	str += cord->start;
-	while (cord->start <= cord->end)
-	{
-		tk[i] = str[i];
-		cord->start++;
-		i++;
-	}
-	tk[i] = '\0';
-	return (tk);
-}
-
-void	ft_init_tokens(t_token **head, char *str)
-{
-	int		i;
 	char	*token;
-	t_stend	*cord;
+	char	*whitespaces;
+	int		quote;
+	int		i;
 
 	i = 0;
+	whitespaces = " \t\n\v\f\r";
 	while (str[i])
 	{
-		while (str[i] && str[i] == ' ')
+		while (str[i] && ft_strchr(whitespaces, str[i]))
+		{
+			if (str[i] == '\'' || str[i] == '\"')
+			{
+				quote = str[i];
+				while (str[i] != quote && str[i])
+					i++;
+			}
 			i++;
-		if (!str[i])
-			break ;
-		cord = ft_extract_start_end_of_token(str, i);
-		token = ft_alloc_str(head, str, cord);
-		ft_push_token(token, head);
-		i = cord->end;
-		free(cord);
-		while (str[i] && str[i] == ' ')
-			i++;
-		if (str[i] == '\0')
-			break ;
-		i++;
+		}
 	}
 }
 

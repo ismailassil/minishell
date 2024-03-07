@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:06 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/06 21:08:00 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/07 16:32:47 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,17 @@ void	ft_parse_input_from_shell(t_env *env, char *input)
 
 	head = NULL;
 	shell = ft_add_space_to_input(input);
-	ft_init_tokens(&head, shell);
+	ft_split_pro_max(&head, shell);
 	free(shell);
 	ft_tokenize(&head);
 	if (ft_check_syntax(head) == false)
 		return ;
+	// (void)env;
 	ft_expand_argument(env, &head);
+	// ft_remove_quotes(&head);
 		ft_print_types(head);
 		ft_print(head);
-	ft_execution(&head);
+	// ft_execution(&head);
 }
 
 // void	v(void)
