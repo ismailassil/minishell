@@ -6,14 +6,14 @@
 #    By: iassil <iassil@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/27 14:35:22 by iassil            #+#    #+#              #
-#    Updated: 2024/03/06 21:14:05 by iassil           ###   ########.fr        #
+#    Updated: 2024/03/07 15:40:11 by iassil           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC			=	cc
-CC			+=	-Wall -Wextra -Werror
-CC			+=	-fsanitize=address -g
-LINKER		=	-lreadline -lncurses
+CC			+=	-g -Wall -Wextra -Werror
+CC			+=	-fsanitize=address -fsanitize=undefined -O0
+LINKER		=	-lreadline
 RM			=	rm -f
 NAME		=	minishell
 HEADER_H	=	minishell.h
@@ -23,7 +23,7 @@ SRC 	=	t_utils/t_env_utils.c	t_utils/t_token_utils.c			t_utils/t_cont_utils.c		\
 			minishell.c
 
 SRC		+=	parsing/parsing.c		parsing/ft_tokenize.c			parsing/ft_check_syntax.c	\
-			parsing/utils.c
+			parsing/utils.c			parsing/ft_remove_quotes.c
 
 SRC		+=	parsing/ft_expand.c		builtin_ft/utils.c				builtin_ft/ft_echo.c		\
 			builtin_ft/ft_exit.c	builtin_ft/ft_export.c			builtin_ft/ft_unset.c		\

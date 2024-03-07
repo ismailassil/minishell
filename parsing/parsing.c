@@ -6,13 +6,13 @@
 /*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 16:33:28 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/07 16:54:07 by aibn-che         ###   ########.fr       */
+/*   Updated: 2024/03/07 16:58:22 by aibn-che         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_stend	*ft_extract_start_end_of_token(char *str, int s)
+void	ft_split_pro_max(t_token **head, char *str)
 {
 	t_stend	*cord;
 	int		i;
@@ -63,9 +63,12 @@ void	ft_init_tokens(t_token **head, char *str)
 {
 	int		i;
 	char	*token;
-	t_stend	*cord;
+	char	*whitespaces;
+	int		quote;
+	int		i;
 
 	i = 0;
+	whitespaces = " \t\n\v\f\r";
 	while (str[i])
 	{
 		while (str[i] && str[i] == ' ')

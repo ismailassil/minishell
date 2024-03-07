@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_check_syntax.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 14:55:19 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/06 22:18:25 by aibn-che         ###   ########.fr       */
+/*   Updated: 2024/03/06 22:30:18 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static int	check_quotes(char *str)
+static int	ft_check_quotes(char *str)
 {
 	int	i;
 	int	c;
@@ -71,11 +71,13 @@ bool	ft_check_syntax(t_token *str)
 		return (ft_error(), false);
 	while (head != NULL)
 	{
-		if (!check_quotes(head->token))
+		if (!ft_check_quotes(head->token))
 			return (ft_error(), false);
 		else
+		{
 			if (ft_check_rest(head) == 1)
 				return (ft_error(), false);
+		}
 		head = head->next;
 	}
 	return (true);

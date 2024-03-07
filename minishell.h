@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/06 21:11:06 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/07 16:32:58 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,10 +108,11 @@ void	ft_add_old_pwd(t_env **envp, char *argument);
 
 /*==========PARSING FUNCIONS==========*/
 char	*ft_add_space_to_input(char *input);
-void	ft_init_tokens(t_token **head, char *str);
+void	ft_split_pro_max(t_token **head, char *str);
 void	ft_tokenize(t_token **str);
 void	ft_expand_argument(t_env *env, t_token **linked_list);
 bool	ft_check_syntax(t_token *str);
+void	ft_remove_quotes(t_token **linked_list);
 // Utils function for Parsing
 void	ft_append_char(char **str, int c);
 char	*ft_allocate_for_var(int flag, char *str, int i);
