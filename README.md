@@ -1,4 +1,4 @@
-# Minishell
+`# Minishell
 
 Minishell is a project developed as part of the curriculum at 1337School. The aim of this project is to create a small shell program that mimics the basic behavior of the Bash shell. This includes parsing and executing commands, handling environment variables, managing redirections, and implementing some built-in shell commands.
 
