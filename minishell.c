@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:06 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/07 20:23:01 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/08 22:05:46 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	ft_parse_input_from_shell(t_env *env, char *input)
 	shell = ft_add_space_to_input(input);
 	if (!ft_check_quotes(shell))
 	{
-		ft_error();
+		ft_error("msh: parse error\n");
 		return ;
 	}
 	ft_split_tokens(&head, shell);

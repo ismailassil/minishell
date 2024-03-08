@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 10:36:20 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/08 16:33:54 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/08 22:07:45 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,16 +54,21 @@ static int	ft_surpass_chars(char *var)
 *	Define the quote,
 *	that should not be included within the string
 */
-static void	ft_update_quote(char *arg, int *i, t_expand *exp)
+void	ft_update_quote(char *arg, int *i, t_expand *exp)
 {
 	if (exp->quote == arg[*i])
 	{
 		exp->quote = 0;
 		(*i)++;
 	}
-	else
+	else if (!exp->quote)
 	{
 		exp->quote = arg[*i];
+		(*i)++;
+	}
+	else
+	{
+		ft_append_char(&exp->new_str, arg[*i]);
 		(*i)++;
 	}
 }
@@ -85,8 +90,13 @@ static char	*ft_handle_expand(t_env *env, char *arg)
 			ft_update_quote(arg, &i, &exp);
 		else if (arg[i] && arg[i] != exp.quote && arg[i] != '$')
 			ft_append_char(&exp.new_str, arg[i++]);
-		else if (arg[i] && arg[i] == '$' && exp.quote != '\'')
+		else if (arg[i] && arg[i] == '$')
 		{
+			if (exp.quote == '\'')
+			{
+				ft_append_char(&exp.new_str, arg[i++]);
+				continue ;
+			}
 			if (ft_handle_inregulare_cases(&exp, arg[i + 1], &i))
 				continue ;
 			exp.expa = ft_arg_is_exist(env, arg + (i + 1));

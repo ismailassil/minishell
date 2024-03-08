@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/08 16:32:47 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/08 21:46:08 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ void	ft_expand_argument(t_env *env, t_token **linked_list);
 bool	ft_check_syntax(t_token *str);
 void	ft_remove_quotes(t_token **linked_list);
 // Utils function for Parsing
-void	ft_error(void);
+void	ft_error(char *str);
 void	ft_append_char(char **str, int c);
 char	*ft_allocate_for_var(int flag, char *str, int i);
 int		ft_handle_inregulare_cases(t_expand *exp, int c, int *i);
