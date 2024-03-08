@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_expand.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 10:36:20 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/07 20:44:38 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/08 16:11:10 by aibn-che         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int	ft_surpass_chars(char *var)
 	return (i + 1);
 }
 
-static char	*ft_strjoin_(char *str1, char *str2)
+char	*ftt_strjoin(char *str1, char *str2)
 {
 	int		len1;
 	int		len2;
@@ -55,8 +55,10 @@ static char	*ft_strjoin_(char *str1, char *str2)
 	int		i;
 	int		j;
 
-	(1) && (i = 0, j = 0);
-	(1) && (len1 = ft_strlen(str1), len2 = ft_strlen(str2));
+	i = 0;
+	j = 0;
+	len1 = ft_strlen(str1);
+	len2 = ft_strlen(str2);
 	new_str = malloc(sizeof(char) * (len1 + len2 + 1));
 	if (!new_str)
 		return (NULL);
@@ -83,7 +85,7 @@ int	handle_inregulare_cases(t_expand *exp, int c, int *i)
 	{
 		if (c == '0')
 		{
-			exp->new_str = ft_strjoin_(s, "minishell");
+			exp->new_str = ftt_strjoin(s, "minishell");
 			free(s);
 		}
 		return ((*i += 2), 1);
@@ -92,7 +94,7 @@ int	handle_inregulare_cases(t_expand *exp, int c, int *i)
 	{
 		if (c == '-')
 		{
-			exp->new_str = ft_strjoin_(s, "himBH");
+			exp->new_str = ftt_strjoin(s, "himBH");
 			*i += 1;
 			free(s);
 		}
@@ -101,6 +103,20 @@ int	handle_inregulare_cases(t_expand *exp, int c, int *i)
 		return ((*i += 1), 1);
 	}
 	return (0);
+}
+
+void	ft_update_quote(char *arg, int *i, t_expand *exp)
+{
+	if (exp->quote == arg[*i])
+	{
+		exp->quote = 0;
+		(*i)++;
+	}
+	else
+	{
+		exp->quote = arg[*i];
+		(*i)++;
+	}
 }
 
 static char	*ft_handle_expand(t_env *env, char *arg)
@@ -114,13 +130,10 @@ static char	*ft_handle_expand(t_env *env, char *arg)
 	while (arg[i] != '\0')
 	{
 		if ((arg[i] == '\'' || arg[i] == '\"'))
-		{
-			if (!exp.quote)
-				exp.quote = arg[i++];
-			else if (arg[i] == exp.quote)
-				(1) && (i++, exp.quote = 0);
-		}
-		if (arg[i] && arg[i] == '$' && exp.quote != '\'')
+			ft_update_quote(arg, &i, &exp);
+		else if (arg[i] && arg[i] != exp.quote && arg[i] != '$')
+			ft_append_char(&exp.new_str, arg[i++]);
+		else if (arg[i] && arg[i] == '$' && exp.quote != '\'')
 		{
 			if (handle_inregulare_cases(&exp, arg[i + 1], &i))
 				continue ;
@@ -129,8 +142,8 @@ static char	*ft_handle_expand(t_env *env, char *arg)
 			exp.new_str = ft_strjoin(exp.new_str, exp.expa);
 			i += ft_surpass_chars(arg + (i + 1));
 		}
-		else if (arg[i] && arg[i] != exp.quote)
-			ft_append_char(&exp.new_str, arg[i++]);
+		else if (arg[i])
+			i++;
 	}
 	return (exp.new_str);
 }
