@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 16:33:28 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/07 16:58:22 by aibn-che         ###   ########.fr       */
+/*   Updated: 2024/03/07 20:26:11 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_split_pro_max(t_token **head, char *str)
+t_stend	*ft_extract_start_end_of_token(char *str, int s)
 {
 	t_stend	*cord;
 	int		i;
@@ -24,9 +24,11 @@ void	ft_split_pro_max(t_token **head, char *str)
 	i = s;
 	c = 0;
 	cord->start = s;
-	if (str[i] == '\'' || str[i] == '\"')
-		(1) && (c = str[i], i++);
-	while (!c && str[i] && str[i] != '\'' && str[i] != '\"')
+	if (str[i] == '\'')
+		(1) && (i++, c = '\'');
+	else if (str[i] == '\"')
+		(1) && (i++, c = '\"');
+	while (!c && str[i] && str[i] != ' ')
 		i++;
 	while (c && str[i] && str[i] != c)
 		i++;
@@ -63,12 +65,9 @@ void	ft_init_tokens(t_token **head, char *str)
 {
 	int		i;
 	char	*token;
-	char	*whitespaces;
-	int		quote;
-	int		i;
+	t_stend	*cord;
 
 	i = 0;
-	whitespaces = " \t\n\v\f\r";
 	while (str[i])
 	{
 		while (str[i] && str[i] == ' ')
@@ -80,7 +79,9 @@ void	ft_init_tokens(t_token **head, char *str)
 		ft_push_token(token, head);
 		i = cord->end;
 		free(cord);
-		if (!str[i])
+		while (str[i] && str[i] == ' ')
+			i++;
+		if (str[i] == '\0')
 			break ;
 		i++;
 	}
@@ -114,6 +115,10 @@ static void	*ft_parse_space(char *input, char **shell)
 	return (shell);
 }
 
+/*	This function add spaces between the operators
+*	[{ > outfile}, { < infile}, { >> append}, {<< heredoc}, { | pipe}]
+*	like: [ls>file1|grep pipex] ==> [ ls > fil1 | grep pipex ]
+*/
 char	*ft_add_space_to_input(char *input)
 {
 	int			i;

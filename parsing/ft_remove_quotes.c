@@ -6,44 +6,48 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 10:47:56 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/07 15:46:21 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/07 21:10:57 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static char *ft_allocate_for_the_string(char *str, int count)
+static void	ft_fill_ptr(char *str, char **ptr)
 {
-	char	*ptr;
-	int		i;
-	int		j;
-	int		c;
+	t_c		c;
 
-	(1) && (i = 0, j = 0, ptr = NULL, c = 0);
-	ptr = (char *)malloc((ft_strlen(str) - count + 1) * sizeof(char));
-	if (!ptr)
-		(write(2, "Error: Allocation failed\n", 25), exit(FAIL));
-	while (str[i])
+	(1) && (c.i = 0, c.j = 0, c.quote = 0);
+	while (str[c.i])
 	{
-		if (str[i] == '\'' || str[i] == '\"')
-			c = str[i++];
-		if (c == '\'' || c == '\"')
+		if (str[c.i] == '\'' || str[c.i] == '\"')
+			c.quote = str[c.i++];
+		if (c.quote == '\'' || c.quote == '\"')
 		{
-			while (str[i] != c && str[i])
-				ptr[j++] = str[i++];
-			if (!str[i])
-				break;
-			if (str[i] == c)
-				(i++, c = 0);
+			while (str[c.i] != c.quote && str[c.i])
+				(*ptr)[c.j++] = str[c.i++];
+			if (!str[c.i])
+				break ;
+			if (str[c.i] == c.quote)
+				(1) && (c.i++, c.quote = 0);
 		}
 		else
 		{
-			ptr[j++] = str[i++];
-			if (!str[i])
-				break;
+			(*ptr)[c.j++] = str[c.i++];
+			if (!str[c.i])
+				break ;
 		}
 	}
-	ptr[j] = '\0';
+	(*ptr)[c.j] = '\0';
+}
+
+static char	*ft_allocate_for_the_string(char *str, int count)
+{
+	char	*ptr;
+
+	ptr = (char *)malloc((ft_strlen(str) - count + 1) * sizeof(char));
+	if (!ptr)
+		(write(2, "Error: Allocation failed\n", 25), exit(FAIL));
+	ft_fill_ptr(str, &ptr);
 	return (ptr);
 }
 
@@ -66,7 +70,7 @@ static char	*ft_trim_quotes(char *str)
 			if (str[i] == c)
 				c = 0;
 			if (!str[i])
-				break;
+				break ;
 		}
 		i++;
 	}
@@ -74,10 +78,9 @@ static char	*ft_trim_quotes(char *str)
 	return (ptr);
 }
 
-// int	main() {
-// 	printf("%s", ft_trim_quotes("l\"\"\'\'s"));
-// }
-
+/*
+*	Checks if quotes exists in the string
+*/
 static bool	ft_quotes_exists(char *s)
 {
 	char	*str;
@@ -92,17 +95,16 @@ static bool	ft_quotes_exists(char *s)
 	return (false);
 }
 
-void	v(void)
-{
-	system("leaks minishell");
-}
-
+/*
+*	This function removes quotes from the nodes that have them
+*	and does not remove quotes from node that
+*	have '$' {nodes need to be expanded}
+*/
 void	ft_remove_quotes(t_token **linked_list)
 {
 	t_token	*head;
 	char	*tmp;
 
-	// atexit(v);
 	head = *linked_list;
 	while (head)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_expand.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 10:36:20 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/07 13:26:43 by aibn-che         ###   ########.fr       */
+/*   Updated: 2024/03/07 20:44:38 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int	ft_surpass_chars(char *var)
 	return (i + 1);
 }
 
-char	*ftt_strjoin(char *str1, char *str2)
+static char	*ft_strjoin_(char *str1, char *str2)
 {
 	int		len1;
 	int		len2;
@@ -55,10 +55,8 @@ char	*ftt_strjoin(char *str1, char *str2)
 	int		i;
 	int		j;
 
-	i = 0;
-	j = 0;
-	len1 = ft_strlen(str1);
-	len2 = ft_strlen(str2);
+	(1) && (i = 0, j = 0);
+	(1) && (len1 = ft_strlen(str1), len2 = ft_strlen(str2));
 	new_str = malloc(sizeof(char) * (len1 + len2 + 1));
 	if (!new_str)
 		return (NULL);
@@ -85,7 +83,7 @@ int	handle_inregulare_cases(t_expand *exp, int c, int *i)
 	{
 		if (c == '0')
 		{
-			exp->new_str = ftt_strjoin(s, "minishell");
+			exp->new_str = ft_strjoin_(s, "minishell");
 			free(s);
 		}
 		return ((*i += 2), 1);
@@ -94,7 +92,7 @@ int	handle_inregulare_cases(t_expand *exp, int c, int *i)
 	{
 		if (c == '-')
 		{
-			exp->new_str = ftt_strjoin(s, "himBH");
+			exp->new_str = ft_strjoin_(s, "himBH");
 			*i += 1;
 			free(s);
 		}
@@ -120,10 +118,7 @@ static char	*ft_handle_expand(t_env *env, char *arg)
 			if (!exp.quote)
 				exp.quote = arg[i++];
 			else if (arg[i] == exp.quote)
-			{
-				i++;
-				exp.quote = 0;
-			}
+				(1) && (i++, exp.quote = 0);
 		}
 		if (arg[i] && arg[i] == '$' && exp.quote != '\'')
 		{
