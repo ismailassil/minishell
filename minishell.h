@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/07 21:19:37 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/08 21:46:08 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,10 +121,11 @@ void	ft_expand_argument(t_env *env, t_token **linked_list);
 bool	ft_check_syntax(t_token *str);
 void	ft_remove_quotes(t_token **linked_list);
 // Utils function for Parsing
+void	ft_error(char *str);
 void	ft_append_char(char **str, int c);
 char	*ft_allocate_for_var(int flag, char *str, int i);
+int		ft_handle_inregulare_cases(t_expand *exp, int c, int *i);
 int		ft_check_quotes(char *str);
-void	ft_error(void);
 
 /*==========EXECUTION FUNCIONS==========*/
 void	ft_execution(t_token **token);
@@ -190,6 +191,7 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strtrim(char const *s1, char const *set);
 char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strjoin_(char *str1, char *str2);
 char	*ft_itoa(int n);
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 void	ft_striteri(char *s, void (*f)(unsigned int, char*));

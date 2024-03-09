@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 14:00:00 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/06 14:01:25 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/08 16:32:29 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,33 @@ char	*ft_allocate_for_var(int flag, char *str, int i)
 		return (ptr);
 	}
 	return (ptr);
+}
+
+int	ft_handle_inregulare_cases(t_expand *exp, int c, int *i)
+{
+	char	*s;
+
+	s = exp->new_str;
+	if (ft_isdigit(c))
+	{
+		if (c == '0')
+		{
+			exp->new_str = ft_strjoin_(s, "minishell");
+			free(s);
+		}
+		return ((*i += 2), 1);
+	}
+	else if (!ft_check_if_chars_digit(c))
+	{
+		if (c == '-')
+		{
+			exp->new_str = ft_strjoin_(s, "himBH");
+			*i += 1;
+			free(s);
+		}
+		else
+			ft_append_char(&exp->new_str, '$');
+		return ((*i += 1), 1);
+	}
+	return (0);
 }

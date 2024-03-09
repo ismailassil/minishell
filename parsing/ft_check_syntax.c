@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 14:55:19 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/07 21:21:25 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/08 21:46:34 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,15 @@ bool	ft_check_syntax(t_token *str)
 
 	head = str;
 	if (head && head->type == PIPE)
-		return (ft_error(), false);
+		return (ft_error("msh: parse error\n"), false);
 	while (head != NULL)
 	{
 		if (!ft_check_quotes(head->token))
-			return (ft_error(), false);
+			return (ft_error("msh: parse error\n"), false);
 		else
 		{
 			if (ft_check_rest(head) == 1)
-				return (ft_error(), false);
+				return (ft_error("msh: parse error\n"), false);
 		}
 		head = head->next;
 	}
@@ -71,9 +71,9 @@ int	ft_check_quotes(char *str)
 	return (0);
 }
 
-void	ft_error(void)
+void	ft_error(char *str)
 {
-	write(2, "msh: parse error\n", 17);
+	write(2, str, ft_strlen(str));
 }
 
 static int	ft_check_rest(t_token *head)
@@ -83,11 +83,11 @@ static int	ft_check_rest(t_token *head)
 			|| head->type == APPEND || head->type == HEREDOC)
 		&& (head->next->type == INFILE || head->next->type == OUTFILE
 			|| head->next->type == APPEND || head->next->type == HEREDOC))
-		return (ft_error(), 1);
+		return (ft_error("msh: parse error\n"), 1);
 	else if (head->next == NULL
 		&& (head->type == PIPE || head->type == INFILE
 			|| head->type == OUTFILE || head->type == APPEND
 			|| head->type == HEREDOC))
-		return (ft_error(), 1);
+		return (ft_error("msh: parse error\n"), 1);
 	return (0);
 }
