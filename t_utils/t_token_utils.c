@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_token_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
+/*   By: musashi <musashi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 10:52:06 by aibn-che          #+#    #+#             */
-/*   Updated: 2024/03/07 19:19:20 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/12 16:11:09 by musashi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void	ft_free_tokens(t_token **head)
 {
 	t_token	*current;
 
+	current = NULL;
 	while (*head)
 	{
 		current = *head;

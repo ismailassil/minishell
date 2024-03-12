@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
+/*   By: musashi <musashi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 21:12:35 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/07 21:19:28 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/12 16:06:59 by musashi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,23 +17,34 @@ static void	ft_allocate_for_the_rest(t_tmp_cont *tmp, t_cont **new)
 	int	i;
 
 	i = 0;
-	while (*(tmp->arg) != 0)
-	{
-		(*new)->arg[i] = ft_strdup(tmp->arg[i]);
+	while (tmp->arg[i] != 0)
 		i++;
-	}
+	(*new)->arg = malloc((i + 1) * sizeof(char *));
 	i = 0;
-	while (*(tmp->infile) != 0)
-	{
-		(*new)->infile[i] = ft_strdup(tmp->infile[i]);
+	while (tmp->arg[i] != 0)
+		(1) && ((*new)->arg[i] = ft_strdup(tmp->arg[i]), i++);
+	(1) && ((*new)->arg[i] = 0, i = 0);
+	while (tmp->infile[i] != 0)
 		i++;
-	}
+	(*new)->infile = malloc((i + 1) * sizeof(char *));
 	i = 0;
-	while (*(tmp->outfile) != 0)
-	{
-		(*new)->outfile[i] = ft_strdup(tmp->outfile[i]);
+	while (tmp->infile[i] != 0)
+		(1) && ((*new)->infile[i] = ft_strdup(tmp->infile[i]), i++);
+	(1) && ((*new)->infile[i] = 0, i = 0);
+	while (tmp->append[i] != 0)
 		i++;
-	}
+	(*new)->append = malloc((i + 1) * sizeof(char *));
+	i = 0;
+	while (tmp->append[i] != 0)
+		(1) && ((*new)->append[i] = ft_strdup(tmp->append[i]), i++);
+	(1) && ((*new)->append[i] = 0, i = 0);
+	while (tmp->outfile[i] != 0)
+		i++;
+	(*new)->outfile = malloc((i + 1) * sizeof(char *));
+	i = 0;
+	while (tmp->outfile[i] != 0)
+		(1) && ((*new)->outfile[i] = ft_strdup(tmp->outfile[i]), i++);
+	(*new)->outfile[i] = 0;
 }
 
 t_cont	*ft_new_node_for_cont(t_tmp_cont *tmp)

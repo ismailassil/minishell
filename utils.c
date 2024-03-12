@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
+/*   By: musashi <musashi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 16:34:02 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/07 19:18:10 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/12 16:11:40 by musashi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <curses.h>
 
 /*	Checks if a char is a special character or not				*/
 int	ft_check_if_chars_digit(int c)
@@ -32,6 +33,33 @@ void	ft_print(t_token *lst)
 	{
 		printf(WHT"=={%s}=="RESET, head->token);
 		head = head->next;
+	}
+}
+
+void	ft_print_container(t_cont *head)
+{
+	int 	i;
+	t_cont	*container;
+
+	i = 0;
+	container = head;
+	printf("\n");
+	while (container != NULL)
+	{
+		printf("CMD = %s\n", container->cmd);
+		i = 0;
+		while (container->arg[i] != 0)
+			printf("ARG[%d] = %s\n", i, container->arg[i]), i++;
+		i = 0;
+		while (container->infile[i] != 0)
+			printf("INFILE[%d] = %s\n", i, container->infile[i]), i++;
+		i = 0;
+		while (container->outfile[i] != 0)
+			printf("OUTFILE[%d] = %s\n", i, container->outfile[i]), i++;
+		i = 0;
+		while (container->append[i] != 0)
+			printf("APPEND[%d] = %s\n", i, container->append[i]), i++;
+		container = container->next;
 	}
 }
 

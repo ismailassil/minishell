@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
+/*   By: musashi <musashi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/08 21:46:08 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/12 15:49:13 by musashi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # include <termios.h>
 # include <term.h>
 # include <curses.h>
-# include <sys/syslimits.h>
+# include <limits.h>
 # define SUCCESS	0
 # define FAIL		1
 # define CMD		0
@@ -80,13 +80,21 @@ typedef struct s_tokens
 	struct s_tokens	*next;
 }					t_token;
 
+typedef struct s_count
+{
+	int	arg;
+	int	infile;
+	int	outfile;
+	int	append;
+}		t_count;
+
 typedef struct s_tmp_cont
 {
 	char	*cmd;
-	char	*arg[MAX];
-	char	*infile[MAX];
-	char	*outfile[MAX];
-	char	*append[MAX];
+	char	**arg;
+	char	**infile;
+	char	**outfile;
+	char	**append;
 }			t_tmp_cont;
 
 typedef struct s_container
@@ -134,6 +142,7 @@ void	ft_execution(t_token **token);
 int		ft_check_if_chars_digit(int c);
 void	ft_print(t_token *lst);
 void	ft_print_types(t_token *str);
+void	ft_print_container(t_cont *head);
 
 /*==========SIGNAL FUNCIONS==========*/
 void	ft_signal_handler(void);

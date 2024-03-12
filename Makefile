@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: iassil <iassil@student.42.fr>              +#+  +:+       +#+         #
+#    By: musashi <musashi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/27 14:35:22 by iassil            #+#    #+#              #
-#    Updated: 2024/03/07 21:13:55 by iassil           ###   ########.fr        #
+#    Updated: 2024/03/12 13:48:19 by musashi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC			=	cc
-CC			+=	-g -Wall -Wextra -Werror
-CC			+=	-fsanitize=address -fsanitize=undefined -O0
+# CC			+=	-g -Wall -Wextra -Werror
+CC			+=	-fsanitize=address -fsanitize=undefined -O0 -g
 LINKER		=	-lreadline
 RM			=	rm -f
 NAME		=	minishell

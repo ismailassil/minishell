@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_cont_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
+/*   By: musashi <musashi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 19:25:31 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/07 21:19:46 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/12 16:02:45 by musashi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	ft_t_cont_len(t_cont *head)
 
 static t_cont	*ft_last_node(t_cont *top)
 {
-	while (top->next)
+	while (top->next != NULL)
 		top = top->next;
 	return (top);
 }

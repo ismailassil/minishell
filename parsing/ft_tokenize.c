@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_tokenize.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
+/*   By: musashi <musashi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 21:05:24 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/08 21:59:07 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/12 15:21:26 by musashi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static void	ft_check_rest_of_else(t_token *head, int *flag)
 	if (head->type == FILENAME || head->type == DELIMITER || head->type == ARG)
 	{
 		if (*flag == 1 && head->type == FILENAME && head->next != NULL)
-			(1) && (head->next->type = ARG, *flag = 0);
+			(1) && (head->next->type = ARG);
 		if (head->type == ARG && head->next != NULL)
 			head->next->type = ARG;
 		else if (head->type != ARG
