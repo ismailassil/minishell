@@ -6,7 +6,7 @@
 /*   By: musashi <musashi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:06 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/12 16:12:20 by musashi          ###   ########.fr       */
+/*   Updated: 2024/03/12 16:51:49 by musashi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,9 @@ void	ft_parse_input_from_shell(t_env *env, char *input)
 		return ;
 	ft_remove_quotes(&head);
 	ft_expand_argument(env, &head);
-	ft_print_types(head);
-	ft_print(head);
+	(ft_print_types(head), ft_print(head));
 	ft_execution(&head);
-	// ft_free_tokens(&head);
+	ft_free_tokens(&head);
 }
 
 // void	v(void)

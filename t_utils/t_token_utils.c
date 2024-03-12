@@ -6,7 +6,7 @@
 /*   By: musashi <musashi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 10:52:06 by aibn-che          #+#    #+#             */
-/*   Updated: 2024/03/12 16:11:09 by musashi          ###   ########.fr       */
+/*   Updated: 2024/03/12 16:53:39 by musashi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,10 @@ void	ft_free_tokens(t_token **head)
 	while (*head)
 	{
 		current = *head;
+		*head = (*head)->next;
 		free(current->token);
 		current->token = NULL;
 		free(current);
 		current = NULL;
-		*head = (*head)->next;
 	}
 }

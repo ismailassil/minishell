@@ -6,14 +6,14 @@
 #    By: musashi <musashi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/27 14:35:22 by iassil            #+#    #+#              #
-#    Updated: 2024/03/12 13:48:19 by musashi          ###   ########.fr        #
+#    Updated: 2024/03/12 16:52:55 by musashi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC			=	cc
+CC			=	cc -g
 # CC			+=	-g -Wall -Wextra -Werror
-CC			+=	-fsanitize=address -fsanitize=undefined -O0 -g
-LINKER		=	-lreadline
+CC			+=	-fsanitize=address -fsanitize=undefined -O0
+LINKER		=	-lreadline -lhistory
 RM			=	rm -f
 NAME		=	minishell
 HEADER_H	=	minishell.h

@@ -6,7 +6,7 @@
 /*   By: musashi <musashi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/12 15:49:13 by musashi          ###   ########.fr       */
+/*   Updated: 2024/03/12 16:34:37 by musashi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,14 @@ typedef struct s_c
 	int	j;
 	int	quote;
 }		t_c;
+
+typedef struct s_cc
+{
+	int	i;
+	int	j;
+	int	z;
+	int	y;
+}		t_cc;
 
 typedef struct s_expand
 {

@@ -6,7 +6,7 @@
 /*   By: musashi <musashi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 15:41:50 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/12 16:10:30 by musashi          ###   ########.fr       */
+/*   Updated: 2024/03/12 16:38:10 by musashi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	ft_check_allocation(void *str)
 		(write(2, "Error: Allocation failed\n", 25), exit(FAIL));
 }
 
-void	ft_free_allocation(t_tmp_cont **tmp)
+void	ft_free_tmp(t_tmp_cont **tmp)
 {
 	int	i;
 
@@ -42,7 +42,7 @@ void	ft_free_allocation(t_tmp_cont **tmp)
 	free(*tmp);
 }
 
-void	ft_count_for_pointers(t_token *head, t_tmp_cont	**cont)
+void	ft_count(t_token *head, t_tmp_cont	**cont)
 {
 	t_token	*temp;
 	t_count	count;
@@ -74,39 +74,32 @@ void	ft_count_for_pointers(t_token *head, t_tmp_cont	**cont)
 }
 
 //	create a function that create a node that holds what inside the t_cont
-void ft_link_all_in_containers(t_token *token, t_cont **container)
+void ft_link_all_in_containers(t_token *head, t_cont **container)
 {
-	t_token		*head;
 	t_tmp_cont	*tmp;
-	int			i;
-	int			j;
-	int			z;
-	int			y;
+	t_cc		c;
 
-	(1) && (*container = NULL, head = token, i = 0, j = 0, z = 0, y = 0);
+	(1) && (*container = NULL);
 	while (head != NULL)
 	{
-		(1) && (i = 0, j = 0, z = 0, y = 0);
-		ft_count_for_pointers(head, &tmp);
+		((1) && (c.i = 0, c.j = 0, c.z = 0, c.y = 0), ft_count(head, &tmp));
 		while (head != NULL && head->type != PIPE)
 		{
 			if (head->type == CMD)
 				tmp->cmd = ft_strdup(head->token);
 			else if (head->type == ARG)
-				tmp->arg[i++] = ft_strdup(head->token);
+				tmp->arg[c.i++] = ft_strdup(head->token);
 			else if (head->type == INFILE)
-				tmp->infile[j++] = ft_strdup(head->next->token);
+				tmp->infile[c.j++] = ft_strdup(head->next->token);
 			else if (head->type == APPEND)
-				tmp->append[z++] = ft_strdup(head->next->token);
+				tmp->append[c.z++] = ft_strdup(head->next->token);
 			else if (head->type == OUTFILE)
-				tmp->outfile[y++] = ft_strdup(head->next->token);
+				tmp->outfile[c.y++] = ft_strdup(head->next->token);
 			head = head->next;
 		}
-		(1) && (tmp->arg[i] = 0, tmp->infile[j] = 0, tmp->append[z] = 0, tmp->outfile[y] = 0);
-		ft_push_container(tmp, container);
-		ft_free_allocation(&tmp);
-		if (head == NULL)
-			break ;
+		(1) && (tmp->arg[c.i] = 0, tmp->infile[c.j] = 0,\
+			tmp->append[c.z] = 0, tmp->outfile[c.y] = 0);
+		(ft_push_container(tmp, container), ft_free_tmp(&tmp));
 		if (head != NULL && head->type == PIPE)
 			head = head->next;
 	}
