@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_expand.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
+/*   By: musashi <musashi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 10:36:20 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/08 22:07:45 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/12 17:07:26 by musashi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,14 @@ void	ft_update_quote(char *arg, int *i, t_expand *exp)
 	}
 }
 
+static void	ft_handle_rest(t_env *env, t_expand	exp, char *arg, int *i)
+{
+	exp.expa = ft_arg_is_exist(env, arg + (*i + 1));
+	exp.s = exp.new_str;
+	exp.new_str = ft_strjoin(exp.new_str, exp.expa);
+	i += ft_surpass_chars(arg + (*i + 1));
+}
+
 /*
 *	This function expands the variables
 */
@@ -99,10 +107,7 @@ static char	*ft_handle_expand(t_env *env, char *arg)
 			}
 			if (ft_handle_inregulare_cases(&exp, arg[i + 1], &i))
 				continue ;
-			exp.expa = ft_arg_is_exist(env, arg + (i + 1));
-			exp.s = exp.new_str;
-			exp.new_str = ft_strjoin(exp.new_str, exp.expa);
-			i += ft_surpass_chars(arg + (i + 1));
+			ft_handle_rest(env, exp, arg, &i);
 		}
 		else if (arg[i])
 			i++;

@@ -6,7 +6,7 @@
 /*   By: musashi <musashi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/12 16:34:37 by musashi          ###   ########.fr       */
+/*   Updated: 2024/03/12 17:12:54 by musashi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,9 +100,9 @@ typedef struct s_tmp_cont
 {
 	char	*cmd;
 	char	**arg;
-	char	**infile;
-	char	**outfile;
-	char	**append;
+	char	**inf;
+	char	**outf;
+	char	**ap;
 }			t_tmp_cont;
 
 typedef struct s_container

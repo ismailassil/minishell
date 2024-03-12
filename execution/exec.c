@@ -6,7 +6,7 @@
 /*   By: musashi <musashi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 15:41:50 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/12 16:38:10 by musashi          ###   ########.fr       */
+/*   Updated: 2024/03/12 17:14:33 by musashi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,78 +28,76 @@ void	ft_free_tmp(t_tmp_cont **tmp)
 		(1) && (free((*tmp)->arg[i]), i++);
 	free((*tmp)->arg);
 	i = 0;
-	while ((*tmp)->infile[i] != NULL)
-		(1) && (free((*tmp)->infile[i]), i++);
-	free((*tmp)->infile);
+	while ((*tmp)->inf[i] != NULL)
+		(1) && (free((*tmp)->inf[i]), i++);
+	free((*tmp)->inf);
 	i = 0;
-	while ((*tmp)->outfile[i] != NULL)
-		(1) && (free((*tmp)->outfile[i]), i++);
-	free((*tmp)->outfile);
+	while ((*tmp)->outf[i] != NULL)
+		(1) && (free((*tmp)->outf[i]), i++);
+	free((*tmp)->outf);
 	i = 0;
-	while ((*tmp)->append[i] != NULL)
-		(1) && (free((*tmp)->append[i]), i++);
-	free((*tmp)->append);
+	while ((*tmp)->ap[i] != NULL)
+		(1) && (free((*tmp)->ap[i]), i++);
+	free((*tmp)->ap);
 	free(*tmp);
 }
 
-void	ft_count(t_token *head, t_tmp_cont	**cont)
+void	ft_count_alc(t_token *head, t_tmp_cont	**cont)
 {
 	t_token	*temp;
-	t_count	count;
+	t_count	c;
 
-	temp = head;
-	(1) && (count.arg = 0, count.infile = 0, count.outfile = 0, count.append = 0);
+	(1) && (temp = head, (*cont) = malloc(sizeof(t_tmp_cont)));
+	ft_check_allocation((*cont));
+	(1) && (c.arg = 0, c.infile = 0, c.outfile = 0, c.append = 0);
 	while (temp != NULL && temp->type != PIPE)
 	{
 		if (temp->type == ARG)
-			count.arg++;
+			c.arg++;
 		else if (temp->type == INFILE)
-			count.infile++;
+			c.infile++;
 		else if (temp->type == OUTFILE)
-			count.outfile++;
+			c.outfile++;
 		else if (temp->type == APPEND)
-			count.append++;
+			c.append++;
 		temp = temp->next;
 	}
-	(*cont) = malloc(sizeof(t_tmp_cont));
-	ft_check_allocation((*cont));
-	(*cont)->arg = malloc((count.arg + 1) * sizeof(char *));
+	(*cont)->arg = malloc((c.arg + 1) * sizeof(char *));
 	ft_check_allocation((*cont)->arg);
-	(*cont)->infile = malloc((count.infile + 1) * sizeof(char *));
-	ft_check_allocation((*cont)->infile);
-	(*cont)->outfile = malloc((count.outfile + 1) * sizeof(char *));
-	ft_check_allocation((*cont)->outfile);
-	(*cont)->append = malloc((count.append + 1) * sizeof(char *));
-	ft_check_allocation((*cont)->append);
+	(*cont)->inf = malloc((c.infile + 1) * sizeof(char *));
+	ft_check_allocation((*cont)->inf);
+	(*cont)->outf = malloc((c.outfile + 1) * sizeof(char *));
+	ft_check_allocation((*cont)->outf);
+	(*cont)->ap = malloc((c.append + 1) * sizeof(char *));
+	ft_check_allocation((*cont)->ap);
 }
 
 //	create a function that create a node that holds what inside the t_cont
 void ft_link_all_in_containers(t_token *head, t_cont **container)
 {
-	t_tmp_cont	*tmp;
+	t_tmp_cont	*t;
 	t_cc		c;
 
 	(1) && (*container = NULL);
 	while (head != NULL)
 	{
-		((1) && (c.i = 0, c.j = 0, c.z = 0, c.y = 0), ft_count(head, &tmp));
+		((1) && (c.i = 0, c.j = 0, c.z = 0, c.y = 0), ft_count_alc(head, &t));
 		while (head != NULL && head->type != PIPE)
 		{
 			if (head->type == CMD)
-				tmp->cmd = ft_strdup(head->token);
+				t->cmd = ft_strdup(head->token);
 			else if (head->type == ARG)
-				tmp->arg[c.i++] = ft_strdup(head->token);
+				t->arg[c.i++] = ft_strdup(head->token);
 			else if (head->type == INFILE)
-				tmp->infile[c.j++] = ft_strdup(head->next->token);
+				t->inf[c.j++] = ft_strdup(head->next->token);
 			else if (head->type == APPEND)
-				tmp->append[c.z++] = ft_strdup(head->next->token);
+				t->ap[c.z++] = ft_strdup(head->next->token);
 			else if (head->type == OUTFILE)
-				tmp->outfile[c.y++] = ft_strdup(head->next->token);
+				t->outf[c.y++] = ft_strdup(head->next->token);
 			head = head->next;
 		}
-		(1) && (tmp->arg[c.i] = 0, tmp->infile[c.j] = 0,\
-			tmp->append[c.z] = 0, tmp->outfile[c.y] = 0);
-		(ft_push_container(tmp, container), ft_free_tmp(&tmp));
+		(1) && (t->arg[c.i] = 0, t->inf[c.j] = 0, t->ap[c.z] = 0, t->outf[c.y] = 0);
+		(ft_push_container(t, container), ft_free_tmp(&t));
 		if (head != NULL && head->type == PIPE)
 			head = head->next;
 	}
