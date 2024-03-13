@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/08 21:46:08 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/13 15:57:34 by aibn-che         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,11 @@ typedef struct s_tokens
 typedef struct s_tmp_cont
 {
 	char	*cmd;
-	char	*arg[MAX];
-	char	*infile[MAX];
-	char	*outfile[MAX];
-	char	*append[MAX];
+	char	*path;
+	char	**arg;
+	char	**infile;
+	char	**outfile;
+	char	**append;
 }			t_tmp_cont;
 
 typedef struct s_container
@@ -98,6 +99,14 @@ typedef struct s_container
 	char				**append;
 	struct s_container	*next;
 }						t_cont;
+
+typedef struct s_tree
+{
+	struct s_tmp_cont	*cont;
+	struct s_tree		*left;
+	struct s_tree		*right;
+	struct s_tree		*next;
+}						t_tree;
 
 /*==========BUILTIN FUNCIONS==========*/
 int		ft_cd(char *argument, t_env **envp);

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: iassil <iassil@student.42.fr>              +#+  +:+       +#+         #
+#    By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/27 14:35:22 by iassil            #+#    #+#              #
-#    Updated: 2024/03/07 21:13:55 by iassil           ###   ########.fr        #
+#    Updated: 2024/03/13 01:57:47 by aibn-che         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,7 @@ LINKER		=	-lreadline
 RM			=	rm -f
 NAME		=	minishell
 HEADER_H	=	minishell.h
+READLINEDIR = $(shell brew --prefix readline)
 
 SRC 	=	t_utils/t_env_utils.c	t_utils/t_token_utils.c			t_utils/t_cont_utils.c		\
 			t_utils/utils.c			execution/exec.c				utils.c						\
@@ -52,11 +53,11 @@ all: $(NAME)
 
 ########### Built Functions
 %.o: %.c $(HEADER_H)
-	@$(CC) -c $< -o $@
+	@$(CC) -c $< -o $@ -I$(READLINEDIR)/include
 
 $(NAME): $(OBJ)
 	@echo "$(YELLOW)Compilation of the Objects files...$(RESET)"
-	@$(CC) $(LINKER) $^ -o $@
+	@$(CC) $(LINKER) $^ -o $@ -L$(READLINEDIR)/lib
 	@echo "$(GREEN)[====Executable file Compiled Successfully!====]$(RESET)"
 
 clean:

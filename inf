@@ -1,0 +1,15 @@
+total 664
+-rw-r--r--   1 aibn-che  candidate    3268 Mar  8 14:56 Makefile
+-rw-r--r--   1 aibn-che  candidate    2152 Mar  8 14:56 README.md
+drwxr-xr-x  10 aibn-che  candidate     340 Mar 12 13:53 builtin_ft
+drwxr-xr-x   3 aibn-che  candidate     102 Mar 12 13:53 execution
+-rw-r--r--   1 aibn-che  candidate       0 Mar 12 14:33 inf
+drwxr-xr-x  45 aibn-che  candidate    1530 Mar 12 13:53 lib
+-rwxr-xr-x   1 aibn-che  candidate  309592 Mar 12 13:53 minishell
+-rw-r--r--   1 aibn-che  candidate    1929 Mar 10 10:09 minishell.c
+-rw-r--r--   1 aibn-che  candidate    6224 Mar  9 15:04 minishell.h
+-rw-r--r--   1 aibn-che  candidate       0 Mar 12 14:33 outf
+drwxr-xr-x   9 aibn-che  candidate     306 Mar 12 13:53 parsing
+-rw-r--r--   1 aibn-che  candidate    1776 Mar  7 17:01 signals.c
+drwxr-xr-x   6 aibn-che  candidate     204 Mar 12 13:53 t_utils
+-rw-r--r--   1 aibn-che  candidate    2162 Mar  8 14:56 utils.c
