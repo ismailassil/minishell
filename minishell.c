@@ -6,7 +6,7 @@
 /*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:06 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/13 22:02:55 by aibn-che         ###   ########.fr       */
+/*   Updated: 2024/03/13 23:23:02 by aibn-che         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,17 +91,32 @@ int	count_pipe(t_token *head)
 	return (i);
 }
 
-// void	built_tree(t_cont *token)
-// {
-// 	t_tree	*tree;
 
-// 	if (!token)
-// 		return ;
-// 	if (token[0] == '|')
+// t_tree	*create_node_tree()
+// {
+// 	t_tree	*	
+// }
+
+//////////------------------------------Buil_tree---------------------------///////////////
+// void	build_tree(t_cont *cmd)
+// {
+// 	t_tree	*treer;
+
+// 	if (!cmd)
+// 		return;
+// 	if (cmd->next && cmd->next->token[0] == '|')
 // 	{
-		
+// 		///render_left_node
+// 		treer = malloc(sizeof(t_tree));
+// 		if (!treer)
+// 			return ;
+// 		treer->cont = cmd->next->token;
+// 		treer->right = build_tree(cmd->next->next->cmd);
+// 		cmd->next = NULL;
+// 		treer->left = build_tree(cmd->token);
 // 	}
 // }
+//////////------------------------------Buil_tree---------------------------///////////////
 
 t_cont	*handle_execution(t_token	*head, char **env)
 {
@@ -195,12 +210,13 @@ t_cont	*handle_execution(t_token	*head, char **env)
             }
 			seg_cmd = seg_cmd->next;
 		}
-		waitpid(-1, NULL, 0);
 		i++;
 	}
 	dup2(original_stdin_fd, STDIN_FILENO);
 	close(original_stdin_fd);
 	close(fd[0]);
+	while (wait(NULL) != -1)
+		;
 	/////////----------------------------------------------------------------------/////////////////
 
 	// while (seg_cmd)
