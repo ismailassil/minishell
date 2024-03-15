@@ -6,7 +6,7 @@
 /*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/13 22:18:56 by aibn-che         ###   ########.fr       */
+/*   Updated: 2024/03/14 03:31:59 by aibn-che         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ typedef struct s_container
 
 typedef struct s_tree
 {
-	struct s_tmp_cont	*cont;
+	struct s_container	*cont;
 	struct s_tree		*left;
 	struct s_tree		*right;
 }						t_tree;
