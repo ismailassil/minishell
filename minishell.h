@@ -6,7 +6,7 @@
 /*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/14 03:31:59 by aibn-che         ###   ########.fr       */
+/*   Updated: 2024/03/17 00:45:12 by aibn-che         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,11 @@ typedef struct s_env
 	struct s_env	*next;
 }					t_env;
 
+typedef struct s_opened_fd
+{
+	int	fd[MAX];
+}					t_opened_fd;
+
 typedef struct s_tokens
 {
 	char			*token;
@@ -96,7 +101,12 @@ typedef struct s_container
 	char				**arg;
 	char				**infile;
 	char				**outfile;
+	int					in;
+	int					out;
+	int					inn;
+	int					outt;
 	char				**append;
+	struct s_opened_fd	*opened_fd;
 	struct s_container	*next;
 }						t_cont;
 
@@ -137,6 +147,9 @@ int		ft_check_quotes(char *str);
 
 /*==========EXECUTION FUNCIONS==========*/
 void	ft_execution(t_token **token);
+
+/*==========HANDLE_PATH.c==========*/
+char	**handle_paths(t_env *env);
 
 /*==========UTILS FUNCIONS==========*/
 int		ft_check_if_chars_digit(int c);

@@ -6,7 +6,7 @@
 #    By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/27 14:35:22 by iassil            #+#    #+#              #
-#    Updated: 2024/03/13 01:57:47 by aibn-che         ###   ########.fr        #
+#    Updated: 2024/03/15 17:36:31 by aibn-che         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ READLINEDIR = $(shell brew --prefix readline)
 
 SRC 	=	t_utils/t_env_utils.c	t_utils/t_token_utils.c			t_utils/t_cont_utils.c		\
 			t_utils/utils.c			execution/exec.c				utils.c						\
-			signals.c				minishell.c
+			signals.c				handle_path.c					minishell.c
 
 SRC		+=	parsing/parsing.c		parsing/ft_tokenize.c			parsing/ft_check_syntax.c	\
 			parsing/utils.c			parsing/ft_remove_quotes.c		parsing/ft_split_tokens.c
