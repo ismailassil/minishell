@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: musashi <musashi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/12 17:12:54 by musashi          ###   ########.fr       */
+/*   Updated: 2024/03/17 17:06:12 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@
 # include <termios.h>
 # include <term.h>
 # include <curses.h>
-# include <limits.h>
+# include <sys/fcntl.h>
+# include <sys/syslimits.h>
 # define SUCCESS	0
 # define FAIL		1
 # define CMD		0
@@ -35,6 +36,7 @@
 # define FILENAME	6
 # define ARG		7
 # define DELIMITER	8
+# define CHILD		0
 # define MAX		1024
 # define GREEN		"\x1b[1;32m"
 # define YELLOW_	"\x1b[0;33m"
@@ -93,7 +95,6 @@ typedef struct s_count
 	int	arg;
 	int	infile;
 	int	outfile;
-	int	append;
 }		t_count;
 
 typedef struct s_tmp_cont
@@ -102,7 +103,7 @@ typedef struct s_tmp_cont
 	char	**arg;
 	char	**inf;
 	char	**outf;
-	char	**ap;
+	int		*out_t;
 }			t_tmp_cont;
 
 typedef struct s_container
@@ -111,13 +112,26 @@ typedef struct s_container
 	char				**arg;
 	char				**infile;
 	char				**outfile;
-	char				**append;
+	int					*outfile_type;
 	struct s_container	*next;
 }						t_cont;
 
+typedef struct s_fd
+{
+	int	infile;
+	int	outfile;
+}		t_fd;
+
+typedef struct s_execve
+{
+	char	*cmd_path;
+	char	**argv;
+	char	**envp;
+}			t_execve;
+
 /*==========BUILTIN FUNCIONS==========*/
 int		ft_cd(char *argument, t_env **envp);
-void	ft_echo(int n, char *argument);
+void	ft_echo(char *argument);
 void	ft_env(t_env *envp);
 void	ft_exit(void);
 int		ft_export(char *argument, t_env *envp);
@@ -144,7 +158,14 @@ int		ft_handle_inregulare_cases(t_expand *exp, int c, int *i);
 int		ft_check_quotes(char *str);
 
 /*==========EXECUTION FUNCIONS==========*/
-void	ft_execution(t_token **token);
+void	ft_execution(t_token **token, t_env *env);
+int		ft_check_commands(t_cont *cont, t_env *env);
+char	**ft_join_for_envp_execve(t_env *env);
+char	**ft_join_for_argv_execve(t_cont *cont);
+void	ft_check_(char **envp_path, char *cmd, t_env *env);
+void	ft_check_allocation(void *str);
+void	ft_syscall(int return_, char *str);
+void	ft_f(char ***str);
 
 /*==========UTILS FUNCIONS==========*/
 int		ft_check_if_chars_digit(int c);

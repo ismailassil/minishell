@@ -6,13 +6,13 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 10:43:24 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/06 21:46:15 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/17 15:59:29 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_echo(int n, char *argument)
+void	ft_echo(char *argument)
 {
 	int	i;
 	int	len;
@@ -31,8 +31,6 @@ void	ft_echo(int n, char *argument)
 		else
 			(write(1, &argument[i], 1), i++);
 	}
-	if (n == 0)
-		write(1, "\n", 1);
 }
 
 // int	main(int ac, char **av)

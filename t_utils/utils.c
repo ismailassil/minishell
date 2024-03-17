@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: musashi <musashi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 21:12:35 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/12 17:13:41 by musashi          ###   ########.fr       */
+/*   Updated: 2024/03/16 22:31:33 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,19 @@
 static void	ft_allocate_for_rest(t_tmp_cont *tmp, t_cont **new)
 {
 	int	i;
+	int	j;
 
 	i = 0;
-	while (tmp->ap[i] != 0)
+	while (tmp->out_t[i] != 0)
 		i++;
-	(*new)->append = malloc((i + 1) * sizeof(char *));
-	i = 0;
-	while (tmp->ap[i] != 0)
-		(1) && ((*new)->append[i] = ft_strdup(tmp->ap[i]), i++);
-	(1) && ((*new)->append[i] = 0, i = 0);
+	(*new)->outfile_type = malloc((i + 1) * sizeof(char *));
+	j = 0;
+	while (j < i)
+	{
+		(*new)->outfile_type[j] = tmp->out_t[j];
+		j++;
+	}
+	(1) && ((*new)->outfile_type[i] = 0, i = 0);
 	while (tmp->outf[i] != 0)
 		i++;
 	(*new)->outfile = malloc((i + 1) * sizeof(char *));

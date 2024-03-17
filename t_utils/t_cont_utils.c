@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_cont_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: musashi <musashi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 19:25:31 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/12 16:02:45 by musashi          ###   ########.fr       */
+/*   Updated: 2024/03/16 22:48:06 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,27 @@ int	ft_push_container(t_tmp_cont *tmp, t_cont **head)
 void	ft_free_containers(t_cont **head)
 {
 	t_cont	*current;
+	int		i;
 
 	while (*head)
 	{
 		current = *head;
+		*head = (*head)->next;
+		i = 0;
+		free(current->cmd);
+		while (current->arg[i] != NULL)
+			(1) && (free(current->arg[i]), i++);
+		free(current->arg);
+		i = 0;
+		while (current->infile[i] != NULL)
+			(1) && (free(current->infile[i]), i++);
+		free(current->infile);
+		i = 0;
+		while (current->outfile[i] != NULL)
+			(1) && (free(current->outfile[i]), i++);
+		free(current->outfile);
+		free(current->outfile_type);
 		free(current);
 		current = NULL;
-		*head = (*head)->next;
 	}
 }

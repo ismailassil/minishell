@@ -3,24 +3,27 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: musashi <musashi@student.42.fr>            +#+  +:+       +#+         #
+#    By: iassil <iassil@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/27 14:35:22 by iassil            #+#    #+#              #
-#    Updated: 2024/03/12 16:52:55 by musashi          ###   ########.fr        #
+#    Updated: 2024/03/17 17:14:12 by iassil           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC			=	cc -g
-# CC			+=	-g -Wall -Wextra -Werror
-CC			+=	-fsanitize=address -fsanitize=undefined -O0
-LINKER		=	-lreadline -lhistory
+CC			=	clang
+CC			+=	-Wall -Wextra -Werror
+CC			+=	-fsanitize=address -fsanitize=undefined -g
+LINKER		=	-lreadline
 RM			=	rm -f
 NAME		=	minishell
 HEADER_H	=	minishell.h
 
 SRC 	=	t_utils/t_env_utils.c	t_utils/t_token_utils.c			t_utils/t_cont_utils.c		\
-			t_utils/utils.c			execution/exec.c				utils.c						\
-			signals.c				minishell.c
+			t_utils/utils.c			utils.c							signals.c					\
+			minishell.c
+
+SRC		+=	execution/exec.c		execution/child_proc.c			execution/exec_builtin.c	\
+			execution/utils.c
 
 SRC		+=	parsing/parsing.c		parsing/ft_tokenize.c			parsing/ft_check_syntax.c	\
 			parsing/utils.c			parsing/ft_remove_quotes.c		parsing/ft_split_tokens.c
