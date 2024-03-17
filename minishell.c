@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:06 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/17 15:53:29 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/17 21:27:23 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ void	ft_parse_input_from_shell(t_env *env, char *input)
 		return ;
 	ft_remove_quotes(&head);
 	ft_expand_argument(env, &head);
-	// (ft_print_types(head), ft_print(head));
+	// ft_print_types(head);
+	// ft_print(head);
 	ft_execution(&head, env);
 	ft_free_tokens(&head);
 }
@@ -48,9 +49,9 @@ int	main(int argc, char **argv, char **env)
 	t_env	*envp;
 
 	// atexit(v);
-	// ft_signal_handler();
-	((void)argc, (void)argv);
 	envp = NULL;
+	((void)argc, (void)argv);
+	ft_signal_handler();
 	envp = ft_get_env(env);
 	while (true)
 	{

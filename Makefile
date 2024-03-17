@@ -6,7 +6,7 @@
 #    By: iassil <iassil@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/27 14:35:22 by iassil            #+#    #+#              #
-#    Updated: 2024/03/17 17:22:45 by iassil           ###   ########.fr        #
+#    Updated: 2024/03/17 21:12:57 by iassil           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ SRC 	=	t_utils/t_env_utils.c	t_utils/t_token_utils.c			t_utils/t_cont_utils.c		\
 			minishell.c
 
 SRC		+=	execution/exec.c		execution/child_proc.c			execution/exec_builtin.c	\
-			execution/utils.c
+			execution/utils.c		execution/exec_builtin_utils.c
 
 SRC		+=	parsing/parsing.c		parsing/ft_tokenize.c			parsing/ft_check_syntax.c	\
 			parsing/utils.c			parsing/ft_remove_quotes.c		parsing/ft_split_tokens.c

@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/17 17:24:05 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/17 21:26:34 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ typedef struct s_fd
 {
 	int	infile;
 	int	outfile;
+	int	error;
 }		t_fd;
 
 typedef struct s_execve
@@ -137,7 +138,7 @@ void	ft_exit(void);
 int		ft_export(char *argument, t_env *envp);
 void	ft_pwd(void);
 void	ft_unset(t_env *envp, char *argument);
-// Utils function for builtin function
+//	Utils function for builtin function
 t_env	*ft_get_env(char **env);
 void	ft_print_exported_variable(t_env *envp);
 void	ft_add_current_pwd(t_env **envp, char *argument);
@@ -150,7 +151,7 @@ void	ft_tokenize(t_token **str);
 void	ft_expand_argument(t_env *env, t_token **linked_list);
 bool	ft_check_syntax(t_token *str);
 void	ft_remove_quotes(t_token **linked_list);
-// Utils function for Parsing
+//	Utils function for Parsing
 void	ft_error(char *str);
 void	ft_append_char(char **str, int c);
 char	*ft_allocate_for_var(int flag, char *str, int i);
@@ -166,6 +167,12 @@ void	ft_check_(char **envp_path, char *cmd, t_env *env);
 void	ft_check_allocation(void *str);
 void	ft_syscall(int return_, char *str);
 void	ft_f(char **str);
+//	BUILTINS FUNCTION
+void	execute_echo(t_cont *cont);
+void	execute_cd(t_cont *cont, t_env **envp);
+void	execute_env(t_cont *cont, t_env **envp);
+void	execute_export(t_cont *cont, t_env **envp);
+void	execute_unset(t_cont *cont, t_env **envp);
 
 /*==========UTILS FUNCIONS==========*/
 int		ft_check_if_chars_digit(int c);
@@ -178,6 +185,7 @@ void	ft_signal_handler(void);
 void	ctrl_c(int sig);
 void	ctrl_slash(int sig);
 void	ft_disable_attr(void);
+void	ft_default_signals(void);
 
 /*==========ENV LINKED LIST UTILS FUNCIONS==========*/
 int		ft_t_env_len(t_env *head);

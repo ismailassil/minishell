@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 15:41:50 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/17 17:43:32 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/17 21:23:58 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,34 +40,40 @@ int	ft_open_files(t_cont *cont, t_fd *fd)
 	return (0);
 }
 
-void	ft_execute_one_cmd(t_cont *cont, t_env *env)
+void	ft_dup2(t_fd *fd)
+{
+	if (dup2(fd->infile, STDIN_FILENO) == -1)
+		(perror("dup2 (in_fd)"), exit(EXIT_FAILURE));
+	if (fd->infile != 0)
+		close(fd->infile);
+	if (dup2(fd->outfile, STDOUT_FILENO) == -1)
+		(perror("dup2 (out_fd)"), exit(EXIT_FAILURE));
+	if (fd->outfile != 1)
+		close(fd->outfile);
+}
+
+int	ft_execute_one_cmd(t_cont *cont, t_env *env)
 {
 	t_execve	exec;	
 	t_fd		fd;
 	pid_t		id;
 
 	ft_open_files(cont, &fd);
+	if (ft_check_commands(cont, env) == 1)
+		return (1);
 	id = fork();
 	ft_syscall(id, "fork");
 	if (id == 0)
 	{
-		if (dup2(fd.infile, STDIN_FILENO) == -1)
-			(perror("dup2 (in_fd)"), exit(EXIT_FAILURE));
-		if (fd.infile != 0)
-			close(fd.infile);
-		if (dup2(fd.outfile, STDOUT_FILENO) == -1)
-			(perror("dup2 (out_fd)"), exit(EXIT_FAILURE));
-		if (fd.outfile != 1)
-			close(fd.outfile);
-		if (ft_check_commands(cont, env) == 1)
-			(ft_free_containers(&cont), ft_free_env(&env), exit(SUCCESS));
+		ft_default_signals();
+		ft_dup2(&fd);
 		ft_check_(&exec.cmd_path, cont->cmd, env);
 		exec.argv = ft_join_for_argv_execve(cont);
 		exec.envp = ft_join_for_envp_execve(env);
 		if (execve(exec.cmd_path, exec.argv, exec.envp) == -1)
 			(perror("execve"), exit(FAIL));
 	}
-	wait(CHILD);
+	return (wait(CHILD), 0);
 }
 
 void	ft_free_tmp(t_tmp_cont **tmp)
@@ -173,5 +179,5 @@ void	ft_execution(t_token **token, t_env *env)
 	// ft_print_container(container);
 	if (nbr_cmd == 1)
 		ft_execute_one_cmd(container, env);
-	ft_free_containers(&container);
+	// ft_free_containers(&container);
 }

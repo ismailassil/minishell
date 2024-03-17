@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:42:41 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/17 17:44:48 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/17 17:45:35 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,7 @@ char	**ft_join_for_argv_execve(t_cont *cont)
 	{
 		argv[j] = ft_strdup(cont->arg[i]);
 		ft_check_allocation(argv[j]);
-		i++;
-		j++;
+		(1) && (i++, j++);
 	}
 	argv[j] = 0;
 	return (argv);
