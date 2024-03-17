@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/17 17:06:12 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/17 17:24:05 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ char	**ft_join_for_argv_execve(t_cont *cont);
 void	ft_check_(char **envp_path, char *cmd, t_env *env);
 void	ft_check_allocation(void *str);
 void	ft_syscall(int return_, char *str);
-void	ft_f(char ***str);
+void	ft_f(char **str);
 
 /*==========UTILS FUNCIONS==========*/
 int		ft_check_if_chars_digit(int c);

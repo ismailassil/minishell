@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:42:41 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/17 17:10:06 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/17 17:24:21 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static char	*ft_trim_path(char **path, char *cmd)
 		(free(path_holder), path_holder = NULL);
 		if (access(return_path, F_OK | X_OK) == 0)
 		{
-			ft_f(&path);
+			ft_f(path);
 			return (return_path);
 		}
 	}
@@ -60,11 +60,11 @@ static char	*ft_check_path(char *cmd, t_env *env)
 		(exit(FAIL));
 	path = ft_split(return_path, ':');
 	if (path == NULL)
-		(ft_f(&path), exit(FAIL));
+		(ft_f(path), exit(FAIL));
 	(free(return_path), return_path = NULL);
 	envp_path = ft_trim_path(path, cmd);
 	if (!envp_path)
-		(ft_f(&path), ft_error("msh: command not found: "), ft_error(cmd),
+		(ft_f(path), ft_error("msh: command not found: "), ft_error(cmd),
 		write(2, "\n", 1), exit(FAIL));
 	return (envp_path);
 }

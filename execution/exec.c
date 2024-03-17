@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 15:41:50 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/17 17:06:23 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/17 17:24:12 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	ft_execute_one_cmd(t_cont *cont, t_env *env)
 		exec.argv = ft_join_for_argv_execve(cont);
 		exec.envp = ft_join_for_envp_execve(env);
 		if (execve(exec.cmd_path, exec.argv, exec.envp) == -1)
-			(ft_f(&exec.argv), ft_f(&exec.envp), perror("execve"), exit(FAIL));
+			(ft_f(exec.argv), ft_f(exec.envp), perror("execve"), exit(FAIL));
 	}
 	wait(CHILD);
 }

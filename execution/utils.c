@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:43:43 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/17 17:08:17 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/17 17:23:39 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,16 @@ void	ft_syscall(int return_, char *str)
 		(perror(str), exit(FAIL));
 }
 
-void	ft_f(char ***str)
+void	ft_f(char **str)
 {
 	int	i;
 
 	i = 0;
-	while (*str && (*str)[i] != NULL)
+	while (str && str[i] != NULL)
 	{
-		free((*str)[i]);
+		free(str[i]);
 		i++;
 	}
-	free(*str);
-	*str = NULL;
+	free(str);
+	str = NULL;
 }
