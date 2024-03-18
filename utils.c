@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 16:34:02 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/17 15:43:32 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/18 01:55:20 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	ft_print(t_token *lst)
 		printf(WHT"=={%s}=="RESET, head->token);
 		head = head->next;
 	}
+	printf("\n");
 }
 
 void	ft_print_container(t_cont *head)

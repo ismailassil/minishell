@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 15:41:50 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/17 23:26:37 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/18 02:07:47 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,19 @@ int	ft_open_files(t_cont *cont, t_fd *fd)
 		fd_infile[i] = open(cont->infile[i], O_RDONLY);
 		fd->infile = fd_infile[i];
 		if (fd_infile[i] == -1)
-			return (perror(cont->infile[i]), 1);
+			return (write(2, "msh: ", 5), perror(cont->infile[i]), 1);
 	}
 	(1) && (i = -1, fd->outfile = 1);
 	while (cont->outfile && cont->outfile[++i] != 0)
 	{
+		printf("=====%s=====\n", cont->outfile[i]);
 		if (cont->outfile_type[i] == 1)
 			fd_outfile[i] = open(cont->outfile[i], O_CREAT | O_WRONLY, 0644);
 		else if (cont->outfile_type[i] == 2)
 			fd_outfile[i] = open(cont->outfile[i], O_CREAT | O_WRONLY | O_APPEND, 0644);
 		fd->outfile = fd_outfile[i];
 		if (fd_outfile[i] == -1)
-			return (perror(cont->outfile[i]), 1);
+			return (write(2, "msh: ", 5), perror(cont->outfile[i]), 1);
 	}
 	return (0);
 }
@@ -58,7 +59,8 @@ int	ft_execute_one_cmd(t_cont *cont, t_env *env)
 	t_fd		fd;
 	pid_t		id;
 
-	ft_open_files(cont, &fd);
+	if (ft_open_files(cont, &fd) == 1)
+		return (1);
 	if (ft_check_commands(cont, env) == 1)
 		return (1);
 	id = fork();
@@ -136,6 +138,7 @@ void ft_link_all_in_containers(t_token *head, t_cont **container)
 	while (head != NULL)
 	{
 		((1) && (c.i = 0, c.j = 0, c.z = 0, c.y = 0), ft_count_alc(head, &t));
+		t->cmd = NULL;
 		while (head != NULL && head->type != PIPE)
 		{
 			if (head->type == CMD)

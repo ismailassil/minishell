@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 14:55:19 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/17 22:19:56 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/18 01:50:12 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ bool	ft_check_syntax(t_token *str)
 
 	head = str;
 	if (head && head->type == PIPE)
-		return (ft_error("\n"), false);
+		return (ft_error("msh: parse error\n"), false);
 	while (head != NULL)
 	{
 		if (!ft_check_quotes(head->token))
@@ -71,7 +71,8 @@ int	ft_check_quotes(char *str)
 
 void	ft_error(char *str)
 {
-	write(2, str, ft_strlen(str));
+	if (str != NULL)
+		write(2, str, ft_strlen(str));
 }
 
 static int	ft_check_rest(t_token *head)
