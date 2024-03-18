@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 16:33:28 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/18 00:40:25 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/18 01:03:19 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,12 +103,9 @@ static void	*ft_parse_space(char *input, char **shell)
 		if (flag == 0 && ((input[j] == '>' && input[j + 1] == '>') || (input[j]  == '<'
 			&& input[j + 1] == '<')))
 		{
-			(*shell)[i] = ' ';
-			(*shell)[i + 1] = input[j];
-			(*shell)[i + 2] = input[j + 1];
-			(*shell)[i + 3] = ' ';
-			i += 4;
-			j += 2;
+			(1) && ((*shell)[i] = ' ', (*shell)[i + 1] = input[j]);
+			(1) && ((*shell)[i + 2] = input[j + 1], (*shell)[i + 3] = ' ');
+			(1) && (i += 4, j += 2);
 		}
 		else if (flag == 0 && (input[j] == '>' || input[j] == '<' || input[j] == '|' ))
 			(1) && ((*shell)[i] = ' ', (*shell)[i + 1] = input[j], \
