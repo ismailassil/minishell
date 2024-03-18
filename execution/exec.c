@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 15:41:50 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/18 02:30:07 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/18 12:23:03 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,6 @@ int	ft_open_files(t_cont *cont, t_fd *fd)
 	int	fd_infile[OPEN_MAX];
 	int	fd_outfile[OPEN_MAX];
 
-	(1) && (i = -1, fd->infile = 0);
-	while (cont->infile && cont->infile[++i] != 0)
-	{
-		fd_infile[i] = open(cont->infile[i], O_RDONLY);
-		fd->infile = fd_infile[i];
-		if (fd_infile[i] == -1)
-			return (write(2, "msh: ", 5), perror(cont->infile[i]), 1);
-	}
 	(1) && (i = -1, fd->outfile = 1);
 	while (cont->outfile && cont->outfile[++i] != 0)
 	{
@@ -36,6 +28,14 @@ int	ft_open_files(t_cont *cont, t_fd *fd)
 		fd->outfile = fd_outfile[i];
 		if (fd_outfile[i] == -1)
 			return (write(2, "msh: ", 5), perror(cont->outfile[i]), 1);
+	}
+	(1) && (i = -1, fd->infile = 0);
+	while (cont->infile && cont->infile[++i] != 0)
+	{
+		fd_infile[i] = open(cont->infile[i], O_RDONLY);
+		fd->infile = fd_infile[i];
+		if (fd_infile[i] == -1)
+			return (write(2, "msh: ", 5), perror(cont->infile[i]), 1);
 	}
 	return (0);
 }
@@ -166,10 +166,10 @@ void ft_link_all_in_containers(t_token *head, t_cont **container)
 	}
 }
 
-void	ft_execute_multiple_cmds(t_cont *cont, t_env *env)
-{
+// void	ft_execute_multiple_cmds(t_cont *cont, t_env *env)
+// {
 	
-}
+// }
 
 void	ft_execution(t_token **token, t_env *env)
 {
@@ -189,7 +189,7 @@ void	ft_execution(t_token **token, t_env *env)
 	// ft_print_container(container);
 	if (nbr_cmd == 1 || nbr_cmd == 0)
 		ft_execute_one_cmd(container, env);
-	else if (nbr_cmd > 1)
-		ft_execute_multiple_cmds(container, env);
+	// else if (nbr_cmd > 1)
+	// 	ft_execute_multiple_cmds(container, env);
 	ft_free_containers(&container);
 }

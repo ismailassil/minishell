@@ -6,114 +6,113 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 15:33:58 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/17 17:21:28 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/18 12:39:53 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*ft_check_tilda_and_minus(char *argument, char *last_dir)
+static void	ft_add_if_not_found(t_env **envp, int flag, char *arg, char *string)
 {
-	char	*arg;
+	char	*tmp;
 
-	arg = NULL;
-	if (argument[0] == '-' && argument[1] == '\0')
+	if (flag == 0)
 	{
-		if (last_dir == NULL)
-			return (write(2, "cd: OLDPWD not set\n", 19), NULL);
-		arg = ft_strdup(last_dir);
-		if (!arg)
+		tmp = ft_strjoin(string, arg);
+		if (!tmp)
 			(write(2, "Error: Allocation failed\n", 25), exit(FAIL));
+		if (ft_push_value(tmp, envp) == 0)
+			(write(2, "Error: Allocation failed\n", 25), exit(FAIL));
+		(1) && (free(tmp), tmp = NULL);
 	}
-	else if (argument[0] == '~')
-	{
-		if (argument[1] == '/' || argument[1] == '\0')
-		{
-			arg = ft_strjoin(getenv("HOME"), argument + 1);
-			if (!arg)
-				(write(2, "Error: Allocation failed\n", 25), exit(FAIL));
-		}
-		else
-			return (write(2, "syntax not supported\n", 21), NULL);
-	}
-	return (arg);
 }
 
-static char	*ft_check_argument(char *argument, char *last_dir)
+static char	*ft_check_argument(char *argument)
 {
 	char	*arg;
 
-	arg = NULL;
+	arg = ft_strdup(argument);
 	if (getenv("HOME") == NULL && argument == NULL)
-		return (write(2, "cd: HOME not set\n", 17), NULL);
-	else if (argument == NULL)
+		return (write(2, "msh: cd: HOME not set\n", 22), NULL);
+	else if (argument == NULL || argument[0] == '\0')
 	{
 		arg = ft_strdup(getenv("HOME"));
 		if (!arg)
 			(write(2, "Error: Allocation failed\n", 25), exit(FAIL));
 	}
-	else if (argument[0] == '\0'
-		|| (argument[0] == '-' && argument[1] == '-' && argument[2] == '\0'))
-	{
-		arg = ft_strdup(getenv("HOME"));
-		if (!arg)
-			(write(2, "Error: Allocation failed\n", 25), exit(FAIL));
-	}
-	else
-		arg = ft_check_tilda_and_minus(argument, last_dir);
-	if (!arg)
-		return (NULL);
 	return (arg);
 }
 
-static char	*ft_extract_old_pwd(t_env *envp)
+void	ft_add_current_pwd(t_env **envp, char *argument)
 {
 	t_env	*head;
 	int		flag;
-	char	*last_dir;
+	char	*tmp;
 
-	head = envp;
+	head = *envp;
 	flag = 0;
 	while (head != NULL)
 	{
-		if (ft_strncmp(head->value, "OLDPWD=", 7) == 0)
+		if (ft_strncmp(head->value, "PWD=", 4) == 0)
 		{
-			flag = 1;
-			last_dir = ft_substr(head->value, 7, ft_strlen(head->value) - 7);
-			if (last_dir == NULL)
+			(1) && (free(head->value), head->value = NULL);
+			tmp = ft_strjoin("PWD=", argument);
+			if (!tmp)
 				(write(2, "Error: Allocation failed\n", 25), exit(FAIL));
-			return (last_dir);
+			head->value = tmp;
+			flag = 1;
+			break ;
 		}
 		head = head->next;
 	}
-	if (flag == 0)
-		return (NULL);
-	return (NULL);
+	ft_add_if_not_found(envp, flag, argument, "PWD=");
 }
+
+void	ft_add_old_pwd(t_env **envp, char *argument)
+{
+	t_env	*head;
+	int		flag;
+	char	*tmp;
+
+	head = *envp;
+	flag = 0;
+	while (head != NULL)
+	{
+		if (ft_strncmp(head->value, "OLDPWD=", 4) == 0)
+		{
+			(1) && (free(head->value), head->value = NULL);
+			tmp = ft_strjoin("OLDPWD=", argument);
+			if (!tmp)
+				(write(2, "Error: Allocation failed\n", 25), exit(FAIL));
+			head->value = tmp;
+			flag = 1;
+			break ;
+		}
+		head = head->next;
+	}
+	ft_add_if_not_found(envp, flag, argument, "OLDPWD=");
+}
+
 
 int	ft_cd(char *argument, t_env **envp)
 {
 	char		current_dir[PATH_MAX];
 	char		buf[PATH_MAX];
-	char		*last_dir;
 	char		*dir;
 
-	last_dir = ft_extract_old_pwd(*envp);
 	if (getcwd(current_dir, sizeof(current_dir)) == NULL)
 		*current_dir = '\0';
-	dir = ft_check_argument(argument, last_dir);
+	dir = ft_check_argument(argument);
 	if (dir == NULL)
-		return (free(last_dir), 1);
+		return (1);
 	if (chdir(dir) == -1)
-		return (free(last_dir), free(dir), perror(argument), 1);
+		return (free(dir), perror(argument), 1);
 	if (getcwd(buf, sizeof(buf)) != NULL)
 		printf("%s\n", buf);
 	else
 		write(2, "syntax not supported\n", 21);
 	(ft_add_current_pwd(envp, buf), ft_add_old_pwd(envp, current_dir));
 	free(dir);
-	if (last_dir)
-		free(last_dir);
 	return (0);
 }
 
