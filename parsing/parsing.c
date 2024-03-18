@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 16:33:28 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/07 20:26:11 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/18 00:40:25 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,12 +91,17 @@ static void	*ft_parse_space(char *input, char **shell)
 {
 	int	i;
 	int	j;
+	int	flag;
+	int	quote;
+	int	tmp;
 
-	(1) && (i = 0, j = 0);
+	(1) && (i = 0, flag = 0, quote = 0, j = 0);
 	while (input[j] != 0)
 	{
-		if ((input[j] == '>' && input[j + 1] == '>')
-			|| (input[j] == '<' && input[j + 1] == '<'))
+		if (input[j] == '\"' || input[j] == '\'')
+			(1) && (tmp = j, flag = 1, quote = input[j]);
+		if (flag == 0 && ((input[j] == '>' && input[j + 1] == '>') || (input[j]  == '<'
+			&& input[j + 1] == '<')))
 		{
 			(*shell)[i] = ' ';
 			(*shell)[i + 1] = input[j];
@@ -105,11 +110,15 @@ static void	*ft_parse_space(char *input, char **shell)
 			i += 4;
 			j += 2;
 		}
-		else if (input[j] == '>' || input[j] == '<' || input[j] == '|' )
+		else if (flag == 0 && (input[j] == '>' || input[j] == '<' || input[j] == '|' ))
 			(1) && ((*shell)[i] = ' ', (*shell)[i + 1] = input[j], \
 				(*shell)[i + 2] = ' ', i += 3, j++);
 		else
+		{
 			(1) && ((*shell)[i] = input[j], i++, j++);
+			if (input[j] && tmp != j && input[j] == quote)
+				(1) && ((*shell)[i] = input[j], i++, j++, flag = 0, quote = 0);
+		}
 	}
 	(*shell)[i] = '\0';
 	return (shell);
@@ -121,19 +130,25 @@ static void	*ft_parse_space(char *input, char **shell)
 */
 char	*ft_add_space_to_input(char *input)
 {
-	int			i;
-	int			count;
-	char		*shell;
+	int		i;
+	int		count;
+	int		flag;
+	int		quote;
+	char	*shell;
 
-	(1) && (i = 0, count = 0);
+	(1) && (i = 0, flag = 0, quote = 0, count = 0);
 	while (input[i] != '\0')
 	{
-		if ((input[i] == '>' && input[i + 1] == '>')
-			|| (input[i] == '<' && input[i + 1] == '<'))
-			(count++);
-		else if (input[i] == '>' || input[i] == '<' || input[i] == '|')
-			(count++);
+		if (input[i] == '\"' || input[i] == '\'')
+			(1) && (flag = 1, quote = input[i]);
+		if (flag == 0 && ((input[i] == '>' && input[i + 1] == '>') || (input[i]  == '<'
+			&& input[i + 1] == '<')))
+			count++;
+		else if (flag == 0 && (input[i] == '>' || input[i] == '<' || input[i] == '|'))
+			count++;
 		i++;
+		if (input[i] != '\0' && input[i] == quote)
+			(1) && (flag = 0, i++);
 	}
 	shell = (char *)malloc((i + 1 + (count * 2)) * sizeof(char));
 	if (!shell)

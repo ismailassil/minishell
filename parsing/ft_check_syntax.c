@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_check_syntax.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: musashi <musashi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 14:55:19 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/12 17:18:38 by musashi          ###   ########.fr       */
+/*   Updated: 2024/03/17 22:19:56 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,15 @@ bool	ft_check_syntax(t_token *str)
 
 	head = str;
 	if (head && head->type == PIPE)
-		return (ft_error("msh: parse error"), false);
+		return (ft_error("\n"), false);
 	while (head != NULL)
 	{
 		if (!ft_check_quotes(head->token))
-			return (ft_error("msh: parse error"), false);
+			return (ft_error("msh: parse error\n"), false);
 		else
 		{
 			if (ft_check_rest(head) == 1)
-				return (ft_error("msh: parse error"), false);
+				return (ft_error("msh: parse error\n"), false);
 		}
 		head = head->next;
 	}

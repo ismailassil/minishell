@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 09:24:00 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/05 09:30:48 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/17 22:07:38 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 	t_srclen = ft_strlen(src);
 	if (dstsize < 1)
 		return (t_srclen);
-	while (src[i] != '\0' && i < dstsize)
+	while (src && src[i] != '\0' && i < dstsize)
 	{
 		dst[i] = src[i];
 		i++;

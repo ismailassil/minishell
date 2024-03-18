@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 15:41:50 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/17 21:23:58 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/17 23:26:37 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,8 @@ int	ft_execute_one_cmd(t_cont *cont, t_env *env)
 		if (execve(exec.cmd_path, exec.argv, exec.envp) == -1)
 			(perror("execve"), exit(FAIL));
 	}
-	return (wait(CHILD), 0);
+	wait(CHILD);
+	return (0);
 }
 
 void	ft_free_tmp(t_tmp_cont **tmp)
@@ -179,5 +180,5 @@ void	ft_execution(t_token **token, t_env *env)
 	// ft_print_container(container);
 	if (nbr_cmd == 1)
 		ft_execute_one_cmd(container, env);
-	// ft_free_containers(&container);
+	ft_free_containers(&container);
 }
