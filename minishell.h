@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/17 21:26:34 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/18 17:28:14 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,8 +120,15 @@ typedef struct s_fd
 {
 	int	infile;
 	int	outfile;
-	int	error;
 }		t_fd;
+
+typedef struct s_info
+{
+	t_fd	fd;
+	int		pipe[2];
+	int 	nbr_cmd;
+	int		i;
+}			t_info;
 
 typedef struct s_execve
 {
@@ -141,8 +148,6 @@ void	ft_unset(t_env *envp, char *argument);
 //	Utils function for builtin function
 t_env	*ft_get_env(char **env);
 void	ft_print_exported_variable(t_env *envp);
-void	ft_add_current_pwd(t_env **envp, char *argument);
-void	ft_add_old_pwd(t_env **envp, char *argument);
 
 /*==========PARSING FUNCIONS==========*/
 char	*ft_add_space_to_input(char *input);
@@ -160,6 +165,7 @@ int		ft_check_quotes(char *str);
 
 /*==========EXECUTION FUNCIONS==========*/
 void	ft_execution(t_token **token, t_env *env);
+void	ft_execute_multiple_cmds(t_cont *cont, t_env *env, int nbr_cmd);
 int		ft_check_commands(t_cont *cont, t_env *env);
 char	**ft_join_for_envp_execve(t_env *env);
 char	**ft_join_for_argv_execve(t_cont *cont);
@@ -167,7 +173,12 @@ void	ft_check_(char **envp_path, char *cmd, t_env *env);
 void	ft_check_allocation(void *str);
 void	ft_syscall(int return_, char *str);
 void	ft_f(char **str);
-//	BUILTINS FUNCTION
+int		ft_open_files(t_cont *cont, t_fd *fd);
+//	CONTAINER FUNCTIONS
+void	ft_link_all_in_containers(t_token *head, t_cont **container);
+void	ft_count_alc(t_token *head, t_tmp_cont	**cont);
+void	ft_free_tmp(t_tmp_cont **tmp);
+//	BUILTINS FUNCTIONS
 void	execute_echo(t_cont *cont);
 void	execute_cd(t_cont *cont, t_env **envp);
 void	execute_env(t_cont *cont, t_env **envp);

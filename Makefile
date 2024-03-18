@@ -6,12 +6,13 @@
 #    By: iassil <iassil@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/27 14:35:22 by iassil            #+#    #+#              #
-#    Updated: 2024/03/18 01:37:15 by iassil           ###   ########.fr        #
+#    Updated: 2024/03/18 17:28:30 by iassil           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC			=	clang
 CC			+=	-Wall -Wextra -Werror
+# READLINEDIR	=	$(shell brew --prefix readline)
 CC			+=	-fsanitize=address -fsanitize=undefined -g
 LINKER		=	-lreadline
 RM			=	rm -f
@@ -22,8 +23,9 @@ SRC 	=	t_utils/t_env_utils.c	t_utils/t_token_utils.c			t_utils/t_cont_utils.c		\
 			t_utils/utils.c			utils.c							signals.c					\
 			minishell.c
 
-SRC		+=	execution/exec.c		execution/child_proc.c			execution/exec_builtin.c	\
-			execution/utils.c		execution/exec_builtin_utils.c
+SRC		+=	execution/exec.c		execution/proc_utils.c			execution/exec_builtin.c	\
+			execution/utils.c		execution/fill_container.c		execution/mutli_cmds.c		\
+			execution/exec_builtin_utils.c
 
 SRC		+=	parsing/parsing.c		parsing/ft_tokenize.c			parsing/ft_check_syntax.c	\
 			parsing/utils.c			parsing/ft_remove_quotes.c		parsing/ft_split_tokens.c
@@ -55,11 +57,11 @@ all: $(NAME)
 
 ########### Built Functions
 %.o: %.c $(HEADER_H)
-	@$(CC) -c $< -o $@
+	@$(CC) -c $< -o $@ -I$(READLINEDIR)/include
 
 $(NAME): $(OBJ)
 	@echo "$(YELLOW)Compilation of the Objects files...$(RESET)"
-	@$(CC) $(LINKER) $^ -o $@
+	@$(CC) -L$(READLINEDIR)/lib $(LINKER) $^ -o $@
 	@echo "$(GREEN)[====Executable file Compiled Successfully!====]$(RESET)"
 
 clean:

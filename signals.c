@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 16:10:26 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/17 21:28:19 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/18 17:28:22 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	ft_disable_attr(void)
 void	ft_signal_handler(void)
 {
 	// ft_disable_attr();
+	// rl_catch_signals = 0;
 	if (signal(SIGINT, ctrl_c) == SIG_ERR)
 		(perror("Error"), exit(EXIT_FAILURE));
 	if (signal(SIGQUIT, ctrl_slash) == SIG_ERR)

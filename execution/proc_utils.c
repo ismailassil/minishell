@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   child_proc.c                                       :+:      :+:    :+:   */
+/*   proc_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:42:41 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/18 01:48:24 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/18 15:35:16 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ static char	*ft_check_path(char *cmd, t_env *env)
 	(free(return_path), return_path = NULL);
 	envp_path = ft_trim_path(path, cmd);
 	if (!envp_path)
-		(ft_f(path), ft_error("msh: command not found: "), ft_error(cmd),
-		write(2, "\n", 1), exit(FAIL));
+		(ft_f(path), ft_error("msh: "), ft_error(cmd),
+		ft_error(": command not found"), write(2, "\n", 1), exit(FAIL));
 	return (envp_path);
 }
 

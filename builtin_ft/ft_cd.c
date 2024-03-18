@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 15:33:58 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/18 12:39:53 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/18 13:20:46 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,12 @@ static char	*ft_check_argument(char *argument)
 		if (!arg)
 			(write(2, "Error: Allocation failed\n", 25), exit(FAIL));
 	}
+	else if (argument[0] == '~' || argument[0] == '-')
+		return (write(2, "msh: syntax not supported\n", 26), NULL);
 	return (arg);
 }
 
-void	ft_add_current_pwd(t_env **envp, char *argument)
+static void	ft_add_current_pwd(t_env **envp, char *argument)
 {
 	t_env	*head;
 	int		flag;
@@ -68,7 +70,7 @@ void	ft_add_current_pwd(t_env **envp, char *argument)
 	ft_add_if_not_found(envp, flag, argument, "PWD=");
 }
 
-void	ft_add_old_pwd(t_env **envp, char *argument)
+static void	ft_add_old_pwd(t_env **envp, char *argument)
 {
 	t_env	*head;
 	int		flag;
@@ -106,11 +108,11 @@ int	ft_cd(char *argument, t_env **envp)
 	if (dir == NULL)
 		return (1);
 	if (chdir(dir) == -1)
-		return (free(dir), perror(argument), 1);
+		return (free(dir), 1);
 	if (getcwd(buf, sizeof(buf)) != NULL)
 		printf("%s\n", buf);
 	else
-		write(2, "syntax not supported\n", 21);
+		write(2, "msh: syntax not supported\n", 26);
 	(ft_add_current_pwd(envp, buf), ft_add_old_pwd(envp, current_dir));
 	free(dir);
 	return (0);
