@@ -6,7 +6,7 @@
 /*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:06 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/18 02:36:47 by aibn-che         ###   ########.fr       */
+/*   Updated: 2024/03/18 17:34:23 by aibn-che         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -365,21 +365,19 @@ void	traverse_tree_exec(t_tree *root, char **path, char **e, t_opened_fd *opened
 	}
 }
 
-t_cont	*handle_execution(t_token	*head, t_env *env, char **e)
+void	accumulate_cmds_with_their_params()
 {
-	t_cont	*seg_cmd;
-	t_cont	*current_cmd;
-	int		i;
 	int		count_p;
 	int		out;
 	int		in;
 	int		ar;
-	(void)env;
-
-	i = 0;
+	int		i;
+	t_cont	*current_cmd;
+	t_cont	*seg_cmd;
 	count_p = count_pipe(head);
 	seg_cmd = NULL;
 
+	i = 0;
 	while (i <= count_p)
 	{
 		current_cmd = push_cmd(&seg_cmd);
@@ -390,10 +388,8 @@ t_cont	*handle_execution(t_token	*head, t_env *env, char **e)
 		{
 			if (head->token[0] == '|')
 			{
-				//-----------only-suits-for-tree----------------//
 				current_cmd = push_cmd(&seg_cmd);
 				current_cmd->cmd = head->token;
-				//----------------------------------------------//
 				head = head->next;
 				break ;
 			}
@@ -403,21 +399,21 @@ t_cont	*handle_execution(t_token	*head, t_env *env, char **e)
 				current_cmd->arg[ar++] = head->token;
 			}
 			else if (head->type == ARG)
-			{
 				current_cmd->arg[ar++] = head->token;
-			}
 			else if (head->type == INFILE)
-			{
 				current_cmd->infile[in++] = head->next->token;
-			}
 			else if (head->type == OUTFILE)
-			{
 				current_cmd->outfile[out++] = head->next->token;
-			}
 			head = head->next;
 		}
 		i++;
 	}
+}
+
+t_cont	*handle_execution(t_token	*head, t_env *env, char **e)
+{
+	(void)env;
+
 	/////////----------------------------execution---------------------------------/////////////////
 	// i = 0;
 	// int original_stdin_fd = dup(STDIN_FILENO);
