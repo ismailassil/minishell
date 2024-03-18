@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 13:48:38 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/18 17:00:18 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/18 21:31:59 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,18 @@
 
 static void	ft_pipe_to_outfile(t_info *info)
 {
-	if (dup2(info->fd.outfile, STDOUT_FILENO) == -1)
-		(perror("dup2 (STDOUT)"), exit(FAIL));
-	if (info->fd.infile != 0)
-		close(info->fd.infile);
-	close(info->pipe[1]);
+	ft_syscall(dup2(info->fd.outfile, STDOUT_FILENO), "dup2 (STDOUT)");
+	if (info->fd.outfile != 0)
+		ft_syscall(close(info->fd.outfile), "close");
+	ft_syscall(close(info->pipe[1]), "close");
 }
 
 static void	ft_pipe_to_next_child(t_info *info)
 {
-	if (dup2(info->pipe[1], STDOUT_FILENO) == -1)
-		(perror("dup2 (PIPE)"), exit(FAIL));
-	close(info->pipe[1]);
+	ft_syscall(dup2(info->pipe[1], STDOUT_FILENO), "dup2 (PIPE)");
+	ft_syscall(close(info->pipe[1]), "pipe");
 	if (info->fd.outfile != 1)
-		close(info->fd.outfile);
+		ft_syscall(close(info->fd.outfile), "close");
 }
 
 void	ft_child_process(t_cont *cont, t_env *env, t_info *info)
@@ -36,15 +34,17 @@ void	ft_child_process(t_cont *cont, t_env *env, t_info *info)
 	char		**cmd;
 
 	cmd = NULL;
-	close(info->pipe[0]);
-	ft_default_signals();
-	if (ft_open_files(cont, &info->fd) == 1
-		|| ft_check_commands(cont, env) == 1)
+	ft_syscall(close(info->pipe[0]), "pipe");
+	if (ft_open_files(cont, &info->fd) == 1 || ft_check_commands(cont, env) == 1)
 		return ;
-	if (dup2(info->fd.infile, STDIN_FILENO) == -1)
-		(perror("dup2 (STDIN)"), exit(FAIL));
+	ft_default_signals();
+	
+	printf("Child number: %d |====> fd->infile: %d, fd->outfile: %d, pipe[0]: %d, pipe[1]: %d\n",\
+		info->i, info->fd.infile, info->fd.outfile, info->pipe[0], info->pipe[1]);
+		
+	ft_syscall(dup2(info->fd.infile, STDIN_FILENO), "dup2");
 	if (info->fd.infile != 0)
-		close(info->fd.infile);
+		ft_syscall(close(info->fd.infile), "close");
 	if (info->i == (info->nbr_cmd - 1))
 		ft_pipe_to_outfile(info);
 	else

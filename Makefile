@@ -6,7 +6,7 @@
 #    By: iassil <iassil@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/27 14:35:22 by iassil            #+#    #+#              #
-#    Updated: 2024/03/18 17:28:30 by iassil           ###   ########.fr        #
+#    Updated: 2024/03/18 21:08:39 by iassil           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,11 +57,11 @@ all: $(NAME)
 
 ########### Built Functions
 %.o: %.c $(HEADER_H)
-	@$(CC) -c $< -o $@ -I$(READLINEDIR)/include
+	@$(CC) -c $< -o $@
 
 $(NAME): $(OBJ)
 	@echo "$(YELLOW)Compilation of the Objects files...$(RESET)"
-	@$(CC) -L$(READLINEDIR)/lib $(LINKER) $^ -o $@
+	@$(CC) $(LINKER) $^ -o $@
 	@echo "$(GREEN)[====Executable file Compiled Successfully!====]$(RESET)"
 
 clean:
