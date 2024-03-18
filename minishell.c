@@ -6,7 +6,7 @@
 /*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:06 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/17 17:17:40 by aibn-che         ###   ########.fr       */
+/*   Updated: 2024/03/18 02:36:47 by aibn-che         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,14 +237,106 @@ void	set_open_fd(t_opened_fd *opened_fd, int fd1, int fd2, int fn)
 	}
 }
 
-void	traverse_tree_exec(t_tree *root, t_tree *parent, char **path, char **e, t_opened_fd *opened_fd)
+int	open_and_return_inf(char **infile)
+{
+	int	i;
+	int	fd_in;
+
+	i = 0;
+	fd_in = 0;
+	while(infile[i])
+	{
+		fd_in = open(infile[i++], O_RDONLY);
+		if (fd_in == -1)
+			(ft_printf("msh: %s No such file or directory\n", infile[i - 1]), exit(1));
+	}
+	return (fd_in);
+}
+
+int	open_and_return_ouf(char **outfile)
+{
+	int	i;
+	int	fd_out;
+
+	fd_out = 0;
+	i = 0;
+	while(outfile[i])
+		fd_out = open(outfile[i++], O_CREAT | O_RDWR, 0777);
+	return (fd_out);
+}
+
+void	close_opened_fds(t_tree *root)
+{
+	int	i;
+
+	i = 0;
+	while(root->cont->opened_fd && root->cont->opened_fd->fd[i] != 0)
+		close(root->cont->opened_fd->fd[i++]);
+}
+
+void	execute_within_child(t_tree *root, char **e, char *full_path)
+{
+	int fd_in = 0;
+	int fd_out = 0;
+
+	if (root->cont->infile)
+		(fd_in = open_and_return_inf(root->cont->infile));
+	if (fd_in)
+		dup2(fd_in, 0);
+	else
+		dup2(root->cont->in, 0);
+	if (root->cont->outfile)
+		fd_out = open_and_return_ouf(root->cont->outfile);	
+	if (fd_out)
+		dup2(fd_out, 1);
+	else
+		dup2(root->cont->out, 1);
+	close_opened_fds(root);
+	if (execve(full_path, root->cont->arg, e) == -1)
+		(ft_printf("msh: command not found: %s\n",root->cont->arg[0]), exit(1));
+}
+
+char	*scrap_full_path(t_tree *root, char **path)
+{
+	char	*cmd_name;
+	char	*full_path;
+	int		i;
+
+	i = 0;
+	full_path = NULL;
+	cmd_name = append_char_front(root->cont->cmd, '/');
+	while (path[i])
+	{
+		full_path = mingle_path(path[i], cmd_name);
+		if (!access(root->cont->cmd, F_OK | X_OK))
+			(free(full_path), full_path = root->cont->cmd);
+		if (access(full_path, F_OK | X_OK) != -1)
+			break ;
+		free(full_path);
+		i++;
+	}
+	return (full_path);
+}
+
+void	assign_left_leaf(int *fd, t_opened_fd *opened_fd, t_tree *root)
+{
+	root->left->cont->opened_fd = opened_fd;
+	root->left->cont->out = fd[1];
+	root->left->cont->in = root->cont->in;
+}
+
+void	assign_right_leaf(int *fd, t_opened_fd *opened_fd, t_tree *root)
+{
+	root->right->cont->opened_fd = opened_fd;
+	root->right->cont->in = fd[0];
+}
+
+void	traverse_tree_exec(t_tree *root, char **path, char **e, t_opened_fd *opened_fd)
 {
 	pid_t	pid;
 	int		fd[2];
-	char	*cmd_name;
 	char	*full_path;
-	int	i = 0;
-	(void)parent;
+
 	if (root)
 	{
 		if (root->cont->cmd && root->cont->cmd[0] == '|')
@@ -253,99 +345,24 @@ void	traverse_tree_exec(t_tree *root, t_tree *parent, char **path, char **e, t_o
 			set_open_fd(opened_fd, fd[0], fd[1], 0);
 			if 	(root->left)
 			{
-				root->left->cont->opened_fd = opened_fd;
-				root->left->cont->out = fd[1];
-				root->left->cont->in = root->cont->in;
-				// if (root->left->cont->infile)
-				// {
-				// 	fprintf(stderr, "\nmy file %s\n", root->left->cont->infile[0]);
-				// 	// int ff = open(root->left->cont->infile[0], O_RDWR | O_CREAT);
-				// 	// root->left->cont->in = ff;
-				// }
-				traverse_tree_exec(root->left, root, path, e, opened_fd);
+				assign_left_leaf(fd, opened_fd, root);
+				traverse_tree_exec(root->left, path, e, opened_fd);
 			}
 			if (root->right)
 			{
-				root->right->cont->opened_fd = opened_fd;
-				root->right->cont->in = fd[0];
-				traverse_tree_exec(root->right, root, path, e, opened_fd);
+				assign_right_leaf(fd, opened_fd, root);
+				traverse_tree_exec(root->right, path, e, opened_fd);
 			}
-			close(fd[0]);
-			close(fd[1]);
+			(close(fd[0]), close(fd[1]));
 		}
 		else
 		{
-			cmd_name = append_char_front(root->cont->cmd, '/');
-			while (path[i])
-			{
-				// free(full_path);
-				full_path = mingle_path(path[i], cmd_name);
-				if (!access(root->cont->cmd, F_OK | X_OK))
-					(free(full_path), full_path = root->cont->cmd);
-				if (access(full_path, F_OK | X_OK) != -1)
-					break ;
-				i++;
-			}
+			full_path = scrap_full_path(root, path);
 			pid = fork();
 			if (pid == 0)
-			{
-				int i = 0;
-				// printf("full_path = %s\n", full_path);
-				// printf("fd[0] = %d ---- fd[1] = %d\n", root->cont->inn, root->cont->outt);
-				// printf("out = %d\n", root->cont->out);
-				// printf("in = %d\n", root->cont->in);
-				printf("--------1----------\n");
-				int fd_in = 0;
-				int fd_out = 0;
-				if (root->cont->infile)
-				{
-					while(root->cont->infile[i])
-						fd_in = open(root->cont->infile[i++], O_RDONLY);
-				}
-				printf("my fd file is %d\n", fd_in);
-				if (fd_in)
-					dup2(fd_in, 0);
-				else
-					dup2(root->cont->in, 0);
-				if (root->cont->outfile)
-				{
-					while(root->cont->outfile[i])
-						fd_out = open(root->cont->outfile[i++], O_CREAT | O_RDWR, 0777);
-				}
-				if (fd_out)
-				{
-					printf("dd%ddddd\n", fd_out);
-					dup2(fd_out, 1);
-				}
-				else
-					dup2(root->cont->out, 1);
-				i = 0;
-				while(root->cont->opened_fd && root->cont->opened_fd->fd[i] != 0)
-					close(root->cont->opened_fd->fd[i++]);
-				execve(full_path, root->cont->arg, e);
-			}
+				execute_within_child(root, e, full_path);
 		}
 	}
-}
-
-int	count_nodes(t_tree *root, int i)
-{
-	if (root && root->cont->cmd[0] != '|')
-	{
-		printf("\ncount %s  len = %zu\n", root->cont->cmd, ft_strlen(root->cont->cmd));
-		i+=1;
-	}
-	if (root->left)
-	{
-		printf("\n root =  %s  left", root->cont->cmd);
-		i += count_nodes(root->left, i);
-	}
-	if (root->right)
-	{
-		printf("\n root =  %s  right", root->cont->cmd);
-		i += count_nodes(root->right, i);
-	}
-	return (i);
 }
 
 t_cont	*handle_execution(t_token	*head, t_env *env, char **e)
@@ -358,8 +375,6 @@ t_cont	*handle_execution(t_token	*head, t_env *env, char **e)
 	int		in;
 	int		ar;
 	(void)env;
-	// pid_t	pid;
-	// int		fd[2];
 
 	i = 0;
 	count_p = count_pipe(head);
@@ -480,16 +495,14 @@ t_cont	*handle_execution(t_token	*head, t_env *env, char **e)
 	{
 		opened_fd->fd[i++] = 0;
 	}
-	printf("build _ tree\n");
-	// printf("leaf count = %d\n",count_nodes(tt, 0));
+	// printf("build _ tree\n");
 	tt = build_tree(seg_cmd, seg_cmd);
-	treeprint(tt, 0);
+	// treeprint(tt, 0);
 	
-	traverse_tree_exec(tt, tt, en, e, opened_fd);
+	traverse_tree_exec(tt, en, e, opened_fd);
 	while (wait(NULL) != -1)
 		;
 	////////////////////////////////////////////////////////////////////////////////////////
-	// count_nodes(tt);
 	// dup2(original_stdin_fd, STDIN_FILENO);
 	// close(original_stdin_fd);
 	// close(fd[0]);
@@ -562,11 +575,15 @@ int	main(int argc, char **argv, char **env)
 
 	atexit(v);
 	// ft_signal_handler();
+
+	// ft_printf("hello wolrd");
+	// exit(0);
 	////------signals---------//////////
 	signal(SIGINT, handle_c);
 	signal(SIGQUIT, handle_c);
 	rl_catch_signals = 0;
 	////------signals---------//////////
+
 	((void)argc, (void)argv);
 	envp = NULL;
 	envp = ft_get_env(env);

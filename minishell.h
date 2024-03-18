@@ -6,7 +6,7 @@
 /*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/17 00:45:12 by aibn-che         ###   ########.fr       */
+/*   Updated: 2024/03/17 23:03:12 by aibn-che         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <termios.h>
 # include <term.h>
 # include <curses.h>
+# include <errno.h>
 # include <sys/syslimits.h>
 # define SUCCESS	0
 # define FAIL		1
@@ -116,6 +117,9 @@ typedef struct s_tree
 	struct s_tree		*left;
 	struct s_tree		*right;
 }						t_tree;
+
+
+int		ft_printf(const char *format, ...);
 
 /*==========BUILTIN FUNCIONS==========*/
 int		ft_cd(char *argument, t_env **envp);
