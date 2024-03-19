@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 21:12:35 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/18 01:38:07 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/19 01:41:40 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ t_cont	*ft_new_node_for_cont(t_tmp_cont *tmp)
 	if (tmp->cmd == NULL)
 		new->cmd = NULL;
 	else
-	{	
+	{
 		new->cmd = ft_strdup(tmp->cmd);
 		if (!new->cmd)
 			(write(2, "Error: Allocation failed\n", 25), exit(FAIL));

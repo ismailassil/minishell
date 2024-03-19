@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_expand.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: musashi <musashi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 10:36:20 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/12 17:07:26 by musashi          ###   ########.fr       */
+/*   Updated: 2024/03/19 01:54:23 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,29 +48,6 @@ static int	ft_surpass_chars(char *var)
 	while (var[i] && ft_check_if_chars_digit(var[i]))
 		i++;
 	return (i + 1);
-}
-
-/*
-*	Define the quote,
-*	that should not be included within the string
-*/
-void	ft_update_quote(char *arg, int *i, t_expand *exp)
-{
-	if (exp->quote == arg[*i])
-	{
-		exp->quote = 0;
-		(*i)++;
-	}
-	else if (!exp->quote)
-	{
-		exp->quote = arg[*i];
-		(*i)++;
-	}
-	else
-	{
-		ft_append_char(&exp->new_str, arg[*i]);
-		(*i)++;
-	}
 }
 
 static void	ft_handle_rest(t_env *env, t_expand	exp, char *arg, int *i)

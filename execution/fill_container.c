@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 13:31:07 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/18 13:38:07 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/19 01:10:09 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,35 @@ void	ft_count_alc(t_token *head, t_tmp_cont	**cont)
 	ft_check_allocation((*cont)->out_t);
 }
 
+void	ft_fill_container(t_token *head, t_tmp_cont *t, t_cc *c)
+{
+	if (head->type == CMD)
+	{
+		t->cmd = ft_strdup(head->token);
+		ft_check_allocation(t->cmd);
+	}
+	else if (head->type == ARG)
+	{
+		t->arg[c->i] = ft_strdup(head->token);
+		ft_check_allocation(t->arg[c->i++]);
+	}
+	else if (head->type == INFILE)
+	{
+		t->inf[c->j] = ft_strdup(head->next->token);
+		ft_check_allocation(t->inf[c->j++]);
+	}
+	else if (head->type == OUTFILE || head->type == APPEND)
+	{
+		t->outf[c->y] = ft_strdup(head->next->token);
+		ft_check_allocation(t->outf[c->y]);
+		if (head->type == OUTFILE)
+			t->out_t[c->y] = 1;
+		if (head->type == APPEND)
+			t->out_t[c->y] = 2;
+		c->y++;
+	}
+}
+
 //	create a function that create a node that holds what inside the t_cont
 void	ft_link_all_in_containers(t_token *head, t_cont **container)
 {
@@ -54,24 +83,11 @@ void	ft_link_all_in_containers(t_token *head, t_cont **container)
 		t->cmd = NULL;
 		while (head != NULL && head->type != PIPE)
 		{
-			if (head->type == CMD)
-				t->cmd = ft_strdup(head->token);
-			else if (head->type == ARG)
-				t->arg[c.i++] = ft_strdup(head->token);
-			else if (head->type == INFILE)
-				t->inf[c.j++] = ft_strdup(head->next->token);
-			else if (head->type == OUTFILE || head->type == APPEND)
-			{
-				t->outf[c.y] = ft_strdup(head->next->token);
-				if (head->type == OUTFILE)
-					t->out_t[c.y] = 1;
-				if (head->type == APPEND)
-					t->out_t[c.y] = 2;
-				c.y++;
-			}
+			ft_fill_container(head, t, &c);
 			head = head->next;
 		}
-		(1) && (t->arg[c.i] = 0, t->inf[c.j] = 0, t->outf[c.y] = 0, t->out_t[c.y] = 0);
+		(1) && (t->arg[c.i] = 0, t->inf[c.j] = 0, \
+			t->outf[c.y] = 0, t->out_t[c.y] = 0);
 		(ft_push_container(t, container), ft_free_tmp(&t));
 		if (head != NULL && head->type == PIPE)
 			head = head->next;

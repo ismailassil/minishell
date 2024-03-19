@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 13:48:38 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/18 21:31:59 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/19 01:02:27 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void	ft_pipe_to_outfile(t_info *info)
 {
 	ft_syscall(dup2(info->fd.outfile, STDOUT_FILENO), "dup2 (STDOUT)");
-	if (info->fd.outfile != 0)
+	if (info->fd.outfile != 1)
 		ft_syscall(close(info->fd.outfile), "close");
 	ft_syscall(close(info->pipe[1]), "close");
 }
@@ -23,7 +23,7 @@ static void	ft_pipe_to_outfile(t_info *info)
 static void	ft_pipe_to_next_child(t_info *info)
 {
 	ft_syscall(dup2(info->pipe[1], STDOUT_FILENO), "dup2 (PIPE)");
-	ft_syscall(close(info->pipe[1]), "pipe");
+	ft_syscall(close(info->pipe[1]), "close");
 	if (info->fd.outfile != 1)
 		ft_syscall(close(info->fd.outfile), "close");
 }
@@ -35,13 +35,9 @@ void	ft_child_process(t_cont *cont, t_env *env, t_info *info)
 
 	cmd = NULL;
 	ft_syscall(close(info->pipe[0]), "pipe");
-	if (ft_open_files(cont, &info->fd) == 1 || ft_check_commands(cont, env) == 1)
-		return ;
+	if (ft_open_files(cont, &info->fd, env))
+		exit(FAIL);
 	ft_default_signals();
-	
-	printf("Child number: %d |====> fd->infile: %d, fd->outfile: %d, pipe[0]: %d, pipe[1]: %d\n",\
-		info->i, info->fd.infile, info->fd.outfile, info->pipe[0], info->pipe[1]);
-		
 	ft_syscall(dup2(info->fd.infile, STDIN_FILENO), "dup2");
 	if (info->fd.infile != 0)
 		ft_syscall(close(info->fd.infile), "close");
@@ -49,6 +45,8 @@ void	ft_child_process(t_cont *cont, t_env *env, t_info *info)
 		ft_pipe_to_outfile(info);
 	else
 		ft_pipe_to_next_child(info);
+	if (ft_check_commands(cont, env) == 1)
+		exit(FAIL);
 	ft_check_(&exec.cmd_path, cont->cmd, env);
 	exec.argv = ft_join_for_argv_execve(cont);
 	exec.envp = ft_join_for_envp_execve(env);
@@ -59,36 +57,36 @@ void	ft_child_process(t_cont *cont, t_env *env, t_info *info)
 void	ft_execute_multiple_cmds(t_cont *cont, t_env *env, int nbr_cmd)
 {
 	int		i;
-	t_info	info;
 	pid_t	*id;
+	t_info	info;
+	int		status;
 
 	i = 0;
 	id = malloc(nbr_cmd * sizeof(int));
 	ft_check_allocation(id);
-	info.nbr_cmd = nbr_cmd;
+	(1) && (info.nbr_cmd = nbr_cmd, info.fd.infile = 0, info.fd.outfile = 1);
 	while (i < nbr_cmd)
 	{
-		if (pipe(info.pipe) == -1)
-			(perror("pipe"), exit(FAIL));
+		ft_syscall(pipe(info.pipe), "pipe");
 		info.i = i;
 		id[i] = fork();
-		if (id[i] == -1)
-			(perror("fork"), exit(FAIL));
+		ft_syscall(id[i], "fork");
 		if (id[i] == 0)
 			ft_child_process(cont, env, &info);
 		else
 		{
-			close(info.pipe[1]);
+			ft_syscall(close(info.pipe[1]), "close");
 			if (info.fd.infile != 0)
-				close(info.fd.infile);
+				ft_syscall(close(info.fd.infile), "close");
 			info.fd.infile = info.pipe[0];
 		}
 		i++;
 		if (cont->next != NULL)
 			cont = cont->next;
 	}
+	(ft_syscall(close(info.pipe[0]), "pipe"), free(id));
 	i = 0;
 	while (i++ < nbr_cmd)
-		wait(CHILD);
-	free(id);
+		waitpid(ALLCHILDS, &status, 0);
+	env->status = WEXITSTATUS(status);
 }

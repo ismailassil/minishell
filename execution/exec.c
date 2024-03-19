@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 15:41:50 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/18 15:43:03 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/19 01:03:35 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 void	ft_dup2(t_fd *fd)
 {
 	if (dup2(fd->infile, STDIN_FILENO) == -1)
-		(perror("dup2 (STDIN)"), exit(EXIT_FAILURE));
+		(perror("dup2 (STDIN)"), exit(FAIL));
 	if (fd->infile != 0)
 		close(fd->infile);
 	if (dup2(fd->outfile, STDOUT_FILENO) == -1)
-		(perror("dup2 (STDOUT)"), exit(EXIT_FAILURE));
+		(perror("dup2 (STDOUT)"), exit(FAIL));
 	if (fd->outfile != 1)
 		close(fd->outfile);
 }
@@ -29,10 +29,12 @@ int	ft_execute_one_cmd(t_cont *cont, t_env *env)
 	t_execve	exec;
 	t_fd		fd;
 	pid_t		id;
+	int			status;
 
 	if (cont == NULL)
 		return (1);
-	if (ft_open_files(cont, &fd) == 1 || ft_check_commands(cont, env) == 1)
+	(1) && (fd.infile = 0, fd.outfile = 1);
+	if (ft_open_files(cont, &fd, env) == 1 || ft_check_commands(cont, env) == 1)
 		return (1);
 	id = fork();
 	ft_syscall(id, "fork");
@@ -46,7 +48,8 @@ int	ft_execute_one_cmd(t_cont *cont, t_env *env)
 		if (execve(exec.cmd_path, exec.argv, exec.envp) == -1)
 			(perror("msh: execve"), exit(FAIL));
 	}
-	wait(CHILD);
+	waitpid(CHILD, &status, 0);
+	env->status = WEXITSTATUS(status);
 	return (0);
 }
 
@@ -65,7 +68,6 @@ void	ft_execution(t_token **token, t_env *env)
 		head = head->next;
 	}
 	ft_link_all_in_containers(*token, &container);
-	// ft_print_container(container);
 	if (nbr_cmd == 1 || nbr_cmd == 0)
 		ft_execute_one_cmd(container, env);
 	else if (nbr_cmd > 1)

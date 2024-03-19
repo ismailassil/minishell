@@ -6,36 +6,38 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:43:43 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/18 15:18:44 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/19 01:22:03 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	ft_open_files(t_cont *cont, t_fd *fd)
+int	ft_open_files(t_cont *cont, t_fd *fd, t_env *env)
 {
-	int	i;
-	int	fd_infile[OPEN_MAX];
-	int	fd_outfile[OPEN_MAX];
+	int		i;
+	t_fd_	fd_;
 
-	(1) && (i = -1, fd->outfile = 1);
+	i = -1;
 	while (cont->outfile && cont->outfile[++i] != 0)
 	{
 		if (cont->outfile_type[i] == 1)
-			fd_outfile[i] = open(cont->outfile[i], O_CREAT | O_WRONLY, 0644);
+			fd_.outfile[i] = open(cont->outfile[i], O_CREAT | O_WRONLY, 0644);
 		else if (cont->outfile_type[i] == 2)
-			fd_outfile[i] = open(cont->outfile[i], O_CREAT | O_WRONLY | O_APPEND, 0644);
-		fd->outfile = fd_outfile[i];
-		if (fd_outfile[i] == -1)
-			return (write(2, "msh: ", 5), perror(cont->outfile[i]), 1);
+			fd_.outfile[i] = open(cont->outfile[i], \
+				O_CREAT | O_WRONLY | O_APPEND, 0644);
+		fd->outfile = fd_.outfile[i];
+		if (fd_.outfile[i] == -1)
+			return (ft_error("msh: "), perror(cont->outfile[i]), \
+				env->status = 1, 1);
 	}
-	(1) && (i = -1, fd->infile = 0);
+	i = -1;
 	while (cont->infile && cont->infile[++i] != 0)
 	{
-		fd_infile[i] = open(cont->infile[i], O_RDONLY);
-		fd->infile = fd_infile[i];
-		if (fd_infile[i] == -1)
-			return (write(2, "msh: ", 5), perror(cont->infile[i]), 1);
+		fd_.infile[i] = open(cont->infile[i], O_RDONLY);
+		fd->infile = fd_.infile[i];
+		if (fd_.infile[i] == -1)
+			return (ft_error("msh: "), perror(cont->infile[i]), \
+				env->status = 1, 1);
 	}
 	return (0);
 }

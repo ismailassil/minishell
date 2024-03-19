@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 16:33:28 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/18 01:03:19 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/19 01:41:26 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,35 +89,32 @@ void	ft_init_tokens(t_token **head, char *str)
 
 static void	*ft_parse_space(char *input, char **shell)
 {
-	int	i;
-	int	j;
-	int	flag;
-	int	quote;
-	int	tmp;
+	t_in	f;
 
-	(1) && (i = 0, flag = 0, quote = 0, j = 0);
-	while (input[j] != 0)
+	(1) && (f.i = 0, f.flag = 0, f.quote = 0, f.j = 0);
+	while (input[f.j] != 0)
 	{
-		if (input[j] == '\"' || input[j] == '\'')
-			(1) && (tmp = j, flag = 1, quote = input[j]);
-		if (flag == 0 && ((input[j] == '>' && input[j + 1] == '>') || (input[j]  == '<'
-			&& input[j + 1] == '<')))
+		if (input[f.j] == '\"' || input[f.j] == '\'')
+			(1) && (f.tmp = f.j, f.flag = 1, f.quote = input[f.j]);
+		if (f.flag == 0 && ((input[f.j] == '>' && input[f.j + 1] == '>') \
+			|| (input[f.j] == '<' && input[f.j + 1] == '<')))
 		{
-			(1) && ((*shell)[i] = ' ', (*shell)[i + 1] = input[j]);
-			(1) && ((*shell)[i + 2] = input[j + 1], (*shell)[i + 3] = ' ');
-			(1) && (i += 4, j += 2);
+			(1) && ((*shell)[f.i] = ' ', (*shell)[f.i + 1] = input[f.j]);
+			(1) && ((*shell)[f.i + 2] = input[f.j + 1], (*shell)[f.i + 3] = ' ');
+			(1) && (f.i += 4, f.j += 2);
 		}
-		else if (flag == 0 && (input[j] == '>' || input[j] == '<' || input[j] == '|' ))
-			(1) && ((*shell)[i] = ' ', (*shell)[i + 1] = input[j], \
-				(*shell)[i + 2] = ' ', i += 3, j++);
+		else if (f.flag == 0 && (input[f.j] == '>' || input[f.j] == '<' \
+			|| input[f.j] == '|' ))
+			(1) && ((*shell)[f.i] = ' ', (*shell)[f.i + 1] = input[f.j], \
+				(*shell)[f.i + 2] = ' ', f.i += 3, f.j++);
 		else
 		{
-			(1) && ((*shell)[i] = input[j], i++, j++);
-			if (input[j] && tmp != j && input[j] == quote)
-				(1) && ((*shell)[i] = input[j], i++, j++, flag = 0, quote = 0);
+			(1) && ((*shell)[f.i] = input[f.j], f.i++, f.j++);
+			if (input[f.j] && f.tmp != f.j && input[f.j] == f.quote)
+				(1) && ((*shell)[f.i] = input[f.j], f.i++, f.j++, f.flag = 0, f.quote = 0);
 		}
 	}
-	(*shell)[i] = '\0';
+	(*shell)[f.i] = '\0';
 	return (shell);
 }
 
@@ -127,27 +124,25 @@ static void	*ft_parse_space(char *input, char **shell)
 */
 char	*ft_add_space_to_input(char *input)
 {
-	int		i;
-	int		count;
-	int		flag;
-	int		quote;
 	char	*shell;
+	t_in	inf;
 
-	(1) && (i = 0, flag = 0, quote = 0, count = 0);
-	while (input[i] != '\0')
+	(1) && (inf.i = 0, inf.flag = 0, inf.quote = 0, inf.count = 0);
+	while (input[inf.i] != '\0')
 	{
-		if (input[i] == '\"' || input[i] == '\'')
-			(1) && (flag = 1, quote = input[i]);
-		if (flag == 0 && ((input[i] == '>' && input[i + 1] == '>') || (input[i]  == '<'
-			&& input[i + 1] == '<')))
-			count++;
-		else if (flag == 0 && (input[i] == '>' || input[i] == '<' || input[i] == '|'))
-			count++;
-		i++;
-		if (input[i] != '\0' && input[i] == quote)
-			(1) && (flag = 0, i++);
+		if (input[inf.i] == '\"' || input[inf.i] == '\'')
+			(1) && (inf.flag = 1, inf.quote = input[inf.i]);
+		if (inf.flag == 0 && ((input[inf.i] == '>' && input[inf.i + 1] == '>') \
+			|| (input[inf.i] == '<' && input[inf.i + 1] == '<')))
+			inf.count++;
+		else if (inf.flag == 0 && (input[inf.i] == '>' \
+			|| input[inf.i] == '<' || input[inf.i] == '|'))
+			inf.count++;
+		inf.i++;
+		if (input[inf.i] != '\0' && input[inf.i] == inf.quote)
+			(1) && (inf.flag = 0, inf.i++);
 	}
-	shell = (char *)malloc((i + 1 + (count * 2)) * sizeof(char));
+	shell = (char *)malloc((inf.i + 1 + (inf.count * 2)) * sizeof(char));
 	if (!shell)
 		exit(EXIT_FAILURE);
 	ft_parse_space(input, &shell);

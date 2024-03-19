@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/18 17:28:14 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/19 02:20:15 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@
 # define ARG		7
 # define DELIMITER	8
 # define CHILD		0
+# define ALLCHILDS	-1
 # define MAX		1024
 # define GREEN		"\x1b[1;32m"
 # define YELLOW_	"\x1b[0;33m"
@@ -80,6 +81,7 @@ typedef struct s_expand
 typedef struct s_env
 {
 	char			*value;
+	int				status;
 	struct s_env	*next;
 }					t_env;
 
@@ -89,6 +91,16 @@ typedef struct s_tokens
 	int				type;
 	struct s_tokens	*next;
 }					t_token;
+
+typedef struct s_in
+{
+	int	count;
+	int	i;
+	int	j;
+	int	flag;
+	int	quote;
+	int	tmp;
+}		t_in;
 
 typedef struct s_count
 {
@@ -122,11 +134,17 @@ typedef struct s_fd
 	int	outfile;
 }		t_fd;
 
+typedef struct s_fd_
+{
+	int	infile[OPEN_MAX];
+	int	outfile[OPEN_MAX];
+}		t_fd_;
+
 typedef struct s_info
 {
 	t_fd	fd;
 	int		pipe[2];
-	int 	nbr_cmd;
+	int		nbr_cmd;
 	int		i;
 }			t_info;
 
@@ -156,6 +174,7 @@ void	ft_tokenize(t_token **str);
 void	ft_expand_argument(t_env *env, t_token **linked_list);
 bool	ft_check_syntax(t_token *str);
 void	ft_remove_quotes(t_token **linked_list);
+void	ft_update_quote(char *arg, int *i, t_expand *exp);
 //	Utils function for Parsing
 void	ft_error(char *str);
 void	ft_append_char(char **str, int c);
@@ -173,13 +192,13 @@ void	ft_check_(char **envp_path, char *cmd, t_env *env);
 void	ft_check_allocation(void *str);
 void	ft_syscall(int return_, char *str);
 void	ft_f(char **str);
-int		ft_open_files(t_cont *cont, t_fd *fd);
+int		ft_open_files(t_cont *cont, t_fd *fd, t_env *env);
 //	CONTAINER FUNCTIONS
 void	ft_link_all_in_containers(t_token *head, t_cont **container);
 void	ft_count_alc(t_token *head, t_tmp_cont	**cont);
 void	ft_free_tmp(t_tmp_cont **tmp);
 //	BUILTINS FUNCTIONS
-void	execute_echo(t_cont *cont);
+void	execute_echo(t_cont *cont, t_env **envp);
 void	execute_cd(t_cont *cont, t_env **envp);
 void	execute_env(t_cont *cont, t_env **envp);
 void	execute_export(t_cont *cont, t_env **envp);

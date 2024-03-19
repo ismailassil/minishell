@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:06 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/18 01:54:03 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/18 23:23:51 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ int	main(int argc, char **argv, char **env)
 			add_history(line);
 		ft_parse_input_from_shell(envp, line);
 		free(line);
+		printf(BLUE"[status ($?) = %d]\n"RESET, envp->status);
 		// printf("\n");
 	}
 }

@@ -6,20 +6,20 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 21:10:11 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/17 21:10:30 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/19 02:19:23 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	execute_echo(t_cont *cont)
+void	execute_echo(t_cont *cont, t_env **envp)
 {
 	int	n;
 	int	i;
 
 	(1) && (n = 0, i = 0);
-	if (cont->arg &&
-		ft_strncmp(cont->arg[0], "-n", ft_strlen(cont->arg[0])) == 0)
+	if (cont->arg
+		&& ft_strncmp(cont->arg[0], "-n", ft_strlen(cont->arg[0])) == 0)
 	{
 		n = 1;
 		i++;
@@ -33,6 +33,7 @@ void	execute_echo(t_cont *cont)
 	}
 	if (n == 0)
 		write(1, "\n", 1);
+	(*envp)->status = 0;
 }
 
 void	execute_cd(t_cont *cont, t_env **envp)
@@ -50,10 +51,13 @@ void	execute_env(t_cont *cont, t_env **envp)
 		write(2, "env: ", 5);
 		ft_error(cont->arg[0]);
 		ft_error(": No such file or directory\n");
-		exit(FAIL);
+		(*envp)->status = 127;
 	}
 	else
+	{
 		ft_env(*envp);
+		(*envp)->status = 0;
+	}
 }
 
 void	execute_export(t_cont *cont, t_env **envp)
@@ -66,6 +70,7 @@ void	execute_export(t_cont *cont, t_env **envp)
 	else
 		while (cont->arg[i] != 0)
 			(1) && (ft_export(cont->arg[i], *envp), i++);
+	(*envp)->status = 0;
 }
 
 void	execute_unset(t_cont *cont, t_env **envp)
@@ -75,4 +80,5 @@ void	execute_unset(t_cont *cont, t_env **envp)
 	i = 0;
 	while (cont->arg && cont->arg[i] != 0)
 		(1) && (ft_unset(*envp, cont->arg[i]), i++);
+	(*envp)->status = 0;
 }
