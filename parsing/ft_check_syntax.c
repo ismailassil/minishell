@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 14:55:19 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/18 01:50:12 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/19 17:33:38 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,15 @@ bool	ft_check_syntax(t_token *str)
 
 	head = str;
 	if (head && head->type == PIPE)
-		return (ft_error("msh: parse error\n"), false);
+		return (false);
 	while (head != NULL)
 	{
 		if (!ft_check_quotes(head->token))
-			return (ft_error("msh: parse error\n"), false);
+			return (false);
 		else
 		{
 			if (ft_check_rest(head) == 1)
-				return (ft_error("msh: parse error\n"), false);
+				return (false);
 		}
 		head = head->next;
 	}

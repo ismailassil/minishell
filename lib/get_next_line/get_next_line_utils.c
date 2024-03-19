@@ -6,13 +6,13 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 14:30:29 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/19 03:20:05 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/19 17:17:16 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t	ft_strlen(char *str)
+size_t	ft_strlen_(char *str)
 {
 	size_t	len;
 
@@ -53,14 +53,14 @@ size_t	ft_strchr_(const char *str)
 	return (0);
 }
 
-char	*ft_strjoin(char **s1, char *s2)
+char	*_ft_strjoin(char **s1, char *s2)
 {
 	char	*ptr;
 	size_t	len;
 	size_t	i;
 
 	i = 0;
-	len = ft_strlen((*s1)) + ft_strlen(s2);
+	len = ft_strlen_((*s1)) + ft_strlen_(s2);
 	ptr = ft_calloc_((len + 1), sizeof(char));
 	if (!ptr)
 		return (free((*s1)), (*s1) = NULL, NULL);

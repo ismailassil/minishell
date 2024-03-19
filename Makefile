@@ -6,18 +6,18 @@
 #    By: iassil <iassil@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/27 14:35:22 by iassil            #+#    #+#              #
-#    Updated: 2024/03/19 03:17:06 by iassil           ###   ########.fr        #
+#    Updated: 2024/03/19 17:21:43 by iassil           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC			=	clang
 CC			+=	-Wall -Wextra -Werror
 # READLINEDIR	=	$(shell brew --prefix readline)
-# CC			+=	-fsanitize=address -fsanitize=undefined -g
+CC			+=	-fsanitize=address -fsanitize=undefined -g
 LINKER		=	-lreadline
 RM			=	rm -f
 NAME		=	minishell
-HEADER_H	=	minishell.h
+HEADER_H	=	minishell.h			lib/get_next_line/get_next_line.h
 
 SRC 	=	t_utils/t_env_utils.c	t_utils/t_token_utils.c			t_utils/t_cont_utils.c		\
 			t_utils/utils.c			utils.c							signals.c					\
@@ -25,7 +25,9 @@ SRC 	=	t_utils/t_env_utils.c	t_utils/t_token_utils.c			t_utils/t_cont_utils.c		\
 
 SRC		+=	execution/exec.c		execution/proc_utils.c			execution/exec_builtin.c	\
 			execution/utils.c		execution/fill_container.c		execution/mutli_cmds.c		\
-			execution/exec_builtin_utils.c
+			here_doc.c				execution/exec_builtin_utils.c
+
+SRC		+=	lib/get_next_line/get_next_line.c			lib/get_next_line/get_next_line_utils.c
 
 SRC		+=	parsing/parsing.c		parsing/ft_tokenize.c			parsing/ft_check_syntax.c	\
 			parsing/utils.c			parsing/ft_remove_quotes.c		parsing/ft_split_tokens.c

@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 15:33:58 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/19 02:13:25 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/19 18:11:05 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,12 +109,11 @@ int	ft_cd(char *argument, t_env **envp)
 	if (chdir(dir) == -1)
 		return ((*envp)->status = 1, free(dir), 1);
 	if (getcwd(buf, sizeof(buf)) != NULL)
-		printf("%s\n", buf);
+		(*envp)->status = 0;
 	else
-		write(2, "msh: syntax not supported\n", 26);
+		(1) && (ft_error( "msh: syntax not supported\n"), (*envp)->status = 258);
 	(ft_add_current_pwd(envp, buf), ft_add_old_pwd(envp, current_dir));
 	free(dir);
-	(*envp)->status = 0;
 	return (0);
 }
 

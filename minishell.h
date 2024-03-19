@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/19 03:20:44 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/19 18:03:20 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # include <curses.h>
 # include <sys/fcntl.h>
 # include <sys/syslimits.h>
-# include "get_next_line/get_next_line.h"
+# include "lib/get_next_line/get_next_line.h"
 # define SUCCESS	0
 # define FAIL		1
 # define CMD		0
@@ -92,6 +92,15 @@ typedef struct s_tokens
 	int				type;
 	struct s_tokens	*next;
 }					t_token;
+
+typedef struct s_heredoc
+{
+	char	*line;
+	char	*hold;
+	char	*del;
+	pid_t	id;
+	int		status;
+}			t_heredoc;
 
 typedef struct s_in
 {
@@ -184,6 +193,8 @@ int		ft_handle_inregulare_cases(t_expand *exp, int c, int *i);
 int		ft_check_quotes(char *str);
 
 /*==========EXECUTION FUNCIONS==========*/
+int		ft_here_doc(char *delimiter, t_env *env);
+void	ft_here_doc_parsing(t_token *head, t_env *env);
 void	ft_execution(t_token **token, t_env *env);
 void	ft_execute_multiple_cmds(t_cont *cont, t_env *env, int nbr_cmd);
 int		ft_check_commands(t_cont *cont, t_env *env);
@@ -210,6 +221,7 @@ int		ft_check_if_chars_digit(int c);
 void	ft_print(t_token *lst);
 void	ft_print_types(t_token *str);
 void	ft_print_container(t_cont *head);
+void	ft_putstr(char *str, int fd);
 
 /*==========SIGNAL FUNCIONS==========*/
 void	ft_signal_handler(void);
