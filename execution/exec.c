@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 15:41:50 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/19 01:03:35 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/19 20:36:00 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,53 +24,16 @@ void	ft_dup2(t_fd *fd)
 		close(fd->outfile);
 }
 
-int	ft_execute_one_cmd(t_cont *cont, t_env *env)
-{
-	t_execve	exec;
-	t_fd		fd;
-	pid_t		id;
-	int			status;
-
-	if (cont == NULL)
-		return (1);
-	(1) && (fd.infile = 0, fd.outfile = 1);
-	if (ft_open_files(cont, &fd, env) == 1 || ft_check_commands(cont, env) == 1)
-		return (1);
-	id = fork();
-	ft_syscall(id, "fork");
-	if (id == 0)
-	{
-		ft_default_signals();
-		ft_dup2(&fd);
-		ft_check_(&exec.cmd_path, cont->cmd, env);
-		exec.argv = ft_join_for_argv_execve(cont);
-		exec.envp = ft_join_for_envp_execve(env);
-		if (execve(exec.cmd_path, exec.argv, exec.envp) == -1)
-			(perror("msh: execve"), exit(FAIL));
-	}
-	waitpid(CHILD, &status, 0);
-	env->status = WEXITSTATUS(status);
-	return (0);
-}
-
 void	ft_execution(t_token **token, t_env *env)
 {
 	t_token			*head;
 	t_cont			*container;
-	unsigned int	nbr_cmd;
+	unsigned int	nbr_cont;
 
 	head = *token;
-	nbr_cmd = 0;
-	while (head)
-	{
-		if (head->type == CMD)
-			nbr_cmd++;
-		head = head->next;
-	}
+	nbr_cont = 0;
 	ft_link_all_in_containers(*token, &container);
-	if (nbr_cmd == 1 || nbr_cmd == 0)
-		ft_execute_one_cmd(container, env);
-	else if (nbr_cmd > 1)
-		ft_execute_multiple_cmds(container, env, nbr_cmd);
+	nbr_cont = ft_t_cont_len(container);
+	ft_execute_multiple_cmds(container, env, nbr_cont);
 	ft_free_containers(&container);
 }

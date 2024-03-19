@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:43:43 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/19 01:22:03 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/19 20:07:32 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,23 +21,23 @@ int	ft_open_files(t_cont *cont, t_fd *fd, t_env *env)
 	while (cont->outfile && cont->outfile[++i] != 0)
 	{
 		if (cont->outfile_type[i] == 1)
-			fd_.outfile[i] = open(cont->outfile[i], O_CREAT | O_WRONLY, 0644);
+			fd_.outfile = open(cont->outfile[i], O_CREAT | O_WRONLY, 0644);
 		else if (cont->outfile_type[i] == 2)
-			fd_.outfile[i] = open(cont->outfile[i], \
-				O_CREAT | O_WRONLY | O_APPEND, 0644);
-		fd->outfile = fd_.outfile[i];
-		if (fd_.outfile[i] == -1)
+			fd_.outfile = open(cont->outfile[i], \
+				O_CREAT | O_RDWR | O_APPEND, 0644);
+		if (fd_.outfile == -1)
 			return (ft_error("msh: "), perror(cont->outfile[i]), \
 				env->status = 1, 1);
+		fd->outfile = fd_.outfile;
 	}
 	i = -1;
 	while (cont->infile && cont->infile[++i] != 0)
 	{
-		fd_.infile[i] = open(cont->infile[i], O_RDONLY);
-		fd->infile = fd_.infile[i];
-		if (fd_.infile[i] == -1)
+		fd_.infile = open(cont->infile[i], O_RDONLY);
+		if (fd_.infile == -1)
 			return (ft_error("msh: "), perror(cont->infile[i]), \
 				env->status = 1, 1);
+		fd->infile = fd_.infile;
 	}
 	return (0);
 }

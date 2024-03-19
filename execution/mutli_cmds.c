@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 13:48:38 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/19 01:02:27 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/19 20:32:59 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,16 @@ static void	ft_pipe_to_outfile(t_info *info)
 
 static void	ft_pipe_to_next_child(t_info *info)
 {
-	ft_syscall(dup2(info->pipe[1], STDOUT_FILENO), "dup2 (PIPE)");
-	ft_syscall(close(info->pipe[1]), "close");
-	if (info->fd.outfile != 1)
-		ft_syscall(close(info->fd.outfile), "close");
+	if (info->fd.outfile == 1)
+	{
+		ft_syscall(dup2(info->pipe[1], STDOUT_FILENO), "dup2 (PIPE)");
+		ft_syscall(close(info->pipe[1]), "close");
+	}
+	else
+	{
+		ft_syscall(dup2(info->fd.outfile, STDOUT_FILENO), "dup2 (STDOUT)");
+		ft_syscall(close(info->pipe[1]), "close");
+	}
 }
 
 void	ft_child_process(t_cont *cont, t_env *env, t_info *info)
@@ -35,7 +41,7 @@ void	ft_child_process(t_cont *cont, t_env *env, t_info *info)
 
 	cmd = NULL;
 	ft_syscall(close(info->pipe[0]), "pipe");
-	if (ft_open_files(cont, &info->fd, env))
+	if (ft_open_files(cont, &info->fd, env) == 1)
 		exit(FAIL);
 	ft_default_signals();
 	ft_syscall(dup2(info->fd.infile, STDIN_FILENO), "dup2");
@@ -46,7 +52,7 @@ void	ft_child_process(t_cont *cont, t_env *env, t_info *info)
 	else
 		ft_pipe_to_next_child(info);
 	if (ft_check_commands(cont, env) == 1)
-		exit(FAIL);
+		exit(env->status);
 	ft_check_(&exec.cmd_path, cont->cmd, env);
 	exec.argv = ft_join_for_argv_execve(cont);
 	exec.envp = ft_join_for_envp_execve(env);
@@ -62,6 +68,13 @@ void	ft_execute_multiple_cmds(t_cont *cont, t_env *env, int nbr_cmd)
 	int		status;
 
 	i = 0;
+	if (cont == NULL)
+		return ;
+	if (nbr_cmd == 0 || nbr_cmd == 1)
+	{
+		if (ft_open_files(cont, &info.fd, env) == 1 || ft_check_commands(cont, env) == 1)
+			return ;
+	}
 	id = malloc(nbr_cmd * sizeof(int));
 	ft_check_allocation(id);
 	(1) && (info.nbr_cmd = nbr_cmd, info.fd.infile = 0, info.fd.outfile = 1);

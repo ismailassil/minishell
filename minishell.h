@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/19 18:03:20 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/19 19:38:07 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,8 +146,8 @@ typedef struct s_fd
 
 typedef struct s_fd_
 {
-	int	infile[OPEN_MAX];
-	int	outfile[OPEN_MAX];
+	int	infile;
+	int	outfile;
 }		t_fd_;
 
 typedef struct s_info

@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 03:21:09 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/19 18:03:00 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/19 19:16:41 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ void	ft_here_doc_parsing(t_token *head, t_env *env)
 			}
 			ft_syscall(waitpid(CHILD, &info.status, 0), "waitpid");
 			env->status = WEXITSTATUS(info.status);
+			if (WIFSIGNALED(info.status) && WTERMSIG(info.status) == SIGINT)
+				return ;
 		}
 		head = head->next;
 	}
@@ -88,7 +90,6 @@ int	ft_here_doc(char *delimiter, t_env *env)
 	int			pipefd[2];
 	t_heredoc	info;
 
-
 	ft_syscall(pipe(pipefd), "pipe");
 	info.id = fork();
 	ft_syscall(info.id, "fork");
@@ -104,5 +105,7 @@ int	ft_here_doc(char *delimiter, t_env *env)
 	ft_syscall(close(pipefd[1]), "close");
 	ft_syscall(waitpid(CHILD, &info.status, 0), "waitpid");
 	env->status = WEXITSTATUS(info.status);
+	if (WIFSIGNALED(info.status) && WTERMSIG(info.status) == SIGINT)
+		exit(FAIL);
 	return (pipefd[0]);
 }
