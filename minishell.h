@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/19 02:20:15 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/19 03:20:44 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <curses.h>
 # include <sys/fcntl.h>
 # include <sys/syslimits.h>
+# include "get_next_line/get_next_line.h"
 # define SUCCESS	0
 # define FAIL		1
 # define CMD		0
