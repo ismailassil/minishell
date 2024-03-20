@@ -6,7 +6,7 @@
 /*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:06 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/20 02:28:04 by aibn-che         ###   ########.fr       */
+/*   Updated: 2024/03/20 03:06:24 by aibn-che         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -344,10 +344,7 @@ void	execute_within_child(t_tree *root, char **e, char *full_path)
 	if (root->cont->infile || root->cont->her_doc)
 		(fd_in = open_and_return_inf(root));
 	if (fd_in)
-	{
 		dup2(fd_in, 0);
-		// close(fd_in);
-	}
 	else
 		dup2(root->cont->in, 0);
 	////////////////////infile//////////////////////////
