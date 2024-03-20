@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 21:10:11 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/19 02:19:23 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/20 21:27:53 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@ void	execute_echo(t_cont *cont, t_env **envp)
 		n = 1;
 		i++;
 	}
-	while (cont->arg[i] != 0)
+	while (cont->arg[0] != 0 && cont->arg && cont->arg[i] != 0)
 	{
 		ft_echo(cont->arg[i]);
 		i++;
-		if (cont->arg[i])
+		if (cont->arg && cont->arg[i])
 			write(1, " ", 1);
 	}
 	if (n == 0)

@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/20 18:09:06 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/20 20:45:07 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ typedef struct s_info
 {
 	t_fd	fd;
 	int		pipe[2];
-	int		nbr_cmd;
+	int		nbr_cont;
 	pid_t	*id;
 	int		i;
 }			t_info;
@@ -215,7 +215,7 @@ int		ft_here_doc_parsing(t_token *head, t_env *env);
 void	ft_execution(t_token **token, t_env *env);
 void	ft_execute_multiple_cmds(t_cont *cont, t_env *env, \
 	t_info *info, int nbr_cmd);
-int		ft_check_commands(t_cont *cont, t_env *env);
+int		ft_check_commands(t_cont *cont, t_env *env, t_info *info, int j);
 char	**ft_join_for_envp_execve(t_env *env);
 char	**ft_join_for_argv_execve(t_cont *cont);
 void	ft_check_(char **envp_path, char *cmd, t_env *env);

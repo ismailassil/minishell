@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 13:48:38 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/20 14:26:16 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/20 21:12:29 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,11 @@ void	ft_child_process(t_cont *cont, t_env *env, t_info *info)
 	ft_syscall(dup2(info->fd.infile, STDIN_FILENO), "dup2");
 	if (info->fd.infile != 0)
 		ft_syscall(close(info->fd.infile), "close");
-	if (info->i == (info->nbr_cmd - 1))
+	if (info->i == (info->nbr_cont - 1))
 		ft_pipe_to_outfile(info);
 	else
 		ft_pipe_to_next_child(info);
-	if (ft_check_commands(cont, env) == 1)
+	if (ft_check_commands(cont, env, info, 0) == 1)
 		exit(env->status);
 	ft_check_(&exec.cmd_path, cont->cmd, env);
 	exec.argv = ft_join_for_argv_execve(cont);
@@ -60,10 +60,9 @@ void	ft_child_process(t_cont *cont, t_env *env, t_info *info)
 		(perror("msh: execve"), exit(FAIL));
 }
 
-void	ft_execute_child(t_cont *cont, \
-	t_env *env, t_info *info, int nbr_cmd)
+void	ft_execute_child(t_cont *cont, t_env *env, t_info *info)
 {
-	while (info->i < nbr_cmd)
+	while (info->i < info->nbr_cont)
 	{
 		ft_syscall(pipe(info->pipe), "pipe");
 		info->id[info->i] = fork();
@@ -84,24 +83,25 @@ void	ft_execute_child(t_cont *cont, \
 }
 
 void	ft_execute_multiple_cmds(t_cont *cont, \
-	t_env *env, t_info *info, int nbr_cmd)
+	t_env *env, t_info *info, int nbr_cont)
 {
 	int		status;
 
 	info->i = 0;
+	(1) && (info->fd.infile = 0, info->fd.outfile = 1);
+	info->nbr_cont = nbr_cont;
 	if (cont == NULL)
 		return ;
-	if (cont->cmd == 0 && ft_open_files(cont, &info->fd, env) == 1)
+	if ((nbr_cont == 0 || nbr_cont == 1)
+		&& (ft_open_files(cont, &info->fd, env) == 1
+			|| ft_check_commands(cont, env, info, 1) == 1))
 		return ;
-	if (nbr_cmd == 1 && ft_check_commands(cont, env) == 1)
-		return ;
-	info->id = malloc(nbr_cmd * sizeof(int));
+	info->id = malloc(nbr_cont * sizeof(int));
 	ft_check_allocation(info->id);
-	(1) && (info->nbr_cmd = nbr_cmd, info->fd.infile = 0, info->fd.outfile = 1);
-	ft_execute_child(cont, env, info, nbr_cmd);
+	ft_execute_child(cont, env, info);
 	(ft_syscall(close(info->pipe[0]), "pipe"), free(info->id));
 	info->i = 0;
-	while (info->i++ < nbr_cmd)
+	while (info->i++ < nbr_cont)
 		waitpid(ALLCHILDS, &status, 0);
 	env->status = WEXITSTATUS(status);
 }

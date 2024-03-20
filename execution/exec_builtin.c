@@ -6,32 +6,49 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 16:55:35 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/20 18:09:16 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/20 21:05:58 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	ft_check_commands(t_cont *cont, t_env *env)
+int	ft_check_commands(t_cont *cont, t_env *env, t_info *info, int j)
 {
 	char	*cmd;
+	int		flag;
+	int		original_stdout;
 
-	cmd = cont->cmd;
+	(1) && (cmd = cont->cmd, flag = 0);
 	if (cmd == NULL)
 		return (env->status = 0, 1);
+	if (j == 1 && info->nbr_cont == 1 && info->fd.outfile != 1)
+	{
+		original_stdout = dup(STDOUT_FILENO);
+		ft_syscall(dup2(info->fd.outfile, STDOUT_FILENO), "dup2");
+		close(info->fd.outfile);
+	}
 	if (ft_strncmp(cmd, "echo", ft_strlen(cmd)) == 0)
-		return (execute_echo(cont, &env), 1);
+		(1) && (execute_echo(cont, &env), flag = 1);
 	else if (ft_strncmp(cmd, "cd", ft_strlen(cmd)) == 0)
-		return (execute_cd(cont, &env), 1);
+		(1) && (execute_cd(cont, &env), flag = 1);
 	else if (ft_strncmp(cmd, "env", ft_strlen(cmd)) == 0)
-		return (execute_env(cont, &env), 1);
+		(1) && (execute_env(cont, &env), flag = 1);
 	else if (ft_strncmp(cmd, "export", ft_strlen(cmd)) == 0)
-		return (execute_export(cont, &env), 1);
+		(1) && (execute_export(cont, &env), flag = 1);
 	else if (ft_strncmp(cmd, "pwd", ft_strlen(cmd)) == 0)
-		return (ft_pwd(env), 1);
+		(1) && (ft_pwd(env), flag = 1);
 	else if (ft_strncmp(cmd, "unset", ft_strlen(cmd)) == 0)
-		return (execute_unset(cont, &env), 1);
+		(1) && (execute_unset(cont, &env), flag = 1);
 	else if (ft_strncmp(cmd, "exit", ft_strlen(cmd)) == 0)
-		return (ft_exit(), 1);
+		(1) && (ft_exit(), flag = 1);
+	if (j == 1 && flag == 1 && info->nbr_cont == 1 && info->fd.outfile != 1)
+	{
+		ft_syscall(dup2(original_stdout, STDOUT_FILENO), "dup2");
+		close(original_stdout);
+		close(info->fd.outfile);
+		return (1);
+	}
+	else if (flag == 1)
+		return (1);
 	return (0);
 }
