@@ -6,7 +6,7 @@
 #    By: iassil <iassil@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/27 14:35:22 by iassil            #+#    #+#              #
-#    Updated: 2024/03/20 04:02:35 by iassil           ###   ########.fr        #
+#    Updated: 2024/03/20 13:32:43 by iassil           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,25 +19,24 @@ RM			=	rm -f
 NAME		=	minishell
 HEADER_H	=	minishell.h			lib/get_next_line/get_next_line.h
 
-MAIN_FILES 	=	t_utils/t_env_utils.c	t_utils/t_token_utils.c			t_utils/t_cont_utils.c		\
-				t_utils/utils.c			mutils.c						signals.c					\
-				minishell.c
+MAIN_FILES	=	mutils.c				signals.c						minishell.c
 
-EXEC_FILES	+=	execution/exec.c		execution/proc_utils.c			execution/exec_builtin.c	\
+UTILS_FILES =	t_utils/t_env_utils.c	t_utils/t_token_utils.c			t_utils/t_cont_utils.c		\
+				t_utils/t_utils.c
+
+EXEC_FILES	=	execution/exec.c		execution/proc_utils.c			execution/exec_builtin.c	\
 				execution/eutils.c		execution/fill_container.c		execution/mutli_cmds.c		\
 				execution/here_doc.c	execution/exec_builtin_utils.c
 
-GNL_FILES	+=	lib/get_next_line/get_next_line.c			lib/get_next_line/get_next_line_utils.c
-
-PARS_FILES	+=	parsing/parsing.c		parsing/ft_tokenize.c			parsing/ft_check_syntax.c	\
+PARS_FILES	=	parsing/parsing.c		parsing/ft_tokenize.c			parsing/ft_check_syntax.c	\
 				parsing/putils.c		parsing/ft_remove_quotes.c		parsing/ft_split_tokens.c	\
 				parsing/ft_expand.c
 
-BUILT_FILES	+=	builtin_ft/utils.c				builtin_ft/ft_echo.c		\
+BUILT_FILES	=	builtin_ft/utils.c		builtin_ft/ft_echo.c			builtin_ft/ft_pwd.c\
 				builtin_ft/ft_exit.c	builtin_ft/ft_export.c			builtin_ft/ft_unset.c		\
-				builtin_ft/ft_cd.c		builtin_ft/ft_env.c				builtin_ft/ft_pwd.c
+				builtin_ft/ft_cd.c		builtin_ft/ft_env.c
 
-LIB_FILES	+=	lib/ft_atoi.c			lib/ft_bzero.c					lib/ft_calloc.c				\
+LIB_FILES	=	lib/ft_atoi.c			lib/ft_bzero.c					lib/ft_calloc.c				\
 				lib/ft_isalnum.c		lib/ft_isalpha.c				lib/ft_isascii.c			\
 				lib/ft_isdigit.c		lib/ft_isprint.c				lib/ft_memchr.c				\
 				lib/ft_memcmp.c			lib/ft_memcpy.c					lib/ft_memmove.c			\
@@ -54,20 +53,20 @@ LIB_FILES	+=	lib/ft_atoi.c			lib/ft_bzero.c					lib/ft_calloc.c				\
 				lib/ft_split.c
 
 MAIN_SRC	=	$(addprefix main/,$(MAIN_FILES))
+UTILS_SRC	=	$(addprefix t_utils/,$(UTILS_FILES))
 EXEC_SRC	=	$(addprefix execution/,$(EXEC_FILES))
-GNL_SRC	=	$(addprefix t_utils/,$(GNL_FILES))
 PARS_SRC	=	$(addprefix parsing/,$(PARS_FILES))
 BUILT_SRC	=	$(addprefix builtins/,$(BUILT_FILES))
 LIB_SRC		=	$(addprefix libft/,$(LIB_FILES))
 
 MAIN_OBJ	=	$(addprefix object_files/,$(MAIN_SRC:.c=.o))
+UTILS_OBJ	=	$(addprefix object_files/,$(UTILS_SRC:.c=.o))
 EXEC_OBJ	=	$(addprefix object_files/,$(EXEC_SRC:.c=.o))
-UTILS_OBJ	=	$(addprefix object_files/,$(GNL_SRC:.c=.o))
 PARS_OBJ	=	$(addprefix object_files/,$(PARS_SRC:.c=.o))
 BUILT_OBJ	=	$(addprefix object_files/,$(BUILT_SRC:.c=.o))
 LIB_OBJ		=	$(addprefix object_files/,$(LIB_SRC:.c=.o))
 
-OBJ 		=	$(MAIN_OBJ) $(EXEC_OBJ) $(GNL_OBJ)	\
+OBJ 		=	$(MAIN_OBJ) $(EXEC_OBJ) $(GNL_OBJ) $(UTILS_OBJ)	\
 				$(PARS_OBJ) $(BUILT_OBJ) $(LIB_OBJ)
 
 ########### Goal Target
@@ -87,6 +86,10 @@ object_files/lib/%.o: lib/%.c $(HEADER_H)
 	@$(CC) -c $< -o $@ -I$(READLINEDIR)/include
 
 object_files/parsing/%.o: parsing/%.c $(HEADER_H)
+	@mkdir -p object_files/parsing
+	@$(CC) -c $< -o $@ -I$(READLINEDIR)/include
+
+object_files/t_utils/%.o: t_utils/%.c $(HEADER_H)
 	@mkdir -p object_files/parsing
 	@$(CC) -c $< -o $@ -I$(READLINEDIR)/include
 
