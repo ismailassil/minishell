@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 16:10:26 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/20 13:57:17 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/20 14:06:25 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ void	ctrl_c(int sig)
 	rl_replace_line("", 1);
 	rl_on_new_line();
 	rl_redisplay();
-	// ft_putstr_fd("minishell$ ", STDOUT_FILENO);
 }
 
 void	ctrl_slash(int sig)

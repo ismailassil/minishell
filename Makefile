@@ -6,7 +6,7 @@
 #    By: iassil <iassil@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/27 14:35:22 by iassil            #+#    #+#              #
-#    Updated: 2024/03/20 14:01:50 by iassil           ###   ########.fr        #
+#    Updated: 2024/03/20 14:05:47 by iassil           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,9 @@ MAIN_FILES	=	minishell.c			signals.c				s_utils.c
 
 UTILS_FILES =	t_env_utils.c		t_token_utils.c			t_cont_utils.c		\
 				t_utils.c
+
+GNL_FILES 	=	get_next_line/get_next_line.c		\
+				get_next_line/get_next_line_utils.c
 
 EXEC_FILES	=	exec.c				proc_utils.c			exec_builtin.c		\
 				here_doc.c			fill_container.c		mutli_cmds.c		\
@@ -54,6 +57,7 @@ LIB_FILES	=	ft_atoi.c			ft_bzero.c				ft_calloc.c			\
 
 MAIN_SRC	=	$(addprefix src/,$(MAIN_FILES))
 UTILS_SRC	=	$(addprefix t_utils/,$(UTILS_FILES))
+GNL_SRC		=	$(addprefix lib/,$(GNL_FILES))
 EXEC_SRC	=	$(addprefix execution/,$(EXEC_FILES))
 PARS_SRC	=	$(addprefix parsing/,$(PARS_FILES))
 BUILT_SRC	=	$(addprefix builtin_ft/,$(BUILT_FILES))
@@ -61,6 +65,7 @@ LIB_SRC		=	$(addprefix lib/,$(LIB_FILES))
 
 MAIN_OBJ	=	$(addprefix _object_files/,$(MAIN_SRC:.c=.o))
 UTILS_OBJ	=	$(addprefix _object_files/,$(UTILS_SRC:.c=.o))
+GNL_OBJ		=	$(addprefix _object_files/,$(GNL_SRC:.c=.o))
 EXEC_OBJ	=	$(addprefix _object_files/,$(EXEC_SRC:.c=.o))
 PARS_OBJ	=	$(addprefix _object_files/,$(PARS_SRC:.c=.o))
 BUILT_OBJ	=	$(addprefix _object_files/,$(BUILT_SRC:.c=.o))

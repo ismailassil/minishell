@@ -6,12 +6,12 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 09:57:53 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/19 03:20:50 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/20 14:03:42 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_BONUS_H
-# define GET_NEXT_LINE_BONUS_H
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 # include <unistd.h>
 # include <stdlib.h>
 # include <limits.h>
