@@ -6,11 +6,12 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 15:33:58 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/19 18:11:05 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/20 17:03:11 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+#include <stdio.h>
 
 static void	ft_add_if_not_found(t_env **envp, int flag, char *arg, char *string)
 {
@@ -111,7 +112,7 @@ int	ft_cd(char *argument, t_env **envp)
 	if (getcwd(buf, sizeof(buf)) != NULL)
 		(*envp)->status = 0;
 	else
-		(1) && (ft_error( "msh: syntax not supported\n"), (*envp)->status = 258);
+		(1) && (ft_error("msh: "), perror(buf), (*envp)->status = 258);
 	(ft_add_current_pwd(envp, buf), ft_add_old_pwd(envp, current_dir));
 	free(dir);
 	return (0);

@@ -6,7 +6,7 @@
 #    By: iassil <iassil@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/27 14:35:22 by iassil            #+#    #+#              #
-#    Updated: 2024/03/20 14:05:47 by iassil           ###   ########.fr        #
+#    Updated: 2024/03/20 16:39:40 by iassil           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,8 @@ GNL_FILES 	=	get_next_line/get_next_line.c		\
 
 EXEC_FILES	=	exec.c				proc_utils.c			exec_builtin.c		\
 				here_doc.c			fill_container.c		mutli_cmds.c		\
-				e_utils.c			exec_builtin_utils.c
+				free_fun.c			exec_builtin_utils.c	here_doc_utils.c	\
+				e_utils.c
 
 PARS_FILES	=	parsing.c			ft_tokenize.c			ft_check_syntax.c	\
 				ft_expand.c			ft_remove_quotes.c		ft_split_tokens.c	\

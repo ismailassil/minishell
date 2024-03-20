@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 13:31:07 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/20 02:15:40 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/20 14:20:15 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,26 @@ void	ft_allocate_tmp_cont(t_token *head, t_tmp_cont	**cont)
 	ft_check_allocation((*cont)->file_or_heredoc);
 }
 
+void	ft_fill_rest(t_token *head, t_tmp_cont *t, t_cc *c)
+{
+	if (head->type == OUTFILE || head->type == APPEND)
+	{
+		t->outf[c->y] = ft_strdup(head->next->token);
+		ft_check_allocation(t->outf[c->y]);
+		if (head->type == OUTFILE)
+			t->out_t[c->y] = 1;
+		if (head->type == APPEND)
+			t->out_t[c->y] = 2;
+		c->y++;
+	}
+	else if (head->type == HEREDOC)
+	{
+		t->here_doc[c->h] = ft_strdup(head->next->token);
+		ft_check_allocation(t->here_doc[c->h++]);
+		*t->file_or_heredoc = 1;
+	}
+}
+
 void	ft_fill_container(t_token *head, t_tmp_cont *t, t_cc *c)
 {
 	if (head->type == CMD)
@@ -71,22 +91,8 @@ void	ft_fill_container(t_token *head, t_tmp_cont *t, t_cc *c)
 		ft_check_allocation(t->inf[c->j++]);
 		*t->file_or_heredoc = 0;
 	}
-	else if (head->type == OUTFILE || head->type == APPEND)
-	{
-		t->outf[c->y] = ft_strdup(head->next->token);
-		ft_check_allocation(t->outf[c->y]);
-		if (head->type == OUTFILE)
-			t->out_t[c->y] = 1;
-		if (head->type == APPEND)
-			t->out_t[c->y] = 2;
-		c->y++;
-	}
-	else if (head->type == HEREDOC)
-	{
-		t->here_doc[c->h] = ft_strdup(head->next->token);
-		ft_check_allocation(t->here_doc[c->h++]);
-		*t->file_or_heredoc = 1;
-	}	
+	else
+		ft_fill_rest(head, t, c);
 }
 
 //	create a function that create a node that holds what inside the t_cont

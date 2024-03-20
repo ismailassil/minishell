@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 16:33:28 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/19 01:41:26 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/20 14:31:30 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,29 +61,23 @@ char	*ft_alloc_str(t_token **tokens, char *str, t_stend *cord)
 	return (tk);
 }
 
-void	ft_init_tokens(t_token **head, char *str)
+static void	ft_parse_space_rest(char *input, char **shell, t_in *f)
 {
-	int		i;
-	char	*token;
-	t_stend	*cord;
-
-	i = 0;
-	while (str[i])
+	if (f->flag == 0 && (input[f->j] == '>' || input[f->j] == '<' \
+		|| input[f->j] == '|' ))
+		(1) && ((*shell)[f->i] = ' ', (*shell)[f->i + 1] = input[f->j], \
+			(*shell)[f->i + 2] = ' ', f->i += 3, f->j++);
+	else
 	{
-		while (str[i] && str[i] == ' ')
-			i++;
-		if (!str[i])
-			break ;
-		cord = ft_extract_start_end_of_token(str, i);
-		token = ft_alloc_str(head, str, cord);
-		ft_push_token(token, head);
-		i = cord->end;
-		free(cord);
-		while (str[i] && str[i] == ' ')
-			i++;
-		if (str[i] == '\0')
-			break ;
-		i++;
+		(1) && ((*shell)[f->i] = input[f->j], f->i++, f->j++);
+		if (input[f->j] && f->tmp != f->j && input[f->j] == f->quote)
+		{
+			(*shell)[f->i] = input[f->j];
+			f->i++;
+			f->j++;
+			f->flag = 0;
+			f->quote = 0;
+		}
 	}
 }
 
@@ -100,19 +94,12 @@ static void	*ft_parse_space(char *input, char **shell)
 			|| (input[f.j] == '<' && input[f.j + 1] == '<')))
 		{
 			(1) && ((*shell)[f.i] = ' ', (*shell)[f.i + 1] = input[f.j]);
-			(1) && ((*shell)[f.i + 2] = input[f.j + 1], (*shell)[f.i + 3] = ' ');
+			(*shell)[f.i + 2] = input[f.j + 1];
+			(*shell)[f.i + 3] = ' ';
 			(1) && (f.i += 4, f.j += 2);
 		}
-		else if (f.flag == 0 && (input[f.j] == '>' || input[f.j] == '<' \
-			|| input[f.j] == '|' ))
-			(1) && ((*shell)[f.i] = ' ', (*shell)[f.i + 1] = input[f.j], \
-				(*shell)[f.i + 2] = ' ', f.i += 3, f.j++);
 		else
-		{
-			(1) && ((*shell)[f.i] = input[f.j], f.i++, f.j++);
-			if (input[f.j] && f.tmp != f.j && input[f.j] == f.quote)
-				(1) && ((*shell)[f.i] = input[f.j], f.i++, f.j++, f.flag = 0, f.quote = 0);
-		}
+			ft_parse_space_rest(input, shell, &f);
 	}
 	(*shell)[f.i] = '\0';
 	return (shell);

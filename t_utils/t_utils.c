@@ -1,16 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   t_utils.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 21:12:35 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/20 02:40:31 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/20 14:31:18 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+static void	ft_allocate_for_rest_v2(t_tmp_cont *tmp, t_cont **new)
+{
+	int	i;
+
+	i = 0;
+	while (tmp->here_doc && tmp->here_doc[i] != 0)
+		i++;
+	(*new)->here_doc = malloc((i + 1) * sizeof(char *));
+	i = 0;
+	while (tmp->here_doc && tmp->here_doc[i] != 0)
+		(1) && ((*new)->here_doc[i] = ft_strdup(tmp->here_doc[i]), i++);
+	(*new)->here_doc[i] = 0;
+	(*new)->file_or_heredoc = tmp->file_or_heredoc;
+}
 
 static void	ft_allocate_for_rest(t_tmp_cont *tmp, t_cont **new)
 {
@@ -35,15 +50,7 @@ static void	ft_allocate_for_rest(t_tmp_cont *tmp, t_cont **new)
 	while (tmp->outf && tmp->outf[i] != 0)
 		(1) && ((*new)->outfile[i] = ft_strdup(tmp->outf[i]), i++);
 	(*new)->outfile[i] = 0;
-	i = 0;
-	while (tmp->here_doc && tmp->here_doc[i] != 0)
-		i++;
-	(*new)->here_doc = malloc((i + 1) * sizeof(char *));
-	i = 0;
-	while (tmp->here_doc && tmp->here_doc[i] != 0)
-		(1) && ((*new)->here_doc[i] = ft_strdup(tmp->here_doc[i]), i++);
-	(*new)->here_doc[i] = 0;
-	(*new)->file_or_heredoc = tmp->file_or_heredoc;
+	ft_allocate_for_rest_v2(tmp, new);
 }
 
 static void	ft_allocate_(t_tmp_cont *tmp, t_cont **new)

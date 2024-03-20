@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   eutils.c                                           :+:      :+:    :+:   */
+/*   e_utils.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:43:43 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/20 03:10:20 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/20 14:21:06 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,39 +74,4 @@ void	ft_syscall(int return_, char *str)
 {
 	if (return_ == -1)
 		(perror(str), exit(FAIL));
-}
-
-void	ft_f(char **str)
-{
-	int	i;
-
-	i = 0;
-	while (str && str[i] != NULL)
-	{
-		free(str[i]);
-		i++;
-	}
-	free(str);
-	str = NULL;
-}
-
-void	ft_free_tmp(t_tmp_cont **tmp)
-{
-	int	i;
-
-	i = 0;
-	free((*tmp)->cmd);
-	while ((*tmp)->arg[i] != NULL)
-		(1) && (free((*tmp)->arg[i]), i++);
-	free((*tmp)->arg);
-	i = 0;
-	while ((*tmp)->inf[i] != NULL)
-		(1) && (free((*tmp)->inf[i]), i++);
-	free((*tmp)->inf);
-	i = 0;
-	while ((*tmp)->outf[i] != NULL)
-		(1) && (free((*tmp)->outf[i]), i++);
-	free((*tmp)->outf);
-	free((*tmp)->out_t);
-	free(*tmp);
 }

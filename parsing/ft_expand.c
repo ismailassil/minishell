@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 10:36:20 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/19 01:54:23 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/20 14:38:15 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,18 +50,25 @@ static int	ft_surpass_chars(char *var)
 	return (i + 1);
 }
 
-static void	ft_handle_rest(t_env *env, t_expand	exp, char *arg, int *i)
+int	ft_expand_word_after_dollar(t_expand *exp, int *i, char *arg, t_env *env)
 {
-	exp.expa = ft_arg_is_exist(env, arg + (*i + 1));
-	exp.s = exp.new_str;
-	exp.new_str = ft_strjoin(exp.new_str, exp.expa);
-	i += ft_surpass_chars(arg + (*i + 1));
+	if (exp->quote == '\'')
+	{
+		ft_append_char(&(exp->new_str), arg[(*i)++]);
+		return (1);
+	}
+	if (ft_handle_inregulare_cases(exp, arg[(*i) + 1], i))
+		return (1);
+	exp->expa = ft_arg_is_exist(env, arg + (*i + 1));
+	exp->s = exp->new_str;
+	exp->new_str = ft_strjoin(exp->new_str, exp->expa);
+	return (0);
 }
 
 /*
 *	This function expands the variables
 */
-static char	*ft_handle_expand(t_env *env, char *arg)
+char	*ft_handle_expand(t_env *env, char *arg)
 {
 	int			i;
 	t_expand	exp;
@@ -77,14 +84,9 @@ static char	*ft_handle_expand(t_env *env, char *arg)
 			ft_append_char(&exp.new_str, arg[i++]);
 		else if (arg[i] && arg[i] == '$')
 		{
-			if (exp.quote == '\'')
-			{
-				ft_append_char(&exp.new_str, arg[i++]);
+			if (ft_expand_word_after_dollar(&exp, &i, arg, env))
 				continue ;
-			}
-			if (ft_handle_inregulare_cases(&exp, arg[i + 1], &i))
-				continue ;
-			ft_handle_rest(env, exp, arg, &i);
+			i += ft_surpass_chars(arg + (i + 1));
 		}
 		else if (arg[i])
 			i++;

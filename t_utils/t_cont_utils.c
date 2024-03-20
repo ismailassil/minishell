@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 19:25:31 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/20 03:25:52 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/20 14:32:15 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,7 @@ void	ft_free_containers(t_cont **head)
 
 	while (*head)
 	{
-		current = *head;
-		*head = (*head)->next;
-		i = 0;
+		(1) && (current = *head, *head = (*head)->next, i = 0);
 		free(current->cmd);
 		while (current->arg[i] != NULL)
 			(1) && (free(current->arg[i]), i++);
@@ -74,10 +72,8 @@ void	ft_free_containers(t_cont **head)
 		i = 0;
 		while (current->here_doc[i] != NULL)
 			(1) && (free(current->here_doc[i]), i++);
-		free(current->here_doc);
-		free(current->outfile);
-		free(current->outfile_type);
-		free(current);
+		(free(current->here_doc), free(current->outfile));
+		(free(current->outfile_type), free(current));
 		current = NULL;
 	}
 }

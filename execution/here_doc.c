@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 03:21:09 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/20 03:29:34 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/20 17:07:12 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,17 +42,17 @@ static void	ft_get_the_line_parsing(char *hold)
 	}
 }
 
-int	ft_here_doc_parsing(t_token *head, t_env *env)
+int	ft_here_doc_parsing(t_token *lst, t_env *env)
 {
 	t_heredoc	info;
 
-	while (head != NULL)
+	while (lst != NULL)
 	{
-		if (head->type == HEREDOC && head->next && head->next->type != DELIMITER)
+		if (lst->type == HEREDOC && lst->next && lst->next->type != DELIMITER)
 			return (0);
-		if (head->type == HEREDOC && head->next && head->next->type == DELIMITER)
+		if (lst->type == HEREDOC && lst->next && lst->next->type == DELIMITER)
 		{
-			(1) && (info.del = head->next->token, info.id = fork());
+			(1) && (info.del = lst->next->token, info.id = fork());
 			ft_syscall(info.id, "fork");
 			if (info.id == 0)
 			{
@@ -66,14 +66,14 @@ int	ft_here_doc_parsing(t_token *head, t_env *env)
 			if (WIFSIGNALED(info.status) && WTERMSIG(info.status) == SIGINT)
 				return (1);
 		}
-		head = head->next;
+		lst = lst->next;
 	}
 	return (0);
 }
 
-static void	ft_get_the_line(char *hold, int *pipefd)
+static void	ft_get_the_line(char *hold, int *pipefd, t_env *env)
 {
-	char *line;
+	char	*line;
 
 	line = NULL;
 	rl_catch_signals = 1;
@@ -85,6 +85,11 @@ static void	ft_get_the_line(char *hold, int *pipefd)
 			free(line);
 			break ;
 		}
+		if (ft_strchr(line, '$'))
+			line = ft_handle_expand_for_here_doc(env, line);
+		line = ft_strjoin_(line, "\n");
+		if (!line)
+			(ft_error("Error: Allocation failed\n"), exit(FAIL));
 		ft_putstr(line, pipefd[1]);
 		free(line);
 	}
@@ -103,7 +108,7 @@ int	ft_here_doc(char *delimiter, t_env *env)
 		if (signal(SIGINT, SIG_DFL) == SIG_ERR)
 			exit(FAIL);
 		ft_syscall(close(pipefd[0]), "pipe");
-		ft_get_the_line(delimiter, pipefd);
+		ft_get_the_line(delimiter, pipefd, env);
 		ft_syscall(close(pipefd[1]), "pipe");
 		exit(SUCCESS);
 	}

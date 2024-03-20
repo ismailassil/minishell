@@ -1,16 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   p_utils.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 14:00:00 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/19 01:54:29 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/20 14:14:06 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	ft_init_tokens(t_token **head, char *str)
+{
+	int		i;
+	char	*token;
+	t_stend	*cord;
+
+	i = 0;
+	while (str[i])
+	{
+		while (str[i] && str[i] == ' ')
+			i++;
+		if (!str[i])
+			break ;
+		cord = ft_extract_start_end_of_token(str, i);
+		token = ft_alloc_str(head, str, cord);
+		ft_push_token(token, head);
+		i = cord->end;
+		free(cord);
+		while (str[i] && str[i] == ' ')
+			i++;
+		if (str[i] == '\0')
+			break ;
+		i++;
+	}
+}
 
 void	ft_append_char(char **str, int c)
 {

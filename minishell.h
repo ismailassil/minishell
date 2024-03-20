@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/20 03:06:14 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/20 14:49:15 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,7 @@ typedef struct s_info
 	t_fd	fd;
 	int		pipe[2];
 	int		nbr_cmd;
+	pid_t	*id;
 	int		i;
 }			t_info;
 
@@ -196,6 +197,11 @@ void	ft_expand_argument(t_env *env, t_token **linked_list);
 bool	ft_check_syntax(t_token *str);
 void	ft_remove_quotes(t_token **linked_list);
 void	ft_update_quote(char *arg, int *i, t_expand *exp);
+void	ft_init_tokens(t_token **head, char *str);
+char	*ft_alloc_str(t_token **tokens, char *str, t_stend *cord);
+t_stend	*ft_extract_start_end_of_token(char *str, int s);
+char	*ft_handle_expand(t_env *env, char *arg);
+char	*ft_handle_expand_for_here_doc(t_env *env, char *arg);
 //	Utils function for Parsing
 void	ft_error(char *str);
 void	ft_append_char(char **str, int c);
