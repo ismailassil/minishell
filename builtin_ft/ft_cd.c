@@ -6,12 +6,11 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 15:33:58 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/20 17:03:11 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/20 18:11:41 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-#include <stdio.h>
 
 static void	ft_add_if_not_found(t_env **envp, int flag, char *arg, char *string)
 {
@@ -100,6 +99,7 @@ int	ft_cd(char *argument, t_env **envp)
 {
 	char		current_dir[PATH_MAX];
 	char		buf[PATH_MAX];
+	char		*buffer;
 	char		*dir;
 
 	if (getcwd(current_dir, sizeof(current_dir)) == NULL)
@@ -110,10 +110,14 @@ int	ft_cd(char *argument, t_env **envp)
 	if (chdir(dir) == -1)
 		return ((*envp)->status = 1, free(dir), 1);
 	if (getcwd(buf, sizeof(buf)) != NULL)
-		(*envp)->status = 0;
+		(1) && ((*envp)->status = 0, buffer = buf);
 	else
-		(1) && (ft_error("msh: "), perror(buf), (*envp)->status = 258);
-	(ft_add_current_pwd(envp, buf), ft_add_old_pwd(envp, current_dir));
+	{
+		(ft_error("msh: "), perror(argument));
+		buffer = ft_strjoin_(buf, argument);
+		(*envp)->status = 258;
+	}
+	(ft_add_current_pwd(envp, buffer), ft_add_old_pwd(envp, current_dir));
 	free(dir);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 10:36:20 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/20 14:38:15 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/20 18:22:13 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static char	*ft_arg_is_exist(t_env *env, char *var)
 	while (head != NULL)
 	{
 		i = 0;
-		while (var[i] == head->value[i])
+		while (var[i] == head->value[i] && var[i] != '=')
 			i++;
 		if (head->value[i] == '=' && !ft_check_if_chars_digit(var[i]))
 		{

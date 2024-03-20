@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/20 14:49:15 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/20 18:09:06 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,7 +183,7 @@ void	ft_echo(char *argument);
 void	ft_env(t_env *envp);
 void	ft_exit(void);
 int		ft_export(char *argument, t_env *envp);
-void	ft_pwd(void);
+void	ft_pwd(t_env *env);
 void	ft_unset(t_env *envp, char *argument);
 //	Utils function for builtin function
 t_env	*ft_get_env(char **env);

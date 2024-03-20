@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 16:55:35 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/19 02:20:31 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/20 18:09:16 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	ft_check_commands(t_cont *cont, t_env *env)
 	else if (ft_strncmp(cmd, "export", ft_strlen(cmd)) == 0)
 		return (execute_export(cont, &env), 1);
 	else if (ft_strncmp(cmd, "pwd", ft_strlen(cmd)) == 0)
-		return (ft_pwd(), 1);
+		return (ft_pwd(env), 1);
 	else if (ft_strncmp(cmd, "unset", ft_strlen(cmd)) == 0)
 		return (execute_unset(cont, &env), 1);
 	else if (ft_strncmp(cmd, "exit", ft_strlen(cmd)) == 0)

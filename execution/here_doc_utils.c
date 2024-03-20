@@ -6,81 +6,11 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 14:48:48 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/20 16:39:04 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/20 19:38:57 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-// char	*ft_trim_word(char *arg)
-// {
-// 	char	*str;
-// 	int		count;
-// 	int		i;
-
-// 	(1) && (i = 0, count = 0);
-// 	while (arg && arg[i] != '\0' && ft_strchr(" \t\n\v\f\r", arg[i]))
-// 		(1) && (count++, i++);
-// 	if (count != 0)
-// 	{
-// 		str = malloc((count + 1) * sizeof(char *));
-// 		ft_check_allocation(str);
-// 	}
-// 	return (str);
-// }
-
-// //!ft_check_if_chars_digit(var[i])
-// char	*ft_fetch_word_from_env(t_env *env, char *arg)
-// {
-// 	t_env	*head;
-// 	char	*tmp;
-// 	char	*ptr;
-// 	int		i;
-// 	int		flag;
-
-// 	(1) && (head = env, i = 0, flag = 0);
-// 	ptr = NULL;
-// 	(1) && (tmp = ft_trim_word(arg), tmp = ft_strjoin(tmp, "="));
-// 	ft_check_allocation(tmp);
-// 	while (head != NULL)
-// 	{
-// 		i = 0;
-// 		while (tmp && tmp[i] == head->value[i])
-// 			i++;
-// 		if (head->value[i] == '=' && !ft_check_if_chars_digit(tmp[i]))
-// 		{
-// 			flag = 1;
-// 			break ;
-// 		}
-// 		head = head->next;
-// 	}
-// 	if (head != NULL)
-// 		ptr = ft_allocate_for_var(flag, head->value, i);
-// 	return (ptr);
-// }
-
-// /*
-// *	This function expands the variables for the here_doc
-// */
-// char	*ft_handle_expand_for_here_doc(t_env *env, char *arg)
-// {
-// 	char	*expanded;
-// 	char	*ptr;
-// 	int		start;
-// 	int		i;
-
-// 	i = 0;
-// 	(1) && (expanded = NULL, ptr = NULL);
-// 	while (arg && arg[i] != '\0')
-// 	{
-// 		start = i;
-// 		while (arg[i] != '$')
-// 			i++;
-// 		ptr = ft_substr(arg, start, i - start);
-// 		expanded = ft_fetch_word_from_env(env, arg + i);
-// 	}
-// 	return (expanded);
-// }
 
 static char	*ft_arg_is_exist(t_env *env, char *var)
 {
@@ -93,7 +23,7 @@ static char	*ft_arg_is_exist(t_env *env, char *var)
 	while (head != NULL)
 	{
 		i = 0;
-		while (var[i] == head->value[i])
+		while (var[i] == head->value[i] && var[i] != '=')
 			i++;
 		if (head->value[i] == '=' && !ft_check_if_chars_digit(var[i]))
 		{
