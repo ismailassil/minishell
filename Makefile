@@ -6,7 +6,7 @@
 #    By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/27 14:35:22 by iassil            #+#    #+#              #
-#    Updated: 2024/03/17 23:07:29 by aibn-che         ###   ########.fr        #
+#    Updated: 2024/03/19 22:50:14 by aibn-che         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,6 +48,8 @@ SRC		+=	lib/ft_atoi.c			lib/ft_bzero.c					lib/ft_calloc.c				\
 
 SRC		+=	ft_printf/ft_printf.c		ft_printf/print_characters.c	ft_printf/print_hex.c	ft_printf/print_numbers.c   \
         	ft_printf/print_unsigned_int.c    	\
+			
+SRC		+=	get_next_line/get_next_line.c		get_next_line/get_next_line_utils.c \
 
 OBJ			=	$(SRC:.c=.o)
 

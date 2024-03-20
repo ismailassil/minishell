@@ -6,7 +6,7 @@
 /*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:06 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/18 17:34:23 by aibn-che         ###   ########.fr       */
+/*   Updated: 2024/03/20 02:28:04 by aibn-che         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,35 +22,24 @@ t_cont	*new_cmd()
 		return (NULL);
 	seg_cmd->cmd = NULL;
 	seg_cmd->arg = malloc(sizeof(char *) * (MAX + 1));
+	seg_cmd->infile = malloc(sizeof(char *) * (MAX + 1));
+	seg_cmd->outfile = malloc(sizeof(char *) * (MAX + 1));
+	seg_cmd->append = malloc(sizeof(char *) * (MAX + 1));
+	seg_cmd->her_doc = malloc(sizeof(char *) * (MAX + 1));
 	i = 0;
 	while (i < (MAX + 1))
 	{
 		seg_cmd->arg[i] = NULL;
-		i++;
-	}
-	seg_cmd->infile = malloc(sizeof(char *) * (MAX + 1));
-	i = 0;
-	while (i < (MAX + 1))
-	{
 		seg_cmd->infile[i] = NULL;
-		i++;
-	}
-	seg_cmd->outfile = malloc(sizeof(char *) * (MAX + 1));
-	i = 0;
-	while (i < (MAX + 1))
-	{
 		seg_cmd->outfile[i] = NULL;
-		i++;
-	}
-	seg_cmd->append = malloc(sizeof(char *) * (MAX + 1));
-	i = 0;
-	while (i < (MAX + 1))
-	{
 		seg_cmd->append[i] = NULL;
+		seg_cmd->her_doc[i] = NULL;
 		i++;
 	}
 	seg_cmd->in = 0;
 	seg_cmd->out = 1;
+	seg_cmd->out_app = 0;
+	seg_cmd->in_app = 0;
 	seg_cmd->opened_fd = NULL;
 	seg_cmd->next = NULL;
 	return (seg_cmd);
@@ -237,31 +226,103 @@ void	set_open_fd(t_opened_fd *opened_fd, int fd1, int fd2, int fn)
 	}
 }
 
-int	open_and_return_inf(char **infile)
+int	handle_herdoc(t_tree *root)
+{
+	int		i;
+	char	*str;
+	int		fd[2];
+
+	i = 0;
+	if (root->cont->her_doc)
+	{
+		while (root->cont->her_doc[i] && root->cont->her_doc[i + 1])
+		{
+			write(1, "> ", 2);
+			str = get_next_line(0);
+			while (str)
+			{
+				if (!ft_strncmp(str, root->cont->her_doc[i], ft_strlen(str) - 1) && root->cont->her_doc[i][ft_strlen(str) - 1] == '\0')
+					break ;
+				write(1, "> ", 2);
+				str = get_next_line(0);
+			}
+			i++;
+		}
+		while (root->cont->her_doc[i])
+		{
+			if (pipe(fd) == -1)
+				exit(EXIT_FAILURE);
+			write(1, "> ", 2);
+			str = get_next_line(0);
+			while (str)
+			{
+				if (!ft_strncmp(str, root->cont->her_doc[i], ft_strlen(str) - 1) && root->cont->her_doc[i][ft_strlen(str) - 1] == '\0')
+					break ;
+				write(fd[1], str, ft_strlen(str));
+				write(1, "> ", 2);
+				str = get_next_line(0);
+			}
+			i++;
+			close(fd[1]);
+		}
+	}
+	return (fd[0]);
+}
+
+int	open_and_return_inf(t_tree *root)
 {
 	int	i;
 	int	fd_in;
 
 	i = 0;
 	fd_in = 0;
-	while(infile[i])
+	if (root->cont->in_app)
 	{
-		fd_in = open(infile[i++], O_RDONLY);
-		if (fd_in == -1)
-			(ft_printf("msh: %s No such file or directory\n", infile[i - 1]), exit(1));
+		while(root->cont->infile[i])
+		{
+			fd_in = open(root->cont->infile[i++], O_RDONLY);
+			if (fd_in == -1)
+				(ft_printf("msh: %s No such file or directory\n", root->cont->infile[i - 1]), exit(1));
+		}
+		fd_in = handle_herdoc(root);
+		return (fd_in);
 	}
-	return (fd_in);
+	else
+	{
+		handle_herdoc(root);
+		while(root->cont->infile[i])
+		{
+			fd_in = open(root->cont->infile[i++], O_RDONLY);
+			if (fd_in == -1)
+				(ft_printf("msh: %s No such file or directory\n", root->cont->infile[i - 1]), exit(1));
+		}
+	}
+	return (fd_in);	
 }
 
-int	open_and_return_ouf(char **outfile)
+int	open_and_return_ouf(t_cont *cont)
 {
 	int	i;
 	int	fd_out;
 
 	fd_out = 0;
 	i = 0;
-	while(outfile[i])
-		fd_out = open(outfile[i++], O_CREAT | O_RDWR, 0777);
+	if (cont->out_app)
+	{
+		while(cont->outfile[i])
+			open(cont->outfile[i++], O_CREAT | O_RDWR | O_TRUNC, 0777);
+		i = 0;
+		while (cont->append[i])
+			fd_out = open(cont->append[i++], O_CREAT | O_RDWR | O_APPEND, 0777);
+	}
+	else
+	{
+		while (cont->append[i])
+			open(cont->append[i++], O_CREAT | O_RDWR | O_APPEND, 0777);
+		i = 0;
+		while(cont->outfile[i])
+			fd_out = open(cont->outfile[i++], O_CREAT | O_RDWR | O_TRUNC, 0777);
+	}
 	return (fd_out);
 }
 
@@ -279,18 +340,26 @@ void	execute_within_child(t_tree *root, char **e, char *full_path)
 	int fd_in = 0;
 	int fd_out = 0;
 
-	if (root->cont->infile)
-		(fd_in = open_and_return_inf(root->cont->infile));
+	////////////////////infile//////////////////////////
+	if (root->cont->infile || root->cont->her_doc)
+		(fd_in = open_and_return_inf(root));
 	if (fd_in)
+	{
 		dup2(fd_in, 0);
+		// close(fd_in);
+	}
 	else
 		dup2(root->cont->in, 0);
-	if (root->cont->outfile)
-		fd_out = open_and_return_ouf(root->cont->outfile);	
+	////////////////////infile//////////////////////////
+	////////////////////outfile//////////////////////////
+	if (root->cont->outfile || root->cont->append)
+		fd_out = open_and_return_ouf(root->cont);	
 	if (fd_out)
 		dup2(fd_out, 1);
 	else
 		dup2(root->cont->out, 1);
+	// fprintf(stderr,"outfile %d\n", root->cont->out);
+	////////////////////outfile//////////////////////////
 	close_opened_fds(root);
 	if (execve(full_path, root->cont->arg, e) == -1)
 		(ft_printf("msh: command not found: %s\n",root->cont->arg[0]), exit(1));
@@ -365,32 +434,31 @@ void	traverse_tree_exec(t_tree *root, char **path, char **e, t_opened_fd *opened
 	}
 }
 
-void	accumulate_cmds_with_their_params()
+t_cont	*accumulate_cmds_with_their_params(t_token *head)
 {
 	int		count_p;
 	int		out;
+	int		app;
 	int		in;
 	int		ar;
+	int		her;
 	int		i;
 	t_cont	*current_cmd;
-	t_cont	*seg_cmd;
-	count_p = count_pipe(head);
-	seg_cmd = NULL;
+	t_cont	*head_cmd;
 
+	count_p = count_pipe(head);
+	head_cmd = NULL;
 	i = 0;
 	while (i <= count_p)
 	{
-		current_cmd = push_cmd(&seg_cmd);
-		out = 0;
-		in = 0;
-		ar = 0;
+		current_cmd = push_cmd(&head_cmd);
+		(1) && (out = 0, in = 0, ar = 0, app = 0, her = 0);
 		while (head && current_cmd)
 		{
 			if (head->token[0] == '|')
 			{
-				current_cmd = push_cmd(&seg_cmd);
-				current_cmd->cmd = head->token;
-				head = head->next;
+				current_cmd = push_cmd(&head_cmd);
+				(current_cmd->cmd = head->token, head = head->next);
 				break ;
 			}
 			if (head->type == CMD)
@@ -401,119 +469,56 @@ void	accumulate_cmds_with_their_params()
 			else if (head->type == ARG)
 				current_cmd->arg[ar++] = head->token;
 			else if (head->type == INFILE)
+			{
+				current_cmd->in_app = 0;
 				current_cmd->infile[in++] = head->next->token;
+			}
 			else if (head->type == OUTFILE)
+			{
+				current_cmd->out_app = 0;
 				current_cmd->outfile[out++] = head->next->token;
+			}
+			else if (head->type == APPEND)
+			{
+				current_cmd->out_app = 1;
+				current_cmd->append[app++] = head->next->token;
+			}
+			else if (head->type == HEREDOC)
+			{
+				current_cmd->in_app = 1;
+				current_cmd->her_doc[her++] = head->next->token;
+			}
 			head = head->next;
 		}
 		i++;
 	}
+	return (head_cmd);
 }
 
-t_cont	*handle_execution(t_token	*head, t_env *env, char **e)
+t_cont	*handle_execution(t_token *head, t_env *env, char **e)
 {
-	(void)env;
+	t_cont		*head_cmd;
+	t_tree		*b_treee;
+	t_opened_fd	*opened_fd;
+	int			i;
+	char		**en;
 
-	/////////----------------------------execution---------------------------------/////////////////
-	// i = 0;
-	// int original_stdin_fd = dup(STDIN_FILENO);
-
-	// pipe(fd);
-	// while (i <= count_p)
-	// {
-	// 	pid = fork();
-	// 	if (pid < 0)
-	// 		perror("Error\n");
-	// 	else if (pid == 0)
-	// 	{
-	// 		close(fd[0]);
-	// 		////////////single-------command///////////
-	// 		if (i == 0 && count_p == 0)
-	// 		{
-	// 			close(fd[1]);
-	// 			execve("/usr/bin/clear", seg_cmd->arg, env);
-	// 		}
-	// 		else if (i == 0)
-	// 		{
-	// 			dup2(fd[1], STDOUT_FILENO);
-	// 			close(fd[1]);
-	// 			execve("/bin/ls", seg_cmd->arg, env);
-	// 		}
-	// 		else
-	// 		{
-	// 			close(fd[1]);
-	// 			execve("/usr/bin/grep", seg_cmd->arg, env);
-	// 		}
-	// 	}
-	// 	else if (pid != 0)
-	// 	{
-	// 		close(fd[1]); // Close write end of the pipe in the parent process
-    //         if (i != count_p) {
-    //             dup2(fd[0], STDIN_FILENO); // Redirect stdin to the read end of the pipe
-    //             close(fd[0]); // Close the read end of the pipe
-    //         }
-	// 		seg_cmd = seg_cmd->next;
-	// 	}
-	// 	i++;
-	// }
-	// dup2(original_stdin_fd, STDIN_FILENO);
-	// close(original_stdin_fd);
-	// close(fd[0]);
-	// while (wait(NULL) != -1)
-	// 	;
-	/////////----------------------------------------------------------------------/////////////////
-
-	// while (seg_cmd)
-	// {
-		
-	// 	i = 0;
-	// 	printf("\n-----------------------------------------------\n");
-	// 	printf("\ncmd    %s \n", seg_cmd->cmd);
-	// 	while (seg_cmd->arg && seg_cmd->arg[i] && i < 2)
-	// 		printf("arg     %s\n", seg_cmd->arg[i++]);
-	// 	i = 0;
-	// 	while (seg_cmd->infile && seg_cmd->infile[i] && i < 2)
-	// 		printf("infile     %s\n", seg_cmd->infile[i++]);
-	// 	i = 0;
-	// 	while (seg_cmd->outfile && seg_cmd->outfile[i] && i < 2)
-	// 		printf("outfile     %s\n", seg_cmd->outfile[i++]);
-	// 	printf("-----------------------------------------------\n");
-	// 	seg_cmd = seg_cmd->next;
-	// }
-	// exit(1);
-	////////////////////////////////////////////////////////////////////////////////////////
-	t_tree *tt;
-	char **en = handle_paths(env);
-	t_opened_fd *opened_fd = malloc(sizeof(t_opened_fd));
-	set_open_fd(opened_fd, 0, 0, 1);
 	i = 0;
+	head_cmd = accumulate_cmds_with_their_params(head);
+	en = handle_paths(env);
+	opened_fd = malloc(sizeof(t_opened_fd));
+	set_open_fd(opened_fd, 0, 0, 1);
 	while (i < MAX)
 	{
 		opened_fd->fd[i++] = 0;
 	}
-	// printf("build _ tree\n");
-	tt = build_tree(seg_cmd, seg_cmd);
-	// treeprint(tt, 0);
-	
-	traverse_tree_exec(tt, en, e, opened_fd);
+	b_treee = build_tree(head_cmd, head_cmd);
+	// handle_herdoc(b_treee, 1);
+	// exit(1);
+	traverse_tree_exec(b_treee, en, e, opened_fd);
 	while (wait(NULL) != -1)
 		;
-	////////////////////////////////////////////////////////////////////////////////////////
-	// dup2(original_stdin_fd, STDIN_FILENO);
-	// close(original_stdin_fd);
-	// close(fd[0]);
-	// if (tt)
-	// {
-	// 	if (tt->left)
-	// 		printf("left    = %s\n", tt->left->cont->cmd);
-	// 	if (tt->right)
-	// 		printf("right    = %s\n", tt->right->cont->cmd);
-	// 	if (tt->right->right)
-	// 		printf("right->right    = %s\n", tt->right->right->cont->cmd);
-	// 	if (tt->right->left)
-	// 		printf("right->left    = %s\n", tt->right->left->cont->cmd);
-	// }
-	return (seg_cmd);
+	return (head_cmd);
 }
 
 /*	handle ctr+c & ctrl+\	*/
@@ -554,8 +559,6 @@ void	ft_parse_input_from_shell(t_env *env, char *input, char **en)
 	////////////////////////////
 	handle_execution(head, env, en);
 	////////////////////////////
-
-	// ft_execution(&head);
 }
 
 void	v(void)

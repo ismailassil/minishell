@@ -6,7 +6,7 @@
 /*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/18 17:41:54 by aibn-che         ###   ########.fr       */
+/*   Updated: 2024/03/19 22:02:15 by aibn-che         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,10 +102,13 @@ typedef struct s_container
 	char				**arg;
 	char				**infile;
 	char				**outfile;
+	char				**her_doc;
 	int					in;
 	int					out;
 	int					inn;
 	int					outt;
+	int					out_app;
+	int					in_app;
 	char				**append;
 	struct s_opened_fd	*opened_fd;
 	struct s_container	*next;
@@ -120,6 +123,7 @@ typedef struct s_tree
 
 
 int		ft_printf(const char *format, ...);
+char	*get_next_line(int fd);
 
 /*==========BUILTIN FUNCIONS==========*/
 int		ft_cd(char *argument, t_env **envp);
