@@ -6,11 +6,11 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:06 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/20 01:23:44 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/20 13:57:09 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 /*	Parse the input from the shell	*/
 void	ft_parse_input_from_shell(t_env *env, char *input)
