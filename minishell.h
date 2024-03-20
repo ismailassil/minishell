@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/19 19:38:07 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/20 03:06:14 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ typedef struct s_cc
 	int	j;
 	int	z;
 	int	y;
+	int	h;
 }		t_cc;
 
 typedef struct s_expand
@@ -117,6 +118,7 @@ typedef struct s_count
 	int	arg;
 	int	infile;
 	int	outfile;
+	int	here_doc;
 }		t_count;
 
 typedef struct s_tmp_cont
@@ -125,6 +127,8 @@ typedef struct s_tmp_cont
 	char	**arg;
 	char	**inf;
 	char	**outf;
+	char	**here_doc;
+	int		*file_or_heredoc;
 	int		*out_t;
 }			t_tmp_cont;
 
@@ -133,6 +137,8 @@ typedef struct s_container
 	char				*cmd;
 	char				**arg;
 	char				**infile;
+	char				**here_doc;
+	int					*file_or_heredoc;
 	char				**outfile;
 	int					*outfile_type;
 	struct s_container	*next;
@@ -142,12 +148,17 @@ typedef struct s_fd
 {
 	int	infile;
 	int	outfile;
+	int	here_doc;
+	int	opened_fd[OPEN_MAX];
+	int	len;
 }		t_fd;
 
 typedef struct s_fd_
 {
 	int	infile;
 	int	outfile;
+	int	here_doc;
+	int	i;
 }		t_fd_;
 
 typedef struct s_info
@@ -194,9 +205,10 @@ int		ft_check_quotes(char *str);
 
 /*==========EXECUTION FUNCIONS==========*/
 int		ft_here_doc(char *delimiter, t_env *env);
-void	ft_here_doc_parsing(t_token *head, t_env *env);
+int		ft_here_doc_parsing(t_token *head, t_env *env);
 void	ft_execution(t_token **token, t_env *env);
-void	ft_execute_multiple_cmds(t_cont *cont, t_env *env, int nbr_cmd);
+void	ft_execute_multiple_cmds(t_cont *cont, t_env *env, \
+	t_info *info, int nbr_cmd);
 int		ft_check_commands(t_cont *cont, t_env *env);
 char	**ft_join_for_envp_execve(t_env *env);
 char	**ft_join_for_argv_execve(t_cont *cont);

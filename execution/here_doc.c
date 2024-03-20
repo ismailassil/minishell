@@ -6,11 +6,11 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 03:21:09 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/19 19:16:41 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/20 03:29:34 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void	ft_putstr(char *str, int fd)
 {
@@ -24,64 +24,69 @@ void	ft_putstr(char *str, int fd)
 	}
 }
 
-static void	ft_get_the_line_parsing(char **line, char **hold)
+static void	ft_get_the_line_parsing(char *hold)
 {
+	char	*line;
+
+	line = NULL;
+	rl_catch_signals = 1;
 	while (true)
 	{
-		ft_putstr("heredoc> ", STDIN_FILENO);
-		*line = get_next_line(STDIN_FILENO);
-		if (ft_strncmp(*hold, *line, ft_strlen(*hold)) == 0)
+		line = readline("> ");
+		if (ft_strncmp(hold, line, ft_strlen(line)) == 0)
 		{
-			(free(*hold), free(*line));
+			free(line);
 			break ;
 		}
-		free(*line);
+		free(line);
 	}
 }
 
-void	ft_here_doc_parsing(t_token *head, t_env *env)
+int	ft_here_doc_parsing(t_token *head, t_env *env)
 {
 	t_heredoc	info;
 
 	while (head != NULL)
 	{
-		if (head->type == HEREDOC)
+		if (head->type == HEREDOC && head->next && head->next->type != DELIMITER)
+			return (0);
+		if (head->type == HEREDOC && head->next && head->next->type == DELIMITER)
 		{
-			info.del = head->next->token;
-			info.id = fork();
+			(1) && (info.del = head->next->token, info.id = fork());
 			ft_syscall(info.id, "fork");
 			if (info.id == 0)
 			{
-				info.line = NULL;
-				ft_default_signals();
-				info.hold = ft_strjoin(info.del, "\n");
-				ft_check_allocation(info.hold);
-				ft_get_the_line_parsing(&info.line, &info.hold);
+				if (signal(SIGINT, SIG_DFL) == SIG_ERR)
+					exit(FAIL);
+				ft_get_the_line_parsing(info.del);
 				exit(SUCCESS);
 			}
 			ft_syscall(waitpid(CHILD, &info.status, 0), "waitpid");
 			env->status = WEXITSTATUS(info.status);
 			if (WIFSIGNALED(info.status) && WTERMSIG(info.status) == SIGINT)
-				return ;
+				return (1);
 		}
 		head = head->next;
 	}
+	return (0);
 }
 
-static void	ft_get_the_line(char **line, char **hold, int *pipefd)
+static void	ft_get_the_line(char *hold, int *pipefd)
 {
+	char *line;
+
+	line = NULL;
+	rl_catch_signals = 1;
 	while (true)
 	{
-		write(1, "heredoc> ", 10);
-		*line = get_next_line(STDIN_FILENO);
-		if (ft_strncmp(*hold, *line, ft_strlen(*hold)) == 0)
+		line = readline("> ");
+		if (ft_strncmp(hold, line, ft_strlen(line)) == 0)
 		{
-			free(*hold);
-			free(*line);
+			free(line);
 			break ;
 		}
-		ft_putstr(*line, pipefd[1]);
-		free(*line);
+		ft_putstr(line, pipefd[1]);
+		free(line);
 	}
 }
 
@@ -95,10 +100,10 @@ int	ft_here_doc(char *delimiter, t_env *env)
 	ft_syscall(info.id, "fork");
 	if (info.id == 0)
 	{
+		if (signal(SIGINT, SIG_DFL) == SIG_ERR)
+			exit(FAIL);
 		ft_syscall(close(pipefd[0]), "pipe");
-		info.line = NULL;
-		info.hold = ft_strjoin(delimiter, "\n");
-		ft_get_the_line(&info.line, &info.hold, pipefd);
+		ft_get_the_line(delimiter, pipefd);
 		ft_syscall(close(pipefd[1]), "pipe");
 		exit(SUCCESS);
 	}

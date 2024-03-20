@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 13:48:38 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/19 20:32:59 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/20 03:23:06 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,46 +60,42 @@ void	ft_child_process(t_cont *cont, t_env *env, t_info *info)
 		(perror("msh: execve"), exit(FAIL));
 }
 
-void	ft_execute_multiple_cmds(t_cont *cont, t_env *env, int nbr_cmd)
+void	ft_execute_multiple_cmds(t_cont *cont, t_env *env, t_info *info, int nbr_cmd)
 {
-	int		i;
 	pid_t	*id;
-	t_info	info;
 	int		status;
 
-	i = 0;
+	info->i = 0;
 	if (cont == NULL)
 		return ;
-	if (nbr_cmd == 0 || nbr_cmd == 1)
-	{
-		if (ft_open_files(cont, &info.fd, env) == 1 || ft_check_commands(cont, env) == 1)
+	if (cont->cmd == 0 && ft_open_files(cont, &info->fd, env) == 1)
 			return ;
-	}
+	if (nbr_cmd == 1 && ft_check_commands(cont, env) == 1)
+			return ;
 	id = malloc(nbr_cmd * sizeof(int));
 	ft_check_allocation(id);
-	(1) && (info.nbr_cmd = nbr_cmd, info.fd.infile = 0, info.fd.outfile = 1);
-	while (i < nbr_cmd)
+	(1) && (info->nbr_cmd = nbr_cmd, info->fd.infile = 0, info->fd.outfile = 1);
+	while (info->i < nbr_cmd)
 	{
-		ft_syscall(pipe(info.pipe), "pipe");
-		info.i = i;
-		id[i] = fork();
-		ft_syscall(id[i], "fork");
-		if (id[i] == 0)
-			ft_child_process(cont, env, &info);
+		ft_syscall(pipe(info->pipe), "pipe");
+		id[info->i] = fork();
+		ft_syscall(id[info->i], "fork");
+		if (id[info->i] == 0)
+			ft_child_process(cont, env, info);
 		else
 		{
-			ft_syscall(close(info.pipe[1]), "close");
-			if (info.fd.infile != 0)
-				ft_syscall(close(info.fd.infile), "close");
-			info.fd.infile = info.pipe[0];
+			ft_syscall(close(info->pipe[1]), "close");
+			if (info->fd.infile != 0)
+				ft_syscall(close(info->fd.infile), "close");
+			info->fd.infile = info->pipe[0];
 		}
-		i++;
+		info->i++;
 		if (cont->next != NULL)
 			cont = cont->next;
 	}
-	(ft_syscall(close(info.pipe[0]), "pipe"), free(id));
-	i = 0;
-	while (i++ < nbr_cmd)
+	(ft_syscall(close(info->pipe[0]), "pipe"), free(id));
+	info->i = 0;
+	while (info->i++ < nbr_cmd)
 		waitpid(ALLCHILDS, &status, 0);
 	env->status = WEXITSTATUS(status);
 }
