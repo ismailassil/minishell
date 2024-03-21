@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 19:41:44 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/18 23:21:55 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/21 15:02:55 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ void	ft_env(t_env *envp)
 {
 	while (envp != NULL)
 	{
-		printf("%s\n", envp->value);
+		if (ft_strchr(envp->value, '='))
+			printf("%s\n", envp->value);
 		envp = envp->next;
 	}
 }

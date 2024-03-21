@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/20 20:45:07 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/21 15:46:53 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,15 @@ typedef struct s_expand
 	char	*new_str;
 	char	*s;
 }			t_expand;
+
+typedef struct s_info_cd
+{
+	char	current_dir[PATH_MAX];
+	char	buf[PATH_MAX];
+	char	*buffer;
+	char	*tmp;
+	char	*dir;
+}			t_info_cd;
 
 typedef struct s_env
 {
@@ -170,6 +179,15 @@ typedef struct s_info
 	int		i;
 }			t_info;
 
+typedef struct s_append_export
+{
+	char	*ptr;
+	char	*value;
+	char	*tmp;
+	int		i;
+	int		j;
+}			t_append_export;
+
 typedef struct s_execve
 {
 	char	*cmd_path;
@@ -188,6 +206,9 @@ void	ft_unset(t_env *envp, char *argument);
 //	Utils function for builtin function
 t_env	*ft_get_env(char **env);
 void	ft_print_exported_variable(t_env *envp);
+char	*ft_get_cwd(t_env **envp);
+bool	ft_check_syntax_export(char *arg);
+char	*ft_filter_arg(char *arg);
 
 /*==========PARSING FUNCIONS==========*/
 char	*ft_add_space_to_input(char *input);
@@ -252,6 +273,7 @@ void	ft_default_signals(void);
 int		ft_t_env_len(t_env *head);
 int		ft_push_value(char *value, t_env **head);
 void	ft_free_env(t_env **head);
+void	ft_sort_list(t_env **env);
 
 /*==========CONTAINER LINKED LIST UTILS FUNCIONS==========*/
 int		ft_t_cont_len(t_cont *head);
@@ -280,6 +302,7 @@ int		ft_isprint(int c);
 int		ft_toupper(int c);
 int		ft_tolower(int c);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
+int		ft_strcmp(const char *s1, const char *s2);
 int		ft_atoi(const char *str);
 int		ft_memcmp(const void *s1, const void *s2, size_t n);
 void	*ft_memset(void *b, int c, size_t len);

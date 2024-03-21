@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 15:33:58 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/20 18:11:41 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/21 13:42:07 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,63 +97,29 @@ static void	ft_add_old_pwd(t_env **envp, char *argument)
 
 int	ft_cd(char *argument, t_env **envp)
 {
-	char		current_dir[PATH_MAX];
-	char		buf[PATH_MAX];
-	char		*buffer;
-	char		*dir;
+	t_info_cd	info;
 
-	if (getcwd(current_dir, sizeof(current_dir)) == NULL)
-		*current_dir = '\0';
-	dir = ft_check_argument(argument);
-	if (dir == NULL)
+	info.tmp = NULL;
+	if (getcwd(info.current_dir, sizeof(info.current_dir)) == NULL)
+		*info.current_dir = '\0';
+	info.dir = ft_check_argument(argument);
+	if (info.dir == NULL)
 		return (1);
-	if (chdir(dir) == -1)
-		return ((*envp)->status = 1, free(dir), 1);
-	if (getcwd(buf, sizeof(buf)) != NULL)
-		(1) && ((*envp)->status = 0, buffer = buf);
+	if (chdir(info.dir) == -1)
+		return (free(info.dir), ft_error("msh: "), \
+			perror(info.dir), (*envp)->status = 1, 1);
+	if (getcwd(info.buf, sizeof(info.buf)) != NULL)
+		(1) && ((*envp)->status = 0, info.buffer = ft_strdup(info.buf));
 	else
 	{
 		(ft_error("msh: "), perror(argument));
-		buffer = ft_strjoin_(buf, argument);
+		info.tmp = ft_strjoin_(ft_get_cwd(envp), "/");
+		info.buffer = ft_strjoin_(info.tmp, argument);
+		free(info.tmp);
 		(*envp)->status = 258;
 	}
-	(ft_add_current_pwd(envp, buffer), ft_add_old_pwd(envp, current_dir));
-	free(dir);
+	ft_add_current_pwd(envp, info.buffer);
+	ft_add_old_pwd(envp, info.current_dir);
+	(free(info.buffer), free(info.dir));
 	return (0);
 }
-
-// void	v(void)
-// {
-// 	system("leaks cd");
-// }
-
-// int	main(int ac, char **av, char **env)
-// {
-// 	t_env	*envp;
-// 	t_env	*head;
-// 	atexit(v);
-
-// 	envp = ft_get_env(env);
-// 	head = envp;
-// 	printf(YELLOW"=======Before=======\n"RESET);
-// 	while (head != NULL)
-// 	{
-// 		if (ft_strncmp(head->value, "PWD", 3) == 0)
-// 			printf("%s\n", head->value);
-// 		if (ft_strncmp(head->value, "OLDPWD", 6) == 0)
-// 			printf("%s\n", head->value);
-// 		head = head->next;
-// 	}
-// 	ft_cd(av[1], &envp);
-// 	head = envp;
-// 	printf(YELLOW"\n\n=======After=======\n"RESET);
-// 	while (head != NULL)
-// 	{
-// 		if (ft_strncmp(head->value, "PWD", 3) == 0)
-// 			printf("%s\n", head->value);
-// 		if (ft_strncmp(head->value, "OLDPWD", 6) == 0)
-// 			printf("%s\n", head->value);
-// 		head = head->next;
-// 	}
-// 	ft_free_env(&envp);
-// }
