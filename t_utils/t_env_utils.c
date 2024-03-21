@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 19:19:08 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/05 15:20:53 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/21 22:38:10 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,10 @@ void	ft_free_env(t_env **head)
 
 	while (*head)
 	{
-		free((*head)->value);
-		(*head)->value = NULL;
 		current = *head;
 		*head = (*head)->next;
+		free(current->value);
+		current->value = NULL;
 		free(current);
 	}
 }

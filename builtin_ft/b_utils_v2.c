@@ -1,26 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   b_utils_v2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/31 20:47:36 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/21 17:20:05 by iassil           ###   ########.fr       */
+/*   Created: 2024/03/21 17:43:17 by iassil            #+#    #+#             */
+/*   Updated: 2024/03/21 17:43:30 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*ft_strchr(const char *str, int c)
+char	*ft_add_new_arg(t_append_export	*f)
 {
-	while (str && *str)
+	char	*ptr;
+
+	ptr = NULL;
+	ptr = malloc(ft_strlen(f->value) * sizeof(char));
+	ft_check_allocation(ptr);
+	while (f->value && f->value[f->i] != '\0')
 	{
-		if (*str == (char)c)
-			return ((char *)str);
-		str++;
+		if (f->value[f->i] == '+')
+			f->i++;
+		else
+			f->ptr[f->j++] = f->value[f->i++];
 	}
-	if (*str == (char)c)
-		return ((char *)str);
-	return (0);
+	ptr[f->j] = '\0';
+	return (ptr);
 }

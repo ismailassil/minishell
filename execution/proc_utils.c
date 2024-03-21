@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:42:41 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/19 01:20:55 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/21 22:50:59 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ static char	*ft_trim_path(char **path, char *cmd)
 			ft_f(path);
 			return (return_path);
 		}
+		free(return_path);
 	}
 	return (NULL);
 }

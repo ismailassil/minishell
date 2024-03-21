@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mutils.c                                           :+:      :+:    :+:   */
+/*   s_utils.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 16:34:02 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/20 13:57:14 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/21 19:36:32 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	ft_print(t_token *lst)
 	printf("\n");
 	while (head != NULL)
 	{
-		printf(WHT"=={%s}=="RESET, head->token);
+		printf(WHT"=={%s}[%p]=="RESET, head->token, &head->token);
 		head = head->next;
 	}
 	printf("\n");
@@ -45,20 +45,20 @@ void	ft_print_container(t_cont *head)
 	printf("\n");
 	while (container != NULL)
 	{
-		printf("CMD = %s\n", container->cmd);
+		printf("CMD = %s | {%p}\n", container->cmd, &container->cmd);
 		i = 0;
 		while (container->arg[i] != 0)
-			(1) && (printf("ARG[%d] = %s\n", i, container->arg[i]), i++);
+			(1) && (printf("ARG[%d] = %s | {%p}\n", i, container->arg[i], &container->arg[i]), i++);
 		i = 0;
 		while (container->infile[i] != 0)
-			(1) && (printf("INFILE[%d] = %s\n", i, container->infile[i]), i++);
+			(1) && (printf("INFILE[%d] = %s | {%p}\n", i, container->infile[i], &container->infile[i]), i++);
 		i = 0;
 		while (container->outfile[i] != 0)
 		{
 			if (container->outfile_type[i] == 1)
-				printf("OUTFILE[%d] = %s\n", i, container->outfile[i]);
+				printf("OUTFILE[%d] = %s | {%p}\n", i, container->outfile[i], &container->outfile[i]);
 			else if (container->outfile_type[i] == 2)
-				printf("APPEND[%d] = %s\n", i, container->outfile[i]);
+				printf("APPEND[%d] = %s | {%p}\n", i, container->outfile[i], &container->outfile[i]);
 			i++;
 		}
 		container = container->next;

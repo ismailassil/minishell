@@ -1,3 +1,5 @@
 .vscode
 minishell
 _object_files
+*.txt
+leaks*

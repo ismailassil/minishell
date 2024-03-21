@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 13:48:38 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/20 21:12:29 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/21 22:48:24 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,9 @@ void	ft_child_process(t_cont *cont, t_env *env, t_info *info)
 	ft_check_(&exec.cmd_path, cont->cmd, env);
 	exec.argv = ft_join_for_argv_execve(cont);
 	exec.envp = ft_join_for_envp_execve(env);
+	(ft_free_env(&env), ft_free_containers(&cont));
 	if (execve(exec.cmd_path, exec.argv, exec.envp) == -1)
-		(perror("msh: execve"), exit(FAIL));
+		(free(exec.argv), free(exec.envp), perror("msh: execve"), exit(FAIL));
 }
 
 void	ft_execute_child(t_cont *cont, t_env *env, t_info *info)

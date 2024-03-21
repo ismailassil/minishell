@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:47:07 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/21 15:54:10 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/21 17:42:59 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,31 +30,22 @@ static bool	ft_check_if_exists(char *arg, t_env *envp)
 	return (false);
 }
 
-static char	*ft_append_value(char *arg, int flag)
+static char	*ft_append_value(char *arg, char *old_arg, int flag)
 {
 	t_append_export	f;
 
 	(1) && (f.value = ft_filter_arg(arg), f.i = 0, f.j = 0, f.ptr = NULL);
 	if (flag == 1)
-	{
-		f.ptr = malloc(ft_strlen(f.value) * sizeof(char));
-		ft_check_allocation(f.ptr);
-		while (f.value && f.value[f.i] != '\0')
-		{
-			if (f.value[f.i] == '+')
-				f.i++;
-			else
-				f.ptr[f.j++] = f.value[f.i++];
-		}
-	}
+		f.ptr = ft_add_new_arg(&f);
 	else if (flag == 0)
 	{
 		while (f.value[f.i] != '\0' && f.value[f.i] != '=')
 			f.i++;
-		if (f.ptr != NULL && *f.ptr == '=')
-			f.ptr++;
-		f.tmp = ft_strjoin(f.value, f.value + f.i + 1);
+		if (f.value[f.i] == '=')
+			f.i++;
+		f.tmp = ft_strjoin(old_arg, f.value + f.i);
 		ft_check_allocation(f.tmp);
+		f.ptr = f.tmp;
 	}
 	return (f.ptr);
 }
@@ -73,11 +64,11 @@ static int	ft_add_already_exits(char *arg, t_env *envp)
 	{
 		if (ft_strncmp(arg, head->value, i) == 0)
 		{
-			(1) && (free(head->value), head->value = NULL);
 			if (!ft_strchr(arg, '+'))
 				tmp = ft_strdup(arg);
 			else
-				tmp = ft_append_value(arg, 0);
+				tmp = ft_append_value(arg, head->value, 0);
+			(1) && (free(head->value), head->value = NULL);
 			if (!tmp)
 				return (0);
 			head->value = tmp;
@@ -103,7 +94,7 @@ static int	ft_add_new_env(char *arg, t_env *envp)
 	}
 	else
 	{
-		tmp = ft_append_value(value, 1);
+		tmp = ft_append_value(value, NULL, 1);
 		if (ft_push_value(tmp, &envp) == 0)
 			return (1);
 	}

@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/21 15:46:53 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/21 22:44:32 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@
 # define DELIMITER	8
 # define CHILD		0
 # define ALLCHILDS	-1
-# define MAX		1024
 # define GREEN		"\x1b[1;32m"
 # define YELLOW_	"\x1b[0;33m"
 # define YELLOW		"\x1b[1;33m"
@@ -49,6 +48,31 @@
 # define CYAN		"\x1b[1;36m"
 # define WHT		"\e[1;37m"
 # define RESET		"\x1b[0m"
+
+////////////////////////////////////==== LEAKS FINDER ==////////////////////////////////////
+#include <libc.h>
+
+FILE	*gfp;
+
+static void *__malloc(size_t size, int line, const char *file)
+{
+    void *ptr = malloc(size);
+    fprintf(gfp, "dct[%p] = ['malloc', '%p', %i, '%s']\n", ptr, ptr, line, file);
+	fflush(gfp);
+    return (ptr);
+}
+
+
+static void __free(void *ptr, int line, const char *file)
+{
+    fprintf(gfp, "dct[%p] = ['free', '%p', %i, '%s']\n", ptr, ptr, line, file);
+	fflush(gfp);
+    free(ptr);
+}
+
+#define malloc(x) __malloc(x, __LINE__, __FILE__)
+#define free(x) __free(x, __LINE__, __FILE__)
+////////////////////////////////////////////////////////////////////////////////////////////
 
 typedef struct s_start_end
 {
@@ -209,6 +233,7 @@ void	ft_print_exported_variable(t_env *envp);
 char	*ft_get_cwd(t_env **envp);
 bool	ft_check_syntax_export(char *arg);
 char	*ft_filter_arg(char *arg);
+char	*ft_add_new_arg(t_append_export	*f);
 
 /*==========PARSING FUNCIONS==========*/
 char	*ft_add_space_to_input(char *input);

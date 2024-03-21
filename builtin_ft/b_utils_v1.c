@@ -1,38 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   b_utils.c                                          :+:      :+:    :+:   */
+/*   b_utils_v1.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 12:27:22 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/21 15:46:28 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/21 22:44:04 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_allocate_for_env(t_env **head, t_env *envp)
-{
-	*head = malloc(sizeof(t_env));
-	ft_check_allocation(head);
-	*head = NULL;
-	while (envp)
-	{
-		ft_push_value(envp->value, head);
-		envp = envp->next;
-	}
-	ft_sort_list(head);
-}
-
-void	ft_print_exported_variable(t_env *envp)
+void	ft_print_null_export(t_env *head, t_env *envp)
 {
 	int		i;
 	int		flag;
-	t_env	*head;
 
-	(1) && (flag = 0, i = 0);
-	ft_allocate_for_env(&head, envp);
 	while (head)
 	{
 		printf("declare -x ");
@@ -50,6 +34,20 @@ void	ft_print_exported_variable(t_env *envp)
 		printf("\n");
 		head = head->next;
 	}
+}
+
+void	ft_print_exported_variable(t_env *envp)
+{
+	t_env	*head;
+
+	head = NULL;
+	while (envp)
+	{
+		ft_push_value(envp->value, &head);
+		envp = envp->next;
+	}
+	ft_sort_list(&head);
+	ft_print_null_export(head, envp);
 	ft_free_env(&head);
 }
 

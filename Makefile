@@ -6,14 +6,14 @@
 #    By: iassil <iassil@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/27 14:35:22 by iassil            #+#    #+#              #
-#    Updated: 2024/03/21 13:46:18 by iassil           ###   ########.fr        #
+#    Updated: 2024/03/21 19:27:06 by iassil           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC			=	clang
-CC			+=	-Wall -Wextra -Werror
+# CC			+=	-Wall -Wextra -Werror
 READLINEDIR	=	$(shell brew --prefix readline)
-CC			+=	-fsanitize=address -fsanitize=undefined -g
+# CC			+=	-fsanitize=address -fsanitize=undefined -g
 LINKER		=	-lreadline
 RM			=	rm -f
 NAME		=	minishell
@@ -38,7 +38,7 @@ PARS_FILES	=	parsing.c			ft_tokenize.c			ft_check_syntax.c	\
 
 BUILT_FILES	=	ft_echo.c			ft_env.c				ft_pwd.c			\
 				ft_exit.c			ft_export.c				ft_unset.c			\
-				ft_cd.c				b_utils.c
+				ft_cd.c				b_utils_v1.c			b_utils_v2.c
 
 LIB_FILES	=	ft_atoi.c			ft_bzero.c				ft_calloc.c			\
 				ft_isalnum.c		ft_isalpha.c			ft_isascii.c		\

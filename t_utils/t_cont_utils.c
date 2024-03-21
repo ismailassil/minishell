@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 19:25:31 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/20 14:32:15 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/21 21:18:02 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,4 +76,5 @@ void	ft_free_containers(t_cont **head)
 		(free(current->outfile_type), free(current));
 		current = NULL;
 	}
+	(free(*head), head = NULL);
 }
