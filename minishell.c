@@ -6,7 +6,7 @@
 /*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:06 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/20 21:33:56 by aibn-che         ###   ########.fr       */
+/*   Updated: 2024/03/22 02:42:45 by aibn-che         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,38 +231,52 @@ int	handle_herdoc(t_tree *root)
 	int		i;
 	char	*str;
 	int		fd[2];
+	pid_t	pid;
 
 	i = 0;
 	if (root->cont->her_doc)
 	{
 		while (root->cont->her_doc[i] && root->cont->her_doc[i + 1])
 		{
-			write(1, "> ", 2);
-			str = get_next_line(0);
-			while (str)
+			pid = fork();
+			if (!pid)
 			{
-				if (!ft_strncmp(str, root->cont->her_doc[i], ft_strlen(str) - 1) && root->cont->her_doc[i][ft_strlen(str) - 1] == '\0')
-					break ;
+				signal(SIGINT, SIG_DFL);
 				write(1, "> ", 2);
 				str = get_next_line(0);
+				while (str)
+				{
+					if (!ft_strncmp(str, root->cont->her_doc[i], ft_strlen(str) - 1) && root->cont->her_doc[i][ft_strlen(str) - 1] == '\0')
+						exit(EXIT_SUCCESS);
+					write(1, "> ", 2);
+					str = get_next_line(0);
+				}
 			}
+			wait(NULL);
 			i++;
 		}
 		while (root->cont->her_doc[i])
 		{
 			if (pipe(fd) == -1)
 				exit(EXIT_FAILURE);
-			write(1, "> ", 2);
-			str = get_next_line(0);
-			while (str)
+			pid = fork();
+			if (!pid)
 			{
-				if (!ft_strncmp(str, root->cont->her_doc[i], ft_strlen(str) - 1) && root->cont->her_doc[i][ft_strlen(str) - 1] == '\0')
-					break ;
-				write(fd[1], str, ft_strlen(str));
+				close(fd[0]);
+				signal(SIGINT, SIG_DFL);
 				write(1, "> ", 2);
 				str = get_next_line(0);
+				while (str)
+				{
+					if (!ft_strncmp(str, root->cont->her_doc[i], ft_strlen(str) - 1) && root->cont->her_doc[i][ft_strlen(str) - 1] == '\0')
+						exit(EXIT_SUCCESS);
+					write(fd[1], str, ft_strlen(str));
+					write(1, "> ", 2);
+					str = get_next_line(0);
+				}
 			}
 			i++;
+			wait(NULL);
 			close(fd[1]);
 		}
 	}
@@ -344,7 +358,10 @@ void	execute_within_child(t_tree *root, char **e, char *full_path)
 	if (root->cont->infile || root->cont->her_doc)
 		(fd_in = open_and_return_inf(root));
 	if (fd_in)
+	{
 		dup2(fd_in, 0);
+		close(fd_in);
+	}
 	else
 		dup2(root->cont->in, 0);
 	////////////////////infile//////////////////////////
@@ -523,6 +540,8 @@ void	handle_c(int sig)
 {
 	if (sig == SIGINT)
 	{
+		if (waitpid(-1, NULL, WNOHANG) == 0)
+			return ;
 		printf("\n");
 		rl_on_new_line();
 		rl_replace_line("", 1);

@@ -6,7 +6,7 @@
 /*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/22 00:32:37 by aibn-che         ###   ########.fr       */
+/*   Updated: 2024/03/22 01:29:05 by aibn-che         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ typedef struct s_expand
 typedef struct s_env
 {
 	char			*value;
-	int				status;
 	struct s_env	*next;
 }					t_env;
 

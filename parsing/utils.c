@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 14:00:00 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/22 00:49:52 by aibn-che         ###   ########.fr       */
+/*   Updated: 2024/03/08 16:32:29 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,16 +50,7 @@ char	*ft_allocate_for_var(int flag, char *str, int i)
 	return (ptr);
 }
 
-void	question_mark(t_expand *exp, char *s, int *i, t_env *env)
-{
-	char	*num;
-
-	num = ft_itoa(env->value);
-	exp->new_str = ft_strjoin_(s, num);
-	(*i += 1, free(s), free(num));
-}
-
-int	ft_handle_inregulare_cases(t_expand *exp, int c, int *i, t_env *env)
+int	ft_handle_inregulare_cases(t_expand *exp, int c, int *i)
 {
 	char	*s;
 
@@ -77,11 +68,10 @@ int	ft_handle_inregulare_cases(t_expand *exp, int c, int *i, t_env *env)
 	{
 		if (c == '-')
 		{
-			(1) && (exp->new_str = ft_strjoin_(s, "himBH"), *i += 1);
+			exp->new_str = ft_strjoin_(s, "himBH");
+			*i += 1;
 			free(s);
 		}
-		else if (c == '?')
-			question_mark(exp, s, i, env);
 		else
 			ft_append_char(&exp->new_str, '$');
 		return ((*i += 1), 1);

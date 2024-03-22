@@ -6,7 +6,7 @@
 /*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 10:36:20 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/22 00:33:27 by aibn-che         ###   ########.fr       */
+/*   Updated: 2024/03/22 01:28:48 by aibn-che         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	expand_word_after_dollar(t_expand *exp, int *i, char *arg, t_env *env)
 		ft_append_char(&(exp->new_str), arg[(*i)++]);
 		return (1);
 	}
-	if (ft_handle_inregulare_cases(exp, arg[(*i) + 1], i, env))
+	if (ft_handle_inregulare_cases(exp, arg[(*i) + 1], i))
 		return (1);
 	exp->expa = ft_arg_is_exist(env, arg + (*i + 1));
 	exp->s = exp->new_str;
