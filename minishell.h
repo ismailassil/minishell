@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/21 22:44:32 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/22 01:14:01 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,28 +50,28 @@
 # define RESET		"\x1b[0m"
 
 ////////////////////////////////////==== LEAKS FINDER ==////////////////////////////////////
-#include <libc.h>
+// #include <libc.h>
 
-FILE	*gfp;
+// FILE	*gfp;
 
-static void *__malloc(size_t size, int line, const char *file)
-{
-    void *ptr = malloc(size);
-    fprintf(gfp, "dct[%p] = ['malloc', '%p', %i, '%s']\n", ptr, ptr, line, file);
-	fflush(gfp);
-    return (ptr);
-}
+// static void *__malloc(size_t size, int line, const char *file)
+// {
+//     void *ptr = malloc(size);
+//     fprintf(gfp, "dct[%p] = ['malloc', '%p', %i, '%s']\n", ptr, ptr, line, file);
+// 	fflush(gfp);
+//     return (ptr);
+// }
 
 
-static void __free(void *ptr, int line, const char *file)
-{
-    fprintf(gfp, "dct[%p] = ['free', '%p', %i, '%s']\n", ptr, ptr, line, file);
-	fflush(gfp);
-    free(ptr);
-}
+// static void __free(void *ptr, int line, const char *file)
+// {
+//     fprintf(gfp, "dct[%p] = ['free', '%p', %i, '%s']\n", ptr, ptr, line, file);
+// 	fflush(gfp);
+//     free(ptr);
+// }
 
-#define malloc(x) __malloc(x, __LINE__, __FILE__)
-#define free(x) __free(x, __LINE__, __FILE__)
+// #define malloc(x) __malloc(x, __LINE__, __FILE__)
+// #define free(x) __free(x, __LINE__, __FILE__)
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 typedef struct s_start_end
@@ -252,7 +252,7 @@ char	*ft_handle_expand_for_here_doc(t_env *env, char *arg);
 void	ft_error(char *str);
 void	ft_append_char(char **str, int c);
 char	*ft_allocate_for_var(int flag, char *str, int i);
-int		ft_handle_inregulare_cases(t_expand *exp, int c, int *i);
+int		ft_handle_irregulare_cases(t_expand *exp, int c, int *i, t_env *env);
 int		ft_check_quotes(char *str);
 
 /*==========EXECUTION FUNCIONS==========*/

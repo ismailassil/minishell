@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 14:00:00 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/20 14:14:06 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/22 01:05:44 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,18 @@ char	*ft_allocate_for_var(int flag, char *str, int i)
 	return (ptr);
 }
 
-int	ft_handle_inregulare_cases(t_expand *exp, int c, int *i)
+void	ft_question_mark(t_expand *exp, char *s, int *i, t_env *env)
+{
+	char	*num;
+
+	num = ft_itoa(env->status);
+	exp->new_str = ft_strjoin_(s, num);
+	*i += 1;
+	free(s);
+	free(num);
+}
+
+int	ft_handle_irregulare_cases(t_expand *exp, int c, int *i, t_env *env)
 {
 	char	*s;
 
@@ -94,17 +105,17 @@ int	ft_handle_inregulare_cases(t_expand *exp, int c, int *i)
 	{
 		if (c == '-')
 		{
-			exp->new_str = ft_strjoin_(s, "himBH");
-			*i += 1;
+			(1) && (exp->new_str = ft_strjoin_(s, "himBH"), *i += 1);
 			free(s);
 		}
+		else if (c == '?')
+			ft_question_mark(exp, s, i, env);
 		else
 			ft_append_char(&exp->new_str, '$');
 		return ((*i += 1), 1);
 	}
 	return (0);
 }
-
 /*
 *	Define the quote,
 *	that should not be included within the string

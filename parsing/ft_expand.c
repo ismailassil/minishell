@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 10:36:20 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/20 18:22:13 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/22 01:12:12 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,12 @@ int	ft_expand_word_after_dollar(t_expand *exp, int *i, char *arg, t_env *env)
 		ft_append_char(&(exp->new_str), arg[(*i)++]);
 		return (1);
 	}
-	if (ft_handle_inregulare_cases(exp, arg[(*i) + 1], i))
+	if (ft_handle_irregulare_cases(exp, arg[(*i) + 1], i, env))
 		return (1);
 	exp->expa = ft_arg_is_exist(env, arg + (*i + 1));
 	exp->s = exp->new_str;
 	exp->new_str = ft_strjoin(exp->new_str, exp->expa);
+	free(exp->s);
 	return (0);
 }
 
@@ -100,12 +101,18 @@ char	*ft_handle_expand(t_env *env, char *arg)
 void	ft_expand_argument(t_env *env, t_token **linked_list)
 {
 	t_token	*head;
+	char	*tmp;
 
-	head = *linked_list;
+	(1) && (head = *linked_list, tmp = NULL);
 	while (head != NULL)
 	{
 		if (ft_strchr(head->token, '$'))
-			head->token = ft_handle_expand(env, head->token);
+		{
+			tmp = ft_handle_expand(env, head->token);
+			free(head->token);
+			head->token = NULL;
+			head->token = tmp;
+		}
 		head = head->next;
 	}
 }

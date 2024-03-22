@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 14:48:48 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/20 19:38:57 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/22 01:06:14 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static int	ft_surpass_chars(char *var)
 static int	ft_expand_word_after_dollar_here_doc(t_expand *exp, int *i, \
 	char *arg, t_env *env)
 {
-	if (ft_handle_inregulare_cases(exp, arg[(*i) + 1], i))
+	if (ft_handle_irregulare_cases(exp, arg[(*i) + 1], i, env))
 		return (1);
 	exp->expa = ft_arg_is_exist(env, arg + (*i + 1));
 	exp->s = exp->new_str;
