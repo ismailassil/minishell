@@ -6,7 +6,7 @@
 /*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:06 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/20 03:06:24 by aibn-che         ###   ########.fr       */
+/*   Updated: 2024/03/20 21:33:56 by aibn-che         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -551,7 +551,7 @@ void	ft_parse_input_from_shell(t_env *env, char *input, char **en)
 	ft_remove_quotes(&head);
 	ft_expand_argument(env, &head);
 	ft_print_types(head);
-	ft_print(head);
+	// ft_print(head);
 
 	////////////////////////////
 	handle_execution(head, env, en);
@@ -569,7 +569,7 @@ int	main(int argc, char **argv, char **env)
 	char	*line;
 	t_env	*envp;
 
-	atexit(v);
+	// atexit(v);
 	// ft_signal_handler();
 
 	// ft_printf("hello wolrd");
