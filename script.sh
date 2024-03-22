@@ -1,7 +1,13 @@
 #!/bin/bash
+
+YELLOW=$(tput setaf 3)
+RESET=$(tput sgr0)
+
 while true; do
-    echo -e "\e[1;33mOpened file descriptor for [./minishell]\e[0m"
+    echo "${YELLOW}Opened file descriptor for [./minishell]${RESET}"
     lsof -c minishell | tail -n 4
+    echo
+    echo "${YELLOW}Leaks [./minishell]${RESET}"
     leaks minishell
     echo
     sleep 3

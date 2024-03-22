@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 15:41:50 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/21 19:35:09 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/21 23:39:43 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,5 @@ void	ft_execution(t_token **token, t_env *env)
 	nbr_cont = ft_t_cont_len(container);
 	ft_execute_multiple_cmds(container, env, &info, nbr_cont);
 	close_opened_files(&info);
-	ft_print_container(container);
 	ft_free_containers(&container);
 }
