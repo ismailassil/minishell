@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/22 01:14:01 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/22 01:21:52 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,30 +49,29 @@
 # define WHT		"\e[1;37m"
 # define RESET		"\x1b[0m"
 
-////////////////////////////////////==== LEAKS FINDER ==////////////////////////////////////
+//////////////////////==== LEAKS FINDER ==//////////////////////
 // #include <libc.h>
-
 // FILE	*gfp;
-
 // static void *__malloc(size_t size, int line, const char *file)
 // {
-//     void *ptr = malloc(size);
-//     fprintf(gfp, "dct[%p] = ['malloc', '%p', %i, '%s']\n", ptr, ptr, line, file);
+// 	void	*ptr;
+// 	ptr = malloc(size);
+// 	fprintf(gfp, "dct[%p] = ['malloc', '%p', %i,\
+		'%s']\n", ptr, ptr, line, file);
 // 	fflush(gfp);
-//     return (ptr);
+// 	return (ptr);
 // }
 
-
-// static void __free(void *ptr, int line, const char *file)
+// static void	__free(void *ptr, int line, const char *file)
 // {
-//     fprintf(gfp, "dct[%p] = ['free', '%p', %i, '%s']\n", ptr, ptr, line, file);
+// 	fprintf(gfp, "dct[%p] = ['free', '%p', %i,\
+		'%s']\n", ptr, ptr, line, file);
 // 	fflush(gfp);
-//     free(ptr);
+// 	free(ptr);
 // }
-
 // #define malloc(x) __malloc(x, __LINE__, __FILE__)
 // #define free(x) __free(x, __LINE__, __FILE__)
-////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////
 
 typedef struct s_start_end
 {

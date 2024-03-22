@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:06 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/22 01:14:10 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/22 01:15:45 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,24 +38,24 @@ void	ft_parse_input_from_shell(t_env *env, char *input)
 		return ;
 	}
 	(ft_remove_quotes(&head), ft_expand_argument(env, &head));
-	// (ft_print_types(head), ft_print(head), ft_print_container(container));
 	ft_execution(&head, env);
 }
 
+	// (ft_print_types(head), ft_print(head), ft_print_container(container));
 // void leaks()
 // {
 //     fclose(gfp);
 //     system("leaks minishell");
 //     usleep(1000 * 100 *10000);
 // }
+	// gfp = fopen("leaks.t", "w");
+	// atexit(leaks);
 
 int	main(int argc, char **argv, char **env)
 {
 	char	*line;
 	t_env	*envp;
 
-	// gfp = fopen("leaks.t", "w");
-	// atexit(leaks);
 	envp = NULL;
 	((void)argc, (void)argv);
 	ft_signal_handler();

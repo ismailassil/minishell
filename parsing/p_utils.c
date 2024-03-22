@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 14:00:00 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/22 01:05:44 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/22 01:16:33 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ int	ft_handle_irregulare_cases(t_expand *exp, int c, int *i, t_env *env)
 	}
 	return (0);
 }
+
 /*
 *	Define the quote,
 *	that should not be included within the string
