@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 03:21:09 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/23 18:07:04 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/23 23:11:31 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,26 @@ static void	ft_get_the_line_parsing(char *hold)
 	while (true)
 	{
 		line = readline("> ");
-		if (ft_strncmp(hold, line, ft_strlen(line)) == 0)
+		if (ft_strcmp(hold, line) == 0)
 		{
 			free(line);
 			break ;
 		}
 		free(line);
 	}
+}
+
+void	slash_sig(int sig)
+{
+	(void)sig;
+}
+
+void	ft_default_signals_her_doc(void)
+{
+	if (signal(SIGINT, SIG_DFL) == SIG_ERR)
+		exit(FAIL);
+	if (signal(SIGINT, slash_sig) == SIG_ERR)
+		exit(FAIL);
 }
 
 int	ft_here_doc_parsing(t_token *lst, t_env *env)
@@ -84,7 +97,7 @@ static void	ft_get_the_line(char *hold, int *pipefd, t_env *env)
 	while (true)
 	{
 		line = readline("> ");
-		if (ft_strncmp(hold, line, ft_strlen(line)) == 0)
+		if (ft_strcmp(hold, line) == 0)
 		{
 			free(line);
 			break ;
@@ -117,7 +130,7 @@ int	ft_here_doc(char *delimiter, t_env *env)
 		exit(SUCCESS);
 	}
 	ft_syscall(close(pipefd[1]), "close");
-	ft_syscall(waitpid(info.id, &info.status, 0), "waitpid");
+	ft_syscall(waitpid(CHILD, &info.status, 0), "waitpid");
 	env->status = WEXITSTATUS(info.status);
 	if (WIFSIGNALED(info.status) && WTERMSIG(info.status) == SIGINT)
 		exit(FAIL);

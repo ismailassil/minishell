@@ -6,11 +6,13 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 16:10:26 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/20 14:06:25 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/23 22:53:55 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+extern struct termios	g_original_attr;
 
 void	ft_default_signals(void)
 {
@@ -29,6 +31,11 @@ void	ft_signal_handler(void)
 		(perror("Error"), exit(EXIT_FAILURE));
 }
 
+/*
+*	It specifies that the waitpid() function should not wait for a child process
+*	to exit if there are no child processes that have already exited and are
+*	waiting to be reaped.
+*/
 void	ctrl_c(int sig)
 {
 	(void)sig;
@@ -43,7 +50,19 @@ void	ctrl_c(int sig)
 	rl_redisplay();
 }
 
+/*
+*	TCSANOW: It indicates that the changes to terminal attributes
+*	should take effect immediately.
+*/
 void	ctrl_slash(int sig)
 {
 	(void)sig;
+	if (waitpid(ALLCHILDS, NULL, WNOHANG) == 0)
+	{
+		ft_syscall(tcsetattr(STDIN_FILENO, TCSANOW, &g_original_attr),\
+			"tcsetattr");
+		printf("Quit: 3\n");
+		return ;
+	}
+	rl_redisplay();
 }

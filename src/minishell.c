@@ -6,11 +6,13 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:06 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/23 16:07:12 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/23 22:43:17 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+struct termios	g_original_attr;
 
 /*	Parse the input from the shell	*/
 void	ft_parse_input_from_shell(t_env *env, char *input)
@@ -58,6 +60,7 @@ int	main(int argc, char **argv, char **env)
 
 	envp = NULL;
 	((void)argc, (void)argv);
+	ft_syscall(tcgetattr(STDIN_FILENO, &g_original_attr), "tcgetattr");
 	ft_signal_handler();
 	envp = ft_get_env(env);
 	while (true)
