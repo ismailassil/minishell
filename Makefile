@@ -6,20 +6,21 @@
 #    By: iassil <iassil@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/27 14:35:22 by iassil            #+#    #+#              #
-#    Updated: 2024/03/21 19:27:06 by iassil           ###   ########.fr        #
+#    Updated: 2024/03/22 22:54:15 by iassil           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC			=	clang
-# CC			+=	-Wall -Wextra -Werror
+CC			+=	-Wall -Wextra -Werror
 READLINEDIR	=	$(shell brew --prefix readline)
-# CC			+=	-fsanitize=address -fsanitize=undefined -g
+CC			+=	-fsanitize=address -fsanitize=undefined -g
 LINKER		=	-lreadline
 RM			=	rm -f
 NAME		=	minishell
 HEADER_H	=	minishell.h			lib/get_next_line/get_next_line.h
 
-MAIN_FILES	=	minishell.c			signals.c				s_utils.c
+MAIN_FILES	=	minishell.c			signals.c				s_utils_v1.c		\
+				s_utils_v2.c
 
 UTILS_FILES =	t_env_utils.c		t_token_utils.c			t_cont_utils.c		\
 				ft_sort_list.c		t_utils.c

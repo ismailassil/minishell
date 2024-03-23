@@ -6,30 +6,35 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 20:34:45 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/05 15:24:11 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/22 02:31:29 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static int	check_if_chars_digit(int c)
-{
-	if ((c >= 'a' && c <= 'z')
-		|| (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9'))
-		return (1);
-	return (0);
-}
-
-static int	ft_check_arg(char *argument)
+static int	ft_check_arg(char *arg)
 {
 	int	i;
 
 	i = 0;
-	if (argument == NULL)
+	if (arg == NULL)
 		return (1);
-	while (argument[i] != '\0')
-		if (check_if_chars_digit(argument[i++]) == 0)
-			return (0);
+	if (arg[0] == '=' || ft_isalpha(arg[0]) == 0 || arg[0] == '-')
+	{
+		(ft_error("msh: unset: "), ft_error(arg));
+		ft_error(": not a valid identifier\n");
+		return (true);
+	}
+	while (arg && arg[i] != '\0' && arg[i] != '=')
+	{
+		if (arg[i] == '-' || arg[i] == '+' || arg[i] == '=')
+		{
+			(ft_error("msh: unset: "), ft_error(arg));
+			ft_error(": not a valid identifier\n");
+			return (true);
+		}
+		i++;
+	}
 	return (1);
 }
 
@@ -44,7 +49,7 @@ void	ft_unset(t_env *envp, char *argument)
 	if (argument == NULL)
 		return ;
 	if (ft_check_arg(argument) == 0)
-		(write(2, "unset: syntax error\n", 20), exit(FAIL));
+		(envp->status = 1, exit(FAIL));
 	while (head != NULL)
 	{
 		if (ft_strncmp(argument, head->value, ft_strlen(argument)) == 0)

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   s_utils.c                                          :+:      :+:    :+:   */
+/*   s_utils_v1.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 16:34:02 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/21 23:38:23 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/22 23:13:51 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,9 @@ void	ft_print_container(t_cont *head)
 				printf("APPEND[%d] = %s\n", i, container->outfile[i]);
 			i++;
 		}
+		i = 0;
+		while (container->here_doc[i] != 0)
+			(1) && (printf("HEREDOC[%d] = %s\n", i, container->here_doc[i]), i++);
 		container = container->next;
 	}
 }

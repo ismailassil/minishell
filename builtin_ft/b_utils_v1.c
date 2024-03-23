@@ -6,13 +6,13 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 12:27:22 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/21 22:44:04 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/22 02:31:48 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_print_null_export(t_env *head, t_env *envp)
+void	ft_print_null_export(t_env *head)
 {
 	int		i;
 	int		flag;
@@ -47,7 +47,7 @@ void	ft_print_exported_variable(t_env *envp)
 		envp = envp->next;
 	}
 	ft_sort_list(&head);
-	ft_print_null_export(head, envp);
+	ft_print_null_export(head);
 	ft_free_env(&head);
 }
 

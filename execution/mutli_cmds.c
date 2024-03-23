@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 13:48:38 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/21 22:48:24 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/23 00:51:59 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	ft_child_process(t_cont *cont, t_env *env, t_info *info)
 
 	cmd = NULL;
 	ft_syscall(close(info->pipe[0]), "pipe");
-	if (ft_open_files(cont, &info->fd, env) == 1)
+	if (ft_open_files(cont, info, env) == 1)
 		exit(FAIL);
 	ft_default_signals();
 	ft_syscall(dup2(info->fd.infile, STDIN_FILENO), "dup2");
@@ -84,25 +84,22 @@ void	ft_execute_child(t_cont *cont, t_env *env, t_info *info)
 }
 
 void	ft_execute_multiple_cmds(t_cont *cont, \
-	t_env *env, t_info *info, int nbr_cont)
+	t_env *env, t_info *info, int nr_cont)
 {
 	int		status;
 
 	info->i = 0;
 	(1) && (info->fd.infile = 0, info->fd.outfile = 1);
-	info->nbr_cont = nbr_cont;
-	if (cont == NULL)
+	info->nbr_cont = nr_cont;
+	if (ft_check_cont_and_cmd(cont, env, info, nr_cont) == 1)
 		return ;
-	if ((nbr_cont == 0 || nbr_cont == 1)
-		&& (ft_open_files(cont, &info->fd, env) == 1
-			|| ft_check_commands(cont, env, info, 1) == 1))
-		return ;
-	info->id = malloc(nbr_cont * sizeof(int));
+	info->id = malloc(nr_cont * sizeof(int));
 	ft_check_allocation(info->id);
 	ft_execute_child(cont, env, info);
-	(ft_syscall(close(info->pipe[0]), "pipe"), free(info->id));
+	(ft_syscall(close(info->pipe[0]), "pipe"));
 	info->i = 0;
-	while (info->i++ < nbr_cont)
-		waitpid(ALLCHILDS, &status, 0);
+	while (info->i < nr_cont)
+		waitpid(info->id[info->i++], &status, 0);
 	env->status = WEXITSTATUS(status);
+	free(info->id);
 }

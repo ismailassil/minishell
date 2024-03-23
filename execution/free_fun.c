@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 14:21:11 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/21 21:03:05 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/22 18:40:33 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,6 @@ void	ft_free_tmp(t_tmp_cont **tmp)
 	while ((*tmp)->here_doc[i] != NULL)
 		(1) && (free((*tmp)->here_doc[i]), i++);
 	(free((*tmp)->inf), free((*tmp)->outf), free((*tmp)->out_t));
-	(free((*tmp)->arg), free((*tmp)->here_doc), free((*tmp)->file_or_heredoc));
-	free(*tmp);
+	(free((*tmp)->arg), free((*tmp)->here_doc));
+	(free((*tmp)->file_or_heredoc), free(*tmp));
 }

@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 21:12:35 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/20 14:31:18 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/22 23:08:58 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ static void	ft_allocate_for_rest_v2(t_tmp_cont *tmp, t_cont **new)
 	while (tmp->here_doc && tmp->here_doc[i] != 0)
 		(1) && ((*new)->here_doc[i] = ft_strdup(tmp->here_doc[i]), i++);
 	(*new)->here_doc[i] = 0;
-	(*new)->file_or_heredoc = tmp->file_or_heredoc;
+	(*new)->file_or_heredoc = malloc(sizeof(int));
+	*(*new)->file_or_heredoc = *tmp->file_or_heredoc;
+	(*new)->here_doc_fd = malloc(sizeof(int));
+	*(*new)->here_doc_fd = 0;
 }
 
 static void	ft_allocate_for_rest(t_tmp_cont *tmp, t_cont **new)

@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 03:21:09 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/20 17:07:12 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/22 17:58:18 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ int	ft_here_doc(char *delimiter, t_env *env)
 		exit(SUCCESS);
 	}
 	ft_syscall(close(pipefd[1]), "close");
-	ft_syscall(waitpid(CHILD, &info.status, 0), "waitpid");
+	ft_syscall(waitpid(info.id, &info.status, 0), "waitpid");
 	env->status = WEXITSTATUS(info.status);
 	if (WIFSIGNALED(info.status) && WTERMSIG(info.status) == SIGINT)
 		exit(FAIL);

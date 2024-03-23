@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/22 01:21:52 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/23 00:50:40 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,16 +56,14 @@
 // {
 // 	void	*ptr;
 // 	ptr = malloc(size);
-// 	fprintf(gfp, "dct[%p] = ['malloc', '%p', %i,\
-		'%s']\n", ptr, ptr, line, file);
+// 	fprintf(gfp, "dct[%p] = ['malloc', '%p', %i, '%s']\n", ptr, ptr, line, file);
 // 	fflush(gfp);
 // 	return (ptr);
 // }
 
 // static void	__free(void *ptr, int line, const char *file)
 // {
-// 	fprintf(gfp, "dct[%p] = ['free', '%p', %i,\
-		'%s']\n", ptr, ptr, line, file);
+// 	fprintf(gfp, "dct[%p] = ['free', '%p', %i, '%s']\n", ptr, ptr, line, file);
 // 	fflush(gfp);
 // 	free(ptr);
 // }
@@ -171,6 +169,7 @@ typedef struct s_container
 	char				**infile;
 	char				**here_doc;
 	int					*file_or_heredoc;
+	int					*here_doc_fd;
 	char				**outfile;
 	int					*outfile_type;
 	struct s_container	*next;
@@ -255,6 +254,8 @@ int		ft_handle_irregulare_cases(t_expand *exp, int c, int *i, t_env *env);
 int		ft_check_quotes(char *str);
 
 /*==========EXECUTION FUNCIONS==========*/
+int		ft_check_cont_and_cmd(t_cont *cont, \
+	t_env *env, t_info *info, int nr_cont);
 int		ft_here_doc(char *delimiter, t_env *env);
 int		ft_here_doc_parsing(t_token *head, t_env *env);
 void	ft_execution(t_token **token, t_env *env);
@@ -267,12 +268,13 @@ void	ft_check_(char **envp_path, char *cmd, t_env *env);
 void	ft_check_allocation(void *str);
 void	ft_syscall(int return_, char *str);
 void	ft_f(char **str);
-int		ft_open_files(t_cont *cont, t_fd *fd, t_env *env);
+int		ft_open_files(t_cont *cont, t_info *info, t_env *env);
 //	CONTAINER FUNCTIONS
 void	ft_link_all_in_containers(t_token *head, t_cont **container);
 void	ft_count_alc(t_token *head, t_tmp_cont	**cont);
 void	ft_free_tmp(t_tmp_cont **tmp);
 //	BUILTINS FUNCTIONS
+int		ft_builtin_exist(t_cont *cont);
 void	execute_echo(t_cont *cont, t_env **envp);
 void	execute_cd(t_cont *cont, t_env **envp);
 void	execute_env(t_cont *cont, t_env **envp);
@@ -304,6 +306,7 @@ int		ft_t_cont_len(t_cont *head);
 int		ft_push_container(t_tmp_cont *tmp, t_cont **head);
 void	ft_free_containers(t_cont **head);
 t_cont	*ft_new_node_for_cont(t_tmp_cont *tmp);
+void	ft_open_here_doc(t_cont *cont, t_info *info, t_env *env);
 
 /*==========TOKEN LINKED LIST UTILS FUNCIONS==========*/
 int		ft_t_token_len(t_token *head);
