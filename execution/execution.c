@@ -6,23 +6,11 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 15:41:50 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/23 00:51:44 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/23 16:00:01 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void	ft_dup2(t_fd *fd)
-{
-	if (dup2(fd->infile, STDIN_FILENO) == -1)
-		(perror("dup2 (STDIN)"), exit(FAIL));
-	if (fd->infile != 0)
-		close(fd->infile);
-	if (dup2(fd->outfile, STDOUT_FILENO) == -1)
-		(perror("dup2 (STDOUT)"), exit(FAIL));
-	if (fd->outfile != 1)
-		close(fd->outfile);
-}
 
 void	close_opened_files(t_info *info)
 {

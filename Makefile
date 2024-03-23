@@ -6,7 +6,7 @@
 #    By: iassil <iassil@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/27 14:35:22 by iassil            #+#    #+#              #
-#    Updated: 2024/03/22 22:54:15 by iassil           ###   ########.fr        #
+#    Updated: 2024/03/23 17:51:39 by iassil           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,8 +19,8 @@ RM			=	rm -f
 NAME		=	minishell
 HEADER_H	=	minishell.h			lib/get_next_line/get_next_line.h
 
-MAIN_FILES	=	minishell.c			signals.c				s_utils_v1.c		\
-				s_utils_v2.c
+SRC_FILES	=	minishell.c			signals.c				src_utils_v1.c		\
+				src_utils_v2.c
 
 UTILS_FILES =	t_env_utils.c		t_token_utils.c			t_cont_utils.c		\
 				ft_sort_list.c		t_utils.c
@@ -28,18 +28,18 @@ UTILS_FILES =	t_env_utils.c		t_token_utils.c			t_cont_utils.c		\
 GNL_FILES 	=	get_next_line/get_next_line.c		\
 				get_next_line/get_next_line_utils.c
 
-EXEC_FILES	=	exec.c				proc_utils.c			exec_builtin.c		\
+EXEC_FILES	=	execution.c			process_utils.c			execute_builtin.c	\
 				here_doc.c			fill_container.c		mutli_cmds.c		\
-				free_fun.c			exec_builtin_utils.c	here_doc_utils.c	\
-				e_utils.c
+				free_fun.c			here_doc_utils.c		execution_utils.c	\
+				execute_builtin_utils.c
 
 PARS_FILES	=	parsing.c			ft_tokenize.c			ft_check_syntax.c	\
 				ft_expand.c			ft_remove_quotes.c		ft_split_tokens.c	\
-				p_utils.c
+				parse_utils_v1.c	parse_utils_v2.c
 
 BUILT_FILES	=	ft_echo.c			ft_env.c				ft_pwd.c			\
 				ft_exit.c			ft_export.c				ft_unset.c			\
-				ft_cd.c				b_utils_v1.c			b_utils_v2.c
+				ft_cd.c				builtin_utils_v1.c		builtin_utils_v2.c
 
 LIB_FILES	=	ft_atoi.c			ft_bzero.c				ft_calloc.c			\
 				ft_isalnum.c		ft_isalpha.c			ft_isascii.c		\
@@ -57,7 +57,7 @@ LIB_FILES	=	ft_atoi.c			ft_bzero.c				ft_calloc.c			\
 				ft_lstclear.c		ft_lstiter.c			ft_lstmap.c			\
 				ft_split.c
 
-MAIN_SRC	=	$(addprefix src/,$(MAIN_FILES))
+SRC_SRC		=	$(addprefix src/,$(SRC_FILES))
 UTILS_SRC	=	$(addprefix t_utils/,$(UTILS_FILES))
 GNL_SRC		=	$(addprefix lib/,$(GNL_FILES))
 EXEC_SRC	=	$(addprefix execution/,$(EXEC_FILES))
@@ -65,7 +65,7 @@ PARS_SRC	=	$(addprefix parsing/,$(PARS_FILES))
 BUILT_SRC	=	$(addprefix builtin_ft/,$(BUILT_FILES))
 LIB_SRC		=	$(addprefix lib/,$(LIB_FILES))
 
-MAIN_OBJ	=	$(addprefix _object_files/,$(MAIN_SRC:.c=.o))
+SRC_OBJ		=	$(addprefix _object_files/,$(SRC_SRC:.c=.o))
 UTILS_OBJ	=	$(addprefix _object_files/,$(UTILS_SRC:.c=.o))
 GNL_OBJ		=	$(addprefix _object_files/,$(GNL_SRC:.c=.o))
 EXEC_OBJ	=	$(addprefix _object_files/,$(EXEC_SRC:.c=.o))
@@ -73,7 +73,7 @@ PARS_OBJ	=	$(addprefix _object_files/,$(PARS_SRC:.c=.o))
 BUILT_OBJ	=	$(addprefix _object_files/,$(BUILT_SRC:.c=.o))
 LIB_OBJ		=	$(addprefix _object_files/,$(LIB_SRC:.c=.o))
 
-OBJ 		=	$(MAIN_OBJ) $(EXEC_OBJ) $(GNL_OBJ) $(UTILS_OBJ)	\
+OBJ 		=	$(SRC_OBJ) $(EXEC_OBJ) $(GNL_OBJ) $(UTILS_OBJ)	\
 				$(PARS_OBJ) $(BUILT_OBJ) $(LIB_OBJ)
 
 ########### Goal Target

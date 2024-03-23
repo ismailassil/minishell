@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 20:34:45 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/22 02:31:29 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/23 17:43:17 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,26 +44,26 @@ void	ft_unset(t_env *envp, char *argument)
 	t_env	*lastnode;
 	t_env	*tmp;
 
-	head = envp;
-	lastnode = head;
+	(1) && (head = envp, lastnode = head);
 	if (argument == NULL)
 		return ;
 	if (ft_check_arg(argument) == 0)
-		(envp->status = 1, exit(FAIL));
+	{
+		envp->status = 1;
+		exit(FAIL);
+	}
 	while (head != NULL)
 	{
 		if (ft_strncmp(argument, head->value, ft_strlen(argument)) == 0)
 		{
-			tmp = head;
-			lastnode->next = head->next;
+			(1) && (tmp = head, lastnode->next = head->next);
 			free(tmp->value);
 			tmp->value = NULL;
 			free(tmp);
 			tmp = NULL;
 			break ;
 		}
-		lastnode = head;
-		head = head->next;
+		(1) && (lastnode = head, head = head->next);
 	}
 }
 

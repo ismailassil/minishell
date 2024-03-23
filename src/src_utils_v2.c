@@ -1,25 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   s_utils_v1.c                                       :+:      :+:    :+:   */
+/*   src_utils_v2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 16:34:02 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/22 23:13:51 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/23 17:55:35 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-/*	Checks if a char is a special character or not				*/
-int	ft_check_if_chars_digit(int c)
-{
-	if ((c >= 'a' && c <= 'z')
-		|| (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '_')
-		return (1);
-	return (0);
-}
 
 /*	Print the data in the Linked list imported from the shell	*/
 void	ft_print(t_token *lst)
@@ -34,6 +25,25 @@ void	ft_print(t_token *lst)
 		head = head->next;
 	}
 	printf("\n");
+}
+
+void	ft_print_outfile_and_here_doc(t_cont *container)
+{
+	int	i;
+
+	i = 0;
+	while (container->outfile[i] != 0)
+	{
+		if (container->outfile_type[i] == 1)
+			printf("OUTFILE[%d] = %s\n", i, container->outfile[i]);
+		else if (container->outfile_type[i] == 2)
+			printf("APPEND[%d] = %s\n", i, container->outfile[i]);
+		i++;
+	}
+	i = 0;
+	while (container->here_doc[i] != 0)
+		(1) && (printf("HEREDOC[%d] = %s\n", \
+			i, container->here_doc[i]), i++);
 }
 
 void	ft_print_container(t_cont *head)
@@ -52,18 +62,7 @@ void	ft_print_container(t_cont *head)
 		i = 0;
 		while (container->infile[i] != 0)
 			(1) && (printf("INFILE[%d] = %s\n", i, container->infile[i]), i++);
-		i = 0;
-		while (container->outfile[i] != 0)
-		{
-			if (container->outfile_type[i] == 1)
-				printf("OUTFILE[%d] = %s\n", i, container->outfile[i]);
-			else if (container->outfile_type[i] == 2)
-				printf("APPEND[%d] = %s\n", i, container->outfile[i]);
-			i++;
-		}
-		i = 0;
-		while (container->here_doc[i] != 0)
-			(1) && (printf("HEREDOC[%d] = %s\n", i, container->here_doc[i]), i++);
+		ft_print_outfile_and_here_doc(container);
 		container = container->next;
 	}
 }

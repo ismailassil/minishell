@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/23 00:50:40 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/23 17:20:56 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,16 @@
 // {
 // 	void	*ptr;
 // 	ptr = malloc(size);
-// 	fprintf(gfp, "dct[%p] = ['malloc', '%p', %i, '%s']\n", ptr, ptr, line, file);
+// 	fprintf(gfp, "dct[%p] = ['malloc', '%p', %i, '%s']\n", 
+//		ptr, ptr, line, file);
 // 	fflush(gfp);
 // 	return (ptr);
 // }
 
 // static void	__free(void *ptr, int line, const char *file)
 // {
-// 	fprintf(gfp, "dct[%p] = ['free', '%p', %i, '%s']\n", ptr, ptr, line, file);
+// 	fprintf(gfp, "dct[%p] = ['free', '%p', %i, '%s']\n",
+//		ptr, ptr, line, file);
 // 	fflush(gfp);
 // 	free(ptr);
 // }

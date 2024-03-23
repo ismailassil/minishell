@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:43:43 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/23 00:51:59 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/23 17:42:21 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,22 @@
 
 static int	ft_open_infile_or_heredoc(t_cont *cont, t_info *info, t_env *env)
 {
-	t_fd_	f_d;
+	t_fd_	fd;
 
-	f_d.i = -1;
-	while (cont->infile && cont->infile[++f_d.i] != 0)
+	fd.i = -1;
+	while (cont->infile && cont->infile[++fd.i] != 0)
 	{
-		f_d.infile = open(cont->infile[f_d.i], O_RDONLY);
-		if (f_d.infile == -1)
-			return (ft_error("msh: "), perror(cont->infile[f_d.i]), \
+		fd.infile = open(cont->infile[fd.i], O_RDONLY);
+		if (fd.infile == -1)
+			return (ft_error("msh: "), perror(cont->infile[fd.i]), \
 				env->status = 1, 1);
-		info->fd.infile = f_d.infile;
-		info->fd.opened_fd[info->fd.len++] = info->fd.infile;
+		if (cont->infile && cont->infile[fd.i + 1] != 0)
+			ft_syscall(close(fd.infile), "close");
+		else
+		{
+			info->fd.infile = fd.infile;
+			info->fd.opened_fd[info->fd.len++] = info->fd.infile;
+		}
 	}
 	if (*cont->file_or_heredoc == 1)
 		info->fd.infile = *cont->here_doc_fd;
@@ -33,21 +38,26 @@ static int	ft_open_infile_or_heredoc(t_cont *cont, t_info *info, t_env *env)
 
 int	ft_open_files(t_cont *cont, t_info *info, t_env *env)
 {
-	t_fd_	f_d;
+	t_fd_	fd;
 
-	f_d.i = -1;
-	while (cont->outfile && cont->outfile[++f_d.i] != 0)
+	fd.i = -1;
+	while (cont->outfile && cont->outfile[++fd.i] != 0)
 	{
-		if (cont->outfile_type[f_d.i] == 1)
-			f_d.outfile = open(cont->outfile[f_d.i], O_CREAT | O_WRONLY, 0644);
-		else if (cont->outfile_type[f_d.i] == 2)
-			f_d.outfile = open(cont->outfile[f_d.i], \
+		if (cont->outfile_type[fd.i] == 1)
+			fd.outfile = open(cont->outfile[fd.i], O_CREAT | O_WRONLY, 0644);
+		else if (cont->outfile_type[fd.i] == 2)
+			fd.outfile = open(cont->outfile[fd.i], \
 				O_CREAT | O_RDWR | O_APPEND, 0644);
-		if (f_d.outfile == -1)
-			return (ft_error("msh: "), perror(cont->outfile[f_d.i]), \
+		if (fd.outfile == -1)
+			return (ft_error("msh: "), perror(cont->outfile[fd.i]), \
 				env->status = 1, 1);
-		info->fd.outfile = f_d.outfile;
-		info->fd.opened_fd[info->fd.len++] = info->fd.outfile;
+		if (cont->outfile && cont->outfile[fd.i + 1] != 0)
+			ft_syscall(close(fd.outfile), "close");
+		else
+		{
+			info->fd.outfile = fd.outfile;
+			info->fd.opened_fd[info->fd.len++] = info->fd.outfile;
+		}
 	}
 	if (ft_open_infile_or_heredoc(cont, info, env) == 1)
 		return (1);
@@ -65,18 +75,18 @@ void	ft_open_here_doc(t_cont *cont, t_info *info, t_env *env)
 		f_d.i = 0;
 		while (head->here_doc && head->here_doc[f_d.i] != 0)
 		{
-			*cont->here_doc_fd = ft_here_doc(head->here_doc[f_d.i], env);
+			*head->here_doc_fd = ft_here_doc(head->here_doc[f_d.i], env);
 			if (head->here_doc && head->here_doc[f_d.i + 1] != NULL)
-				ft_syscall(close(*cont->here_doc_fd), "close");
+				ft_syscall(close(*head->here_doc_fd), "close");
 			else
-				info->fd.opened_fd[info->fd.len++] = *cont->here_doc_fd;
+				info->fd.opened_fd[info->fd.len++] = *head->here_doc_fd;
 			f_d.i++;
 		}
 		head = head->next;
 	}
 }
 
-int		ft_builtin_exist(t_cont *cont)
+int	ft_builtin_exist(t_cont *cont)
 {
 	char	*cmd;
 
