@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   proc_utils.c                                       :+:      :+:    :+:   */
+/*   process_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:42:41 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/21 22:50:59 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/23 19:34:59 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,11 @@ static char	*ft_check_path(char *cmd, t_env *env)
 
 void	ft_check_(char **envp_path, char *cmd, t_env *env)
 {
-	if (access(cmd, F_OK | X_OK) == 0)
-		*envp_path = cmd;
+	int	i;
+
+	i = 0;
+	if (access(cmd + i, F_OK | X_OK) == 0)
+		*envp_path = ft_strdup(cmd + i);
 	else
 	{
 		*envp_path = ft_check_path(cmd, env);
@@ -96,8 +99,11 @@ char	**ft_join_for_argv_execve(t_cont *cont)
 	if (argv == NULL)
 		(write(2, "Error: Allocation failed\n", 25), exit(FAIL));
 	i = 0;
+	if (cont->cmd[0] == '.')
+		i++;
 	if (cont->cmd != NULL)
-		argv[j++] = ft_strdup(cont->cmd);
+		argv[j++] = ft_strdup(cont->cmd + i);
+	i = 0;
 	while (cont->arg && cont->arg[i] != 0)
 	{
 		argv[j] = ft_strdup(cont->arg[i]);

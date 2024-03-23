@@ -3,3 +3,4 @@ minishell
 _object_files
 *.txt
 leaks*
+script.sh
