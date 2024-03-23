@@ -1,17 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec.c                                             :+:      :+:    :+:   */
+/*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 15:41:50 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/23 16:00:01 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/23 18:03:55 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+/*
+*	This function close the opened file descriptors
+*/
 void	close_opened_files(t_info *info)
 {
 	int	i;
@@ -21,6 +24,9 @@ void	close_opened_files(t_info *info)
 		close(info->fd.opened_fd[i++]);
 }
 
+/*
+*	The main function for executing the commands
+*/
 void	ft_execution(t_token **token, t_env *env)
 {
 	t_token			*head;

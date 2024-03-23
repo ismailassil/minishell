@@ -6,12 +6,15 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 14:48:48 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/22 01:06:14 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/23 18:06:06 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+/*
+*	This file hold the functions that expand the variables passed to here_doc
+*/
 static char	*ft_arg_is_exist(t_env *env, char *var)
 {
 	t_env	*head;
@@ -59,7 +62,7 @@ static int	ft_expand_word_after_dollar_here_doc(t_expand *exp, int *i, \
 }
 
 /*
-*	This function expands the variables
+*	This function expands the variables for the here_doc
 */
 char	*ft_handle_expand_for_here_doc(t_env *env, char *arg)
 {

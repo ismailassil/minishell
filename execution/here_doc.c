@@ -6,12 +6,16 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 03:21:09 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/22 17:58:18 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/23 18:07:04 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+/*
+*	This file holds the functions that open the here_doc both for
+*	parsing and execution
+*/
 void	ft_putstr(char *str, int fd)
 {
 	int	i;

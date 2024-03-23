@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 13:31:07 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/22 18:44:02 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/23 18:04:10 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ void	ft_fill_container(t_token *head, t_tmp_cont *t, t_cc *c)
 		ft_fill_rest(head, t, c);
 }
 
-//	create a function that create a node that holds what inside the t_cont
 void	ft_link_all_in_containers(t_token *head, t_cont **container)
 {
 	t_tmp_cont	*t;

@@ -1,17 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_builtin.c                                     :+:      :+:    :+:   */
+/*   execute_builtin.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 16:55:35 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/23 00:51:08 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/23 17:58:32 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+/*
+*	This function checks and execute the builtins functions
+*/
 static void	ft_compare_arg(char *cmd, t_cont *cont, t_env *env, int *flag)
 {
 	if (ft_strncmp(cmd, "echo", ft_strlen(cmd)) == 0)
@@ -30,6 +33,9 @@ static void	ft_compare_arg(char *cmd, t_cont *cont, t_env *env, int *flag)
 		(1) && (ft_exit(), *flag = 1);
 }
 
+/*
+*	This function checks and dup the files for the right builtin
+*/
 int	ft_check_commands(t_cont *cont, t_env *env, t_info *info, int j)
 {
 	char	*cmd;

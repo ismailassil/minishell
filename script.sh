@@ -46,5 +46,5 @@ while true; do
     leaks minishell
   fi
   echo
-  sleep 3
+  sleep 1.5
 done

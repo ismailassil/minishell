@@ -1,17 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_builtin_utils.c                               :+:      :+:    :+:   */
+/*   execute_builtin_utils.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 21:10:11 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/21 17:21:01 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/23 17:57:12 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+/*
+*	This function execute "echo"
+*/
 void	execute_echo(t_cont *cont, t_env **envp)
 {
 	int	n;
@@ -36,6 +39,9 @@ void	execute_echo(t_cont *cont, t_env **envp)
 	(*envp)->status = 0;
 }
 
+/*
+*	This function execute "cd"
+*/
 void	execute_cd(t_cont *cont, t_env **envp)
 {
 	if (cont->arg)
@@ -44,6 +50,9 @@ void	execute_cd(t_cont *cont, t_env **envp)
 		ft_cd(NULL, envp);
 }
 
+/*
+*	This function execute "env"
+*/
 void	execute_env(t_cont *cont, t_env **envp)
 {
 	if (cont->arg && cont->arg[0])
@@ -60,6 +69,9 @@ void	execute_env(t_cont *cont, t_env **envp)
 	}
 }
 
+/*
+*	This function execute "export"
+*/
 void	execute_export(t_cont *cont, t_env **envp)
 {
 	int	i;
@@ -73,6 +85,9 @@ void	execute_export(t_cont *cont, t_env **envp)
 	(*envp)->status = 0;
 }
 
+/*
+*	This function execute "unset"
+*/
 void	execute_unset(t_cont *cont, t_env **envp)
 {
 	int	i;

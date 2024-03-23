@@ -1,17 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   e_utils.c                                          :+:      :+:    :+:   */
+/*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:43:43 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/23 17:42:21 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/23 18:01:05 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+/*
+*	This function checks and open files for the infiles and here_doc
+*/
 static int	ft_open_infile_or_heredoc(t_cont *cont, t_info *info, t_env *env)
 {
 	t_fd_	fd;
@@ -36,6 +39,9 @@ static int	ft_open_infile_or_heredoc(t_cont *cont, t_info *info, t_env *env)
 	return (0);
 }
 
+/*
+*	This function checks and open files for the outfiles
+*/
 int	ft_open_files(t_cont *cont, t_info *info, t_env *env)
 {
 	t_fd_	fd;
@@ -64,6 +70,10 @@ int	ft_open_files(t_cont *cont, t_info *info, t_env *env)
 	return (0);
 }
 
+/*
+*	This function open the here_doc if found and keeps
+*	the file descriptor opened
+*/
 void	ft_open_here_doc(t_cont *cont, t_info *info, t_env *env)
 {
 	t_cont	*head;
