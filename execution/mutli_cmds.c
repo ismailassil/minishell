@@ -6,11 +6,12 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 13:48:38 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/24 20:09:38 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/24 22:58:24 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+#include <sys/wait.h>
 
 static void	ft_pipe_to_outfile(t_info *info)
 {
@@ -102,5 +103,7 @@ void	ft_execute_multiple_cmds(t_cont *cont, \
 	while (info->i < nr_cont)
 		waitpid(info->id[info->i++], &status, 0);
 	env->status = WEXITSTATUS(status);
+	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
+		env->status = 131;
 	free(info->id);
 }

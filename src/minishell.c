@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:06 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/24 22:15:03 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/24 22:51:21 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@ void	ft_parse_input_from_shell(t_env *env, char *input)
 	ft_tokenize(&head);
 	if (ft_check_syntax(head) == false)
 	{
+		env->status = 258;
 		if (ft_here_doc_parsing(head, env) == 0)
 			ft_error("msh: syntax error\n");
 		ft_free_tokens(&head);
-		env->status = 258;
 		return ;
 	}
 	(ft_remove_quotes(&head), ft_expand_argument(env, &head));
