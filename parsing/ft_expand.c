@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 10:36:20 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/22 01:12:12 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/24 21:56:52 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ char	*ft_handle_expand(t_env *env, char *arg)
 	int			i;
 	t_expand	exp;
 
-	(1) && (exp.new_str = NULL, i = 0);
+	(1) && (exp.new_str = NULL, i = 0, exp.quote = 0);
 	if (arg[i] == '\'' || arg[i] == '\"')
 		(exp.quote = arg[i++]);
 	while (arg[i] != '\0')

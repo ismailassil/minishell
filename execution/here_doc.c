@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 03:21:09 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/23 23:11:31 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/24 21:34:18 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,19 +46,6 @@ static void	ft_get_the_line_parsing(char *hold)
 	}
 }
 
-void	slash_sig(int sig)
-{
-	(void)sig;
-}
-
-void	ft_default_signals_her_doc(void)
-{
-	if (signal(SIGINT, SIG_DFL) == SIG_ERR)
-		exit(FAIL);
-	if (signal(SIGINT, slash_sig) == SIG_ERR)
-		exit(FAIL);
-}
-
 int	ft_here_doc_parsing(t_token *lst, t_env *env)
 {
 	t_heredoc	info;
@@ -70,15 +57,15 @@ int	ft_here_doc_parsing(t_token *lst, t_env *env)
 		if (lst->type == HEREDOC && lst->next && lst->next->type == DELIMITER)
 		{
 			(1) && (info.del = lst->next->token, info.id = fork());
-			ft_syscall(info.id, "fork");
+			ft_syscall(info.id, "msh: fork");
 			if (info.id == 0)
 			{
-				if (signal(SIGINT, SIG_DFL) == SIG_ERR)
-					exit(FAIL);
+				ft_sig(signal(SIGINT, SIG_DFL), "msh: signal");
+				ft_sig(signal(SIGQUIT, SIG_DFL), "msh: signal");
 				ft_get_the_line_parsing(info.del);
 				exit(SUCCESS);
 			}
-			ft_syscall(waitpid(CHILD, &info.status, 0), "waitpid");
+			ft_syscall(waitpid(CHILD, &info.status, 0), "msh: waitpid");
 			env->status = WEXITSTATUS(info.status);
 			if (WIFSIGNALED(info.status) && WTERMSIG(info.status) == SIGINT)
 				return (1);
@@ -117,22 +104,22 @@ int	ft_here_doc(char *delimiter, t_env *env)
 	int			pipefd[2];
 	t_heredoc	info;
 
-	ft_syscall(pipe(pipefd), "pipe");
+	ft_syscall(pipe(pipefd), "msh: pipe");
 	info.id = fork();
-	ft_syscall(info.id, "fork");
+	ft_syscall(info.id, "msh: fork");
 	if (info.id == 0)
 	{
-		if (signal(SIGINT, SIG_DFL) == SIG_ERR)
-			exit(FAIL);
-		ft_syscall(close(pipefd[0]), "pipe");
+		ft_sig(signal(SIGINT, SIG_DFL), "msh: signal");
+		ft_sig(signal(SIGQUIT, SIG_DFL), "msh: signal");
+		ft_syscall(close(pipefd[0]), "msh: close");
 		ft_get_the_line(delimiter, pipefd, env);
-		ft_syscall(close(pipefd[1]), "pipe");
+		ft_syscall(close(pipefd[1]), "msh: close");
 		exit(SUCCESS);
 	}
-	ft_syscall(close(pipefd[1]), "close");
-	ft_syscall(waitpid(CHILD, &info.status, 0), "waitpid");
+	ft_syscall(close(pipefd[1]), "msh: close");
+	ft_syscall(waitpid(CHILD, &info.status, 0), "msh: waitpid");
 	env->status = WEXITSTATUS(info.status);
 	if (WIFSIGNALED(info.status) && WTERMSIG(info.status) == SIGINT)
-		exit(FAIL);
+		return (-1);
 	return (pipefd[0]);
 }

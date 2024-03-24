@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 15:33:58 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/21 13:42:07 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/24 19:46:33 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,8 +106,8 @@ int	ft_cd(char *argument, t_env **envp)
 	if (info.dir == NULL)
 		return (1);
 	if (chdir(info.dir) == -1)
-		return (free(info.dir), ft_error("msh: "), \
-			perror(info.dir), (*envp)->status = 1, 1);
+		return (ft_error("msh: "), perror(info.dir), \
+			free(info.dir), (*envp)->status = 1, 1);
 	if (getcwd(info.buf, sizeof(info.buf)) != NULL)
 		(1) && ((*envp)->status = 0, info.buffer = ft_strdup(info.buf));
 	else

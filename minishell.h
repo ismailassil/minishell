@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/23 22:43:09 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/24 21:33:31 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@
 // 	void	*ptr;
 // 	ptr = malloc(size);
 // 	fprintf(gfp, "dct[%p] = ['malloc', '%p', %i, '%s']\n", 
-//		ptr, ptr, line, file);
+// 		ptr, ptr, line, file);
 // 	fflush(gfp);
 // 	return (ptr);
 // }
@@ -65,7 +65,7 @@
 // static void	__free(void *ptr, int line, const char *file)
 // {
 // 	fprintf(gfp, "dct[%p] = ['free', '%p', %i, '%s']\n",
-//		ptr, ptr, line, file);
+// 		ptr, ptr, line, file);
 // 	fflush(gfp);
 // 	free(ptr);
 // }
@@ -219,6 +219,9 @@ typedef struct s_execve
 	char	**envp;
 }			t_execve;
 
+/*=====Global Variable for Signal=====*/
+extern struct termios	g_original_attr;
+
 /*==========BUILTIN FUNCIONS==========*/
 int		ft_cd(char *argument, t_env **envp);
 void	ft_echo(char *argument);
@@ -269,6 +272,7 @@ char	**ft_join_for_argv_execve(t_cont *cont);
 void	ft_check_(char **envp_path, char *cmd, t_env *env);
 void	ft_check_allocation(void *str);
 void	ft_syscall(int return_, char *str);
+void	ft_sig(void *return_, char *str);
 void	ft_f(char **str);
 int		ft_open_files(t_cont *cont, t_info *info, t_env *env);
 //	CONTAINER FUNCTIONS
@@ -308,7 +312,7 @@ int		ft_t_cont_len(t_cont *head);
 int		ft_push_container(t_tmp_cont *tmp, t_cont **head);
 void	ft_free_containers(t_cont **head);
 t_cont	*ft_new_node_for_cont(t_tmp_cont *tmp);
-void	ft_open_here_doc(t_cont *cont, t_info *info, t_env *env);
+int		ft_open_here_doc(t_cont *cont, t_info *info, t_env *env);
 
 /*==========TOKEN LINKED LIST UTILS FUNCIONS==========*/
 int		ft_t_token_len(t_token *head);

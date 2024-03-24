@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 13:48:38 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/23 19:35:27 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/24 20:09:38 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,23 @@
 
 static void	ft_pipe_to_outfile(t_info *info)
 {
-	ft_syscall(dup2(info->fd.outfile, STDOUT_FILENO), "dup2 (STDOUT)");
+	ft_syscall(dup2(info->fd.outfile, STDOUT_FILENO), "msh: dup2 (STDOUT)");
 	if (info->fd.outfile != 1)
-		ft_syscall(close(info->fd.outfile), "close");
-	ft_syscall(close(info->pipe[1]), "close");
+		ft_syscall(close(info->fd.outfile), "msh: close");
+	ft_syscall(close(info->pipe[1]), "msh: close");
 }
 
 static void	ft_pipe_to_next_child(t_info *info)
 {
 	if (info->fd.outfile == 1)
 	{
-		ft_syscall(dup2(info->pipe[1], STDOUT_FILENO), "dup2 (PIPE)");
-		ft_syscall(close(info->pipe[1]), "close");
+		ft_syscall(dup2(info->pipe[1], STDOUT_FILENO), "msh: dup2 (PIPE)");
+		ft_syscall(close(info->pipe[1]), "msh: close");
 	}
 	else
 	{
-		ft_syscall(dup2(info->fd.outfile, STDOUT_FILENO), "dup2 (STDOUT)");
-		ft_syscall(close(info->pipe[1]), "close");
+		ft_syscall(dup2(info->fd.outfile, STDOUT_FILENO), "msh: dup2 (STDOUT)");
+		ft_syscall(close(info->pipe[1]), "msh: close");
 	}
 }
 
@@ -40,13 +40,13 @@ void	ft_child_process(t_cont *cont, t_env *env, t_info *info)
 	char		**cmd;
 
 	cmd = NULL;
-	ft_syscall(close(info->pipe[0]), "pipe");
+	ft_syscall(close(info->pipe[0]), "msh: close");
 	if (ft_open_files(cont, info, env) == 1)
 		exit(FAIL);
 	ft_default_signals();
-	ft_syscall(dup2(info->fd.infile, STDIN_FILENO), "dup2");
+	ft_syscall(dup2(info->fd.infile, STDIN_FILENO), "msh: dup2");
 	if (info->fd.infile != 0)
-		ft_syscall(close(info->fd.infile), "close");
+		ft_syscall(close(info->fd.infile), "msh: close");
 	if (info->i == (info->nbr_cont - 1))
 		ft_pipe_to_outfile(info);
 	else
@@ -66,16 +66,16 @@ void	ft_execute_child(t_cont *cont, t_env *env, t_info *info)
 {
 	while (info->i < info->nbr_cont)
 	{
-		ft_syscall(pipe(info->pipe), "pipe");
+		ft_syscall(pipe(info->pipe), "msh: pipe");
 		info->id[info->i] = fork();
-		ft_syscall(info->id[info->i], "fork");
+		ft_syscall(info->id[info->i], "msh: fork");
 		if (info->id[info->i] == 0)
 			ft_child_process(cont, env, info);
 		else
 		{
-			ft_syscall(close(info->pipe[1]), "close");
+			ft_syscall(close(info->pipe[1]), "msh: close");
 			if (info->fd.infile != 0)
-				ft_syscall(close(info->fd.infile), "close");
+				ft_syscall(close(info->fd.infile), "msh: close");
 			info->fd.infile = info->pipe[0];
 		}
 		info->i++;
@@ -97,7 +97,7 @@ void	ft_execute_multiple_cmds(t_cont *cont, \
 	info->id = malloc(nr_cont * sizeof(int));
 	ft_check_allocation(info->id);
 	ft_execute_child(cont, env, info);
-	(ft_syscall(close(info->pipe[0]), "pipe"));
+	(ft_syscall(close(info->pipe[0]), "msh: close"));
 	info->i = 0;
 	while (info->i < nr_cont)
 		waitpid(info->id[info->i++], &status, 0);

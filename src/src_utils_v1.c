@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   src_utils_v2.c                                     :+:      :+:    :+:   */
+/*   src_utils_v1.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 18:32:41 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/23 17:53:55 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/24 19:56:51 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,14 @@ void	ft_check_allocation(void *str)
 void	ft_syscall(int return_, char *str)
 {
 	if (return_ == -1)
+		(perror(str), exit(FAIL));
+}
+
+/*
+*	Checks if a (signal) syscall failed or not
+*/
+void	ft_sig(void *return_, char *str)
+{
+	if (return_ == SIG_ERR)
 		(perror(str), exit(FAIL));
 }

@@ -6,29 +6,23 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 16:10:26 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/23 22:53:55 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/24 21:34:30 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-extern struct termios	g_original_attr;
-
 void	ft_default_signals(void)
 {
-	if (signal(SIGINT, SIG_DFL) == SIG_ERR)
-		exit(FAIL);
-	if (signal(SIGQUIT, SIG_DFL) == SIG_ERR)
-		exit(FAIL);
+	ft_sig(signal(SIGINT, SIG_DFL), "msh: signal");
+	ft_sig(signal(SIGQUIT, SIG_DFL), "msh: signal");
 }
 
 void	ft_signal_handler(void)
 {
 	rl_catch_signals = 0;
-	if (signal(SIGINT, ctrl_c) == SIG_ERR)
-		(perror("Error"), exit(EXIT_FAILURE));
-	if (signal(SIGQUIT, ctrl_slash) == SIG_ERR)
-		(perror("Error"), exit(EXIT_FAILURE));
+	ft_sig(signal(SIGINT, ctrl_c), "msh: signal");
+	ft_sig(signal(SIGQUIT, ctrl_slash), "msh: signal");
 }
 
 /*
@@ -59,8 +53,8 @@ void	ctrl_slash(int sig)
 	(void)sig;
 	if (waitpid(ALLCHILDS, NULL, WNOHANG) == 0)
 	{
-		ft_syscall(tcsetattr(STDIN_FILENO, TCSANOW, &g_original_attr),\
-			"tcsetattr");
+		ft_syscall(tcsetattr(STDIN_FILENO, TCSANOW, &g_original_attr), \
+			"msh: tcsetattr");
 		printf("Quit: 3\n");
 		return ;
 	}

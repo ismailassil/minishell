@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:43:43 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/23 19:43:17 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/24 20:16:19 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	ft_open_infile_or_heredoc(t_cont *cont, t_info *info, t_env *env)
 			return (ft_error("msh: "), perror(cont->infile[fd.i]), \
 				env->status = 1, 1);
 		if (cont->infile && cont->infile[fd.i + 1] != 0)
-			ft_syscall(close(fd.infile), "close");
+			ft_syscall(close(fd.infile), "msh: close");
 		else
 		{
 			info->fd.infile = fd.infile;
@@ -58,7 +58,7 @@ int	ft_open_files(t_cont *cont, t_info *info, t_env *env)
 			return (ft_error("msh: "), perror(cont->outfile[fd.i]), \
 				env->status = 1, 1);
 		if (cont->outfile && cont->outfile[fd.i + 1] != 0)
-			ft_syscall(close(fd.outfile), "close");
+			ft_syscall(close(fd.outfile), "msh: close");
 		else
 		{
 			info->fd.outfile = fd.outfile;
@@ -74,7 +74,7 @@ int	ft_open_files(t_cont *cont, t_info *info, t_env *env)
 *	This function open the here_doc if found and keeps
 *	the file descriptor opened
 */
-void	ft_open_here_doc(t_cont *cont, t_info *info, t_env *env)
+int	ft_open_here_doc(t_cont *cont, t_info *info, t_env *env)
 {
 	t_cont	*head;
 	t_fd_	f_d;
@@ -86,14 +86,17 @@ void	ft_open_here_doc(t_cont *cont, t_info *info, t_env *env)
 		while (head->here_doc && head->here_doc[f_d.i] != 0)
 		{
 			*head->here_doc_fd = ft_here_doc(head->here_doc[f_d.i], env);
+			if (*head->here_doc_fd == -1)
+				return (-1);
 			if (head->here_doc && head->here_doc[f_d.i + 1] != NULL)
-				ft_syscall(close(*head->here_doc_fd), "close");
+				ft_syscall(close(*head->here_doc_fd), "msh: close");
 			else
 				info->fd.opened_fd[info->fd.len++] = *head->here_doc_fd;
 			f_d.i++;
 		}
 		head = head->next;
 	}
+	return (0);
 }
 
 int	ft_builtin_exist(t_cont *cont)
