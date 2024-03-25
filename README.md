@@ -6,7 +6,7 @@ Minishell is a project developed as part of the curriculum at 1337School. The ai
 
 - **Command Execution**: Minishell can execute commands entered by the user, including external programs.
 - **Builtin Commands**: Minishell supports a set of built-in commands such as `echo`, `cd`, `pwd`, `export`, `unset`, and `env`.
-- **Redirections**: It can handle input/output redirections using `<` and `>` operators.
+- **Redirections**: It can handle input/output redirections using `<`, `>`, `>>` and `<<` operators.
 - **Pipelines**: Minishell supports command pipelines using the `|` operator.
 - **Environment Variables**: It manages environment variables like `PATH` and supports expansion of variables.
 - **Signals Handling**: Proper handling of signals like `Ctrl+C` and `Ctrl+\`.
@@ -35,9 +35,9 @@ $ export MY_VARIABLE=value
 
 For a list of built-in commands and their usage, you can use the `help` command within Minishell.
 
-## Contributing
+## Contribution
 
-This project has been developed with Achraf Ben Cheikh from the 1337 school project. If you find any bugs or have suggestions for improvements, feel free to open an issue or submit a pull request.
+This project has been collaboratively developed in conjunction with Achraf Ben Cheikh from the 1337 school project. If you find any bugs or have suggestions for improvements, feel free to open an issue or submit a pull request.
 
 ## Acknowledgements
 
