@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:06 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/24 22:51:21 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/25 00:18:10 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,10 @@ void	ft_parse_input_from_shell(t_env *env, char *input)
 		return ;
 	}
 	(ft_remove_quotes(&head), ft_expand_argument(env, &head));
+	(ft_print_types(head), ft_print(head));
 	ft_execution(&head, env);
 }
 
-// (ft_print_types(head), ft_print(head));
 // void leaks()
 // {
 //     fclose(gfp);

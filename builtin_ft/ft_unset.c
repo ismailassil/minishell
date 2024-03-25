@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 20:34:45 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/23 17:43:17 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/25 00:17:23 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,15 @@ static int	ft_check_arg(char *arg)
 	i = 0;
 	if (arg == NULL)
 		return (1);
-	if (arg[0] == '=' || ft_isalpha(arg[0]) == 0 || arg[0] == '-')
+	if (ft_isalpha(arg[0]) == 0)
 	{
 		(ft_error("msh: unset: "), ft_error(arg));
 		ft_error(": not a valid identifier\n");
 		return (true);
 	}
-	while (arg && arg[i] != '\0' && arg[i] != '=')
+	while (arg && arg[i] != '\0')
 	{
-		if (arg[i] == '-' || arg[i] == '+' || arg[i] == '=')
+		if (ft_isalnum(arg[i]))
 		{
 			(ft_error("msh: unset: "), ft_error(arg));
 			ft_error(": not a valid identifier\n");
