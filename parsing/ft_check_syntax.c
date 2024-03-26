@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 14:55:19 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/26 01:08:20 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/26 01:32:20 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,17 +55,21 @@ int	ft_check_brackets(char *str)
 			(1) && (count++, c_left++, c = str[i++]);
 			while (str[i] && str[i] != '}')
 			{
-				if (str[i] == '{')
+				if (str[i - 1] == '{' && !ft_isalpha(str[i]))
+					c_left++;
+				if (str[i] == '{' || ft_strchr(" \t\n\v\f\r", str[i]) || !ft_isalnum(str[i]))
 					c_left++;
 				i++;
 			}
+			if (str[i - 1] == '{' && str[i] == '}')
+				return (1);
 			if (str[i] && str[i] == '}')
 				count++;
 			if (c_left != 1)
 				return (1);
 		}
 		if (!str)
-			break;
+			break ;
 		i++;
 	}
 	if (count % 2 == 0)
