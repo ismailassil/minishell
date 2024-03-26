@@ -6,24 +6,24 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 17:44:37 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/24 21:46:50 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/25 18:40:36 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static void	ft_question_mark(t_expand *exp, char *s, int *i, t_env *env)
+static void	ft_question_mark(t_expand *exp, char *s, int *i, t_struct *strp)
 {
 	char	*num;
 
-	num = ft_itoa(env->status);
+	num = ft_itoa(strp->status);
 	exp->new_str = ft_strjoin_(s, num);
 	*i += 1;
 	free(s);
 	free(num);
 }
 
-void	ft_special_characters(t_expand *exp, int c, int *i, t_env *env)
+void	ft_special_characters(t_expand *exp, int c, int *i, t_struct *strp)
 {
 	char	*s;
 
@@ -34,12 +34,12 @@ void	ft_special_characters(t_expand *exp, int c, int *i, t_env *env)
 		free(s);
 	}
 	else if (c == '?')
-		ft_question_mark(exp, s, i, env);
+		ft_question_mark(exp, s, i, strp);
 	else
 		ft_append_char(&exp->new_str, '$');
 }
 
-int	ft_handle_irregulare_cases(t_expand *exp, int c, int *i, t_env *env)
+int	ft_handle_irregulare_cases(t_expand *exp, int c, int *i, t_struct *strp)
 {
 	char	*s;
 
@@ -55,7 +55,7 @@ int	ft_handle_irregulare_cases(t_expand *exp, int c, int *i, t_env *env)
 	}
 	else if (!ft_check_if_chars_digit(c))
 	{
-		ft_special_characters(exp, c, i, env);
+		ft_special_characters(exp, c, i, strp);
 		return ((*i += 1), 1);
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 14:48:48 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/23 18:06:06 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/25 18:42:40 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,11 @@ static int	ft_surpass_chars(char *var)
 }
 
 static int	ft_expand_word_after_dollar_here_doc(t_expand *exp, int *i, \
-	char *arg, t_env *env)
+	char *arg, t_struct *strp)
 {
-	if (ft_handle_irregulare_cases(exp, arg[(*i) + 1], i, env))
+	if (ft_handle_irregulare_cases(exp, arg[(*i) + 1], i, strp))
 		return (1);
-	exp->expa = ft_arg_is_exist(env, arg + (*i + 1));
+	exp->expa = ft_arg_is_exist(strp->env, arg + (*i + 1));
 	exp->s = exp->new_str;
 	exp->new_str = ft_strjoin(exp->new_str, exp->expa);
 	return (0);
@@ -64,7 +64,7 @@ static int	ft_expand_word_after_dollar_here_doc(t_expand *exp, int *i, \
 /*
 *	This function expands the variables for the here_doc
 */
-char	*ft_handle_expand_for_here_doc(t_env *env, char *arg)
+char	*ft_handle_expand_for_here_doc(t_struct *strp, char *arg)
 {
 	int			i;
 	t_expand	exp;
@@ -76,7 +76,7 @@ char	*ft_handle_expand_for_here_doc(t_env *env, char *arg)
 			ft_append_char(&exp.new_str, arg[i++]);
 		else if (arg[i] && arg[i] == '$')
 		{
-			if (ft_expand_word_after_dollar_here_doc(&exp, &i, arg, env))
+			if (ft_expand_word_after_dollar_here_doc(&exp, &i, arg, strp))
 				continue ;
 			i += ft_surpass_chars(arg + (i + 1));
 		}

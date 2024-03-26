@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:43:43 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/24 20:16:19 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/25 18:36:39 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /*
 *	This function checks and open files for the infiles and here_doc
 */
-static int	ft_open_infile_or_heredoc(t_cont *cont, t_info *info, t_env *env)
+static int	ft_open_infile_or_heredoc(t_cont *cont, t_info *info, t_struct *strp)
 {
 	t_fd_	fd;
 
@@ -25,7 +25,7 @@ static int	ft_open_infile_or_heredoc(t_cont *cont, t_info *info, t_env *env)
 		fd.infile = open(cont->infile[fd.i], O_RDONLY);
 		if (fd.infile == -1)
 			return (ft_error("msh: "), perror(cont->infile[fd.i]), \
-				env->status = 1, 1);
+				strp->status = 1, 1);
 		if (cont->infile && cont->infile[fd.i + 1] != 0)
 			ft_syscall(close(fd.infile), "msh: close");
 		else
@@ -42,7 +42,7 @@ static int	ft_open_infile_or_heredoc(t_cont *cont, t_info *info, t_env *env)
 /*
 *	This function checks and open files for the outfiles
 */
-int	ft_open_files(t_cont *cont, t_info *info, t_env *env)
+int	ft_open_files(t_cont *cont, t_info *info, t_struct *strp)
 {
 	t_fd_	fd;
 
@@ -56,7 +56,7 @@ int	ft_open_files(t_cont *cont, t_info *info, t_env *env)
 				O_CREAT | O_RDWR | O_APPEND, 0644);
 		if (fd.outfile == -1)
 			return (ft_error("msh: "), perror(cont->outfile[fd.i]), \
-				env->status = 1, 1);
+				strp->status = 1, 1);
 		if (cont->outfile && cont->outfile[fd.i + 1] != 0)
 			ft_syscall(close(fd.outfile), "msh: close");
 		else
@@ -65,7 +65,7 @@ int	ft_open_files(t_cont *cont, t_info *info, t_env *env)
 			info->fd.opened_fd[info->fd.len++] = info->fd.outfile;
 		}
 	}
-	if (ft_open_infile_or_heredoc(cont, info, env) == 1)
+	if (ft_open_infile_or_heredoc(cont, info, strp) == 1)
 		return (1);
 	return (0);
 }
@@ -74,7 +74,7 @@ int	ft_open_files(t_cont *cont, t_info *info, t_env *env)
 *	This function open the here_doc if found and keeps
 *	the file descriptor opened
 */
-int	ft_open_here_doc(t_cont *cont, t_info *info, t_env *env)
+int	ft_open_here_doc(t_cont *cont, t_info *info, t_struct *strp)
 {
 	t_cont	*head;
 	t_fd_	f_d;
@@ -85,7 +85,7 @@ int	ft_open_here_doc(t_cont *cont, t_info *info, t_env *env)
 		f_d.i = 0;
 		while (head->here_doc && head->here_doc[f_d.i] != 0)
 		{
-			*head->here_doc_fd = ft_here_doc(head->here_doc[f_d.i], env);
+			*head->here_doc_fd = ft_here_doc(head->here_doc[f_d.i], strp);
 			if (*head->here_doc_fd == -1)
 				return (-1);
 			if (head->here_doc && head->here_doc[f_d.i + 1] != NULL)
@@ -122,19 +122,19 @@ int	ft_builtin_exist(t_cont *cont)
 }
 
 int	ft_check_cont_and_cmd(t_cont *cont, \
-	t_env *env, t_info *info, int nr_cont)
+	t_struct *strp, t_info *info, int nr_cont)
 {
 	if (cont == NULL)
 		return (1);
 	if (nr_cont == 1 && cont->cmd == NULL)
 	{
-		ft_open_files(cont, info, env);
+		ft_open_files(cont, info, strp);
 		return (1);
 	}
 	if (nr_cont == 1 && ft_builtin_exist(cont) == 1)
 	{
-		ft_open_files(cont, info, env);
-		ft_check_commands(cont, env, info, 1);
+		ft_open_files(cont, info, strp);
+		ft_check_commands(cont, strp, info, 1);
 		return (1);
 	}
 	return (0);

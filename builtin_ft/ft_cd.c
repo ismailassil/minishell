@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 15:33:58 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/24 19:46:33 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/25 18:30:12 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ static void	ft_add_old_pwd(t_env **envp, char *argument)
 	ft_add_if_not_found(envp, flag, argument, "OLDPWD=");
 }
 
-int	ft_cd(char *argument, t_env **envp)
+int	ft_cd(char *argument, t_struct **strp)
 {
 	t_info_cd	info;
 
@@ -107,19 +107,19 @@ int	ft_cd(char *argument, t_env **envp)
 		return (1);
 	if (chdir(info.dir) == -1)
 		return (ft_error("msh: "), perror(info.dir), \
-			free(info.dir), (*envp)->status = 1, 1);
+			free(info.dir), (*strp)->status = 1, 1);
 	if (getcwd(info.buf, sizeof(info.buf)) != NULL)
-		(1) && ((*envp)->status = 0, info.buffer = ft_strdup(info.buf));
+		(1) && ((*strp)->status = 0, info.buffer = ft_strdup(info.buf));
 	else
 	{
 		(ft_error("msh: "), perror(argument));
-		info.tmp = ft_strjoin_(ft_get_cwd(envp), "/");
+		info.tmp = ft_strjoin_(ft_get_cwd(&(*strp)->env), "/");
 		info.buffer = ft_strjoin_(info.tmp, argument);
 		free(info.tmp);
-		(*envp)->status = 258;
+		(*strp)->status = 258;
 	}
-	ft_add_current_pwd(envp, info.buffer);
-	ft_add_old_pwd(envp, info.current_dir);
+	ft_add_current_pwd(&(*strp)->env, info.buffer);
+	ft_add_old_pwd(&(*strp)->env, info.current_dir);
 	(free(info.buffer), free(info.dir));
 	return (0);
 }

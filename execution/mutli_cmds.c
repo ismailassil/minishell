@@ -6,12 +6,11 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 13:48:38 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/24 22:58:24 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/25 18:38:54 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-#include <sys/wait.h>
 
 static void	ft_pipe_to_outfile(t_info *info)
 {
@@ -35,14 +34,14 @@ static void	ft_pipe_to_next_child(t_info *info)
 	}
 }
 
-void	ft_child_process(t_cont *cont, t_env *env, t_info *info)
+static void	ft_child_process(t_cont *cont, t_struct *strp, t_info *info)
 {
 	t_execve	exec;
 	char		**cmd;
 
 	cmd = NULL;
 	ft_syscall(close(info->pipe[0]), "msh: close");
-	if (ft_open_files(cont, info, env) == 1)
+	if (ft_open_files(cont, info, strp) == 1)
 		exit(FAIL);
 	ft_default_signals();
 	ft_syscall(dup2(info->fd.infile, STDIN_FILENO), "msh: dup2");
@@ -52,18 +51,18 @@ void	ft_child_process(t_cont *cont, t_env *env, t_info *info)
 		ft_pipe_to_outfile(info);
 	else
 		ft_pipe_to_next_child(info);
-	if (ft_check_commands(cont, env, info, 0) == 1)
-		exit(env->status);
-	ft_check_(&exec.cmd_path, cont->cmd, env);
+	if (ft_check_commands(cont, strp, info, 0) == 1)
+		exit(strp->status);
+	ft_check_(&exec.cmd_path, cont->cmd, strp->env);
 	exec.argv = ft_join_for_argv_execve(cont);
-	exec.envp = ft_join_for_envp_execve(env);
-	(ft_free_env(&env), ft_free_containers(&cont));
+	exec.envp = ft_join_for_envp_execve(strp->env);
+	(ft_free_env(&strp->env), free(strp), ft_free_containers(&cont));
 	if (execve(exec.cmd_path, exec.argv, exec.envp) == -1)
 		(free(exec.argv), free(exec.envp), ft_error("msh: execve: "),
 			perror(exec.cmd_path), free(exec.cmd_path), exit(FAIL));
 }
 
-void	ft_execute_child(t_cont *cont, t_env *env, t_info *info)
+void	ft_execute_child(t_cont *cont, t_struct *strp, t_info *info)
 {
 	while (info->i < info->nbr_cont)
 	{
@@ -71,7 +70,7 @@ void	ft_execute_child(t_cont *cont, t_env *env, t_info *info)
 		info->id[info->i] = fork();
 		ft_syscall(info->id[info->i], "msh: fork");
 		if (info->id[info->i] == 0)
-			ft_child_process(cont, env, info);
+			ft_child_process(cont, strp, info);
 		else
 		{
 			ft_syscall(close(info->pipe[1]), "msh: close");
@@ -86,24 +85,24 @@ void	ft_execute_child(t_cont *cont, t_env *env, t_info *info)
 }
 
 void	ft_execute_multiple_cmds(t_cont *cont, \
-	t_env *env, t_info *info, int nr_cont)
+	t_struct *strp, t_info *info, int nr_cont)
 {
 	int		status;
 
 	info->i = 0;
 	(1) && (info->fd.infile = 0, info->fd.outfile = 1);
 	info->nbr_cont = nr_cont;
-	if (ft_check_cont_and_cmd(cont, env, info, nr_cont) == 1)
+	if (ft_check_cont_and_cmd(cont, strp, info, nr_cont) == 1)
 		return ;
 	info->id = malloc(nr_cont * sizeof(int));
 	ft_check_allocation(info->id);
-	ft_execute_child(cont, env, info);
+	ft_execute_child(cont, strp, info);
 	(ft_syscall(close(info->pipe[0]), "msh: close"));
 	info->i = 0;
 	while (info->i < nr_cont)
 		waitpid(info->id[info->i++], &status, 0);
-	env->status = WEXITSTATUS(status);
+	strp->status = WEXITSTATUS(status);
 	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
-		env->status = 131;
+		strp->status = 131;
 	free(info->id);
 }

@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:47:07 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/21 17:42:59 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/25 18:34:54 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,23 +103,23 @@ static int	ft_add_new_env(char *arg, t_env *envp)
 	return (0);
 }
 
-int	ft_export(char *arg, t_env *envp)
+int	ft_export(char *arg, t_struct *strp)
 {
 	int	i;
 	int	count;
 
 	(1) && (i = -1, count = 0);
-	if (arg == NULL)
-		return (ft_print_exported_variable(envp), 0);
+	if (arg == NULL || arg[0] == '\0')
+		return (ft_print_exported_variable(strp->env), 0);
 	if (ft_check_syntax_export(arg) == true)
-		return (1);
-	if (ft_check_if_exists(arg, envp) == true)
+		return (strp->status = 1, 1);
+	if (ft_check_if_exists(arg, strp->env) == true)
 	{
-		if (ft_add_already_exits(arg, envp) == 0)
+		if (ft_add_already_exits(arg, strp->env) == 0)
 			return (1);
 	}
 	else
-		if (ft_add_new_env(arg, envp) == 1)
+		if (ft_add_new_env(arg, strp->env) == 1)
 			return (1);
 	return (0);
 }

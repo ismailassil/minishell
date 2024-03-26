@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 19:19:08 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/21 22:38:10 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/25 21:21:40 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,7 @@ static t_env	*ft_new_node(char *value)
 	t_env	*new;
 
 	new = malloc(sizeof(t_env));
-	if (!new)
-		return (NULL);
+	ft_check_allocation(new);
 	new->value = ft_strdup(value);
 	if (!new->value)
 		return (NULL);

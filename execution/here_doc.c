@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 03:21:09 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/24 22:54:32 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/25 18:43:50 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static void	ft_get_the_line_parsing(char *hold)
 	}
 }
 
-int	ft_here_doc_parsing(t_token *lst, t_env *env)
+int	ft_here_doc_parsing(t_token *lst, t_struct *strp)
 {
 	t_heredoc	info;
 
@@ -67,14 +67,14 @@ int	ft_here_doc_parsing(t_token *lst, t_env *env)
 			}
 			ft_syscall(waitpid(CHILD, &info.status, 0), "msh: waitpid");
 			if (WIFSIGNALED(info.status) && WTERMSIG(info.status) == SIGINT)
-				return (env->status = 130, 1);
+				return (strp->status = 130, 1);
 		}
 		lst = lst->next;
 	}
 	return (0);
 }
 
-static void	ft_get_the_line(char *hold, int *pipefd, t_env *env)
+static void	ft_get_the_line(char *hold, int *pipefd, t_struct *strp)
 {
 	char	*line;
 
@@ -89,7 +89,7 @@ static void	ft_get_the_line(char *hold, int *pipefd, t_env *env)
 			break ;
 		}
 		if (ft_strchr(line, '$'))
-			line = ft_handle_expand_for_here_doc(env, line);
+			line = ft_handle_expand_for_here_doc(strp, line);
 		line = ft_strjoin_(line, "\n");
 		if (!line)
 			(ft_error("Error: Allocation failed\n"), exit(FAIL));
@@ -98,7 +98,7 @@ static void	ft_get_the_line(char *hold, int *pipefd, t_env *env)
 	}
 }
 
-int	ft_here_doc(char *delimiter, t_env *env)
+int	ft_here_doc(char *delimiter, t_struct *strp)
 {
 	int			pipefd[2];
 	t_heredoc	info;
@@ -111,14 +111,14 @@ int	ft_here_doc(char *delimiter, t_env *env)
 		ft_sig(signal(SIGINT, SIG_DFL), "msh: signal");
 		ft_sig(signal(SIGQUIT, SIG_DFL), "msh: signal");
 		ft_syscall(close(pipefd[0]), "msh: close");
-		ft_get_the_line(delimiter, pipefd, env);
+		ft_get_the_line(delimiter, pipefd, strp);
 		ft_syscall(close(pipefd[1]), "msh: close");
 		exit(SUCCESS);
 	}
 	ft_syscall(close(pipefd[1]), "msh: close");
 	ft_syscall(waitpid(CHILD, &info.status, 0), "msh: waitpid");
-	env->status = WEXITSTATUS(info.status);
+	strp->status = WEXITSTATUS(info.status);
 	if (WIFSIGNALED(info.status) && WTERMSIG(info.status) == SIGINT)
-		return (env->status = 130, -1);
+		return (strp->status = 130, -1);
 	return (pipefd[0]);
 }

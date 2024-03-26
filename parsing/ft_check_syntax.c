@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 14:55:19 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/19 17:33:38 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/26 01:08:20 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,39 @@ bool	ft_check_syntax(t_token *str)
 	return (true);
 }
 
+int	ft_check_brackets(char *str)
+{
+	int	i;
+	int	c;
+	int	count;
+	int	c_left;
+
+	(1) && (i = 0, c = 0, c_left = 0, count = 0);
+	while (str[i])
+	{
+		if (str[i] && i != 0 && str[i - 1] == '$' && str[i] == '{')
+		{
+			(1) && (count++, c_left++, c = str[i++]);
+			while (str[i] && str[i] != '}')
+			{
+				if (str[i] == '{')
+					c_left++;
+				i++;
+			}
+			if (str[i] && str[i] == '}')
+				count++;
+			if (c_left != 1)
+				return (1);
+		}
+		if (!str)
+			break;
+		i++;
+	}
+	if (count % 2 == 0)
+		return (0);
+	return (1);
+}
+
 /*
 *	This function checks the syntax of quotes if they are valid or not!
 */
@@ -50,6 +83,8 @@ int	ft_check_quotes(char *str)
 	int	count;
 
 	(1) && (i = 0, c = 0, count = 0);
+	if (ft_check_brackets(str) == 1)
+		return (ft_error("msh: bad substitution\n"), 0);
 	while (str[i])
 	{
 		if (str[i] && (str[i] == '\'' || str[i] == '\"'))
@@ -66,7 +101,7 @@ int	ft_check_quotes(char *str)
 	}
 	if ((count % 2) == 0)
 		return (1);
-	return (0);
+	return (ft_error("msh: syntax error\n"), 0);
 }
 
 void	ft_error(char *str)

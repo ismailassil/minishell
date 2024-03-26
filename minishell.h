@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/24 21:33:31 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/25 23:00:43 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,9 +115,14 @@ typedef struct s_info_cd
 typedef struct s_env
 {
 	char			*value;
-	int				status;
 	struct s_env	*next;
 }					t_env;
+
+typedef struct s_struct
+{
+	int		status;
+	t_env	*env;
+}			t_struct;
 
 typedef struct s_tokens
 {
@@ -223,50 +228,50 @@ typedef struct s_execve
 extern struct termios	g_original_attr;
 
 /*==========BUILTIN FUNCIONS==========*/
-int		ft_cd(char *argument, t_env **envp);
-void	ft_echo(char *argument);
-void	ft_env(t_env *envp);
-void	ft_exit(void);
-int		ft_export(char *argument, t_env *envp);
-void	ft_pwd(t_env *env);
-void	ft_unset(t_env *envp, char *argument);
+int			ft_cd(char *argument, t_struct **strp);
+void		ft_echo(char *argument);
+void		ft_env(t_env *envp);
+void		ft_exit(void);
+int			ft_export(char *argument, t_struct *strp);
+void		ft_pwd(t_env *env);
+void		ft_unset(t_struct **strp, char *argument);
 //	Utils function for builtin function
-t_env	*ft_get_env(char **env);
-void	ft_print_exported_variable(t_env *envp);
-char	*ft_get_cwd(t_env **envp);
-bool	ft_check_syntax_export(char *arg);
-char	*ft_filter_arg(char *arg);
-char	*ft_add_new_arg(t_append_export	*f);
+t_struct	*ft_get_struct_and_env(char **env);
+void		ft_print_exported_variable(t_env *envp);
+char		*ft_get_cwd(t_env **envp);
+bool		ft_check_syntax_export(char *arg);
+char		*ft_filter_arg(char *arg);
+char		*ft_add_new_arg(t_append_export	*f);
 
 /*==========PARSING FUNCIONS==========*/
 char	*ft_add_space_to_input(char *input);
 void	ft_split_tokens(t_token **head, char *str);
 void	ft_tokenize(t_token **str);
-void	ft_expand_argument(t_env *env, t_token **linked_list);
+void	ft_expand_argument(t_struct *strp, t_token **linked_list);
 bool	ft_check_syntax(t_token *str);
 void	ft_remove_quotes(t_token **linked_list);
 void	ft_update_quote(char *arg, int *i, t_expand *exp);
 void	ft_init_tokens(t_token **head, char *str);
 char	*ft_alloc_str(t_token **tokens, char *str, t_stend *cord);
 t_stend	*ft_extract_start_end_of_token(char *str, int s);
-char	*ft_handle_expand(t_env *env, char *arg);
-char	*ft_handle_expand_for_here_doc(t_env *env, char *arg);
+char	*ft_handle_expand(t_struct *strp, char *arg);
+char	*ft_handle_expand_for_here_doc(t_struct *strp, char *arg);
 //	Utils function for Parsing
 void	ft_error(char *str);
 void	ft_append_char(char **str, int c);
 char	*ft_allocate_for_var(int flag, char *str, int i);
-int		ft_handle_irregulare_cases(t_expand *exp, int c, int *i, t_env *env);
+int		ft_handle_irregulare_cases(t_expand *exp, int c, int *i, t_struct *strp);
 int		ft_check_quotes(char *str);
 
 /*==========EXECUTION FUNCIONS==========*/
 int		ft_check_cont_and_cmd(t_cont *cont, \
-	t_env *env, t_info *info, int nr_cont);
-int		ft_here_doc(char *delimiter, t_env *env);
-int		ft_here_doc_parsing(t_token *head, t_env *env);
-void	ft_execution(t_token **token, t_env *env);
-void	ft_execute_multiple_cmds(t_cont *cont, t_env *env, \
-	t_info *info, int nbr_cmd);
-int		ft_check_commands(t_cont *cont, t_env *env, t_info *info, int j);
+	t_struct *strp, t_info *info, int nr_cont);
+int		ft_here_doc(char *delimiter, t_struct *strp);
+int		ft_here_doc_parsing(t_token *lst, t_struct *strp);
+void	ft_execution(t_token **token, t_struct *strp);
+void	ft_execute_multiple_cmds(t_cont *cont, \
+	t_struct *strp, t_info *info, int nr_cont);
+int		ft_check_commands(t_cont *cont, t_struct *strp, t_info *info, int j);
 char	**ft_join_for_envp_execve(t_env *env);
 char	**ft_join_for_argv_execve(t_cont *cont);
 void	ft_check_(char **envp_path, char *cmd, t_env *env);
@@ -274,18 +279,18 @@ void	ft_check_allocation(void *str);
 void	ft_syscall(int return_, char *str);
 void	ft_sig(void *return_, char *str);
 void	ft_f(char **str);
-int		ft_open_files(t_cont *cont, t_info *info, t_env *env);
+int		ft_open_files(t_cont *cont, t_info *info, t_struct *strp);
 //	CONTAINER FUNCTIONS
 void	ft_link_all_in_containers(t_token *head, t_cont **container);
 void	ft_count_alc(t_token *head, t_tmp_cont	**cont);
 void	ft_free_tmp(t_tmp_cont **tmp);
 //	BUILTINS FUNCTIONS
 int		ft_builtin_exist(t_cont *cont);
-void	execute_echo(t_cont *cont, t_env **envp);
-void	execute_cd(t_cont *cont, t_env **envp);
-void	execute_env(t_cont *cont, t_env **envp);
-void	execute_export(t_cont *cont, t_env **envp);
-void	execute_unset(t_cont *cont, t_env **envp);
+void	execute_echo(t_cont *cont, t_struct **strp);
+void	execute_cd(t_cont *cont, t_struct **strp);
+void	execute_env(t_cont *cont, t_struct **strp);
+void	execute_export(t_cont *cont, t_struct **strp);
+void	execute_unset(t_cont *cont, t_struct **strp);
 
 /*==========UTILS FUNCIONS==========*/
 int		ft_check_if_chars_digit(int c);
@@ -312,7 +317,7 @@ int		ft_t_cont_len(t_cont *head);
 int		ft_push_container(t_tmp_cont *tmp, t_cont **head);
 void	ft_free_containers(t_cont **head);
 t_cont	*ft_new_node_for_cont(t_tmp_cont *tmp);
-int		ft_open_here_doc(t_cont *cont, t_info *info, t_env *env);
+int		ft_open_here_doc(t_cont *cont, t_info *info, t_struct *strp);
 
 /*==========TOKEN LINKED LIST UTILS FUNCIONS==========*/
 int		ft_t_token_len(t_token *head);

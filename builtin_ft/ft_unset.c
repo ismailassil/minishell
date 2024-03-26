@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 20:34:45 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/25 00:17:23 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/25 23:01:50 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,53 +17,73 @@ static int	ft_check_arg(char *arg)
 	int	i;
 
 	i = 0;
-	if (arg == NULL)
+	if (arg == NULL || arg[0] == '\0')
 		return (1);
-	if (ft_isalpha(arg[0]) == 0)
+	if (ft_isalpha(arg[0]) == 0 && arg[0] != '_')
 	{
-		(ft_error("msh: unset: "), ft_error(arg));
-		ft_error(": not a valid identifier\n");
-		return (true);
+		(ft_error("msh: unset: \'"), ft_error(arg));
+		ft_error("\': not a valid identifier\n");
+		return (1);
 	}
 	while (arg && arg[i] != '\0')
 	{
-		if (ft_isalnum(arg[i]))
+		if (ft_isalnum(arg[i]) == 0 && arg[i] != '_')
 		{
-			(ft_error("msh: unset: "), ft_error(arg));
-			ft_error(": not a valid identifier\n");
-			return (true);
+			(ft_error("msh: unset: \'"), ft_error(arg));
+			ft_error("\': not a valid identifier\n");
+			return (1);
 		}
 		i++;
 	}
-	return (1);
+	return (0);
+}
+	
+void	ft_del_node(t_env **env, t_env **previous_node, t_struct **strp)
+{
+	t_env	*tobefreed;
+
+	tobefreed = *env;
+	if (*previous_node == NULL)
+	{
+		*env = (*env)->next;
+		(*strp)->env = *env;
+	}
+	else
+	{
+		*env = (*env)->next;
+		(*previous_node)->next = (*env);
+	}
+	// free(tobefreed->value);
+	// tobefreed->value = NULL;
+	// free(tobefreed);
+	// tobefreed = NULL;
 }
 
-void	ft_unset(t_env *envp, char *argument)
+void	ft_unset(t_struct **strp, char *argument)
 {
 	t_env	*head;
-	t_env	*lastnode;
-	t_env	*tmp;
+	t_env	*previous_node;
+	int		i;
 
-	(1) && (head = envp, lastnode = head);
-	if (argument == NULL)
+	(1) && (i = 0, head = (*strp)->env, previous_node = NULL);
+	if (ft_check_arg(argument) == 1)
+	{
+		(*strp)->status = 1;
 		return ;
-	if (ft_check_arg(argument) == 0)
-	{
-		envp->status = 1;
-		exit(FAIL);
 	}
-	while (head != NULL)
+	while (head != NULL && head->value)
 	{
-		if (ft_strncmp(argument, head->value, ft_strlen(argument)) == 0)
+		i = 0;
+		while (head->value[i] != '\0' && head->value[i] != '='
+			&& head->value[i] == argument[i])
+			i++;
+		if (head->value[i] != '\0' && head->value[i] == '=')
 		{
-			(1) && (tmp = head, lastnode->next = head->next);
-			free(tmp->value);
-			tmp->value = NULL;
-			free(tmp);
-			tmp = NULL;
-			break ;
+			ft_del_node(&head, &previous_node, strp);
+			return ;
 		}
-		(1) && (lastnode = head, head = head->next);
+		previous_node = head;
+		head = head->next;
 	}
 }
 

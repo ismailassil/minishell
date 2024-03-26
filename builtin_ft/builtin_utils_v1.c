@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   b_utils_v1.c                                       :+:      :+:    :+:   */
+/*   builtin_utils_v1.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 12:27:22 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/22 02:31:48 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/25 21:32:29 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,19 +102,19 @@ bool	ft_check_syntax_export(char *arg)
 	int	i;
 
 	i = 0;
-	if (arg[0] == '=' || ft_isalpha(arg[0]) == 0 || arg[0] == '-')
+	if (ft_isalpha(arg[0]) == 0 && arg[0] != '_')
 	{
-		(ft_error("msh: export: "), ft_error(arg));
-		ft_error(": not a valid identifier\n");
+		(ft_error("msh: export: \'"), ft_error(arg));
+		ft_error("\': not a valid identifier\n");
 		return (true);
 	}
 	while (arg && arg[i] != '\0' && arg[i] != '=')
 	{
-		if (arg[i] == '-' || (arg[i] == '+' && arg[i + 1] != '\0'
-				&& arg[i + 1] != '='))
+		if ((ft_isalnum(arg[i]) == 0 && arg[i] != '_' && arg[i] != '+')
+			|| (arg[i] == '+' && arg[i + 1] != '\0' && arg[i + 1] != '='))
 		{
-			(ft_error("msh: export: "), ft_error(arg));
-			ft_error(": not a valid identifier\n");
+			(ft_error("msh: export: \'"), ft_error(arg));
+			ft_error("\': not a valid identifier\n");
 			return (true);
 		}
 		i++;

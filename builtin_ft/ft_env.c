@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 19:41:44 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/21 15:02:55 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/25 21:20:49 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,24 +31,26 @@ static t_env	*ft_create_new_env(void)
 	return (envp);
 }
 
-t_env	*ft_get_env(char **env)
+t_struct	*ft_get_struct_and_env(char **env)
 {
-	t_env	*envp;
+	t_struct	*strp;
 
-	envp = NULL;
+	strp = malloc(sizeof(t_struct));
+	ft_check_allocation(strp);
+	strp->env = NULL;
 	if (*env == NULL || env == NULL)
-		envp = ft_create_new_env();
+		strp->env = ft_create_new_env();
 	else
 	{
 		while (*env)
 		{
-			if (ft_push_value(*env, &envp) == 0)
+			if (ft_push_value(*env, &strp->env) == 0)
 				return (NULL);
 			env++;
 		}
 	}
-	envp->status = 0;
-	return (envp);
+	strp->status = 0;
+	return (strp);
 }
 
 void	ft_env(t_env *envp)

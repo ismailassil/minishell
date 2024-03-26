@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 10:36:20 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/25 01:38:46 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/25 18:41:39 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,16 +50,16 @@ static int	ft_surpass_chars(char *var)
 	return (i + 1);
 }
 
-int	ft_expand_word_after_dollar(t_expand *exp, int *i, char *arg, t_env *env)
+int	ft_expand_word_after_dollar(t_expand *exp, int *i, char *arg, t_struct *strp)
 {
 	if (exp->quote == '\'')
 	{
 		ft_append_char(&(exp->new_str), arg[(*i)++]);
 		return (1);
 	}
-	if (ft_handle_irregulare_cases(exp, arg[(*i) + 1], i, env))
+	if (ft_handle_irregulare_cases(exp, arg[(*i) + 1], i, strp))
 		return (1);
-	exp->expa = ft_arg_is_exist(env, arg + (*i + 1));
+	exp->expa = ft_arg_is_exist(strp->env, arg + (*i + 1));
 	exp->s = exp->new_str;
 	exp->new_str = ft_strjoin_(exp->new_str, exp->expa);
 	free(exp->s);
@@ -69,7 +69,7 @@ int	ft_expand_word_after_dollar(t_expand *exp, int *i, char *arg, t_env *env)
 /*
 *	This function expands the variables
 */
-char	*ft_handle_expand(t_env *env, char *arg)
+char	*ft_handle_expand(t_struct *strp, char *arg)
 {
 	int			i;
 	t_expand	exp;
@@ -85,7 +85,7 @@ char	*ft_handle_expand(t_env *env, char *arg)
 			ft_append_char(&exp.new_str, arg[i++]);
 		else if (arg[i] && arg[i] == '$')
 		{
-			if (ft_expand_word_after_dollar(&exp, &i, arg, env))
+			if (ft_expand_word_after_dollar(&exp, &i, arg, strp))
 				continue ;
 			i += ft_surpass_chars(arg + (i + 1));
 		}
@@ -98,7 +98,7 @@ char	*ft_handle_expand(t_env *env, char *arg)
 /*
 *	This function expands the Variables from the env
 */
-void	ft_expand_argument(t_env *env, t_token **linked_list)
+void	ft_expand_argument(t_struct *strp, t_token **linked_list)
 {
 	t_token	*head;
 	char	*tmp;
@@ -108,7 +108,7 @@ void	ft_expand_argument(t_env *env, t_token **linked_list)
 	{
 		if (ft_strchr(head->token, '$'))
 		{
-			tmp = ft_handle_expand(env, head->token);
+			tmp = ft_handle_expand(strp, head->token);
 			free(head->token);
 			head->token = NULL;
 			head->token = tmp;
