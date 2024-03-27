@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 14:48:48 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/25 18:42:40 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/27 18:47:11 by aibn-che         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static int	ft_surpass_chars(char *var)
 static int	ft_expand_word_after_dollar_here_doc(t_expand *exp, int *i, \
 	char *arg, t_struct *strp)
 {
-	if (ft_handle_irregulare_cases(exp, arg[(*i) + 1], i, strp))
+	if (ft_handle_irregulare_cases(exp, arg, i, strp))
 		return (1);
 	exp->expa = ft_arg_is_exist(strp->env, arg + (*i + 1));
 	exp->s = exp->new_str;

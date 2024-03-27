@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/25 23:00:43 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/27 18:46:40 by aibn-che         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -260,7 +260,7 @@ char	*ft_handle_expand_for_here_doc(t_struct *strp, char *arg);
 void	ft_error(char *str);
 void	ft_append_char(char **str, int c);
 char	*ft_allocate_for_var(int flag, char *str, int i);
-int		ft_handle_irregulare_cases(t_expand *exp, int c, int *i, t_struct *strp);
+int		ft_handle_irregulare_cases(t_expand *exp, char *c, int *i, t_struct *strp);
 int		ft_check_quotes(char *str);
 
 /*==========EXECUTION FUNCIONS==========*/
