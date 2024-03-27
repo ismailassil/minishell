@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 21:10:11 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/25 23:03:20 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/27 20:00:06 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,10 +98,4 @@ void	execute_unset(t_cont *cont, t_struct **strp)
 	envp = (*strp)->env;
 	while (cont->arg && cont->arg[i] != 0)
 		(1) && (ft_unset(strp, cont->arg[i]), i++);
-	while (envp)
-	{
-		if (envp == NULL)
-			printf("==========NULL===========\n");
-		printf("===={{{%s}}}====\n", envp->value), envp = envp->next;
-	}
 }

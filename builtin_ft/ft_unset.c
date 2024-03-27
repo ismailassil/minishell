@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 20:34:45 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/25 23:01:50 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/27 20:22:31 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,10 @@ void	ft_del_node(t_env **env, t_env **previous_node, t_struct **strp)
 		*env = (*env)->next;
 		(*previous_node)->next = (*env);
 	}
-	// free(tobefreed->value);
-	// tobefreed->value = NULL;
-	// free(tobefreed);
-	// tobefreed = NULL;
+	free(tobefreed->value);
+	tobefreed->value = NULL;
+	free(tobefreed);
+	tobefreed = NULL;
 }
 
 void	ft_unset(t_struct **strp, char *argument)
@@ -86,27 +86,3 @@ void	ft_unset(t_struct **strp, char *argument)
 		head = head->next;
 	}
 }
-
-// void	v(void)
-// {
-// 	system("leaks unset");
-// }
-
-// int main(int ac, char **av, char **env)
-// {
-// 	t_env	*envp;
-// 	t_env	*head;
-
-// 	atexit(v);
-// 	envp = ft_get_env(env);
-// 	head = envp;
-// 	printf(YELLOW"=====Before=====\n"RESET);
-// 	while (head)
-// 		(1) && (printf("%s\n", head->value), head = head->next);
-// 	printf(YELLOW"\n=====After=====\n"RESET);
-// 	ft_unset(envp, av[1]);
-// 	head = envp;
-// 	while (head)
-// 		(1) && (printf("%s\n", head->value), head = head->next);
-// 	ft_free_env(&envp);
-// }

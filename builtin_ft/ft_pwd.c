@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:37:37 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/20 18:08:35 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/27 20:22:27 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,3 @@ void	ft_pwd(t_env *env)
 		head = head->next;
 	}
 }
-
-// void	v(void)
-// {
-// 	system("leaks pwd");
-// }
-
-// int	main(int ac, char **av, char **env)
-// {
-// 	atexit(v);
-// 	ft_pwd();
-// }

@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 19:41:44 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/25 21:20:49 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/27 20:22:23 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,18 +62,3 @@ void	ft_env(t_env *envp)
 		envp = envp->next;
 	}
 }
-
-// void	v(void)
-// {
-// 	system("leaks env");
-// }
-
-// int main(int ac, char **av, char **env)
-// {
-// 	t_env	*envp;
-
-// 	atexit(v);
-// 	envp = ft_get_env(env);
-// 	ft_env(envp);
-// 	ft_free_env(&envp);
-// }
