@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 20:34:45 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/28 02:24:54 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/28 20:23:06 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ void	ft_unset(t_struct **strp, char *argument)
 		(*strp)->status = 1;
 		return ;
 	}
+	if (argument[0] == '_' && argument[1] == '\0')
+		return ;
 	while (head != NULL && head->value)
 	{
 		i = 0;
@@ -82,7 +84,6 @@ void	ft_unset(t_struct **strp, char *argument)
 			ft_del_node(&head, &previous_node, strp);
 			return ;
 		}
-		previous_node = head;
-		head = head->next;
+		(1) && (previous_node = head, head = head->next);
 	}
 }

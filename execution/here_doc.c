@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 03:21:09 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/28 02:13:44 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/28 20:30:00 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,11 @@ static void	ft_get_the_line(char *hold, int *pipefd, t_struct *strp)
 {
 	char	*line;
 	char	*delimiter;
+	int		flag;
 
-	line = NULL;
+	(1) && (line = NULL, flag = 0);
+	if (ft_strchr(hold, '\'') || ft_strchr(hold, '"'))
+		flag = 1;
 	delimiter = ft_trim_quotes(hold);
 	rl_catch_signals = 1;
 	while (true)
@@ -92,13 +95,13 @@ static void	ft_get_the_line(char *hold, int *pipefd, t_struct *strp)
 			(free(line), free(delimiter));
 			break ;
 		}
-		if (ft_strchr(line, '$'))
+		if (ft_strchr(line, '$') && ft_check_brackets(line) == 1 && flag == 0)
+			line = ft_strdup("msh: bad substitution");
+		else if (ft_strchr(line, '$') && flag == 0)
 			line = ft_handle_expand_for_here_doc(strp, line);
 		line = ft_strjoin_(line, "\n");
-		if (!line)
-			(ft_error("Error: Allocation failed\n"), exit(FAIL));
-		ft_putstr(line, pipefd[1]);
-		free(line);
+		ft_check_allocation(line);
+		(ft_putstr(line, pipefd[1]), free(line));
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/28 02:45:32 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/28 17:59:39 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -279,7 +279,7 @@ char					*ft_allocate_for_var(int flag, char *str, int i);
 int						ft_handle_irregulare_cases(t_expand *exp, char *c,
 							int *i, t_struct *strp);
 int						ft_check_quotes(char *str);
-
+int						ft_check_brackets(char *str);
 /*==========EXECUTION FUNCIONS==========*/
 int						ft_check_cont_and_cmd(t_cont *cont, \
 					t_struct *strp, t_info *info, int nr_cont);
