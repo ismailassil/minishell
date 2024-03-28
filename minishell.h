@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/28 02:08:51 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/28 02:45:32 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,14 @@ typedef struct s_cc
 	int	y;
 	int	h;
 }		t_cc;
+
+typedef struct s_brackets
+{
+	int	i;
+	int	c;
+	int	count;
+	int	c_left;
+}		t_brackets;
 
 typedef struct s_expand
 {
@@ -228,146 +236,161 @@ typedef struct s_execve
 extern struct termios	g_original_attr;
 
 /*==========BUILTIN FUNCIONS==========*/
-int			ft_cd(char *argument, t_struct **strp);
-void		ft_echo(char *argument);
-void		ft_env(t_env *envp);
-void		ft_exit(void);
-int			ft_export(char *argument, t_struct *strp);
-void		ft_pwd(t_env *env);
-void		ft_unset(t_struct **strp, char *argument);
+t_struct				*ft_get_struct_and_env(char **env);
+int						ft_cd(char *argument, t_struct **strp);
+void					ft_echo(char *argument);
+void					ft_env(t_env *envp);
+void					ft_exit(void);
+int						ft_export(char *argument, t_struct *strp);
+void					ft_pwd(t_env *env);
+void					ft_unset(t_struct **strp, char *argument);
 //	Utils function for builtin function
-t_struct	*ft_get_struct_and_env(char **env);
-void		ft_print_exported_variable(t_env *envp);
-char		*ft_get_cwd(t_env **envp);
-bool		ft_check_syntax_export(char *arg);
-char		*ft_filter_arg(char *arg);
-char		*ft_add_new_arg(t_append_export	*f);
+void					ft_print_exported_variable(t_env *envp);
+char					*ft_get_cwd(t_env **envp);
+bool					ft_check_syntax_export(char *arg);
+char					*ft_filter_arg(char *arg);
+char					*ft_add_new_arg(t_append_export	*f);
 
 /*==========PARSING FUNCIONS==========*/
-char	*ft_add_space_to_input(char *input);
-void	ft_split_tokens(t_token **head, char *str);
-void	ft_tokenize(t_token **str);
-void	ft_expand_argument(t_struct *strp, t_token **linked_list);
-bool	ft_check_syntax(t_token *str);
-void	ft_remove_quotes(t_token **linked_list);
-char	*ft_trim_quotes(char *str);
-void	ft_update_quote(char *arg, int *i, t_expand *exp);
-void	ft_init_tokens(t_token **head, char *str);
-char	*ft_alloc_str(t_token **tokens, char *str, t_stend *cord);
-t_stend	*ft_extract_start_end_of_token(char *str, int s);
-char	*ft_handle_expand(t_struct *strp, char *arg);
-char	*ft_handle_expand_for_here_doc(t_struct *strp, char *arg);
-//	Utils function for Parsing
-void	ft_error(char *str);
-void	ft_append_char(char **str, int c);
-char	*ft_allocate_for_var(int flag, char *str, int i);
-int		ft_handle_irregulare_cases(t_expand *exp, char *c, int *i, t_struct *strp);
-int		ft_check_quotes(char *str);
+char					*ft_add_space_to_input(char *input);
+void					ft_split_tokens(t_token **head, char *str);
+void					ft_tokenize(t_token **str);
+void					ft_expand_argument(t_struct *strp,
+							t_token **linked_list);
+bool					ft_check_syntax(t_token *str);
+void					ft_remove_quotes(t_token **linked_list);
+char					*ft_trim_quotes(char *str);
+void					ft_update_quote(char *arg, int *i, t_expand *exp);
+void					ft_init_tokens(t_token **head, char *str);
+char					*ft_alloc_str(t_token **tokens, char *str,
+							t_stend *cord);
+t_stend					*ft_extract_start_end_of_token(char *str, int s);
+char					*ft_handle_expand(t_struct *strp, char *arg);
+char					*ft_handle_expand_for_here_doc(t_struct *strp,
+							char *arg);
+int						ft_expand_word_after_dollar(t_expand *exp, int *i,
+							char *arg, t_struct *strp);
+char					*ft_arg_is_exist(t_env *env, char *var);
+int						ft_between_bracket(char *str, int i);
+//					Utils function for Parsing
+void					ft_error(char *str);
+void					ft_append_char(char **str, int c);
+char					*ft_allocate_for_var(int flag, char *str, int i);
+int						ft_handle_irregulare_cases(t_expand *exp, char *c,
+							int *i, t_struct *strp);
+int						ft_check_quotes(char *str);
 
 /*==========EXECUTION FUNCIONS==========*/
-int		ft_check_cont_and_cmd(t_cont *cont, \
-	t_struct *strp, t_info *info, int nr_cont);
-int		ft_here_doc(char *delimiter, t_struct *strp);
-int		ft_here_doc_parsing(t_token *lst, t_struct *strp);
-void	ft_execution(t_token **token, t_struct *strp);
-void	ft_execute_multiple_cmds(t_cont *cont, \
-	t_struct *strp, t_info *info, int nr_cont);
-int		ft_check_commands(t_cont *cont, t_struct *strp, t_info *info, int j);
-char	**ft_join_for_envp_execve(t_env *env);
-char	**ft_join_for_argv_execve(t_cont *cont);
-void	ft_check_(char **envp_path, char *cmd, t_env *env);
-void	ft_check_allocation(void *str);
-void	ft_syscall(int return_, char *str);
-void	ft_sig(void *return_, char *str);
-void	ft_f(char **str);
-int		ft_open_files(t_cont *cont, t_info *info, t_struct *strp);
-//	CONTAINER FUNCTIONS
-void	ft_link_all_in_containers(t_token *head, t_cont **container);
-void	ft_count_alc(t_token *head, t_tmp_cont	**cont);
-void	ft_free_tmp(t_tmp_cont **tmp);
-//	BUILTINS FUNCTIONS
-int		ft_builtin_exist(t_cont *cont);
-void	execute_echo(t_cont *cont, t_struct **strp);
-void	execute_cd(t_cont *cont, t_struct **strp);
-void	execute_env(t_cont *cont, t_struct **strp);
-void	execute_export(t_cont *cont, t_struct **strp);
-void	execute_unset(t_cont *cont, t_struct **strp);
+int						ft_check_cont_and_cmd(t_cont *cont, \
+					t_struct *strp, t_info *info, int nr_cont);
+int						ft_here_doc(char *delimiter, t_struct *strp);
+int						ft_here_doc_parsing(t_token *lst, t_struct *strp);
+void					ft_execution(t_token **token, t_struct *strp);
+void					ft_execute_multiple_cmds(t_cont *cont, \
+							t_struct *strp, t_info *info, int nr_cont);
+int						ft_check_commands(t_cont *cont, t_struct *strp,
+							t_info *info, int j);
+char					**ft_join_for_envp_execve(t_env *env);
+char					**ft_join_for_argv_execve(t_cont *cont);
+void					ft_check_(char **envp_path, char *cmd, t_env *env);
+void					ft_check_allocation(void *str);
+void					ft_syscall(int return_, char *str);
+void					ft_sig(void *return_, char *str);
+void					ft_f(char **str);
+int						ft_open_files(t_cont *cont, t_info *info,
+							t_struct *strp);
+//					CONTAINER FUNCTIONS
+void					ft_link_all_in_containers(t_token *head,
+							t_cont **container);
+void					ft_count_alc(t_token *head, t_tmp_cont **cont);
+void					ft_free_tmp(t_tmp_cont **tmp);
+//					BUILTINS FUNCTIONS
+int						ft_builtin_exist(t_cont *cont);
+void					execute_echo(t_cont *cont, t_struct **strp);
+void					execute_cd(t_cont *cont, t_struct **strp);
+void					execute_env(t_cont *cont, t_struct **strp);
+void					execute_export(t_cont *cont, t_struct **strp);
+void					execute_unset(t_cont *cont, t_struct **strp);
 
 /*==========UTILS FUNCIONS==========*/
-int		ft_check_if_chars_digit(int c);
-void	ft_print(t_token *lst);
-void	ft_print_types(t_token *str);
-void	ft_print_container(t_cont *head);
-void	ft_putstr(char *str, int fd);
+int						ft_check_if_chars_digit(int c);
+void					ft_print(t_token *lst);
+void					ft_print_types(t_token *str);
+void					ft_print_container(t_cont *head);
+void					ft_putstr(char *str, int fd);
 
 /*==========SIGNAL FUNCIONS==========*/
-void	ft_signal_handler(void);
-void	ctrl_c(int sig);
-void	ctrl_slash(int sig);
-void	ft_disable_attr(void);
-void	ft_default_signals(void);
+void					ft_signal_handler(void);
+void					ctrl_c(int sig);
+void					ctrl_slash(int sig);
+void					ft_disable_attr(void);
+void					ft_default_signals(void);
 
 /*==========ENV LINKED LIST UTILS FUNCIONS==========*/
-int		ft_t_env_len(t_env *head);
-int		ft_push_value(char *value, t_env **head);
-void	ft_free_env(t_env **head);
-void	ft_sort_list(t_env **env);
+int						ft_t_env_len(t_env *head);
+int						ft_push_value(char *value, t_env **head);
+void					ft_free_env(t_env **head);
+void					ft_sort_list(t_env **env);
 
 /*==========CONTAINER LINKED LIST UTILS FUNCIONS==========*/
-int		ft_t_cont_len(t_cont *head);
-int		ft_push_container(t_tmp_cont *tmp, t_cont **head);
-void	ft_free_containers(t_cont **head);
-t_cont	*ft_new_node_for_cont(t_tmp_cont *tmp);
-int		ft_open_here_doc(t_cont *cont, t_info *info, t_struct *strp);
+int						ft_t_cont_len(t_cont *head);
+int						ft_push_container(t_tmp_cont *tmp, t_cont **head);
+void					ft_free_containers(t_cont **head);
+t_cont					*ft_new_node_for_cont(t_tmp_cont *tmp);
+int						ft_open_here_doc(t_cont *cont, t_info *info,
+							t_struct *strp);
 
 /*==========TOKEN LINKED LIST UTILS FUNCIONS==========*/
-int		ft_t_token_len(t_token *head);
-int		ft_push_token(char *token, t_token **head);
-void	ft_free_tokens(t_token **head);
+int						ft_t_token_len(t_token *head);
+int						ft_push_token(char *token, t_token **head);
+void					ft_free_tokens(t_token **head);
 
 /*==========LIBFT FUNCIONS==========*/
-t_cont	*ft_lstnew(void *content);
-void	ft_lstadd_back(t_cont **lst, t_cont *_new);
-void	ft_lstadd_front(t_cont **lst, t_cont *_new);
-void	ft_lstdelone(t_cont *lst, void (*del)(void *));
-void	ft_lstclear(t_cont **lst, void (*del)(void *));
-void	ft_lstiter(t_cont *lst, void (*f)(void *));
-int		ft_lstsize(t_cont *lst);
-int		ft_isalpha(int c);
-int		ft_isdigit(int c);
-int		ft_isalnum(int c);
-int		ft_isascii(int c);
-int		ft_isprint(int c);
-int		ft_toupper(int c);
-int		ft_tolower(int c);
-int		ft_strncmp(const char *s1, const char *s2, size_t n);
-int		ft_strcmp(const char *s1, const char *s2);
-int		ft_atoi(const char *str);
-int		ft_memcmp(const void *s1, const void *s2, size_t n);
-void	*ft_memset(void *b, int c, size_t len);
-void	ft_bzero(void *s, size_t n);
-void	*ft_memmove(void *dst, const void *src, size_t len);
-void	*ft_memcpy(void *dst, const void *src, size_t n);
-void	*ft_memchr(const void *s, int c, size_t n);
-void	*ft_calloc(size_t count, size_t size);
-char	*ft_strchr(const char *str, int c);
-char	*ft_strrchr(const char *str, int c);
-char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
-char	*ft_strdup(const char *s1);
-size_t	ft_strlen(const char *str);
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
-size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
-char	*ft_substr(char const *s, unsigned int start, size_t len);
-char	*ft_strtrim(char const *s1, char const *set);
-char	*ft_strjoin(char const *s1, char const *s2);
-char	*ft_strjoin_(char *str1, char *str2);
-char	*ft_itoa(int n);
-char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
-void	ft_striteri(char *s, void (*f)(unsigned int, char*));
-void	ft_putchar_fd(char c, int fd);
-void	ft_putstr_fd(char *s, int fd);
-void	ft_putendl_fd(char *s, int fd);
-void	ft_putnbr_fd(int n, int fd);
-char	**ft_split(char const *s, char c);
+t_cont					*ft_lstnew(void *content);
+void					ft_lstadd_back(t_cont **lst, t_cont *_new);
+void					ft_lstadd_front(t_cont **lst, t_cont *_new);
+void					ft_lstdelone(t_cont *lst, void (*del)(void *));
+void					ft_lstclear(t_cont **lst, void (*del)(void *));
+void					ft_lstiter(t_cont *lst, void (*f)(void *));
+int						ft_lstsize(t_cont *lst);
+int						ft_isalpha(int c);
+int						ft_isdigit(int c);
+int						ft_isalnum(int c);
+int						ft_isascii(int c);
+int						ft_isprint(int c);
+int						ft_toupper(int c);
+int						ft_tolower(int c);
+int						ft_strncmp(const char *s1, const char *s2, size_t n);
+int						ft_strcmp(const char *s1, const char *s2);
+int						ft_atoi(const char *str);
+int						ft_memcmp(const void *s1, const void *s2, size_t n);
+void					*ft_memset(void *b, int c, size_t len);
+void					ft_bzero(void *s, size_t n);
+void					*ft_memmove(void *dst, const void *src, size_t len);
+void					*ft_memcpy(void *dst, const void *src, size_t n);
+void					*ft_memchr(const void *s, int c, size_t n);
+void					*ft_calloc(size_t count, size_t size);
+char					*ft_strchr(const char *str, int c);
+char					*ft_strrchr(const char *str, int c);
+char					*ft_strnstr(const char *haystack,
+							const char *needle, size_t len);
+char					*ft_strdup(const char *s1);
+size_t					ft_strlen(const char *str);
+size_t					ft_strlcpy(char *dst, const char *src, size_t dstsize);
+size_t					ft_strlcat(char *dst, const char *src, size_t dstsize);
+char					*ft_substr(char const *s, unsigned int start,
+							size_t len);
+char					*ft_strtrim(char const *s1, char const *set);
+char					*ft_strjoin(char const *s1, char const *s2);
+char					*ft_strjoin_(char *str1, char *str2);
+char					*ft_itoa(int n);
+char					*ft_strmapi(char const *s,
+							char (*f)(unsigned int, char));
+void					ft_striteri(char *s, void (*f)(unsigned int, char*));
+void					ft_putchar_fd(char c, int fd);
+void					ft_putstr_fd(char *s, int fd);
+void					ft_putendl_fd(char *s, int fd);
+void					ft_putnbr_fd(int n, int fd);
+char					**ft_split(char const *s, char c);
 
 #endif

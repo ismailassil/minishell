@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   p_utils_v1.c                                       :+:      :+:    :+:   */
+/*   parse_utils_v1.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 14:00:00 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/23 17:45:01 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/28 02:41:56 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,4 +97,10 @@ void	ft_update_quote(char *arg, int *i, t_expand *exp)
 		ft_append_char(&exp->new_str, arg[*i]);
 		(*i)++;
 	}
+}
+
+void	ft_error(char *str)
+{
+	if (str != NULL)
+		write(2, str, ft_strlen(str));
 }

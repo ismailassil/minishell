@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:43:43 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/25 18:36:39 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/28 02:40:07 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 /*
 *	This function checks and open files for the infiles and here_doc
 */
-static int	ft_open_infile_or_heredoc(t_cont *cont, t_info *info, t_struct *strp)
+static int	ft_open_infile_or_heredoc(t_cont *cont, t_info *info,
+	t_struct *strp)
 {
 	t_fd_	fd;
 

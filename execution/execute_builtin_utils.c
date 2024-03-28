@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 21:10:11 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/27 20:00:06 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/28 02:25:01 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	execute_export(t_cont *cont, t_struct **strp)
 */
 void	execute_unset(t_cont *cont, t_struct **strp)
 {
-	int	i;
+	int		i;
 	t_env	*envp;
 
 	i = 0;

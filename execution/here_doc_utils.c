@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 14:48:48 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/27 18:47:11 by aibn-che         ###   ########.fr       */
+/*   Updated: 2024/03/28 02:34:29 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /*
 *	This file hold the functions that expand the variables passed to here_doc
 */
-static char	*ft_arg_is_exist(t_env *env, char *var)
+static char	*ft_arg_is_exist_(t_env *env, char *var)
 {
 	t_env	*head;
 	char	*ptr;
@@ -55,7 +55,7 @@ static int	ft_expand_word_after_dollar_here_doc(t_expand *exp, int *i, \
 {
 	if (ft_handle_irregulare_cases(exp, arg, i, strp))
 		return (1);
-	exp->expa = ft_arg_is_exist(strp->env, arg + (*i + 1));
+	exp->expa = ft_arg_is_exist_(strp->env, arg + (*i + 1));
 	exp->s = exp->new_str;
 	exp->new_str = ft_strjoin(exp->new_str, exp->expa);
 	return (0);

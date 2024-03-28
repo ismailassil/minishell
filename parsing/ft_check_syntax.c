@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 14:55:19 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/26 01:32:20 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/28 02:41:40 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,39 +40,44 @@ bool	ft_check_syntax(t_token *str)
 	return (true);
 }
 
+int	ft_check_within_brackets(char *str, t_brackets *c)
+{
+	while (str[c->i] && str[c->i] != '}')
+	{
+		if (str[c->i - 1] == '{' && !ft_isalpha(str[c->i]))
+			c->c_left++;
+		if (str[c->i] == '{' || ft_strchr(" \t\n\v\f\r", str[c->i])
+			|| !ft_isalnum(str[c->i]))
+			c->c_left++;
+		c->i++;
+	}
+	if (str[c->i - 1] == '{' && str[c->i] == '}')
+		return (1);
+	if (str[c->i] && str[c->i] == '}')
+		c->count++;
+	if (c->c_left != 1)
+		return (1);
+	return (0);
+}
+
 int	ft_check_brackets(char *str)
 {
-	int	i;
-	int	c;
-	int	count;
-	int	c_left;
+	t_brackets	c;
 
-	(1) && (i = 0, c = 0, c_left = 0, count = 0);
-	while (str[i])
+	(1) && (c.i = 0, c.c = 0, c.c_left = 0, c.count = 0);
+	while (str[c.i])
 	{
-		if (str[i] && i != 0 && str[i - 1] == '$' && str[i] == '{')
+		if (str[c.i] && c.i != 0 && str[c.i - 1] == '$' && str[c.i] == '{')
 		{
-			(1) && (count++, c_left++, c = str[i++]);
-			while (str[i] && str[i] != '}')
-			{
-				if (str[i - 1] == '{' && !ft_isalpha(str[i]))
-					c_left++;
-				if (str[i] == '{' || ft_strchr(" \t\n\v\f\r", str[i]) || !ft_isalnum(str[i]))
-					c_left++;
-				i++;
-			}
-			if (str[i - 1] == '{' && str[i] == '}')
-				return (1);
-			if (str[i] && str[i] == '}')
-				count++;
-			if (c_left != 1)
+			(1) && (c.count++, c.c_left++, c.c = str[c.i++]);
+			if (ft_check_within_brackets(str, &c) == 1)
 				return (1);
 		}
 		if (!str)
 			break ;
-		i++;
+		c.i++;
 	}
-	if (count % 2 == 0)
+	if (c.count % 2 == 0)
 		return (0);
 	return (1);
 }
@@ -106,12 +111,6 @@ int	ft_check_quotes(char *str)
 	if ((count % 2) == 0)
 		return (1);
 	return (ft_error("msh: syntax error\n"), 0);
-}
-
-void	ft_error(char *str)
-{
-	if (str != NULL)
-		write(2, str, ft_strlen(str));
 }
 
 static int	ft_check_rest(t_token *head)

@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 10:36:20 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/28 01:45:49 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/28 02:34:37 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /*
 *	Checks if the expanded variable exists in the env
 */
-static char	*ft_arg_is_exist(t_env *env, char *var)
+char	*ft_arg_is_exist(t_env *env, char *var)
 {
 	t_env	*head;
 	char	*ptr;
@@ -50,7 +50,7 @@ static int	ft_surpass_chars(char *var)
 	return (i + 1);
 }
 
-int	between_bracket(char *str, int i)
+int	ft_between_bracket(char *str, int i)
 {
 	int	n;
 
@@ -68,34 +68,6 @@ int	between_bracket(char *str, int i)
 	}
 	if (n == 2)
 		return (i + 1);
-	return (0);
-}
-
-int	ft_expand_word_after_dollar(t_expand *exp, int *i, char *arg, t_struct *strp)
-{
-	char	*s;
-	int 	i_to_pass;
-
-	i_to_pass = 0;
-	s = NULL;
-	if (exp->quote == '\'')
-	{
-		ft_append_char(&exp->new_str, arg[(*i)++]);
-		return (1);
-	}
-	if (between_bracket(arg, *i + 1) >= 2)
-	{
-		i_to_pass = between_bracket(arg, *i + 1);
-		(*i) += 1;
-	}
-	if (ft_handle_irregulare_cases(exp, arg, i, strp))
-		return (1);
-	exp->expa = ft_arg_is_exist(strp->env, arg + (*i + 1));
-	s = exp->new_str;
-	exp->new_str = ft_strjoin_(exp->new_str, exp->expa);
-	free(s);
-	if (i_to_pass)
-		return ((*i) = (i_to_pass), 1);
 	return (0);
 }
 

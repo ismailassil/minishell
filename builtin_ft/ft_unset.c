@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 20:34:45 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/27 20:22:31 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/28 02:24:54 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	ft_check_arg(char *arg)
 	}
 	return (0);
 }
-	
+
 void	ft_del_node(t_env **env, t_env **previous_node, t_struct **strp)
 {
 	t_env	*tobefreed;
