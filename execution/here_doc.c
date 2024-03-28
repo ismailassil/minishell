@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 03:21:09 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/25 18:43:50 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/28 01:46:00 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ static void	ft_get_the_line_parsing(char *hold)
 	while (true)
 	{
 		line = readline("> ");
+		if (line == NULL)
+			break ;
 		if (ft_strcmp(hold, line) == 0)
 		{
 			free(line);
@@ -61,13 +63,13 @@ int	ft_here_doc_parsing(t_token *lst, t_struct *strp)
 			if (info.id == 0)
 			{
 				ft_sig(signal(SIGINT, SIG_DFL), "msh: signal");
-				ft_sig(signal(SIGQUIT, SIG_DFL), "msh: signal");
+				ft_sig(signal(SIGQUIT, SIG_IGN), "msh: signal");
 				ft_get_the_line_parsing(info.del);
 				exit(SUCCESS);
 			}
 			ft_syscall(waitpid(CHILD, &info.status, 0), "msh: waitpid");
 			if (WIFSIGNALED(info.status) && WTERMSIG(info.status) == SIGINT)
-				return (strp->status = 130, 1);
+				return (strp->status = 1, 1);
 		}
 		lst = lst->next;
 	}
@@ -83,6 +85,8 @@ static void	ft_get_the_line(char *hold, int *pipefd, t_struct *strp)
 	while (true)
 	{
 		line = readline("> ");
+		if (line == NULL)
+			break ;
 		if (ft_strcmp(hold, line) == 0)
 		{
 			free(line);
@@ -109,7 +113,7 @@ int	ft_here_doc(char *delimiter, t_struct *strp)
 	if (info.id == 0)
 	{
 		ft_sig(signal(SIGINT, SIG_DFL), "msh: signal");
-		ft_sig(signal(SIGQUIT, SIG_DFL), "msh: signal");
+		ft_sig(signal(SIGQUIT, SIG_IGN), "msh: signal");
 		ft_syscall(close(pipefd[0]), "msh: close");
 		ft_get_the_line(delimiter, pipefd, strp);
 		ft_syscall(close(pipefd[1]), "msh: close");
@@ -119,6 +123,6 @@ int	ft_here_doc(char *delimiter, t_struct *strp)
 	ft_syscall(waitpid(CHILD, &info.status, 0), "msh: waitpid");
 	strp->status = WEXITSTATUS(info.status);
 	if (WIFSIGNALED(info.status) && WTERMSIG(info.status) == SIGINT)
-		return (strp->status = 130, -1);
+		return (strp->status = 1, -1);
 	return (pipefd[0]);
 }

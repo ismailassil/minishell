@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 13:48:38 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/25 18:38:54 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/27 22:55:56 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,5 +104,7 @@ void	ft_execute_multiple_cmds(t_cont *cont, \
 	strp->status = WEXITSTATUS(status);
 	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
 		strp->status = 131;
+	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+		strp->status = 130;
 	free(info->id);
 }

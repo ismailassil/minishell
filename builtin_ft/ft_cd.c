@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 15:33:58 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/25 18:30:12 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/28 00:25:26 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ int	ft_cd(char *argument, t_struct **strp)
 		(1) && ((*strp)->status = 0, info.buffer = ft_strdup(info.buf));
 	else
 	{
-		(ft_error("msh: "), perror(argument));
+		(ft_error("msh: cd: "), perror(argument));
 		info.tmp = ft_strjoin_(ft_get_cwd(&(*strp)->env), "/");
 		info.buffer = ft_strjoin_(info.tmp, argument);
 		free(info.tmp);

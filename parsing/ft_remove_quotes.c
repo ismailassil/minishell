@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 10:47:56 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/07 21:10:57 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/28 01:44:58 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ void	ft_remove_quotes(t_token **linked_list)
 	head = *linked_list;
 	while (head)
 	{
-		if (ft_strchr(head->token, '$'))
+		if (ft_strchr(head->token, '$') || head->type == DELIMITER)
 			head = head->next;
 		else
 		{

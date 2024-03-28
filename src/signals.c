@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 16:10:26 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/24 21:34:30 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/27 22:53:57 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ void	ctrl_slash(int sig)
 	{
 		ft_syscall(tcsetattr(STDIN_FILENO, TCSANOW, &g_original_attr), \
 			"msh: tcsetattr");
-		printf("Quit: 3\n");
 		return ;
 	}
 	rl_redisplay();

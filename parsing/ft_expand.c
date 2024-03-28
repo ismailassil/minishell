@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_expand.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 10:36:20 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/27 19:48:31 by aibn-che         ###   ########.fr       */
+/*   Updated: 2024/03/28 01:45:49 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ void	ft_expand_argument(t_struct *strp, t_token **linked_list)
 	(1) && (head = *linked_list, tmp = NULL);
 	while (head != NULL)
 	{
-		if (ft_strchr(head->token, '$'))
+		if (ft_strchr(head->token, '$') && head->type != DELIMITER)
 		{
 			tmp = ft_handle_expand(strp, head->token);
 			free(head->token);
