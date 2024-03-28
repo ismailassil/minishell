@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 14:48:48 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/28 21:31:49 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/28 22:53:33 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,56 @@ static int	ft_surpass_chars(char *var)
 	return (i + 1);
 }
 
+static void	ft_question_mark_here_doc(t_expand *exp, char *s, int *i, t_struct *strp)
+{
+	char	*num;
+
+	num = ft_itoa(strp->status);
+	exp->new_str = ft_strjoin_(s, num);
+	*i += 1;
+	free(s);
+	free(num);
+}
+
+void	ft_special_chars_here_doc(t_expand *exp, char *arg, int *i, t_struct *strp)
+{
+	char	*s;
+
+	s = exp->new_str;
+	if (arg[(*i) + 1] == '-')
+	{
+		(1) && (exp->new_str = ft_strjoin_(s, "himBH"), *i += 1);
+		free(s);
+	}
+	else if (arg[(*i) + 1] == '?')
+		ft_question_mark_here_doc(exp, s, i, strp);
+	else
+		ft_append_char(&exp->new_str, '$');
+}
+
+
+int	ft_handle_irregulare_cases_here_doc(t_expand *exp, char *arg, int *i, t_struct *strp)
+{
+	char	*s;
+
+	s = exp->new_str;
+	if (ft_isdigit(arg[(*i) + 1]))
+	{
+		if (arg[(*i) + 1] == '0')
+		{
+			exp->new_str = ft_strjoin_(s, "minishell");
+			free(s);
+		}
+		return ((*i += 2), 1);
+	}
+	else if (!ft_check_if_chars_digit(arg[(*i) + 1]))
+	{
+		ft_special_chars_here_doc(exp, arg, i, strp);
+		return ((*i += 1), 1);
+	}
+	return (0);
+}
+
 static int	ft_expand_word_after_dollar_here_doc(t_expand *exp, int *i, \
 	char *arg, t_struct *strp)
 {
@@ -63,7 +113,7 @@ static int	ft_expand_word_after_dollar_here_doc(t_expand *exp, int *i, \
 		i_to_pass = ft_between_bracket(arg, *i + 1);
 		(*i) += 1;
 	}
-	if (ft_handle_irregulare_cases(exp, arg, i, strp))
+	if (ft_handle_irregulare_cases_here_doc(exp, arg, i, strp))
 		return (1);
 	exp->expa = ft_arg_is_exist_(strp->env, arg + (*i + 1));
 	s = exp->new_str;
