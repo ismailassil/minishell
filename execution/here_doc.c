@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 03:21:09 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/28 01:46:00 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/28 02:13:44 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,17 +31,17 @@ void	ft_putstr(char *str, int fd)
 static void	ft_get_the_line_parsing(char *hold)
 {
 	char	*line;
+	char	*delimiter;
 
 	line = NULL;
+	delimiter = ft_trim_quotes(hold);
 	rl_catch_signals = 1;
 	while (true)
 	{
 		line = readline("> ");
-		if (line == NULL)
-			break ;
-		if (ft_strcmp(hold, line) == 0)
+		if (ft_strcmp(delimiter, line) == 0 || line == NULL)
 		{
-			free(line);
+			(free(line), free(delimiter));
 			break ;
 		}
 		free(line);
@@ -79,17 +79,17 @@ int	ft_here_doc_parsing(t_token *lst, t_struct *strp)
 static void	ft_get_the_line(char *hold, int *pipefd, t_struct *strp)
 {
 	char	*line;
+	char	*delimiter;
 
 	line = NULL;
+	delimiter = ft_trim_quotes(hold);
 	rl_catch_signals = 1;
 	while (true)
 	{
 		line = readline("> ");
-		if (line == NULL)
-			break ;
-		if (ft_strcmp(hold, line) == 0)
+		if (ft_strcmp(delimiter, line) == 0 || line == NULL)
 		{
-			free(line);
+			(free(line), free(delimiter));
 			break ;
 		}
 		if (ft_strchr(line, '$'))

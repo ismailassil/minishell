@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 10:47:56 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/28 01:44:58 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/28 02:08:41 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static char	*ft_allocate_for_the_string(char *str, int count)
 	return (ptr);
 }
 
-static char	*ft_trim_quotes(char *str)
+char	*ft_trim_quotes(char *str)
 {
 	char	*ptr;
 	int		count;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/27 18:46:40 by aibn-che         ###   ########.fr       */
+/*   Updated: 2024/03/28 02:08:51 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,6 +250,7 @@ void	ft_tokenize(t_token **str);
 void	ft_expand_argument(t_struct *strp, t_token **linked_list);
 bool	ft_check_syntax(t_token *str);
 void	ft_remove_quotes(t_token **linked_list);
+char	*ft_trim_quotes(char *str);
 void	ft_update_quote(char *arg, int *i, t_expand *exp);
 void	ft_init_tokens(t_token **head, char *str);
 char	*ft_alloc_str(t_token **tokens, char *str, t_stend *cord);
