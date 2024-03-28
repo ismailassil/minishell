@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 14:48:48 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/28 22:53:33 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/28 23:10:08 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ void	ft_special_chars_here_doc(t_expand *exp, char *arg, int *i, t_struct *strp)
 	}
 	else if (arg[(*i) + 1] == '?')
 		ft_question_mark_here_doc(exp, s, i, strp);
+	else if (exp->quote == '\"' && arg[(*i) + 1] == '\"')
+		ft_append_char(&exp->new_str, '$');
 	else
 		ft_append_char(&exp->new_str, '$');
 }
