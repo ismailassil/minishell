@@ -6,11 +6,11 @@
 #    By: iassil <iassil@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/27 14:35:22 by iassil            #+#    #+#              #
-#    Updated: 2024/03/29 02:35:43 by iassil           ###   ########.fr        #
+#    Updated: 2024/03/29 21:44:31 by iassil           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC			=	clang
+CC			=	cc
 CC			+=	-Wall -Wextra -Werror
 READLINEDIR	=	$(shell brew --prefix readline)
 CC			+=	-fsanitize=address -fsanitize=undefined -g

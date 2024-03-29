@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 01:49:47 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/29 02:41:17 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/29 22:00:49 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,24 @@ void	ft_add_path_executed_cmd(char *str, t_env *env)
 		ft_push_value(cmd, &env);
 		free(cmd);
 	}
+}
+
+void	ft_add_cmd_or_arg_to_env(int nr_cont, t_cont *cont, t_struct *strp)
+{
+	int	i;
+
+	i = 0;
+	if (nr_cont == 1 && cont->cmd != NULL)
+	{
+		if (cont->arg == NULL || cont->arg[0] == 0)
+			ft_add_path_executed_cmd(cont->cmd, strp->env);
+		else
+		{
+			while (cont->arg && cont->arg[i])
+				i++;
+			ft_add_path_executed_cmd(cont->arg[i - 1], strp->env);
+		}
+	}
+	else if (nr_cont > 1)
+		ft_delete_node(&strp->env);
 }

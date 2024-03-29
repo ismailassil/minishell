@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:06 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/29 02:54:24 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/29 22:16:32 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 struct termios	g_original_attr;
 
 /*	Parse the input from the shell	*/
-void	ft_parse_input_from_shell(t_struct *strp, char *input)
+void	ft_parse_and_execute_from_shell(t_struct *strp, char *input)
 {
 	t_token	*head;
 	char	*shell;
@@ -69,13 +69,14 @@ int	main(int argc, char **argv, char **env)
 		if (line == NULL)
 		{
 			if (line == NULL)
-				printf("exit\n");
+				write(1, "exit\n", 5);
+			(ft_free_env(&strp->env), free(strp));
 			ft_exit();
 		}
 		if (ft_strlen(line) > 0)
 			add_history(line);
-		ft_parse_input_from_shell(strp, line);
+		ft_parse_and_execute_from_shell(strp, line);
 		free(line);
-		// printf(BLUE"[status ($?) = %d]\n"RESET, strp->status);
+		printf(BLUE"[status ($?) = %d]\n"RESET, strp->status);
 	}
 }

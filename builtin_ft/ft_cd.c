@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 15:33:58 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/28 00:25:26 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/29 22:14:14 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static char	*ft_check_argument(char *argument)
 			(write(2, "Error: Allocation failed\n", 25), exit(FAIL));
 	}
 	else if (argument[0] == '~' || argument[0] == '-')
-		return (write(2, "msh: syntax not supported\n", 26), NULL);
+		return (write(2, "msh: cd: syntax not supported\n", 26), NULL);
 	return (arg);
 }
 
@@ -104,9 +104,9 @@ int	ft_cd(char *argument, t_struct **strp)
 		*info.current_dir = '\0';
 	info.dir = ft_check_argument(argument);
 	if (info.dir == NULL)
-		return (1);
+		return ((*strp)->status = 1, 1);
 	if (chdir(info.dir) == -1)
-		return (ft_error("msh: "), perror(info.dir), \
+		return (ft_error("msh: cd: "), perror(info.dir), \
 			free(info.dir), (*strp)->status = 1, 1);
 	if (getcwd(info.buf, sizeof(info.buf)) != NULL)
 		(1) && ((*strp)->status = 0, info.buffer = ft_strdup(info.buf));
