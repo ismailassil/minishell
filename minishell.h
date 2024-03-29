@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/28 23:49:17 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/29 02:33:59 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,7 +250,6 @@ char					*ft_get_cwd(t_env **envp);
 bool					ft_check_syntax_export(char *arg);
 char					*ft_filter_arg(char *arg);
 char					*ft_add_new_arg(t_append_export	*f);
-
 /*==========PARSING FUNCIONS==========*/
 char					*ft_add_space_to_input(char *input);
 void					ft_split_tokens(t_token **head, char *str);
@@ -301,6 +300,7 @@ void					ft_sig(void *return_, char *str);
 void					ft_f(char **str);
 int						ft_open_files(t_cont *cont, t_info *info,
 							t_struct *strp);
+void					ft_add_path_executed_cmd(char *str, t_env *env);
 //					CONTAINER FUNCTIONS
 void					ft_link_all_in_containers(t_token *head,
 							t_cont **container);
@@ -333,6 +333,7 @@ int						ft_t_env_len(t_env *head);
 int						ft_push_value(char *value, t_env **head);
 void					ft_free_env(t_env **head);
 void					ft_sort_list(t_env **env);
+void					ft_delete_node(t_env **env);
 
 /*==========CONTAINER LINKED LIST UTILS FUNCIONS==========*/
 int						ft_t_cont_len(t_cont *head);

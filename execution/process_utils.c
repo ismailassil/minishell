@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:42:41 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/23 19:34:59 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/29 02:07:13 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,8 @@ static char	*ft_check_path(char *cmd, t_env *env)
 
 void	ft_check_(char **envp_path, char *cmd, t_env *env)
 {
-	int	i;
-
-	i = 0;
-	if (access(cmd + i, F_OK | X_OK) == 0)
-		*envp_path = ft_strdup(cmd + i);
+	if (access(cmd, F_OK | X_OK) == 0)
+		*envp_path = ft_strdup(cmd);
 	else
 	{
 		*envp_path = ft_check_path(cmd, env);

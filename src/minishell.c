@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:06 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/27 22:46:26 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/29 02:54:24 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int	main(int argc, char **argv, char **env)
 	ft_syscall(tcgetattr(STDIN_FILENO, &g_original_attr), "msh: tcgetattr");
 	ft_signal_handler();
 	strp = ft_get_struct_and_env(env);
+	ft_check_allocation(strp);
 	while (true)
 	{
 		line = readline(YELLOW_"minishell$ "RESET);
@@ -75,6 +76,6 @@ int	main(int argc, char **argv, char **env)
 			add_history(line);
 		ft_parse_input_from_shell(strp, line);
 		free(line);
-		printf(BLUE"[status ($?) = %d]\n"RESET, strp->status);
+		// printf(BLUE"[status ($?) = %d]\n"RESET, strp->status);
 	}
 }

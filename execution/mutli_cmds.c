@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 13:48:38 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/27 22:55:56 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/29 02:34:25 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,5 +106,9 @@ void	ft_execute_multiple_cmds(t_cont *cont, \
 		strp->status = 131;
 	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 		strp->status = 130;
+	if (nr_cont == 1 && cont->cmd != NULL)
+		ft_add_path_executed_cmd(cont->cmd, strp->env);
+	else if (nr_cont > 1)
+		ft_delete_node(&strp->env);
 	free(info->id);
 }

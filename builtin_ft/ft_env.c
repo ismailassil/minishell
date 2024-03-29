@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 19:41:44 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/27 20:22:23 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/29 02:54:12 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,14 @@ t_struct	*ft_get_struct_and_env(char **env)
 	{
 		while (*env)
 		{
-			if (ft_push_value(*env, &strp->env) == 0)
-				return (NULL);
-			env++;
+			if (ft_strncmp(*env, "_=", 2) == 0)
+				env++;
+			else
+			{
+				if (ft_push_value(*env, &strp->env) == 0)
+					return (NULL);
+				env++;
+			}
 		}
 	}
 	strp->status = 0;

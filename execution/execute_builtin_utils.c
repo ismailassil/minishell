@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 21:10:11 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/28 02:25:01 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/29 02:56:30 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	execute_echo(t_cont *cont, t_struct **strp)
 	int	n;
 	int	i;
 
+	ft_add_path_executed_cmd("echo", (*strp)->env);
 	(1) && (n = 0, i = 0);
 	if (cont->arg
 		&& ft_strncmp(cont->arg[0], "-n", ft_strlen(cont->arg[0])) == 0)
@@ -34,7 +35,7 @@ void	execute_echo(t_cont *cont, t_struct **strp)
 		if (cont->arg && cont->arg[i])
 			write(1, " ", 1);
 	}
-	if (n == 0)
+	if (n == 0 || cont->arg[0] == 0)
 		write(1, "\n", 1);
 	(*strp)->status = 0;
 }
@@ -44,6 +45,7 @@ void	execute_echo(t_cont *cont, t_struct **strp)
 */
 void	execute_cd(t_cont *cont, t_struct **strp)
 {
+	ft_add_path_executed_cmd("cd", (*strp)->env);
 	if (cont->arg)
 		ft_cd(cont->arg[0], strp);
 	else
@@ -55,6 +57,7 @@ void	execute_cd(t_cont *cont, t_struct **strp)
 */
 void	execute_env(t_cont *cont, t_struct **strp)
 {
+	ft_add_path_executed_cmd("env", (*strp)->env);
 	if (cont->arg && cont->arg[0])
 	{
 		write(2, "env: ", 5);
@@ -77,6 +80,7 @@ void	execute_export(t_cont *cont, t_struct **strp)
 	int	i;
 
 	i = 0;
+	ft_add_path_executed_cmd("export", (*strp)->env);
 	(*strp)->status = 0;
 	if (cont->arg[0] == NULL)
 		ft_export(NULL, *strp);
@@ -94,6 +98,7 @@ void	execute_unset(t_cont *cont, t_struct **strp)
 	t_env	*envp;
 
 	i = 0;
+	ft_add_path_executed_cmd("unset", (*strp)->env);
 	(*strp)->status = 0;
 	envp = (*strp)->env;
 	while (cont->arg && cont->arg[i] != 0)
