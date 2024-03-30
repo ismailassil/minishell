@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:47:07 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/25 18:34:54 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/30 01:07:46 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static char	*ft_append_value(char *arg, char *old_arg, int flag)
 {
 	t_append_export	f;
 
-	(1) && (f.value = ft_filter_arg(arg), f.i = 0, f.j = 0, f.ptr = NULL);
+	(1) && (f.value = arg, f.i = 0, f.j = 0, f.ptr = NULL);
 	if (flag == 1)
 		f.ptr = ft_add_new_arg(&f);
 	else if (flag == 0)
@@ -43,9 +43,8 @@ static char	*ft_append_value(char *arg, char *old_arg, int flag)
 			f.i++;
 		if (f.value[f.i] == '=')
 			f.i++;
-		f.tmp = ft_strjoin(old_arg, f.value + f.i);
-		ft_check_allocation(f.tmp);
-		f.ptr = f.tmp;
+		f.ptr = ft_strjoin(old_arg, f.value + f.i);
+		ft_check_allocation(f.ptr);
 	}
 	return (f.ptr);
 }
@@ -71,8 +70,8 @@ static int	ft_add_already_exits(char *arg, t_env *envp)
 			(1) && (free(head->value), head->value = NULL);
 			if (!tmp)
 				return (0);
-			head->value = tmp;
-			return (1);
+			head->value = ft_strdup(tmp);
+			return (free(tmp), tmp = NULL, 1);
 		}
 		head = head->next;
 	}
@@ -81,25 +80,21 @@ static int	ft_add_already_exits(char *arg, t_env *envp)
 
 static int	ft_add_new_env(char *arg, t_env *envp)
 {
-	char	*value;
 	char	*tmp;
 
-	value = ft_filter_arg(arg);
-	if (!value)
-		return (1);
-	if (!ft_strchr(value, '+'))
+	if (!ft_strchr(arg, '+'))
 	{
-		if (ft_push_value(value, &envp) == 0)
+		if (ft_push_value(arg, &envp) == 0)
 			return (1);
 	}
 	else
 	{
-		tmp = ft_append_value(value, NULL, 1);
+		tmp = ft_append_value(arg, NULL, 1);
 		if (ft_push_value(tmp, &envp) == 0)
-			return (1);
+			return (free(tmp), tmp = NULL, 1);
+		free(tmp);
+		tmp = NULL;
 	}
-	free(value);
-	value = NULL;
 	return (0);
 }
 

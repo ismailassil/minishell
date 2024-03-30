@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 23:12:33 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/28 23:13:18 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/30 02:57:44 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,33 @@ int	ft_handle_irregulare_cases_here_doc(t_expand *exp, char *arg,
 		return ((*i += 1), 1);
 	}
 	return (0);
+}
+
+void	ft_sig_quit(int sig)
+{
+	(void)sig;
+	rl_redisplay();
+	return ;
+}
+
+void	ft_check_dollar_sign_here_doc(char **line, int pipefd,
+	t_struct *strp, int flag)
+{
+	char	*tmp;
+
+	tmp = NULL;
+	if (ft_strchr(*line, '$') && ft_check_brackets(*line) == 1 && flag == 0)
+	{
+		ft_putstr("msh: ", pipefd);
+		ft_putstr(*line, pipefd);
+		(free(*line), *line = NULL);
+		*line = ft_strdup(": bad substitution");
+	}
+	else if (ft_strchr(*line, '$') && flag == 0)
+	{
+		tmp = ft_strdup(*line);
+		(free(*line), *line = NULL);
+		*line = ft_handle_expand_for_here_doc(strp, tmp);
+		(free(tmp), tmp = NULL);
+	}
 }

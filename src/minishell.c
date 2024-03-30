@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:06 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/29 22:16:32 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/30 02:53:09 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,14 @@ void	ft_parse_and_execute_from_shell(t_struct *strp, char *input)
 }
 
 // (ft_print_types(head), ft_print(head));
-// void leaks()
+// void	leaks()
 // {
-//     fclose(gfp);
-//     system("leaks minishell");
-//     usleep(1000 * 100 *10000);
+// 	fclose(gfp);
+// 	system("leaks minishell");
+// 	usleep(1000 * 100 *10000);
 // }
-// 	gfp = fopen("leaks.t", "w");
-// 	atexit(leaks);
+// gfp = fopen("leaks.t", "w");
+// atexit(leaks);
 
 int	main(int argc, char **argv, char **env)
 {

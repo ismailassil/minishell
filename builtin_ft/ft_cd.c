@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 15:33:58 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/29 22:14:14 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/30 02:47:12 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,10 @@ static char	*ft_check_argument(char *argument)
 
 	arg = ft_strdup(argument);
 	if (getenv("HOME") == NULL && argument == NULL)
-		return (write(2, "msh: cd: HOME not set\n", 22), NULL);
+		return (free(arg), write(2, "msh: cd: HOME not set\n", 22), NULL);
 	else if (argument == NULL || argument[0] == '\0')
 	{
+		free(arg);
 		arg = ft_strdup(getenv("HOME"));
 		if (!arg)
 			(write(2, "Error: Allocation failed\n", 25), exit(FAIL));
@@ -116,7 +117,7 @@ int	ft_cd(char *argument, t_struct **strp)
 		info.tmp = ft_strjoin_(ft_get_cwd(&(*strp)->env), "/");
 		info.buffer = ft_strjoin_(info.tmp, argument);
 		free(info.tmp);
-		(*strp)->status = 258;
+		(*strp)->status = 0;
 	}
 	ft_add_current_pwd(&(*strp)->env, info.buffer);
 	ft_add_old_pwd(&(*strp)->env, info.current_dir);

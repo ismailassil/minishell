@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/29 22:01:14 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/30 02:58:10 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,14 @@ typedef struct s_c
 	int	j;
 	int	quote;
 }		t_c;
+
+typedef struct s_info_here_doc
+{
+	char	*line;
+	char	*delimiter;
+	char	*push;
+	int		flag;
+}			t_info_here_doc;
 
 typedef struct s_cc
 {
@@ -283,7 +291,7 @@ int						ft_handle_irregulare_cases_here_doc(t_expand *exp,
 							char *arg, int *i, t_struct *strp);
 /*==========EXECUTION FUNCIONS==========*/
 int						ft_check_cont_and_cmd(t_cont *cont, \
-					t_struct *strp, t_info *info, int nr_cont);
+							t_struct *strp, t_info *info, int nr_cont);
 int						ft_here_doc(char *delimiter, t_struct *strp);
 int						ft_here_doc_parsing(t_token *lst, t_struct *strp);
 void					ft_execution(t_token **token, t_struct *strp);
@@ -328,6 +336,7 @@ void					ctrl_c(int sig);
 void					ctrl_slash(int sig);
 void					ft_disable_attr(void);
 void					ft_default_signals(void);
+void					ft_sig_quit(int sig);
 
 /*==========ENV LINKED LIST UTILS FUNCIONS==========*/
 int						ft_t_env_len(t_env *head);
@@ -343,7 +352,8 @@ void					ft_free_containers(t_cont **head);
 t_cont					*ft_new_node_for_cont(t_tmp_cont *tmp);
 int						ft_open_here_doc(t_cont *cont, t_info *info,
 							t_struct *strp);
-
+void					ft_check_dollar_sign_here_doc(char **line, int pipefd,
+							t_struct *strp, int flag);
 /*==========TOKEN LINKED LIST UTILS FUNCIONS==========*/
 int						ft_t_token_len(t_token *head);
 int						ft_push_token(char *token, t_token **head);

@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 03:21:09 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/28 20:30:00 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/30 02:57:40 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	ft_here_doc_parsing(t_token *lst, t_struct *strp)
 			if (info.id == 0)
 			{
 				ft_sig(signal(SIGINT, SIG_DFL), "msh: signal");
-				ft_sig(signal(SIGQUIT, SIG_IGN), "msh: signal");
+				ft_sig(signal(SIGQUIT, &ft_sig_quit), "msh: signal");
 				ft_get_the_line_parsing(info.del);
 				exit(SUCCESS);
 			}
@@ -78,30 +78,28 @@ int	ft_here_doc_parsing(t_token *lst, t_struct *strp)
 
 static void	ft_get_the_line(char *hold, int *pipefd, t_struct *strp)
 {
-	char	*line;
-	char	*delimiter;
-	int		flag;
+	t_info_here_doc	f;
 
-	(1) && (line = NULL, flag = 0);
+	(1) && (f.line = NULL, f.flag = 0);
 	if (ft_strchr(hold, '\'') || ft_strchr(hold, '"'))
-		flag = 1;
-	delimiter = ft_trim_quotes(hold);
+		f.flag = 1;
+	f.delimiter = ft_strdup(hold);
+	(free(hold), hold = NULL);
+	hold = ft_trim_quotes(f.delimiter);
+	(free(f.delimiter), f.delimiter = NULL);
 	rl_catch_signals = 1;
 	while (true)
 	{
-		line = readline("> ");
-		if (ft_strcmp(delimiter, line) == 0 || line == NULL)
+		f.line = readline("> ");
+		if (ft_strcmp(hold, f.line) == 0 || f.line == NULL)
 		{
-			(free(line), free(delimiter));
+			(free(f.line), free(hold));
 			break ;
 		}
-		if (ft_strchr(line, '$') && ft_check_brackets(line) == 1 && flag == 0)
-			line = ft_strdup("msh: bad substitution");
-		else if (ft_strchr(line, '$') && flag == 0)
-			line = ft_handle_expand_for_here_doc(strp, line);
-		line = ft_strjoin_(line, "\n");
-		ft_check_allocation(line);
-		(ft_putstr(line, pipefd[1]), free(line));
+		ft_check_dollar_sign_here_doc(&f.line, pipefd[1], strp, f.flag);
+		f.push = ft_strjoin_(f.line, "\n");
+		ft_check_allocation(f.push);
+		(ft_putstr(f.push, pipefd[1]), free(f.push), free(f.line));
 	}
 }
 
@@ -116,7 +114,7 @@ int	ft_here_doc(char *delimiter, t_struct *strp)
 	if (info.id == 0)
 	{
 		ft_sig(signal(SIGINT, SIG_DFL), "msh: signal");
-		ft_sig(signal(SIGQUIT, SIG_IGN), "msh: signal");
+		ft_sig(signal(SIGQUIT, &ft_sig_quit), "msh: signal");
 		ft_syscall(close(pipefd[0]), "msh: close");
 		ft_get_the_line(delimiter, pipefd, strp);
 		ft_syscall(close(pipefd[1]), "msh: close");

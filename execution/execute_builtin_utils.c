@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 21:10:11 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/29 22:18:44 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/30 02:17:03 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	execute_cd(t_cont *cont, t_struct **strp)
 {
 	int	i;
 
-	i = 0;	
+	i = 0;
 	if (cont->arg != NULL && cont->arg[0] != 0)
 	{
 		ft_cd(cont->arg[0], strp);
@@ -99,7 +99,7 @@ void	execute_export(t_cont *cont, t_struct **strp)
 
 	i = 0;
 	(*strp)->status = 0;
-	if (cont->arg != NULL || cont->arg[0] == NULL)
+	if (cont->arg == NULL || cont->arg[0] == NULL)
 	{
 		ft_export(NULL, *strp);
 		ft_add_path_executed_cmd("export", (*strp)->env);

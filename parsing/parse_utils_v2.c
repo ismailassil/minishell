@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 17:44:37 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/28 22:51:29 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/30 01:21:08 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int	ft_expand_word_after_dollar(t_expand *exp, int *i,
 	exp->expa = ft_arg_is_exist(strp->env, arg + (*i + 1));
 	s = exp->new_str;
 	exp->new_str = ft_strjoin_(exp->new_str, exp->expa);
-	free(s);
+	(free(s), free(exp->expa));
 	if (i_to_pass)
 		return ((*i) = (i_to_pass), 1);
 	return (0);

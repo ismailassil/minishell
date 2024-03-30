@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 17:43:17 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/25 17:33:55 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/29 23:55:39 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@ char	*ft_add_new_arg(t_append_export	*f)
 {
 	char	*ptr;
 
-	ptr = NULL;
-	ptr = malloc(ft_strlen(f->value) * sizeof(char));
+	ptr = malloc((ft_strlen(f->value) + 1) * sizeof(char));
 	ft_check_allocation(ptr);
 	while (f->value && f->value[f->i] != '\0')
 	{
