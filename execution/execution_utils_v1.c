@@ -6,12 +6,18 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:43:43 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/30 03:28:34 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/30 19:38:21 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+int	ft_check_ambiguous_redirect(char *str)
+{
+	if (str && str[0] == '\0')
+		return (ft_error("msh: ambiguous redirect\n"), 1);
+	return (0);
+}
 /*
 *	This function checks and open files for the infiles and here_doc
 */
@@ -23,6 +29,8 @@ static int	ft_open_infile_or_heredoc(t_cont *cont, t_info *info,
 	fd.i = -1;
 	while (cont->infile && cont->infile[++fd.i] != 0)
 	{
+		if (ft_check_ambiguous_redirect(cont->infile[fd.i]) == 1)
+			return (strp->status = 1, 1);
 		fd.infile = open(cont->infile[fd.i], O_RDONLY);
 		if (fd.infile == -1)
 			return (ft_error("msh: "), perror(cont->infile[fd.i]), \
@@ -50,13 +58,15 @@ int	ft_open_files(t_cont *cont, t_info *info, t_struct *strp)
 	fd.i = -1;
 	while (cont->outfile && cont->outfile[++fd.i] != 0)
 	{
+		if (ft_check_ambiguous_redirect(cont->outfile[fd.i]) == 1)
+			return (strp->status = 1, 1);
 		if (cont->outfile_type[fd.i] == 1)
-			fd.outfile = open(cont->outfile[fd.i], O_CREAT | O_WRONLY, 0644);
+			fd.outfile = open(cont->outfile[fd.i], NORMAL_PERM, 0644);
 		else if (cont->outfile_type[fd.i] == 2)
-			fd.outfile = open(cont->outfile[fd.i], \
-				O_CREAT | O_RDWR | O_APPEND, 0644);
+			fd.outfile = open(cont->outfile[fd.i], APPEND_PERM, 0644);
 		if (fd.outfile == -1)
-			return (ft_error("msh: ambiguous redirect\n"), strp->status = 1, 1);
+			return (ft_error("msh: "), perror(cont->outfile[fd.i]), \
+				strp->status = 1, 1);
 		if (cont->outfile && cont->outfile[fd.i + 1] != 0)
 			ft_syscall(close(fd.outfile), "msh: close");
 		else

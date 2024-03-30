@@ -6,7 +6,7 @@
 #    By: iassil <iassil@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/27 14:35:22 by iassil            #+#    #+#              #
-#    Updated: 2024/03/30 02:54:05 by iassil           ###   ########.fr        #
+#    Updated: 2024/03/30 19:51:09 by iassil           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,16 +17,13 @@ CC			+=	-fsanitize=address -fsanitize=undefined -g
 LINKER		=	-lreadline
 RM			=	rm -f
 NAME		=	minishell
-HEADER_H	=	minishell.h			lib/get_next_line/get_next_line.h
+HEADER_H	=	minishell.h
 
 SRC_FILES	=	minishell.c			signals.c				src_utils_v1.c		\
 				src_utils_v2.c
 
 UTILS_FILES =	t_env_utils.c		t_token_utils.c			t_cont_utils.c		\
 				ft_sort_list.c		t_utils.c
-
-GNL_FILES 	=	get_next_line/get_next_line.c		\
-				get_next_line/get_next_line_utils.c
 
 EXEC_FILES	=	execution.c				process_utils.c			execute_builtin.c		\
 				here_doc.c				fill_container.c		mutli_cmds.c			\
@@ -59,7 +56,6 @@ LIB_FILES	=	ft_atoi.c			ft_bzero.c				ft_calloc.c			\
 
 SRC_SRC		=	$(addprefix src/,$(SRC_FILES))
 UTILS_SRC	=	$(addprefix t_utils/,$(UTILS_FILES))
-GNL_SRC		=	$(addprefix lib/,$(GNL_FILES))
 EXEC_SRC	=	$(addprefix execution/,$(EXEC_FILES))
 PARS_SRC	=	$(addprefix parsing/,$(PARS_FILES))
 BUILT_SRC	=	$(addprefix builtin_ft/,$(BUILT_FILES))
@@ -67,13 +63,12 @@ LIB_SRC		=	$(addprefix lib/,$(LIB_FILES))
 
 SRC_OBJ		=	$(addprefix _object_files/,$(SRC_SRC:.c=.o))
 UTILS_OBJ	=	$(addprefix _object_files/,$(UTILS_SRC:.c=.o))
-GNL_OBJ		=	$(addprefix _object_files/,$(GNL_SRC:.c=.o))
 EXEC_OBJ	=	$(addprefix _object_files/,$(EXEC_SRC:.c=.o))
 PARS_OBJ	=	$(addprefix _object_files/,$(PARS_SRC:.c=.o))
 BUILT_OBJ	=	$(addprefix _object_files/,$(BUILT_SRC:.c=.o))
 LIB_OBJ		=	$(addprefix _object_files/,$(LIB_SRC:.c=.o))
 
-OBJ 		=	$(SRC_OBJ) $(EXEC_OBJ) $(GNL_OBJ) $(UTILS_OBJ)	\
+OBJ 		=	$(SRC_OBJ) $(EXEC_OBJ) $(UTILS_OBJ)	\
 				$(PARS_OBJ) $(BUILT_OBJ) $(LIB_OBJ)
 
 ########### Goal Target
@@ -112,6 +107,7 @@ $(NAME): $(OBJ)
 clean:
 	@echo "$(YELLOW)Removing Object files...$(RESET)"
 	@$(RM) $(OBJ)
+	@$(RM) -rf _object_files
 	@echo "$(GREEN)[====Object files removed successfully!====]$(RESET)"
 
 fclean: clean

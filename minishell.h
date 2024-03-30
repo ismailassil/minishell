@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/30 03:35:28 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/30 19:38:34 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,29 +25,30 @@
 # include <curses.h>
 # include <sys/fcntl.h>
 # include <sys/syslimits.h>
-# include "lib/get_next_line/get_next_line.h"
-# define SUCCESS	0
-# define FAIL		1
-# define CMD		0
-# define PIPE		1
-# define OUTFILE	2
-# define INFILE		3
-# define APPEND		4
-# define HEREDOC	5
-# define FILENAME	6
-# define ARG		7
-# define DELIMITER	8
-# define CHILD		0
-# define ALLCHILDS	-1
-# define GREEN		"\x1b[1;32m"
-# define YELLOW_	"\x1b[0;33m"
-# define YELLOW		"\x1b[1;33m"
-# define RED		"\x1b[1;31m"
-# define BLUE		"\x1b[1;34m"
-# define MAGENTA	"\x1b[1;35m"
-# define CYAN		"\x1b[1;36m"
-# define WHT		"\e[1;37m"
-# define RESET		"\x1b[0m"
+# define SUCCESS		0
+# define FAIL			1
+# define CMD			0
+# define PIPE			1
+# define OUTFILE		2
+# define INFILE			3
+# define APPEND			4
+# define HEREDOC		5
+# define FILENAME		6
+# define ARG			7
+# define DELIMITER		8
+# define CHILD			0
+# define ALLCHILDS		-1
+# define APPEND_PERM	O_CREAT | O_RDWR | O_APPEND
+# define NORMAL_PERM	O_CREAT | O_WRONLY
+# define GREEN			"\x1b[1;32m"
+# define YELLOW_		"\x1b[0;33m"
+# define YELLOW			"\x1b[1;33m"
+# define RED			"\x1b[1;31m"
+# define BLUE			"\x1b[1;34m"
+# define MAGENTA		"\x1b[1;35m"
+# define CYAN			"\x1b[1;36m"
+# define WHT			"\e[1;37m"
+# define RESET			"\x1b[0m"
 
 //////////////////////==== LEAKS FINDER ==//////////////////////
 // #include <libc.h>
