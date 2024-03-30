@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/30 02:58:10 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/30 03:35:28 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -323,6 +323,7 @@ void					execute_export(t_cont *cont, t_struct **strp);
 void					execute_unset(t_cont *cont, t_struct **strp);
 void					ft_add_cmd_or_arg_to_env(int nr_cont, t_cont *cont,
 							t_struct *strp);
+void					ft_free_before_exiting(t_struct **strp, t_cont **cont);
 /*==========UTILS FUNCIONS==========*/
 int						ft_check_if_chars_digit(int c);
 void					ft_print(t_token *lst);

@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 13:48:38 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/29 22:12:38 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/30 03:38:12 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	ft_child_process(t_cont *cont, t_struct *strp, t_info *info)
 	cmd = NULL;
 	ft_syscall(close(info->pipe[0]), "msh: close");
 	if (ft_open_files(cont, info, strp) == 1)
-		exit(FAIL);
+		(ft_free_before_exiting(&strp, &cont), exit(FAIL));
 	ft_default_signals();
 	ft_syscall(dup2(info->fd.infile, STDIN_FILENO), "msh: dup2");
 	if (info->fd.infile != 0)
@@ -52,13 +52,13 @@ static void	ft_child_process(t_cont *cont, t_struct *strp, t_info *info)
 	else
 		ft_pipe_to_next_child(info);
 	if (ft_check_commands(cont, strp, info, 0) == 1)
-		exit(strp->status);
+		(ft_free_before_exiting(&strp, &cont), exit(strp->status), free(strp));
 	ft_check_(&exec.cmd_path, cont->cmd, strp->env);
 	exec.argv = ft_join_for_argv_execve(cont);
 	exec.envp = ft_join_for_envp_execve(strp->env);
-	(ft_free_env(&strp->env), free(strp), ft_free_containers(&cont));
+	(ft_free_before_exiting(&strp, &cont), free(strp));
 	if (execve(exec.cmd_path, exec.argv, exec.envp) == -1)
-		(free(exec.argv), free(exec.envp), ft_error("msh: execve: "),
+		(free(exec.argv), free(exec.envp), ft_error("msh: execve"),
 			perror(exec.cmd_path), free(exec.cmd_path), exit(FAIL));
 }
 

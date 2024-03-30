@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execution_utils.c                                  :+:      :+:    :+:   */
+/*   execution_utils_v1.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:43:43 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/28 02:40:07 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/30 03:28:34 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,7 @@ int	ft_open_files(t_cont *cont, t_info *info, t_struct *strp)
 			fd.outfile = open(cont->outfile[fd.i], \
 				O_CREAT | O_RDWR | O_APPEND, 0644);
 		if (fd.outfile == -1)
-			return (ft_error("msh: "), perror(cont->outfile[fd.i]), \
-				strp->status = 1, 1);
+			return (ft_error("msh: ambiguous redirect\n"), strp->status = 1, 1);
 		if (cont->outfile && cont->outfile[fd.i + 1] != 0)
 			ft_syscall(close(fd.outfile), "msh: close");
 		else
@@ -134,7 +133,8 @@ int	ft_check_cont_and_cmd(t_cont *cont, \
 	}
 	if (nr_cont == 1 && ft_builtin_exist(cont) == 1)
 	{
-		ft_open_files(cont, info, strp);
+		if (ft_open_files(cont, info, strp) == 1)
+			return (1);
 		ft_check_commands(cont, strp, info, 1);
 		return (1);
 	}
