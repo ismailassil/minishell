@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 01:49:47 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/30 22:24:59 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/31 02:21:04 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	ft_return_path(char **path, char *cmd, t_struct *strp, t_cont *cont)
 {
 	ft_f(path);
 	ft_error("msh: ");
-	ft_error(cmd),
+	ft_error(cmd);
 	ft_error(": command not found\n");
 	ft_exitf(&strp, &cont);
 	free(strp);

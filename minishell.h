@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/31 01:17:18 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/31 02:14:16 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <curses.h>
 # include <sys/fcntl.h>
 # include <sys/syslimits.h>
+# include <sys/stat.h>
 # define SUCCESS		0
 # define FAIL			1
 # define CMD			0
