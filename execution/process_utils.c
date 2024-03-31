@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:42:41 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/31 19:35:31 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/31 20:15:32 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,15 +67,6 @@ static char	*ft_check_path(char *cmd, t_struct *strp, t_cont *cont)
 	if (!f.envp_path)
 		(ft_return_path(f.path, cmd, strp, cont), exit(127));
 	return (f.envp_path);
-}
-
-void	ft_stat(char *cmd, char *str, t_struct *strp, t_cont *cont)
-{
-	ft_error("msh: ");
-	ft_error(cmd);
-	ft_error(str);
-	ft_exitf(&strp, &cont);
-	free(strp);
 }
 
 void	ft_check_(char **envp_path, char *cmd, t_struct *strp, t_cont *cont)

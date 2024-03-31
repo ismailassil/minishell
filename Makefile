@@ -6,14 +6,14 @@
 #    By: iassil <iassil@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/27 14:35:22 by iassil            #+#    #+#              #
-#    Updated: 2024/03/31 01:06:10 by iassil           ###   ########.fr        #
+#    Updated: 2024/03/31 20:19:49 by iassil           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC			=	cc
 CC			+=	-Wall -Wextra -Werror
 READLINEDIR	=	$(shell brew --prefix readline)
-# CC			+=	-fsanitize=address -fsanitize=undefined -g
+CC			+=	-fsanitize=address -fsanitize=undefined -g
 LINKER		=	-lreadline
 RM			=	rm -f
 NAME		=	minishell
@@ -28,7 +28,8 @@ UTILS_FILES =	t_env_utils.c		t_token_utils.c			t_cont_utils.c		\
 EXEC_FILES	=	execution.c				process_utils.c			execute_builtin.c		\
 				here_doc.c				fill_container.c		mutli_cmds.c			\
 				free_fun.c				here_doc_utils_v1.c		here_doc_utils_v2.c		\
-				execution_utils_v1.c	execution_utils_v2.c	execute_builtin_utils.c
+				execution_utils_v1.c	execution_utils_v2.c	execution_utils_v3.c	\
+				execute_builtin_utils.c
 
 PARS_FILES	=	parsing.c			ft_tokenize.c			ft_check_syntax.c	\
 				ft_expand.c			ft_remove_quotes.c		ft_split_tokens.c	\

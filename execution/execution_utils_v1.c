@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:43:43 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/30 19:38:21 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/31 20:16:16 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	ft_check_ambiguous_redirect(char *str)
 		return (ft_error("msh: ambiguous redirect\n"), 1);
 	return (0);
 }
+
 /*
 *	This function checks and open files for the infiles and here_doc
 */
@@ -61,9 +62,9 @@ int	ft_open_files(t_cont *cont, t_info *info, t_struct *strp)
 		if (ft_check_ambiguous_redirect(cont->outfile[fd.i]) == 1)
 			return (strp->status = 1, 1);
 		if (cont->outfile_type[fd.i] == 1)
-			fd.outfile = open(cont->outfile[fd.i], NORMAL_PERM, 0644);
+			fd.outfile = open(cont->outfile[fd.i], CR | WO, 0644);
 		else if (cont->outfile_type[fd.i] == 2)
-			fd.outfile = open(cont->outfile[fd.i], APPEND_PERM, 0644);
+			fd.outfile = open(cont->outfile[fd.i], CR | WO | AP, 0644);
 		if (fd.outfile == -1)
 			return (ft_error("msh: "), perror(cont->outfile[fd.i]), \
 				strp->status = 1, 1);
@@ -114,39 +115,19 @@ int	ft_builtin_exist(t_cont *cont)
 	char	*cmd;
 
 	cmd = cont->cmd;
-	if (ft_strncmp(cmd, "echo", ft_strlen(cmd)) == 0)
+	if (ft_strncmp(cmd, "echo", 5) == 0)
 		return (1);
-	else if (ft_strncmp(cmd, "cd", ft_strlen(cmd)) == 0)
+	else if (ft_strncmp(cmd, "cd", 3) == 0)
 		return (1);
-	else if (ft_strncmp(cmd, "env", ft_strlen(cmd)) == 0)
+	else if (ft_strncmp(cmd, "env", 4) == 0)
 		return (1);
-	else if (ft_strncmp(cmd, "export", ft_strlen(cmd)) == 0)
+	else if (ft_strncmp(cmd, "export", 7) == 0)
 		return (1);
-	else if (ft_strncmp(cmd, "pwd", ft_strlen(cmd)) == 0)
+	else if (ft_strncmp(cmd, "pwd", 4) == 0)
 		return (1);
-	else if (ft_strncmp(cmd, "unset", ft_strlen(cmd)) == 0)
+	else if (ft_strncmp(cmd, "unset", 6) == 0)
 		return (1);
-	else if (ft_strncmp(cmd, "exit", ft_strlen(cmd)) == 0)
+	else if (ft_strncmp(cmd, "exit", 5) == 0)
 		return (1);
-	return (0);
-}
-
-int	ft_check_cont_and_cmd(t_cont *cont, \
-	t_struct *strp, t_info *info, int nr_cont)
-{
-	if (cont == NULL)
-		return (1);
-	if (nr_cont == 1 && cont->cmd == NULL)
-	{
-		ft_open_files(cont, info, strp);
-		return (1);
-	}
-	if (nr_cont == 1 && ft_builtin_exist(cont) == 1)
-	{
-		if (ft_open_files(cont, info, strp) == 1)
-			return (1);
-		ft_check_commands(cont, strp, info, 1);
-		return (1);
-	}
 	return (0);
 }

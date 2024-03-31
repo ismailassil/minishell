@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/31 03:27:39 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/31 20:16:01 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,9 @@
 # define DELIMITER		8
 # define CHILD			0
 # define ALLCHILDS		-1
-# define APPEND_PERM	O_CREAT | O_WRONLY | O_APPEND
-# define NORMAL_PERM	O_CREAT | O_WRONLY
+# define CR				O_CREAT
+# define WO				O_WRONLY
+# define AP				O_APPEND
 # define GREEN			"\x1b[1;32m"
 # define YELLOW_		"\x1b[0;33m"
 # define YELLOW			"\x1b[1;33m"
@@ -314,6 +315,9 @@ void					execute_unset(t_cont *cont, t_struct **strp);
 void					ft_add_cmd_or_arg_to_env(int nr_cont, t_cont *cont,
 							t_struct *strp);
 void					ft_exitf(t_struct **strp, t_cont **cont);
+void					ft_stat(char *cmd, char *str,
+							t_struct *strp, t_cont *cont);
+
 /*==========UTILS FUNCIONS==========*/
 int						ft_check_if_chars_digit(int c);
 void					ft_print(t_token *lst);

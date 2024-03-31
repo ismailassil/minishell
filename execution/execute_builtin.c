@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 16:55:35 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/29 22:12:24 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/31 19:57:27 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,19 @@
 */
 static void	ft_compare_arg(char *cmd, t_cont *cont, t_struct *strp, int *flag)
 {
-	if (ft_strncmp(cmd, "echo", ft_strlen(cmd)) == 0)
+	if (ft_strncmp(cmd, "echo", 5) == 0)
 		(1) && (execute_echo(cont, &strp), *flag = 1);
-	else if (ft_strncmp(cmd, "cd", ft_strlen(cmd)) == 0)
+	else if (ft_strncmp(cmd, "cd", 3) == 0)
 		(1) && (execute_cd(cont, &strp), *flag = 1);
-	else if (ft_strncmp(cmd, "env", ft_strlen(cmd)) == 0)
+	else if (ft_strncmp(cmd, "env", 4) == 0)
 		(1) && (execute_env(cont, &strp), *flag = 1);
-	else if (ft_strncmp(cmd, "export", ft_strlen(cmd)) == 0)
+	else if (ft_strncmp(cmd, "export", 7) == 0)
 		(1) && (execute_export(cont, &strp), *flag = 1);
-	else if (ft_strncmp(cmd, "pwd", ft_strlen(cmd)) == 0)
+	else if (ft_strncmp(cmd, "pwd", 4) == 0)
 		(1) && (ft_pwd(strp->env), *flag = 1);
-	else if (ft_strncmp(cmd, "unset", ft_strlen(cmd)) == 0)
+	else if (ft_strncmp(cmd, "unset", 6) == 0)
 		(1) && (execute_unset(cont, &strp), *flag = 1);
-	else if (ft_strncmp(cmd, "exit", ft_strlen(cmd)) == 0)
+	else if (ft_strncmp(cmd, "exit", 5) == 0)
 		(1) && (ft_exit(), *flag = 1);
 }
 

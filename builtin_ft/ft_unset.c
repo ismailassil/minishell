@@ -6,13 +6,13 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 20:34:45 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/31 01:16:16 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/31 20:18:12 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static int	ft_check_arg(char *arg)
+static int	ft_check_arg(char *arg, t_struct **strp)
 {
 	int	i;
 
@@ -23,7 +23,7 @@ static int	ft_check_arg(char *arg)
 	{
 		(ft_error("msh: unset: \'"), ft_error(arg));
 		ft_error("\': not a valid identifier\n");
-		return (1);
+		return ((*strp)->status = 1, 1);
 	}
 	while (arg && arg[i] != '\0')
 	{
@@ -31,10 +31,12 @@ static int	ft_check_arg(char *arg)
 		{
 			(ft_error("msh: unset: \'"), ft_error(arg));
 			ft_error("\': not a valid identifier\n");
-			return (1);
+			return ((*strp)->status = 1, 1);
 		}
 		i++;
 	}
+	if (arg && arg[0] == '_' && arg[1] == '\0')
+		return (1);
 	return (0);
 }
 
@@ -66,12 +68,7 @@ void	ft_unset(t_struct **strp, char *argument)
 	int		i;
 
 	(1) && (i = 0, head = (*strp)->env, previous_node = NULL);
-	if (ft_check_arg(argument) == 1)
-	{
-		(*strp)->status = 1;
-		return ;
-	}
-	if (argument[0] == '_' && argument[1] == '\0')
+	if (ft_check_arg(argument, strp) == 1)
 		return ;
 	while (head != NULL && head->value)
 	{
@@ -79,7 +76,8 @@ void	ft_unset(t_struct **strp, char *argument)
 		while (head->value[i] != '\0' && head->value[i] != '='
 			&& head->value[i] == argument[i])
 			i++;
-		if (head->value[i] != '\0' && head->value[i] == '=')
+		if ((head->value[i] != '\0' && head->value[i] == '=')
+			|| (head->value[i] == '\0' && argument[i] == '\0'))
 		{
 			ft_del_node(&head, &previous_node, strp);
 			return ;
