@@ -6,12 +6,11 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:42:41 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/31 21:03:10 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/31 22:55:13 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-#include <sys/stat.h>
 
 static char	*ft_trim_path(char **path, char *cmd)
 {
@@ -75,9 +74,9 @@ void	ft_check_(char **envp_path, char *cmd, t_struct *strp, t_cont *cont)
 
 	if (cmd && cmd[0] == '\0')
 			(ft_stat(cmd, ": command not found\n", strp, cont), exit(127));
-	if (access(cmd, F_OK) == 0 || ft_find_slash_or_point(cmd) == 1)
+	if (ft_find_slash_or_point(cmd) == 1)
 	{
-		if (stat(cmd, &file_stat) == 0)
+		if (access(cmd, F_OK) == 0 && stat(cmd, &file_stat) == 0)
 		{
 			if (S_ISREG(file_stat.st_mode))
 				*envp_path = ft_strdup(cmd);
