@@ -6,11 +6,12 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:42:41 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/31 03:40:50 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/31 19:35:31 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+#include <sys/stat.h>
 
 static char	*ft_trim_path(char **path, char *cmd)
 {
@@ -68,11 +69,13 @@ static char	*ft_check_path(char *cmd, t_struct *strp, t_cont *cont)
 	return (f.envp_path);
 }
 
-void	ft_print_error(char *cmd, char *str)
+void	ft_stat(char *cmd, char *str, t_struct *strp, t_cont *cont)
 {
 	ft_error("msh: ");
 	ft_error(cmd);
 	ft_error(str);
+	ft_exitf(&strp, &cont);
+	free(strp);
 }
 
 void	ft_check_(char **envp_path, char *cmd, t_struct *strp, t_cont *cont)
@@ -85,15 +88,11 @@ void	ft_check_(char **envp_path, char *cmd, t_struct *strp, t_cont *cont)
 		if (S_ISREG(file_stat.st_mode))
 			*envp_path = ft_strdup(cmd);
 		else if (S_ISDIR(file_stat.st_mode))
-		{
-			ft_print_error(cmd, ": is a directory\n");
-			(ft_exitf(&strp, &cont), free(strp), exit(126));
-		}
+			(ft_stat(cmd, ": is a directory\n", strp, cont), exit(126));
+		else if (S_ISLNK(file_stat.st_mode))
+			(ft_stat(cmd, ": is a symbolic link\n", strp, cont), exit(126));
 		else
-		{
-			ft_print_error(cmd, ": command not found\n");
-			(ft_exitf(&strp, &cont), free(strp), exit(127));
-		}
+			(ft_stat(cmd, ": command not found\n", strp, cont), exit(127));
 	}
 	else
 	{

@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 15:33:58 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/30 21:43:07 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/31 19:44:58 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static char	*ft_check_argument(char *argument)
 			(write(2, "Error: Allocation failed\n", 25), exit(FAIL));
 	}
 	else if (argument[0] == '~' || argument[0] == '-')
-		return (free(arg), write(2, "msh: cd: syntax not supported\n", 26),
+		return (free(arg), write(2, "msh: cd: syntax not supported\n", 30),
 			NULL);
 	return (arg);
 }
