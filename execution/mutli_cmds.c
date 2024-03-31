@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 13:48:38 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/31 02:24:16 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/31 20:30:30 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static void	ft_child_process(t_cont *cont, t_struct *strp, t_info *info)
 	exec.envp = ft_join_for_envp_execve(strp->env);
 	(ft_exitf(&strp, &cont), free(strp));
 	if (execve(exec.cmd_path, exec.argv, exec.envp) == -1)
-		(free(exec.argv), free(exec.envp), ft_error("msh: execve: "),
+		(free(exec.argv), free(exec.envp), ft_error("msh: "),
 			perror(exec.cmd_path), free(exec.cmd_path), exit(FAIL));
 }
 

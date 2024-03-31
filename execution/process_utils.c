@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:42:41 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/31 20:15:32 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/31 21:03:10 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,17 +73,21 @@ void	ft_check_(char **envp_path, char *cmd, t_struct *strp, t_cont *cont)
 {
 	struct stat	file_stat;
 
-	if (access(cmd, F_OK | X_OK) == 0)
-	{
-		ft_syscall(stat(cmd, &file_stat), "stat");
-		if (S_ISREG(file_stat.st_mode))
-			*envp_path = ft_strdup(cmd);
-		else if (S_ISDIR(file_stat.st_mode))
-			(ft_stat(cmd, ": is a directory\n", strp, cont), exit(126));
-		else if (S_ISLNK(file_stat.st_mode))
-			(ft_stat(cmd, ": is a symbolic link\n", strp, cont), exit(126));
-		else
+	if (cmd && cmd[0] == '\0')
 			(ft_stat(cmd, ": command not found\n", strp, cont), exit(127));
+	if (access(cmd, F_OK) == 0 || ft_find_slash_or_point(cmd) == 1)
+	{
+		if (stat(cmd, &file_stat) == 0)
+		{
+			if (S_ISREG(file_stat.st_mode))
+				*envp_path = ft_strdup(cmd);
+			else if (S_ISDIR(file_stat.st_mode))
+				(ft_stat(cmd, ": is a directory\n", strp, cont), exit(126));
+			else
+				(ft_stat(cmd, ": command not found\n", strp, cont), exit(127));
+		}
+		else
+			(ft_stat(cmd, ": No such file or directory\n", strp, cont), exit(127));
 	}
 	else
 	{

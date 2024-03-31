@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/31 20:16:01 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/31 21:01:46 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -317,6 +317,7 @@ void					ft_add_cmd_or_arg_to_env(int nr_cont, t_cont *cont,
 void					ft_exitf(t_struct **strp, t_cont **cont);
 void					ft_stat(char *cmd, char *str,
 							t_struct *strp, t_cont *cont);
+int						ft_find_slash_or_point(char *cmd);
 
 /*==========UTILS FUNCIONS==========*/
 int						ft_check_if_chars_digit(int c);
