@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:06 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/31 01:17:49 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/31 01:53:55 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,5 @@ int	main(int argc, char **argv, char **env)
 		if (ft_strlen(line) > 0)
 			add_history(line);
 		ft_parse_and_execute_from_shell(strp, &line);
-		printf(BLUE"[status ($?) = %d]\n"RESET, strp->status);
 	}
 }
