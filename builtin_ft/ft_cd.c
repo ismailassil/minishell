@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 15:33:58 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/30 02:47:12 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/30 21:43:07 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ static char	*ft_check_argument(char *argument)
 			(write(2, "Error: Allocation failed\n", 25), exit(FAIL));
 	}
 	else if (argument[0] == '~' || argument[0] == '-')
-		return (write(2, "msh: cd: syntax not supported\n", 26), NULL);
+		return (free(arg), write(2, "msh: cd: syntax not supported\n", 26),
+			NULL);
 	return (arg);
 }
 
@@ -114,13 +115,13 @@ int	ft_cd(char *argument, t_struct **strp)
 	else
 	{
 		(ft_error("msh: cd: "), perror(argument));
-		info.tmp = ft_strjoin_(ft_get_cwd(&(*strp)->env), "/");
+		info.cwd = ft_get_cwd(&(*strp)->env);
+		info.tmp = ft_strjoin_(info.cwd, "/");
 		info.buffer = ft_strjoin_(info.tmp, argument);
-		free(info.tmp);
+		(free(info.tmp), free(info.cwd));
 		(*strp)->status = 0;
 	}
 	ft_add_current_pwd(&(*strp)->env, info.buffer);
 	ft_add_old_pwd(&(*strp)->env, info.current_dir);
-	(free(info.buffer), free(info.dir));
-	return (0);
+	return (free(info.buffer), free(info.dir), 0);
 }

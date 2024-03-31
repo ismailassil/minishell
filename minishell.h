@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/30 19:38:34 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/31 01:17:18 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,30 +49,6 @@
 # define CYAN			"\x1b[1;36m"
 # define WHT			"\e[1;37m"
 # define RESET			"\x1b[0m"
-
-//////////////////////==== LEAKS FINDER ==//////////////////////
-// #include <libc.h>
-// FILE	*gfp;
-// static void *__malloc(size_t size, int line, const char *file)
-// {
-// 	void	*ptr;
-// 	ptr = malloc(size);
-// 	fprintf(gfp, "dct[%p] = ['malloc', '%p', %i, '%s']\n", 
-// 		ptr, ptr, line, file);
-// 	fflush(gfp);
-// 	return (ptr);
-// }
-
-// static void	__free(void *ptr, int line, const char *file)
-// {
-// 	fprintf(gfp, "dct[%p] = ['free', '%p', %i, '%s']\n",
-// 		ptr, ptr, line, file);
-// 	fflush(gfp);
-// 	free(ptr);
-// }
-// #define malloc(x) __malloc(x, __LINE__, __FILE__)
-// #define free(x) __free(x, __LINE__, __FILE__)
-////////////////////////////////////////////////////////////////
 
 typedef struct s_start_end
 {
@@ -126,6 +102,7 @@ typedef struct s_info_cd
 	char	buf[PATH_MAX];
 	char	*buffer;
 	char	*tmp;
+	char	*cwd;
 	char	*dir;
 }			t_info_cd;
 
@@ -140,6 +117,14 @@ typedef struct s_struct
 	int		status;
 	t_env	*env;
 }			t_struct;
+
+typedef struct s_path
+{
+	char	**path;
+	t_env	*head;
+	char	*envp_path;
+	char	*return_path;
+}			t_path;
 
 typedef struct s_tokens
 {
@@ -302,7 +287,8 @@ int						ft_check_commands(t_cont *cont, t_struct *strp,
 							t_info *info, int j);
 char					**ft_join_for_envp_execve(t_env *env);
 char					**ft_join_for_argv_execve(t_cont *cont);
-void					ft_check_(char **envp_path, char *cmd, t_env *env);
+void					ft_check_(char **envp_path, char *cmd,
+							t_struct *strp, t_cont *cont);
 void					ft_check_allocation(void *str);
 void					ft_syscall(int return_, char *str);
 void					ft_sig(void *return_, char *str);
@@ -310,6 +296,8 @@ void					ft_f(char **str);
 int						ft_open_files(t_cont *cont, t_info *info,
 							t_struct *strp);
 void					ft_add_path_executed_cmd(char *str, t_env *env);
+void					ft_return_path(char **path, char *cmd,
+							t_struct *strp, t_cont *cont);
 //					CONTAINER FUNCTIONS
 void					ft_link_all_in_containers(t_token *head,
 							t_cont **container);
@@ -324,7 +312,7 @@ void					execute_export(t_cont *cont, t_struct **strp);
 void					execute_unset(t_cont *cont, t_struct **strp);
 void					ft_add_cmd_or_arg_to_env(int nr_cont, t_cont *cont,
 							t_struct *strp);
-void					ft_free_before_exiting(t_struct **strp, t_cont **cont);
+void					ft_exitf(t_struct **strp, t_cont **cont);
 /*==========UTILS FUNCIONS==========*/
 int						ft_check_if_chars_digit(int c);
 void					ft_print(t_token *lst);

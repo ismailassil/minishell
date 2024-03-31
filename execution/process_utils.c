@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:42:41 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/29 02:07:13 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/30 22:54:03 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,44 +41,42 @@ static char	*ft_trim_path(char **path, char *cmd)
 	return (NULL);
 }
 
-static char	*ft_check_path(char *cmd, t_env *env)
+static char	*ft_check_path(char *cmd, t_struct *strp, t_cont *cont)
 {
-	char	**path;
-	char	*envp_path;
-	char	*return_path;
+	t_path	f;
 
-	while (env != NULL)
+	f.head = strp->env;
+	while (f.head != NULL)
 	{
-		envp_path = ft_strnstr(env->value, "PATH=", 5);
-		env = env->next;
-		if (envp_path != NULL)
+		f.envp_path = ft_strnstr(f.head->value, "PATH=", 5);
+		f.head = f.head->next;
+		if (f.envp_path != NULL)
 			break ;
 	}
-	if (envp_path == NULL)
-		(perror("path"), exit(FAIL));
-	return_path = ft_strtrim(envp_path, "PATH=");
-	if (return_path == NULL)
-		(exit(FAIL));
-	path = ft_split(return_path, ':');
-	if (path == NULL)
-		(ft_f(path), exit(FAIL));
-	(free(return_path), return_path = NULL);
-	envp_path = ft_trim_path(path, cmd);
-	if (!envp_path)
-		(ft_f(path), ft_error("msh: "), ft_error(cmd),
-			ft_error(": command not found\n"), exit(127));
-	return (envp_path);
+	if (f.envp_path == NULL)
+		(perror("path"), ft_exitf(&strp, &cont), free(strp), exit(FAIL));
+	f.return_path = ft_strtrim(f.envp_path, "PATH=");
+	if (f.return_path == NULL)
+		(ft_exitf(&strp, &cont), free(strp), exit(FAIL));
+	f.path = ft_split(f.return_path, ':');
+	if (f.path == NULL)
+		(ft_f(f.path), ft_exitf(&strp, &cont), free(strp), exit(FAIL));
+	(free(f.return_path), f.return_path = NULL);
+	f.envp_path = ft_trim_path(f.path, cmd);
+	if (!f.envp_path)
+		(ft_return_path(f.path, cmd, strp, cont), exit(127));
+	return (f.envp_path);
 }
 
-void	ft_check_(char **envp_path, char *cmd, t_env *env)
+void	ft_check_(char **envp_path, char *cmd, t_struct *strp, t_cont *cont)
 {
 	if (access(cmd, F_OK | X_OK) == 0)
 		*envp_path = ft_strdup(cmd);
 	else
 	{
-		*envp_path = ft_check_path(cmd, env);
+		*envp_path = ft_check_path(cmd, strp, cont);
 		if (*envp_path == NULL)
-			exit(FAIL);
+			(ft_exitf(&strp, &cont), free(strp), exit(FAIL));
 	}
 }
 

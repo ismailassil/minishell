@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 19:41:44 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/29 02:54:12 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/31 00:19:44 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,17 @@ static t_env	*ft_create_new_env(void)
 		return (NULL);
 	tmp = ft_strjoin("PWD=", getcwd(pwd, sizeof(pwd)));
 	if (!tmp)
-		(write(2, "Error: Allocation failed\n", 19), exit(FAIL));
+		(write(2, "Error: Allocation failed\n", 25), exit(FAIL));
 	if (ft_push_value(tmp, &envp) == 0)
 		return (NULL);
 	(free(tmp), tmp = NULL);
 	return (envp);
 }
 
+/*
+*	This function transform the envir that comes with the process
+*	to a linked list if they exist and do not exist
+*/
 t_struct	*ft_get_struct_and_env(char **env)
 {
 	t_struct	*strp;

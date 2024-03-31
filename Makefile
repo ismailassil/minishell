@@ -6,14 +6,14 @@
 #    By: iassil <iassil@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/27 14:35:22 by iassil            #+#    #+#              #
-#    Updated: 2024/03/30 19:51:09 by iassil           ###   ########.fr        #
+#    Updated: 2024/03/31 01:06:10 by iassil           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC			=	cc
 CC			+=	-Wall -Wextra -Werror
 READLINEDIR	=	$(shell brew --prefix readline)
-CC			+=	-fsanitize=address -fsanitize=undefined -g
+# CC			+=	-fsanitize=address -fsanitize=undefined -g
 LINKER		=	-lreadline
 RM			=	rm -f
 NAME		=	minishell

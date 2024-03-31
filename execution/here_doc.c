@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 03:21:09 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/30 02:57:40 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/31 00:30:14 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int	ft_here_doc_parsing(t_token *lst, t_struct *strp)
 			{
 				ft_sig(signal(SIGINT, SIG_DFL), "msh: signal");
 				ft_sig(signal(SIGQUIT, &ft_sig_quit), "msh: signal");
+				ft_free_env(&strp->env);
 				ft_get_the_line_parsing(info.del);
 				exit(SUCCESS);
 			}

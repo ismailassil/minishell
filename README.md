@@ -9,7 +9,7 @@ Minishell is a project developed as part of the curriculum at 1337School. The ai
 - **Redirections**: It can handle input/output redirections using `<`, `>`, `>>` and `<<` operators.
 - **Pipelines**: Minishell supports command pipelines using the `|` operator.
 - **Environment Variables**: It manages environment variables like `PATH` and supports expansion of variables.
-- **Signals Handling**: Proper handling of signals like `Ctrl+C` and `Ctrl+\`.
+- **Signals Handling**: Proper handling of signals like `Ctrl+C`, `Ctrl+D` and `Ctrl+\`.
 - **Error Handling**: Minishell provides informative error messages for various scenarios to aid in debugging.
 - **Quoting**: Properly handles quoting and escaping characters in commands.
 

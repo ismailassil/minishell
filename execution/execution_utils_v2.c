@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 01:49:47 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/30 03:37:22 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/30 22:24:59 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,18 @@ void	ft_add_cmd_or_arg_to_env(int nr_cont, t_cont *cont, t_struct *strp)
 		ft_delete_node(&strp->env);
 }
 
-void	ft_free_before_exiting(t_struct **strp, t_cont **cont)
+void	ft_exitf(t_struct **strp, t_cont **cont)
 {
 	ft_free_env(&(*strp)->env);
 	ft_free_containers(cont);
+}
+
+void	ft_return_path(char **path, char *cmd, t_struct *strp, t_cont *cont)
+{
+	ft_f(path);
+	ft_error("msh: ");
+	ft_error(cmd),
+	ft_error(": command not found\n");
+	ft_exitf(&strp, &cont);
+	free(strp);
 }
