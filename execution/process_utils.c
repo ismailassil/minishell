@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:42:41 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/31 02:23:17 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/31 03:40:50 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,29 +68,38 @@ static char	*ft_check_path(char *cmd, t_struct *strp, t_cont *cont)
 	return (f.envp_path);
 }
 
+void	ft_print_error(char *cmd, char *str)
+{
+	ft_error("msh: ");
+	ft_error(cmd);
+	ft_error(str);
+}
+
 void	ft_check_(char **envp_path, char *cmd, t_struct *strp, t_cont *cont)
 {
 	struct stat	file_stat;
 
-	if (stat(cmd, &file_stat) == 0)
+	if (access(cmd, F_OK | X_OK) == 0)
 	{
+		ft_syscall(stat(cmd, &file_stat), "stat");
 		if (S_ISREG(file_stat.st_mode))
+			*envp_path = ft_strdup(cmd);
+		else if (S_ISDIR(file_stat.st_mode))
 		{
-			if (access(cmd, F_OK | X_OK) == 0)
-				*envp_path = ft_strdup(cmd);
-			else
-			{
-				*envp_path = ft_check_path(cmd, strp, cont);
-				if (*envp_path == NULL)
-					(ft_exitf(&strp, &cont), free(strp), exit(FAIL));
-			}
+			ft_print_error(cmd, ": is a directory\n");
+			(ft_exitf(&strp, &cont), free(strp), exit(126));
 		}
 		else
 		{
-			ft_error("msh: ");
-			(ft_error(cmd), ft_error(": command not found\n"));
+			ft_print_error(cmd, ": command not found\n");
 			(ft_exitf(&strp, &cont), free(strp), exit(127));
 		}
+	}
+	else
+	{
+		*envp_path = ft_check_path(cmd, strp, cont);
+		if (*envp_path == NULL)
+			(ft_exitf(&strp, &cont), free(strp), exit(FAIL));
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/31 02:14:16 by iassil           ###   ########.fr       */
+/*   Updated: 2024/03/31 03:27:39 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@
 # define DELIMITER		8
 # define CHILD			0
 # define ALLCHILDS		-1
-# define APPEND_PERM	O_CREAT | O_RDWR | O_APPEND
+# define APPEND_PERM	O_CREAT | O_WRONLY | O_APPEND
 # define NORMAL_PERM	O_CREAT | O_WRONLY
 # define GREEN			"\x1b[1;32m"
 # define YELLOW_		"\x1b[0;33m"
