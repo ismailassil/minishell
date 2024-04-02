@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:47:07 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/30 01:07:46 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/02 16:56:28 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static bool	ft_check_if_exists(char *arg, t_env *envp)
 	return (false);
 }
 
-static char	*ft_append_value(char *arg, char *old_arg, int flag)
+static char	*ft_append_value(char *arg, char **old_arg, int flag)
 {
 	t_append_export	f;
 
@@ -43,7 +43,17 @@ static char	*ft_append_value(char *arg, char *old_arg, int flag)
 			f.i++;
 		if (f.value[f.i] == '=')
 			f.i++;
-		f.ptr = ft_strjoin(old_arg, f.value + f.i);
+		if (!ft_strchr(*old_arg, '=')
+			&& *old_arg[ft_strlen(*old_arg) - 1] != '=')
+		{
+			f.tmp1 = ft_strjoin(*old_arg, "=");
+			ft_check_allocation(f.tmp1);
+			free(*old_arg);
+			*old_arg = ft_strdup(f.tmp1);
+			ft_check_allocation(*old_arg);
+			free(f.tmp1);
+		}
+		f.ptr = ft_strjoin(*old_arg, f.value + f.i);
 		ft_check_allocation(f.ptr);
 	}
 	return (f.ptr);
@@ -66,7 +76,7 @@ static int	ft_add_already_exits(char *arg, t_env *envp)
 			if (!ft_strchr(arg, '+'))
 				tmp = ft_strdup(arg);
 			else
-				tmp = ft_append_value(arg, head->value, 0);
+				tmp = ft_append_value(arg, &head->value, 0);
 			(1) && (free(head->value), head->value = NULL);
 			if (!tmp)
 				return (0);

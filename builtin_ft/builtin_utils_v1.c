@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 12:27:22 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/01 21:55:25 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/02 16:40:41 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,8 @@ bool	ft_check_syntax_export(char *arg)
 	while (arg && arg[i] != '\0' && arg[i] != '=')
 	{
 		if ((ft_isalnum(arg[i]) == 0 && arg[i] != '_' && arg[i] != '+')
-			|| (arg[i] == '+' && arg[i + 1] != '\0' && arg[i + 1] != '='))
+			|| (arg[i] == '+' && arg[i + 1] != '\0' && arg[i + 1] != '=')
+			|| (arg[i] == '+' && arg[i + 1] == '\0'))
 		{
 			(ft_error("msh: export: \'"), ft_error(arg));
 			ft_error("\': not a valid identifier\n");

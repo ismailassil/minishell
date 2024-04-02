@@ -6,7 +6,7 @@
 #    By: iassil <iassil@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/27 14:35:22 by iassil            #+#    #+#              #
-#    Updated: 2024/04/02 02:20:23 by iassil           ###   ########.fr        #
+#    Updated: 2024/04/02 17:30:09 by iassil           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -75,52 +75,32 @@ OBJ 		=	$(SRC_OBJ) $(EXEC_OBJ) $(UTILS_OBJ)	\
 ########### Goal Target
 all: $(NAME)
 
-########### Built Functions
-_object_files/builtin_ft/%.o: builtin_ft/%.c $(HEADER_H)
-	@mkdir -p $(dir $@)
-	@$(CC) -c $< -o $@ -I$(READLINEDIR)/include
-
-_object_files/execution/%.o: execution/%.c $(HEADER_H)
-	@mkdir -p $(dir $@)
-	@$(CC) -c $< -o $@ -I$(READLINEDIR)/include
-
-_object_files/lib/%.o: lib/%.c $(HEADER_H)
-	@mkdir -p $(dir $@)
-	@$(CC) -c $< -o $@ -I$(READLINEDIR)/include
-
-_object_files/parsing/%.o: parsing/%.c $(HEADER_H)
-	@mkdir -p $(dir $@)
-	@$(CC) -c $< -o $@ -I$(READLINEDIR)/include
-
-_object_files/t_utils/%.o: t_utils/%.c $(HEADER_H)
-	@mkdir -p $(dir $@)
-	@$(CC) -c $< -o $@ -I$(READLINEDIR)/include
-
-_object_files/src/%.o: src/%.c $(HEADER_H)
+# Define a pattern rule for compiling object files
+_object_files/%.o: %.c $(HEADER_H)
 	@mkdir -p $(dir $@)
 	@$(CC) -c $< -o $@ -I$(READLINEDIR)/include
 
 $(NAME): $(OBJ)
-	@echo "$(YELLOW)Compilation of the Objects files...$(RESET)"
+	@echo "$(YELLOW)[ ~ ] Compilation of the Objects files...$(RESET)"
 	@$(CC) $(LINKER) $^ -o $@ -L$(READLINEDIR)/lib
-	@echo "$(GREEN)[====Executable file Compiled Successfully!====]$(RESET)"
+	@echo "$(GREEN)[ ✓ ] Executable file Compiled Successfully!$(RESET)"
 
 clean:
-	@echo "$(YELLOW)Removing Object files...$(RESET)"
+	@echo "$(YELLOW)[ ~ ] Removing Object files $(RESET)"
 	@$(RM) $(OBJ)
 	@$(RM) -rf _object_files
-	@echo "$(GREEN)[====Object files removed successfully!====]$(RESET)"
-
+	@echo "$(GREEN)[ ✓ ] Object files removed successfully!$(RESET)"
+	
 fclean: clean
-	@echo "$(YELLOW)Removing Executable...$(RESET)"
+	@echo "$(YELLOW)[ ~ ] Removing Executable...$(RESET)"
 	@$(RM) $(NAME)
-	@echo "$(GREEN)[====Executable files removed successfully!====]$(RESET)"
+	@echo "$(GREEN)[ ✓ ] Executable files removed successfully!$(RESET)"
 
 re: fclean all
 
 .PHONY: all fclean clean re
 
 ########## DFine ANSI escape codes for colors
-GREEN=	\033[32m
-YELLOW=	\033[0;33m
+GREEN=	\033[1;32m
+YELLOW=	\033[33m
 RESET=	\033[0m		# No Color
