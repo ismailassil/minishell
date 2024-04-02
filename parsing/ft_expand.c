@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 10:36:20 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/02 01:38:31 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/02 01:58:29 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,10 +110,13 @@ void	ft_expand_argument(t_struct *strp, t_token **linked_list)
 	(1) && (f.head = *linked_list, f.tmp = NULL, f.previous = NULL);
 	while (f.head != NULL)
 	{
-		if (f.head->type == CMD && ft_strncmp(f.head->token, "export", 5) == 0)
-			f.type = 1;
-		else
-			f.type = 0;
+		if (f.head->type == CMD)
+		{
+			if (ft_strncmp(f.head->token, "export", 5) == 0)
+				f.type = 1;
+			else
+				f.type = 0;
+		}
 		if (ft_strchr(f.head->token, '$') && f.head->type != DELIMITER)
 		{
 			f.tmp = ft_handle_expand(strp, f.head->token);
