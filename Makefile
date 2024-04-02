@@ -6,7 +6,7 @@
 #    By: iassil <iassil@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/27 14:35:22 by iassil            #+#    #+#              #
-#    Updated: 2024/04/02 00:09:06 by iassil           ###   ########.fr        #
+#    Updated: 2024/04/02 02:20:23 by iassil           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,11 +25,11 @@ SRC_FILES	=	minishell.c			signals.c				src_utils_v1.c		\
 UTILS_FILES =	t_env_utils.c		t_token_utils.c			t_cont_utils.c		\
 				ft_sort_list.c		t_utils.c
 
-EXEC_FILES	=	execution.c				process_utils.c			execute_builtin.c		\
+EXEC_FILES	=	execution.c				process_utils_v1.c		execute_builtin.c		\
 				here_doc.c				fill_container.c		mutli_cmds.c			\
 				free_fun.c				here_doc_utils_v1.c		here_doc_utils_v2.c		\
 				execution_utils_v1.c	execution_utils_v2.c	execution_utils_v3.c	\
-				execute_builtin_utils.c
+				execute_builtin_utils.c	process_utils_v2.c
 
 PARS_FILES	=	parsing.c			ft_tokenize.c			ft_check_syntax.c	\
 				ft_expand.c			ft_remove_quotes.c		ft_split_tokens.c	\
