@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 10:36:20 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/28 02:34:37 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/02 00:19:49 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,19 +105,21 @@ char	*ft_handle_expand(t_struct *strp, char *arg)
 */
 void	ft_expand_argument(t_struct *strp, t_token **linked_list)
 {
-	t_token	*head;
-	char	*tmp;
+	t_expand_arg	f;
 
-	(1) && (head = *linked_list, tmp = NULL);
-	while (head != NULL)
+	(1) && (f.head = *linked_list, f.tmp = NULL, f.previous = NULL);
+	while (f.head != NULL)
 	{
-		if (ft_strchr(head->token, '$') && head->type != DELIMITER)
+		if (ft_strchr(f.head->token, '$') && f.head->type != DELIMITER)
 		{
-			tmp = ft_handle_expand(strp, head->token);
-			free(head->token);
-			head->token = NULL;
-			head->token = tmp;
+			f.tmp = ft_handle_expand(strp, f.head->token);
+			free(f.head->token);
+			f.head->token = f.tmp;
+			if (ft_check_after_expand(&f.head) == 1)
+				ft_split_node(&f, linked_list);
 		}
-		head = head->next;
+		f.previous = f.head;
+		if (f.head)
+			f.head = f.head->next;
 	}
 }

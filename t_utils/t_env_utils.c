@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 19:19:08 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/25 21:21:40 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/01 18:37:06 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,14 @@ int	ft_t_env_len(t_env *head)
 	return (i);
 }
 
-static t_env	*ft_last_node(t_env *top)
+static t_env	*ft_last_node_env(t_env *top)
 {
 	while (top->next)
 		top = top->next;
 	return (top);
 }
 
-static t_env	*ft_new_node(char *value)
+static t_env	*ft_new_node_env(char *value)
 {
 	t_env	*new;
 
@@ -50,14 +50,14 @@ int	ft_push_value(char *value, t_env **head)
 	t_env	*newnode;
 	t_env	*last;
 
-	newnode = ft_new_node(value);
+	newnode = ft_new_node_env(value);
 	if (!newnode)
 		return (0);
 	if (!head || !(*head))
 		*head = newnode;
 	else
 	{
-		last = ft_last_node(*head);
+		last = ft_last_node_env(*head);
 		last->next = newnode;
 	}
 	return (1);

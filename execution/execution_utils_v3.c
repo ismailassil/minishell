@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 20:15:13 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/31 21:01:21 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/01 00:54:41 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	ft_check_cont_and_cmd(t_cont *cont, \
 
 int	ft_find_slash_or_point(char *cmd)
 {
-	int	i;
+	int		i;
 
 	i = 0;
 	if (cmd && cmd[0] == '.')

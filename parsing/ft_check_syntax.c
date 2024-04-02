@@ -6,14 +6,14 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 14:55:19 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/28 02:41:40 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/02 00:21:13 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 //	Utils function for the 'ft_check_syntax()' function
-static int	ft_check_rest(t_token *head);
+static int	ft_check_rest_syntax(t_token *head);
 
 /*
 *	This function checks the syntax of the line passed in the command line
@@ -32,7 +32,7 @@ bool	ft_check_syntax(t_token *str)
 			return (false);
 		else
 		{
-			if (ft_check_rest(head) == 1)
+			if (ft_check_rest_syntax(head) == 1)
 				return (false);
 		}
 		head = head->next;
@@ -113,7 +113,7 @@ int	ft_check_quotes(char *str)
 	return (ft_error("msh: syntax error\n"), 0);
 }
 
-static int	ft_check_rest(t_token *head)
+static int	ft_check_rest_syntax(t_token *head)
 {
 	if (head->next != NULL
 		&& (head->type == INFILE || head->type == OUTFILE

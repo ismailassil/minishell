@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:06 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/31 19:51:27 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/02 00:29:01 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	ft_parse_and_execute_from_shell(t_struct *strp, char **input)
 int	main(int argc, char **argv, char **env)
 {
 	char		*line;
+	int			status;
 	t_struct	*strp;
 
 	strp = NULL;
@@ -59,10 +60,11 @@ int	main(int argc, char **argv, char **env)
 		line = readline(YELLOW_"minishell$ "RESET);
 		if (line == NULL)
 		{
-			if (line == NULL)
-				write(1, "exit\n", 5);
-			(ft_free_env(&strp->env), free(strp));
-			ft_exit();
+			ft_free_env(&strp->env);
+			status = strp->status;
+			free(strp);
+			write(2, "exit\n", 5);
+			exit(status);
 		}
 		if (ft_strlen(line) > 0)
 			add_history(line);

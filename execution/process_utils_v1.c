@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   process_utils.c                                    :+:      :+:    :+:   */
+/*   process_utils_v1.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:42:41 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/31 22:55:13 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/02 00:47:18 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,24 +70,11 @@ static char	*ft_check_path(char *cmd, t_struct *strp, t_cont *cont)
 
 void	ft_check_(char **envp_path, char *cmd, t_struct *strp, t_cont *cont)
 {
-	struct stat	file_stat;
-
-	if (cmd && cmd[0] == '\0')
-			(ft_stat(cmd, ": command not found\n", strp, cont), exit(127));
+	if (cmd && (cmd[0] == '\0'
+			|| (cmd[0] == '.' && (cmd[1] == '\0' || cmd[1] == '.'))))
+		(ft_stat(cmd, ": command not found\n", strp, cont), exit(127));
 	if (ft_find_slash_or_point(cmd) == 1)
-	{
-		if (access(cmd, F_OK) == 0 && stat(cmd, &file_stat) == 0)
-		{
-			if (S_ISREG(file_stat.st_mode))
-				*envp_path = ft_strdup(cmd);
-			else if (S_ISDIR(file_stat.st_mode))
-				(ft_stat(cmd, ": is a directory\n", strp, cont), exit(126));
-			else
-				(ft_stat(cmd, ": command not found\n", strp, cont), exit(127));
-		}
-		else
-			(ft_stat(cmd, ": No such file or directory\n", strp, cont), exit(127));
-	}
+		ft_check_path_cmd(envp_path, cmd, strp, cont);
 	else
 	{
 		*envp_path = ft_check_path(cmd, strp, cont);

@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 19:25:31 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/24 20:55:44 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/01 18:37:17 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	ft_t_cont_len(t_cont *head)
 	return (i);
 }
 
-static t_cont	*ft_last_node(t_cont *top)
+static t_cont	*ft_last_node_cont(t_cont *top)
 {
 	while (top->next != NULL)
 		top = top->next;
@@ -44,7 +44,7 @@ int	ft_push_container(t_tmp_cont *tmp, t_cont **head)
 		*head = newnode;
 	else
 	{
-		last = ft_last_node(*head);
+		last = ft_last_node_cont(*head);
 		last->next = newnode;
 	}
 	return (1);

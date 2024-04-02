@@ -6,7 +6,7 @@
 #    By: iassil <iassil@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/27 14:35:22 by iassil            #+#    #+#              #
-#    Updated: 2024/03/31 20:19:49 by iassil           ###   ########.fr        #
+#    Updated: 2024/04/02 00:09:06 by iassil           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ EXEC_FILES	=	execution.c				process_utils.c			execute_builtin.c		\
 
 PARS_FILES	=	parsing.c			ft_tokenize.c			ft_check_syntax.c	\
 				ft_expand.c			ft_remove_quotes.c		ft_split_tokens.c	\
-				parse_utils_v1.c	parse_utils_v2.c
+				parse_utils_v1.c	parse_utils_v2.c		ft_expand_utils.c
 
 BUILT_FILES	=	ft_echo.c			ft_env.c				ft_pwd.c			\
 				ft_exit.c			ft_export.c				ft_unset.c			\
@@ -53,7 +53,7 @@ LIB_FILES	=	ft_atoi.c			ft_bzero.c				ft_calloc.c			\
 				ft_lstnew.c			ft_lstadd_front.c		ft_lstsize.c		\
 				ft_lstlast.c		ft_lstadd_back.c		ft_lstdelone.c		\
 				ft_lstclear.c		ft_lstiter.c			ft_lstmap.c			\
-				ft_split.c
+				ft_split.c			ft_split_v2.c
 
 SRC_SRC		=	$(addprefix src/,$(SRC_FILES))
 UTILS_SRC	=	$(addprefix t_utils/,$(UTILS_FILES))

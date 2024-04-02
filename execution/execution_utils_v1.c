@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:43:43 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/31 20:16:16 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/02 00:05:55 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,24 @@
 
 int	ft_check_ambiguous_redirect(char *str)
 {
+	int	i;
+
+	i = 0;
 	if (str && str[0] == '\0')
 		return (ft_error("msh: ambiguous redirect\n"), 1);
+	while (str[i] != '\0')
+	{
+		if (ft_strchr(" \t\n\v\f\r", str[i]) && !ft_strchr(" \t\n\v\f\r", str[i + 1]))
+			return (ft_error("msh: ambiguous redirect\n"), 1);
+		i++;
+	}
+	i = 0;
+	while (str[i] != '\0')
+	{
+		if (ft_strchr(" \t\n\v\f\r", str[i]))
+			return (str[i] = '\0', 0);
+		i++;
+	}
 	return (0);
 }
 
