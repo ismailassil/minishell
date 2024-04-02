@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 00:08:18 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/02 00:19:56 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/02 01:36:36 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int	ft_check_after_expand(t_token **current)
 
 void	ft_split_node(t_expand_arg *f, t_token **linked_list)
 {
-	if (f->previous && ft_strncmp(f->previous->token, "export", 5) == 0)
+	if (f->type == 1)
 		;
 	else
 	{

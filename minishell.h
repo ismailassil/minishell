@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/02 00:46:42 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/02 01:35:17 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,6 +234,7 @@ typedef struct s_expand_arg
 	t_token	*previous;
 	t_token	*newlist;
 	char	*tmp;
+	int		type;
 }			t_expand_arg;
 
 /*=====Global Variable for Signal=====*/
