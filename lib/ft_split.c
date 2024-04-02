@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 15:35:39 by iassil            #+#    #+#             */
-/*   Updated: 2024/02/27 16:20:34 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/02 00:54:20 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ static char	**ft_split_words(char **big_ptr, char const *str, char c)
 	while (str[i] != '\0')
 	{
 		index = 0;
-		while (str[i] == c)
+		while (str && str[i] == c)
 			i++;
-		while (str[i] != c && str[i] != '\0')
+		while (str && str[i] != c && str[i] != '\0')
 		{
 			index++;
 			i++;
