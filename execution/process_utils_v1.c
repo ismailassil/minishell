@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:42:41 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/02 00:47:18 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/03 00:33:49 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,16 @@ void	ft_check_(char **envp_path, char *cmd, t_struct *strp, t_cont *cont)
 {
 	if (cmd && (cmd[0] == '\0'
 			|| (cmd[0] == '.' && (cmd[1] == '\0' || cmd[1] == '.'))))
-		(ft_stat(cmd, ": command not found\n", strp, cont), exit(127));
+	{
+		if (cmd && cmd[0] == '.' && cmd[1] == '\0')
+		{
+			ft_error("msh: .: filename argument required\n");
+			ft_error(".: usage: . filename [arguments]\n");
+			exit(2);
+		}
+		else
+			(ft_stat(cmd, ": command not found\n", strp, cont), exit(127));
+	}
 	if (ft_find_slash_or_point(cmd) == 1)
 		ft_check_path_cmd(envp_path, cmd, strp, cont);
 	else
