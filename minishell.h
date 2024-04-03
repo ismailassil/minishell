@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/02 16:56:12 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/03 03:00:17 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -340,6 +340,7 @@ void					ft_exitf(t_struct **strp, t_cont **cont);
 void					ft_stat(char *cmd, char *str,
 							t_struct *strp, t_cont *cont);
 int						ft_find_slash_or_point(char *cmd);
+int						ft_iswhitespace(char *str);
 
 /*==========UTILS FUNCIONS==========*/
 int						ft_check_if_chars_digit(int c);

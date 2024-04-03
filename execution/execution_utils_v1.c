@@ -6,32 +6,34 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:43:43 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/02 16:56:39 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/03 03:00:39 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	ft_check_ambiguous_redirect(char *str)
+int	ft_check_ambiguous_redirect(char **str)
 {
-	int	i;
+	int		i;
+	char	**ptr;
 
 	i = 0;
-	if (str && str[0] == '\0')
+	if ((*str) && (*str)[0] == '\0')
 		return (ft_error("msh: ambiguous redirect\n"), 1);
-	while (str[i] != '\0')
+	while ((*str) && (*str)[i] == ' ' && (*str)[i] != '\0')
+		i++;
+	while ((*str)[i] != '\0')
 	{
-		if (ft_strchr(" \t\n\v\f\r", str[i])
-			&& !ft_strchr(" \t\n\v\f\r", str[i + 1]))
+		if (ft_strchr(" \t\n\v\f\r", (*str)[i])
+			&& !ft_strchr(" \t\n\v\f\r", (*str)[i + 1]))
 			return (ft_error("msh: ambiguous redirect\n"), 1);
 		i++;
 	}
-	i = 0;
-	while (str[i] != '\0')
+	if (ft_iswhitespace(*str) == 1)
 	{
-		if (ft_strchr(" \t\n\v\f\r", str[i]))
-			return (str[i] = '\0', 0);
-		i++;
+		ptr = ft_split_v2((*str));
+		free((*str));
+		(*str) = ptr[0];
 	}
 	return (0);
 }
@@ -47,7 +49,7 @@ static int	ft_open_infile_or_heredoc(t_cont *cont, t_info *info,
 	fd.i = -1;
 	while (cont->infile && cont->infile[++fd.i] != 0)
 	{
-		if (ft_check_ambiguous_redirect(cont->infile[fd.i]) == 1)
+		if (ft_check_ambiguous_redirect(&cont->infile[fd.i]) == 1)
 			return (strp->status = 1, 1);
 		fd.infile = open(cont->infile[fd.i], O_RDONLY);
 		if (fd.infile == -1)
@@ -76,7 +78,7 @@ int	ft_open_files(t_cont *cont, t_info *info, t_struct *strp)
 	fd.i = -1;
 	while (cont->outfile && cont->outfile[++fd.i] != 0)
 	{
-		if (ft_check_ambiguous_redirect(cont->outfile[fd.i]) == 1)
+		if (ft_check_ambiguous_redirect(&cont->outfile[fd.i]) == 1)
 			return (strp->status = 1, 1);
 		if (cont->outfile_type[fd.i] == 1)
 			fd.outfile = open(cont->outfile[fd.i], CR | WO, 0644);

@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 20:15:13 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/01 00:54:41 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/03 03:00:07 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,15 @@ void	ft_stat(char *cmd, char *str, t_struct *strp, t_cont *cont)
 	ft_error(str);
 	ft_exitf(&strp, &cont);
 	free(strp);
+}
+
+int	ft_iswhitespace(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] != 0)
+		if (ft_strchr(" \t\n\v\f\r", str[i++]))
+			return (1);
+	return (0);
 }
