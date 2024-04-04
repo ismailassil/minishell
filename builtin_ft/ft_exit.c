@@ -3,58 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 15:16:54 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/03 02:48:08 by aibn-che         ###   ########.fr       */
+/*   Updated: 2024/04/04 00:36:58 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-static int	is_space(char c)
-{
-	if ((c >= 9 && c <= 13) || c == 32)
-		return (1);
-	return (0);
-}
-
-unsigned long long	ft__atoi(const char *str)
-{
-	int						i;
-	int						l;
-	unsigned long long int	res;
-	int						sign;
-
-	i = 0;
-	sign = 1;
-	l = ft_strlen(str);
-	while (str && is_space(str[i]))
-		i++;
-	res = 0;
-	if (str[i] == '+' || str[i] == '-')
-		if (str[i++] == '-')
-			sign *= -1;
-	while (ft_isdigit(str[i]))
-	{
-		res = (10 * res) + (str[i] - '0');
-		if ((sign == 1) && (res > __LONG_MAX__))
-			return (9223372036854775808ULL);
-		if ((sign == -1) && (res > 9223372036854775808ULL))
-			return (9223372036854775809ULL);
-		i++;
-	}
-	return (res);
-}
 
 int	ft_contain_num(char *str)
 {
 	int	i;
 
 	i = 0;
+	while (str && ft_strchr(" \t\n\v\f\r", str[i]))
+		i++;
 	if (str && (str[i] == '-' || str[i] == '+'))
 		i++;
-	while (str && str[i])
+	while (str && str[i] && !ft_strchr(" \t\n\v\f\r", str[i]))
 	{
 		if (!(str[i] >= '0' && str[i] <= '9'))
 			return (0);
@@ -73,7 +40,7 @@ int	ft_arg_len(char **args)
 	return (i);
 }
 
-void	num_after_exit(t_cont *cont)
+void	ft_num_after_exit(t_cont *cont)
 {
 	unsigned long long	a;
 	int					sign;
@@ -109,7 +76,7 @@ void	ft_exit(t_cont *cont, t_struct *strp)
 		exit(255);
 	}
 	else if (cont->arg[0] && ft_contain_num(cont->arg[0]))
-		num_after_exit(cont);
+		ft_num_after_exit(cont);
 	else
 		(ft_error("exit\n"), exit(strp->status));
 }

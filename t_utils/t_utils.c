@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 21:12:35 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/01 17:56:08 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/03 23:49:19 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,15 @@ static void	ft_allocate_for_rest(t_tmp_cont *tmp, t_cont **new)
 	while (tmp->out_t && tmp->out_t[i] != 0)
 		i++;
 	(*new)->outfile_type = malloc((i + 1) * sizeof(char *));
+	(*new)->outfile_is_var = malloc((i + 1) * sizeof(char *));
 	j = 0;
 	while (j < i)
 	{
 		(*new)->outfile_type[j] = tmp->out_t[j];
+		(*new)->outfile_is_var[j] = tmp->out_is_var[j];
 		j++;
 	}
-	(1) && ((*new)->outfile_type[j] = 0, i = 0);
+	(1) && ((*new)->outfile_type[j] = 0, (*new)->outfile_is_var[j] = 0, i = 0);
 	while (tmp->outf && tmp->outf[i] != 0)
 		i++;
 	(*new)->outfile = malloc((i + 1) * sizeof(char *));
@@ -71,10 +73,15 @@ static void	ft_allocate_(t_tmp_cont *tmp, t_cont **new)
 	while (tmp->inf && tmp->inf[i] != 0)
 		i++;
 	(*new)->infile = malloc((i + 1) * sizeof(char *));
+	(*new)->infile_is_var = malloc((i + 1) * sizeof(char *));
 	i = 0;
 	while (tmp->inf && tmp->inf[i] != 0)
-		(1) && ((*new)->infile[i] = ft_strdup(tmp->inf[i]), i++);
-	(*new)->infile[i] = 0;
+	{
+		(*new)->infile[i] = ft_strdup(tmp->inf[i]);
+		(*new)->infile_is_var[i] = tmp->inf_is_var[i];
+		i++;
+	}
+	(1) && ((*new)->infile[i] = 0, (*new)->infile_is_var[i] = 0);
 	ft_allocate_for_rest(tmp, new);
 }
 

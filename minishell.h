@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/03 03:00:17 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/04 00:32:54 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@
 # define CR				O_CREAT
 # define WO				O_WRONLY
 # define AP				O_APPEND
+# define MS                ": numeric argument required\n"
 # define GREEN			"\x1b[1;32m"
 # define YELLOW_		"\x1b[0;33m"
 # define YELLOW			"\x1b[1;33m"
@@ -132,6 +133,7 @@ typedef struct s_tokens
 {
 	char			*token;
 	int				type;
+	int				is_var;
 	struct s_tokens	*next;
 }					t_token;
 
@@ -167,7 +169,9 @@ typedef struct s_tmp_cont
 	char	*cmd;
 	char	**arg;
 	char	**inf;
+	int		*out_is_var;
 	char	**outf;
+	int		*inf_is_var;
 	char	**here_doc;
 	int		*file_or_heredoc;
 	int		*out_t;
@@ -178,10 +182,12 @@ typedef struct s_container
 	char				*cmd;
 	char				**arg;
 	char				**infile;
+	int					*infile_is_var;
 	char				**here_doc;
 	int					*file_or_heredoc;
 	int					*here_doc_fd;
 	char				**outfile;
+	int					*outfile_is_var;
 	int					*outfile_type;
 	struct s_container	*next;
 }						t_cont;
@@ -429,5 +435,5 @@ void					ft_putendl_fd(char *s, int fd);
 void					ft_putnbr_fd(int n, int fd);
 char					**ft_split(char const *s, char c);
 char					**ft_split_v2(char const *s);
-
+unsigned long long		ft__atoi(const char *str);
 #endif

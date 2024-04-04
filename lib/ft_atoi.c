@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 20:25:23 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/02 00:29:42 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/04 00:33:59 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,37 @@ int	ft_atoi(const char *str)
 		i++;
 	}
 	return (result * sign);
+}
+
+static int	ft__is_space(char c)
+{
+	if ((c >= 9 && c <= 13) || c == 32)
+		return (1);
+	return (0);
+}
+
+unsigned long long	ft__atoi(const char *str)
+{
+	int						i;
+	unsigned long long int	res;
+	int						sign;
+
+	i = 0;
+	sign = 1;
+	while (str && ft__is_space(str[i]))
+		i++;
+	res = 0;
+	if (str && (str[i] == '+' || str[i] == '-'))
+		if (str[i++] == '-')
+			sign *= -1;
+	while (str && ft_isdigit(str[i]))
+	{
+		res = (10 * res) + (str[i] - '0');
+		if ((sign == 1) && (res > __LONG_MAX__))
+			return (9223372036854775808ULL);
+		if ((sign == -1) && (res > 9223372036854775808ULL))
+			return (9223372036854775809ULL);
+		i++;
+	}
+	return (res);
 }

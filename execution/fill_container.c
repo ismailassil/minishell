@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 13:31:07 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/23 18:04:10 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/04 00:16:36 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,10 @@ void	ft_allocate_tmp_cont(t_token *head, t_tmp_cont	**cont)
 	ft_check_allocation((*cont)->here_doc);
 	(*cont)->file_or_heredoc = malloc(sizeof(int));
 	ft_check_allocation((*cont)->file_or_heredoc);
+	(*cont)->inf_is_var = malloc((c.infile + 1) * sizeof(int));
+	ft_check_allocation((*cont)->inf_is_var);
+	(*cont)->out_is_var = malloc((c.outfile + 1) * sizeof(int));
+	ft_check_allocation((*cont)->out_is_var);
 }
 
 void	ft_fill_rest(t_token *head, t_tmp_cont *t, t_cc *c)
@@ -63,6 +67,9 @@ void	ft_fill_rest(t_token *head, t_tmp_cont *t, t_cc *c)
 			t->out_t[c->y] = 1;
 		if (head->type == APPEND)
 			t->out_t[c->y] = 2;
+		t->out_is_var[c->y] = 2;
+		if (head->next->is_var == 1)
+			t->out_is_var[c->y] = 1;
 		c->y++;
 	}
 	else if (head->type == HEREDOC)
@@ -88,7 +95,11 @@ void	ft_fill_container(t_token *head, t_tmp_cont *t, t_cc *c)
 	else if (head->type == INFILE)
 	{
 		t->inf[c->j] = ft_strdup(head->next->token);
-		ft_check_allocation(t->inf[c->j++]);
+		ft_check_allocation(t->inf[c->j]);
+		t->inf_is_var[c->j] = 2;
+		if (head->next->is_var == 1)
+			t->inf_is_var[c->j] = 1;
+		c->j++;
 		*t->file_or_heredoc = 0;
 	}
 	else
@@ -113,6 +124,7 @@ void	ft_link_all_in_containers(t_token *head, t_cont **container)
 		}
 		(1) && (t->arg[c.i] = 0, t->inf[c.j] = 0, \
 			t->outf[c.y] = 0, t->out_t[c.y] = 0, \
+			t->out_is_var[c.y] = 0, t->inf_is_var[c.j] = 0, \
 			t->here_doc[c.h] = 0);
 		(ft_push_container(t, container), ft_free_tmp(&t));
 		if (head != NULL && head->type == PIPE)

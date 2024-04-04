@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 19:25:31 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/01 18:37:17 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/03 22:43:16 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,29 +52,29 @@ int	ft_push_container(t_tmp_cont *tmp, t_cont **head)
 
 void	ft_free_containers(t_cont **head)
 {
-	t_cont	*current;
+	t_cont	*c;
 	int		i;
 
 	while (*head)
 	{
-		(1) && (current = *head, *head = (*head)->next, i = 0);
-		free(current->cmd);
-		while (current->arg[i] != NULL)
-			(1) && (free(current->arg[i]), i++);
-		free(current->arg);
+		(1) && (c = *head, *head = (*head)->next, i = 0);
+		free(c->cmd);
+		while (c->arg[i] != NULL)
+			(1) && (free(c->arg[i]), i++);
+		free(c->arg);
 		i = 0;
-		while (current->infile[i] != NULL)
-			(1) && (free(current->infile[i]), i++);
-		free(current->infile);
+		while (c->infile[i] != NULL)
+			(1) && (free(c->infile[i]), i++);
+		free(c->infile);
 		i = 0;
-		while (current->outfile[i] != NULL)
-			(1) && (free(current->outfile[i]), i++);
+		while (c->outfile[i] != NULL)
+			(1) && (free(c->outfile[i]), i++);
 		i = 0;
-		while (current->here_doc[i] != NULL)
-			(1) && (free(current->here_doc[i]), i++);
-		(free(current->here_doc), free(current->outfile));
-		(free(current->outfile_type), free(current->file_or_heredoc));
-		(free(current->here_doc_fd), free(current), current = NULL);
+		while (c->here_doc[i] != NULL)
+			(1) && (free(c->here_doc[i]), i++);
+		(free(c->here_doc), free(c->outfile), free(c->outfile_is_var));
+		(free(c->outfile_type), free(c->file_or_heredoc));
+		(free(c->infile_is_var), free(c->here_doc_fd), free(c), c = NULL);
 	}
 	(free(*head), head = NULL);
 }

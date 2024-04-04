@@ -6,22 +6,26 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:43:43 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/03 03:00:39 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/04 00:41:02 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	ft_check_ambiguous_redirect(char **str)
+int	ft_amb_rdt(char **str, int type)
 {
 	int		i;
 	char	**ptr;
 
 	i = 0;
+	if (type == 2)
+		return (0);
 	if ((*str) && (*str)[0] == '\0')
 		return (ft_error("msh: ambiguous redirect\n"), 1);
-	while ((*str) && (*str)[i] == ' ' && (*str)[i] != '\0')
+	while ((*str) && ft_strchr(" \t\n\v\f\r", (*str)[i]) && (*str)[i] != '\0')
 		i++;
+	if ((*str)[i] == '\0')
+		return (ft_error("msh: ambiguous redirect\n"), 1);
 	while ((*str)[i] != '\0')
 	{
 		if (ft_strchr(" \t\n\v\f\r", (*str)[i])
@@ -49,7 +53,8 @@ static int	ft_open_infile_or_heredoc(t_cont *cont, t_info *info,
 	fd.i = -1;
 	while (cont->infile && cont->infile[++fd.i] != 0)
 	{
-		if (ft_check_ambiguous_redirect(&cont->infile[fd.i]) == 1)
+		if (ft_amb_rdt(&cont->infile[fd.i], \
+			cont->infile_is_var[fd.i]) == 1)
 			return (strp->status = 1, 1);
 		fd.infile = open(cont->infile[fd.i], O_RDONLY);
 		if (fd.infile == -1)
@@ -78,7 +83,7 @@ int	ft_open_files(t_cont *cont, t_info *info, t_struct *strp)
 	fd.i = -1;
 	while (cont->outfile && cont->outfile[++fd.i] != 0)
 	{
-		if (ft_check_ambiguous_redirect(&cont->outfile[fd.i]) == 1)
+		if (ft_amb_rdt(&cont->outfile[fd.i], cont->outfile_is_var[fd.i]) == 1)
 			return (strp->status = 1, 1);
 		if (cont->outfile_type[fd.i] == 1)
 			fd.outfile = open(cont->outfile[fd.i], CR | WO, 0644);
