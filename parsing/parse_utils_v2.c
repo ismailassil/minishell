@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils_v2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 17:44:37 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/30 01:21:08 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/04 18:08:51 by aibn-che         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ void	ft_special_chars(t_expand *exp, char *arg, int *i, t_struct *strp)
 	else if (exp->quote == '\"' && arg[(*i) + 1] == '\"')
 		ft_append_char(&exp->new_str, '$');
 	else if ((arg[(*i) + 1] == '\'' || arg[(*i) + 1] == '\"')
-		&& quote_after_dollar_sign(arg, (*i) + 1))
+		&& quote_after_dollar_sign(arg, (*i) + 1)
+		&& (exp->quote != '\'' && exp->quote != '\"'))
 		return ;
 	else
 		ft_append_char(&exp->new_str, '$');
