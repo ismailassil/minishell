@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 13:48:38 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/04 05:46:36 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/04 09:42:02 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static void	ft_child_process(t_cont *cont, t_struct *strp, t_info *info)
 		ft_pipe_to_next_child(info);
 	if (ft_check_commands(cont, strp, info, 0) == 1)
 		(ft_exitf(&strp, &cont), exit(strp->status));
-	ft_check_(&exec.cmd_path, cont->cmd, strp, cont);
+	ft_check_(&exec.cmd_path, &cont->cmd, strp, cont);
 	exec.argv = ft_join_for_argv_execve(cont);
 	exec.envp = ft_join_for_envp_execve(strp->env);
 	(ft_exitf(&strp, &cont), free(strp));

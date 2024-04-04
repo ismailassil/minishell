@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 00:09:46 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/04 08:16:45 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/04 09:41:05 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char	**ft_join_for_argv_execve(t_cont *cont)
 	if (argv == NULL)
 		(write(2, "Error: Allocation failed\n", 25), exit(FAIL));
 	i = 0;
-	if (cont->cmd[0] == '.')
+	if (cont->cmd && cont->cmd[0] == '.')
 		i++;
 	if (cont->cmd != NULL)
 		argv[j++] = ft_strdup(cont->cmd + i);

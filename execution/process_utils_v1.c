@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:42:41 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/04 08:16:38 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/04 09:53:18 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,26 +67,64 @@ static char	*ft_check_path(char *cmd, t_struct *strp, t_cont *cont)
 		(ft_return_path(f.path, cmd, strp, cont), exit(127));
 	return (f.envp_path);
 }
-
-void	ft_check_(char **envp_path, char *cmd, t_struct *strp, t_cont *cont)
+char	**ft_fill_again(t_cont *cont)
 {
-	if (cmd && (cmd[0] == '\0'
-			|| (cmd[0] == '.' && (cmd[1] == '\0' || cmd[1] == '.'))))
+	int		i;
+	int		j;
+	char	**args;
+
+	(1) && (i = 1, j = 0);
+	while (cont->arg && cont->arg[i] != 0)
+		i++;
+	args = malloc(i * sizeof(char *));
+	ft_check_allocation(args);
+	i = 1;
+	while (cont->arg && cont->arg[i] != 0)
 	{
-		if (cmd && cmd[0] == '.' && cmd[1] == '\0')
+		args[j] = ft_strdup(cont->arg[i]);
+		ft_check_allocation(args[j]);
+		(1) && (j++, i++);
+	}
+	args[j] = 0;
+	ft_f(cont->arg);
+	return (args);
+}
+
+void	ft_check_first_cmd(char **cmd, t_cont *cont)
+{
+	if (*cmd && cont->cmd_is_arg == 1 && (*cmd)[0] == '\0')
+	{
+		if (cont->arg[0] != 0)
+		{
+			free(*cmd);
+			*cmd = ft_strdup(cont->arg[0]);
+			cont->arg = ft_fill_again(cont);
+		}
+		else if (cont->arg[0] == 0)
+			exit(SUCCESS);
+	}
+}
+
+void	ft_check_(char **envp_path, char **cmd, t_struct *strp, t_cont *cont)
+{
+	ft_check_first_cmd(cmd, cont);
+	if (*cmd && ((*cmd)[0] == '\0'
+			|| ((*cmd)[0] == '.' && ((*cmd)[1] == '\0' || (*cmd)[1] == '.'))))
+	{
+		if (*cmd && (*cmd)[0] == '.' && (*cmd)[1] == '\0')
 		{
 			ft_error("msh: .: filename argument required\n");
 			ft_error(".: usage: . filename [arguments]\n");
 			exit(2);
 		}
 		else
-			(ft_stat(cmd, ": command not found\n", strp, cont), exit(127));
+			(ft_stat(*cmd, ": command not found\n", strp, cont), exit(127));
 	}
-	if (ft_find_slash_or_point(cmd) == 1)
-		ft_check_path_cmd(envp_path, cmd, strp, cont);
+	if (ft_find_slash_or_point(*cmd) == 1)
+		ft_check_path_cmd(envp_path, *cmd, strp, cont);
 	else
 	{
-		*envp_path = ft_check_path(cmd, strp, cont);
+		*envp_path = ft_check_path(*cmd, strp, cont);
 		if (*envp_path == NULL)
 			(ft_exitf(&strp, &cont), free(strp), exit(FAIL));
 	}

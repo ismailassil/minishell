@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 13:31:07 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/04 03:07:39 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/04 09:36:51 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,9 @@ void	ft_fill_container(t_token *head, t_tmp_cont *t, t_cc *c)
 	{
 		t->cmd = ft_strdup(head->token);
 		ft_check_allocation(t->cmd);
+		t->cmd_is_arg = 2;
+		if (head->is_var == 1)
+			t->cmd_is_arg = 1;
 	}
 	else if (head->type == ARG)
 	{

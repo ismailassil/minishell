@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/04 04:01:39 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/04 09:42:18 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,6 +167,7 @@ typedef struct s_count
 typedef struct s_tmp_cont
 {
 	char	*cmd;
+	int		cmd_is_arg;
 	char	**arg;
 	int		*arg_is_var;
 	char	**inf;
@@ -181,6 +182,7 @@ typedef struct s_tmp_cont
 typedef struct s_container
 {
 	char				*cmd;
+	int					cmd_is_arg;
 	char				**arg;
 	int					*arg_is_var;
 	char				**infile;
@@ -325,7 +327,7 @@ int						ft_check_commands(t_cont *cont, t_struct *strp,
 							t_info *info, int j);
 char					**ft_join_for_envp_execve(t_env *env);
 char					**ft_join_for_argv_execve(t_cont *cont);
-void					ft_check_(char **envp_path, char *cmd,
+void					ft_check_(char **envp_path, char **cmd,
 							t_struct *strp, t_cont *cont);
 void					ft_check_allocation(void *str);
 void					ft_syscall(int return_, char *str);
