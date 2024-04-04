@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 21:10:11 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/04 09:14:36 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/04 09:26:38 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	execute_cd(t_cont *cont, t_struct **strp)
 		ft_cd(NULL, strp);
 		ft_add_path_executed_cmd("cd", (*strp)->env);
 		return ;
-	}	
+	}
 	while (cont->arg && cont->arg[i] != 0)
 	{
 		if (cont->arg_is_var[i] == 1 && cont->arg[i][0] == '\0')
