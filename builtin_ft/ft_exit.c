@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 15:16:54 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/04 00:36:58 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/04 02:45:08 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,25 @@ int	ft_contain_num(char *str)
 	int	i;
 
 	i = 0;
-	while (str && ft_strchr(" \t\n\v\f\r", str[i]))
+	while (str && str[i] && ft_strchr(" \t\n\v\f\r", str[i]))
 		i++;
+	if (str && !str[i])
+		return (0);
 	if (str && (str[i] == '-' || str[i] == '+'))
 		i++;
-	while (str && str[i] && !ft_strchr(" \t\n\v\f\r", str[i]))
+	while (str && str[i])
 	{
 		if (!(str[i] >= '0' && str[i] <= '9'))
 			return (0);
-		i++;
+		else
+			i++;
+		while (str[i] && ft_strchr(" \t\n\v\f\r", str[i]))
+			i++;
+		if (!str[i] || (i != 0 && ft_strchr(" \t\n\v\f\r", str[i - 1])))
+			break ;
 	}
+	if (str && str[i] && !ft_strchr(" \t\n\v\f\r", str[i]))
+		return (0);
 	return (1);
 }
 
@@ -70,7 +79,7 @@ void	ft_exit(t_cont *cont, t_struct *strp)
 		ft_error("exit\nmsh: exit: too many arguments\n");
 		strp->status = 1;
 	}
-	else if (!ft_contain_num(cont->arg[0]))
+	else if (cont->arg[0] && !ft_contain_num(cont->arg[0]))
 	{
 		(ft_error("exit\nmsh: exit: "), ft_error(cont->arg[0]), ft_error(MS));
 		exit(255);

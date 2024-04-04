@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:43:43 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/04 00:41:02 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/04 04:02:23 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,29 @@
 
 int	ft_amb_rdt(char **str, int type)
 {
-	int		i;
-	char	**ptr;
+	t_amb_rdt	r;
 
-	i = 0;
+	r.i = 0;
 	if (type == 2)
 		return (0);
 	if ((*str) && (*str)[0] == '\0')
 		return (ft_error("msh: ambiguous redirect\n"), 1);
-	while ((*str) && ft_strchr(" \t\n\v\f\r", (*str)[i]) && (*str)[i] != '\0')
-		i++;
-	if ((*str)[i] == '\0')
+	while ((*str) && ft_strchr(" \t\n\v\f\r", (*str)[r.i]) && (*str)[r.i] != '\0')
+		r.i++;
+	if ((*str)[r.i] == '\0')
 		return (ft_error("msh: ambiguous redirect\n"), 1);
-	while ((*str)[i] != '\0')
+	while ((*str)[r.i] != '\0')
 	{
-		if (ft_strchr(" \t\n\v\f\r", (*str)[i])
-			&& !ft_strchr(" \t\n\v\f\r", (*str)[i + 1]))
+		if (ft_strchr(" \t\n\v\f\r", (*str)[r.i])
+			&& !ft_strchr(" \t\n\v\f\r", (*str)[r.i + 1]))
 			return (ft_error("msh: ambiguous redirect\n"), 1);
-		i++;
+		r.i++;
 	}
 	if (ft_iswhitespace(*str) == 1)
 	{
-		ptr = ft_split_v2((*str));
+		r.ptr = ft_split_v2((*str));
 		free((*str));
-		(*str) = ptr[0];
+		(*str) = r.ptr[0];
 	}
 	return (0);
 }

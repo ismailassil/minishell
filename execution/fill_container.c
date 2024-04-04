@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 13:31:07 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/04 00:16:36 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/04 03:07:39 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ void	ft_allocate_tmp_cont(t_token *head, t_tmp_cont	**cont)
 	ft_check_allocation((*cont)->inf_is_var);
 	(*cont)->out_is_var = malloc((c.outfile + 1) * sizeof(int));
 	ft_check_allocation((*cont)->out_is_var);
+	(*cont)->arg_is_var = malloc((c.arg + 1) * sizeof(int));
+	ft_check_allocation((*cont)->arg_is_var);
 }
 
 void	ft_fill_rest(t_token *head, t_tmp_cont *t, t_cc *c)
@@ -90,7 +92,11 @@ void	ft_fill_container(t_token *head, t_tmp_cont *t, t_cc *c)
 	else if (head->type == ARG)
 	{
 		t->arg[c->i] = ft_strdup(head->token);
-		ft_check_allocation(t->arg[c->i++]);
+		ft_check_allocation(t->arg[c->i]);
+		t->arg_is_var[c->i] = 2;
+		if (head->is_var == 1)
+			t->arg_is_var[c->i] = 1;
+		c->i++;
 	}
 	else if (head->type == INFILE)
 	{
@@ -99,8 +105,7 @@ void	ft_fill_container(t_token *head, t_tmp_cont *t, t_cc *c)
 		t->inf_is_var[c->j] = 2;
 		if (head->next->is_var == 1)
 			t->inf_is_var[c->j] = 1;
-		c->j++;
-		*t->file_or_heredoc = 0;
+		(1) && (*t->file_or_heredoc = 0, c->j++);
 	}
 	else
 		ft_fill_rest(head, t, c);

@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 19:25:31 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/03 22:43:16 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/04 03:01:33 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	ft_free_containers(t_cont **head)
 		while (c->here_doc[i] != NULL)
 			(1) && (free(c->here_doc[i]), i++);
 		(free(c->here_doc), free(c->outfile), free(c->outfile_is_var));
-		(free(c->outfile_type), free(c->file_or_heredoc));
+		(free(c->outfile_type), free(c->file_or_heredoc), free(c->arg_is_var));
 		(free(c->infile_is_var), free(c->here_doc_fd), free(c), c = NULL);
 	}
 	(free(*head), head = NULL);

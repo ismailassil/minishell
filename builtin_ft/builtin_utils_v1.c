@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 12:27:22 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/02 16:40:41 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/04 03:25:52 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ bool	ft_check_syntax_export(char *arg)
 	int	i;
 
 	i = 0;
-	if (ft_isalpha(arg[0]) == 0 && arg[0] != '_')
+	if (arg && ft_isalpha(arg[0]) == 0 && arg[0] != '_')
 	{
 		(ft_error("msh: export: \'"), ft_error(arg));
 		ft_error("\': not a valid identifier\n");

@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:47:07 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/02 16:56:28 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/04 03:26:34 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,12 +108,18 @@ static int	ft_add_new_env(char *arg, t_env *envp)
 	return (0);
 }
 
-int	ft_export(char *arg, t_struct *strp)
+int	ft_export(char *arg, t_struct *strp, int type)
 {
 	int	i;
 	int	count;
 
 	(1) && (i = -1, count = 0);
+	if (type != 1 && arg && arg[0] == '\0')
+	{
+		(ft_error("msh: export: \'"), ft_error(arg));
+		ft_error("\': not a valid identifier\n");
+		return (strp->status = 1, 1);
+	}
 	if (arg == NULL || arg[0] == '\0')
 		return (ft_print_exported_variable(strp->env), 0);
 	if (ft_check_syntax_export(arg) == true)

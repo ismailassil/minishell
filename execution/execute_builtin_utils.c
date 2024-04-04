@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 21:10:11 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/04 02:26:00 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/04 04:03:25 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,14 @@ void	execute_env(t_cont *cont, t_struct **strp)
 	int	i;
 
 	i = 0;
-	if (cont->arg && cont->arg[0])
+	if (cont->arg && (cont->arg[0] == 0 || (cont->arg_is_var[0] == 1
+				&& cont->arg[0][0] == '\0' && !cont->arg[1])))
+	{
+		ft_add_path_executed_cmd("env", (*strp)->env);
+		ft_env(((*strp)->env));
+		(*strp)->status = 0;
+	}
+	else if (cont->arg && cont->arg[0])
 	{
 		ft_error("env: ");
 		(ft_error(cont->arg[0]), ft_error(": No such file or directory\n"));
@@ -81,12 +88,6 @@ void	execute_env(t_cont *cont, t_struct **strp)
 		while (cont->arg[i] != 0)
 			i++;
 		ft_add_path_executed_cmd(cont->arg[i - 1], (*strp)->env);
-	}
-	else
-	{
-		ft_add_path_executed_cmd("env", (*strp)->env);
-		ft_env(((*strp)->env));
-		(*strp)->status = 0;
 	}
 }
 
@@ -101,13 +102,13 @@ void	execute_export(t_cont *cont, t_struct **strp)
 	(*strp)->status = 0;
 	if (cont->arg == NULL || cont->arg[0] == NULL)
 	{
-		ft_export(NULL, *strp);
+		ft_export(NULL, *strp, cont->arg_is_var[0]);
 		ft_add_path_executed_cmd("export", (*strp)->env);
 	}
 	else
 	{
 		while (cont->arg && cont->arg[i] != 0)
-			(1) && (ft_export(cont->arg[i], *strp), i++);
+			(1) && (ft_export(cont->arg[i], *strp, cont->arg_is_var[i]), i++);
 		ft_add_path_executed_cmd(cont->arg[i - 1], (*strp)->env);
 	}
 }

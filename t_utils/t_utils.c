@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 21:12:35 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/03 23:49:19 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/04 04:09:07 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,64 +30,66 @@ static void	ft_allocate_for_rest_v2(t_tmp_cont *tmp, t_cont **new)
 	*(*new)->here_doc_fd = 0;
 }
 
-static void	ft_allocate_for_rest(t_tmp_cont *tmp, t_cont **new)
+static void	ft_allocate_for_rest(t_tmp_cont *tmp, t_cont **new, int *i)
 {
-	int	i;
 	int	j;
 
-	i = 0;
-	while (tmp->out_t && tmp->out_t[i] != 0)
-		i++;
-	(*new)->outfile_type = malloc((i + 1) * sizeof(char *));
-	(*new)->outfile_is_var = malloc((i + 1) * sizeof(char *));
+	*i = 0;
+	while (tmp->out_t && tmp->out_t[*i] != 0)
+		(*i)++;
+	(*new)->outfile_type = malloc((*i + 1) * sizeof(char *));
+	(*new)->outfile_is_var = malloc((*i + 1) * sizeof(char *));
 	j = 0;
-	while (j < i)
+	while (j < *i)
 	{
 		(*new)->outfile_type[j] = tmp->out_t[j];
 		(*new)->outfile_is_var[j] = tmp->out_is_var[j];
 		j++;
 	}
-	(1) && ((*new)->outfile_type[j] = 0, (*new)->outfile_is_var[j] = 0, i = 0);
-	while (tmp->outf && tmp->outf[i] != 0)
-		i++;
-	(*new)->outfile = malloc((i + 1) * sizeof(char *));
-	i = 0;
-	while (tmp->outf && tmp->outf[i] != 0)
-		(1) && ((*new)->outfile[i] = ft_strdup(tmp->outf[i]), i++);
-	(*new)->outfile[i] = 0;
+	(1) && ((*new)->outfile_type[j] = 0, (*new)->outfile_is_var[j] = 0, *i = 0);
+	while (tmp->outf && tmp->outf[*i] != 0)
+		(*i)++;
+	(*new)->outfile = malloc((*i + 1) * sizeof(char *));
+	*i = 0;
+	while (tmp->outf && tmp->outf[*i] != 0)
+		(1) && ((*new)->outfile[*i] = ft_strdup(tmp->outf[*i]), (*i)++);
+	(*new)->outfile[*i] = 0;
 	ft_allocate_for_rest_v2(tmp, new);
 }
 
-static void	ft_allocate_(t_tmp_cont *tmp, t_cont **new)
+static void	ft_allocate_(t_tmp_cont *tmp, t_cont **new, int *i)
 {
-	int	i;
-
-	i = 0;
-	while (tmp->arg && tmp->arg[i] != 0)
-		i++;
-	(*new)->arg = malloc((i + 1) * sizeof(char *));
-	i = 0;
-	while (tmp->arg && tmp->arg[i] != 0)
-		(1) && ((*new)->arg[i] = ft_strdup(tmp->arg[i]), i++);
-	(1) && ((*new)->arg[i] = 0, i = 0);
-	while (tmp->inf && tmp->inf[i] != 0)
-		i++;
-	(*new)->infile = malloc((i + 1) * sizeof(char *));
-	(*new)->infile_is_var = malloc((i + 1) * sizeof(char *));
-	i = 0;
-	while (tmp->inf && tmp->inf[i] != 0)
+	*i = 0;
+	while (tmp->arg && tmp->arg[*i] != 0)
+		(*i)++;
+	(*new)->arg = malloc((*i + 1) * sizeof(char *));
+	(*new)->arg_is_var = malloc((*i + 1) * sizeof(int));
+	*i = 0;
+	while (tmp->arg && tmp->arg[*i] != 0)
 	{
-		(*new)->infile[i] = ft_strdup(tmp->inf[i]);
-		(*new)->infile_is_var[i] = tmp->inf_is_var[i];
-		i++;
+		(*new)->arg[*i] = ft_strdup(tmp->arg[*i]);
+		(*new)->arg_is_var[*i] = tmp->arg_is_var[*i];
+		(*i)++;
 	}
-	(1) && ((*new)->infile[i] = 0, (*new)->infile_is_var[i] = 0);
-	ft_allocate_for_rest(tmp, new);
+	(1) && ((*new)->arg[*i] = 0, (*new)->arg_is_var[*i] = 0, *i = 0);
+	while (tmp->inf && tmp->inf[*i] != 0)
+		(*i)++;
+	(*new)->infile = malloc((*i + 1) * sizeof(char *));
+	(*new)->infile_is_var = malloc((*i + 1) * sizeof(char *));
+	*i = 0;
+	while (tmp->inf && tmp->inf[*i] != 0)
+	{
+		(*new)->infile[*i] = ft_strdup(tmp->inf[*i]);
+		(1) && ((*new)->infile_is_var[*i] = tmp->inf_is_var[*i], (*i)++);
+	}
+	(1) && ((*new)->infile[*i] = 0, (*new)->infile_is_var[*i] = 0);
+	ft_allocate_for_rest(tmp, new, i);
 }
 
 t_cont	*ft_new_node_for_cont(t_tmp_cont *tmp)
 {
 	t_cont	*new;
+	int		i;
 
 	new = malloc(sizeof(t_cont));
 	if (!new)
@@ -100,7 +102,8 @@ t_cont	*ft_new_node_for_cont(t_tmp_cont *tmp)
 		if (!new->cmd)
 			(write(2, "Error: Allocation failed\n", 25), exit(FAIL));
 	}
-	ft_allocate_(tmp, &new);
+	i = 0;
+	ft_allocate_(tmp, &new, &i);
 	new->next = NULL;
 	return (new);
 }

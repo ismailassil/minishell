@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/04 00:32:54 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/04 04:01:39 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,7 @@ typedef struct s_tmp_cont
 {
 	char	*cmd;
 	char	**arg;
+	int		*arg_is_var;
 	char	**inf;
 	int		*out_is_var;
 	char	**outf;
@@ -181,6 +182,7 @@ typedef struct s_container
 {
 	char				*cmd;
 	char				**arg;
+	int					*arg_is_var;
 	char				**infile;
 	int					*infile_is_var;
 	char				**here_doc;
@@ -208,6 +210,12 @@ typedef struct s_fd_
 	int	here_doc;
 	int	i;
 }		t_fd_;
+
+typedef struct s_amb_rdt
+{
+	int		i;
+	char	**ptr;
+}			t_amb_rdt;
 
 typedef struct s_info
 {
@@ -253,7 +261,7 @@ int						ft_cd(char *argument, t_struct **strp);
 void					ft_echo(char *argument);
 void					ft_env(t_env *envp);
 void					ft_exit(t_cont *cont, t_struct *strp);
-int						ft_export(char *argument, t_struct *strp);
+int						ft_export(char *arg, t_struct *strp, int type);
 void					ft_pwd(t_env *env);
 void					ft_unset(t_struct **strp, char *argument);
 //	Utils function for builtin function
