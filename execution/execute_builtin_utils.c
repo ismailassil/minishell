@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 21:10:11 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/30 02:17:03 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/04 02:26:00 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	execute_env(t_cont *cont, t_struct **strp)
 	i = 0;
 	if (cont->arg && cont->arg[0])
 	{
-		write(2, "msh: env: ", 10);
+		ft_error("env: ");
 		(ft_error(cont->arg[0]), ft_error(": No such file or directory\n"));
 		(*strp)->status = 127;
 		while (cont->arg[i] != 0)
