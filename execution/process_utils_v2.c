@@ -6,11 +6,52 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 00:09:46 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/04 06:03:36 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/04 08:16:45 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+static void	ft_fill_argv(t_cont *cont, char ***argv, int *j)
+{
+	int	i;
+
+	i = 0;
+	while (cont->arg && cont->arg[i] != 0)
+	{
+		if (cont->arg_is_var[i] == 1 && cont->arg[i][0] == '\0')
+			i++;
+		else
+		{
+			(*argv)[*j] = ft_strdup(cont->arg[i]);
+			ft_check_allocation((*argv)[*j]);
+			(1) && ((*j)++, i++);
+		}
+	}
+	(*argv)[*j] = 0;
+}
+
+char	**ft_join_for_argv_execve(t_cont *cont)
+{
+	char	**argv;
+	int		i;
+	int		j;
+
+	(1) && (i = 0, j = 0);
+	argv = NULL;
+	while (cont->arg && cont->arg[i] != 0)
+		i++;
+	argv = malloc((i + 2) * sizeof(char *));
+	if (argv == NULL)
+		(write(2, "Error: Allocation failed\n", 25), exit(FAIL));
+	i = 0;
+	if (cont->cmd[0] == '.')
+		i++;
+	if (cont->cmd != NULL)
+		argv[j++] = ft_strdup(cont->cmd + i);
+	ft_fill_argv(cont, &argv, &j);
+	return (argv);
+}
 
 char	*ft_remove_slash(char **cmd)
 {

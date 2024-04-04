@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:42:41 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/03 00:33:49 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/04 08:16:38 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,35 +90,6 @@ void	ft_check_(char **envp_path, char *cmd, t_struct *strp, t_cont *cont)
 		if (*envp_path == NULL)
 			(ft_exitf(&strp, &cont), free(strp), exit(FAIL));
 	}
-}
-
-char	**ft_join_for_argv_execve(t_cont *cont)
-{
-	char	**argv;
-	int		i;
-	int		j;
-
-	(1) && (i = 0, j = 0);
-	argv = NULL;
-	while (cont->arg && cont->arg[i] != 0)
-		i++;
-	argv = malloc((i + 2) * sizeof(char *));
-	if (argv == NULL)
-		(write(2, "Error: Allocation failed\n", 25), exit(FAIL));
-	i = 0;
-	if (cont->cmd[0] == '.')
-		i++;
-	if (cont->cmd != NULL)
-		argv[j++] = ft_strdup(cont->cmd + i);
-	i = 0;
-	while (cont->arg && cont->arg[i] != 0)
-	{
-		argv[j] = ft_strdup(cont->arg[i]);
-		ft_check_allocation(argv[j]);
-		(1) && (i++, j++);
-	}
-	argv[j] = 0;
-	return (argv);
 }
 
 char	**ft_join_for_envp_execve(t_env *env)
