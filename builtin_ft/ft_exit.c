@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 15:16:54 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/04 02:45:08 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/04 09:24:22 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,29 +39,35 @@ int	ft_contain_num(char *str)
 	return (1);
 }
 
-int	ft_arg_len(char **args)
+int	ft_arg_len(t_cont *cont)
 {
 	int	i;
+	int	count;
 
-	i = 0;
-	while (args[i])
-		i++;
-	return (i);
+	(1) && (i = 0, count = 0);
+	while (cont->arg[i])
+	{
+		if (cont->arg_is_var[i] == 1 && cont->arg[i][0] == '\0')
+			i++;
+		else
+			(1) && (count++, i++);
+	}
+	return (count);
 }
 
-void	ft_num_after_exit(t_cont *cont)
+void	ft_num_after_exit(char *str)
 {
 	unsigned long long	a;
 	int					sign;
 
 	sign = 1;
-	if (cont->arg[0][0] == '-')
+	if (str && str[0] == '-')
 		sign = -1;
-	a = ft__atoi(cont->arg[0]);
+	a = ft__atoi(str);
 	if (((sign == 1) && a > __LONG_MAX__)
 		|| ((sign == -1) && a > 9223372036854775808UL))
 	{
-		(ft_error("exit\nmsh: exit: "), ft_error(cont->arg[0]));
+		(ft_error("exit\nmsh: exit: "), ft_error(str));
 		ft_error(MS);
 		exit(255);
 	}
@@ -74,18 +80,24 @@ void	ft_num_after_exit(t_cont *cont)
 
 void	ft_exit(t_cont *cont, t_struct *strp)
 {
-	if (ft_arg_len(cont->arg) >= 2 && ft_contain_num(cont->arg[0]))
+	int	i;
+
+	i = 0;
+	while (cont->arg && cont->arg[i]
+		&& cont->arg_is_var[i] == 1 && cont->arg[i][0] == '\0')
+		i++;
+	if (ft_arg_len(cont) >= 2 && ft_contain_num(cont->arg[i]))
 	{
 		ft_error("exit\nmsh: exit: too many arguments\n");
 		strp->status = 1;
 	}
-	else if (cont->arg[0] && !ft_contain_num(cont->arg[0]))
+	else if (cont->arg[i] && !ft_contain_num(cont->arg[i]))
 	{
-		(ft_error("exit\nmsh: exit: "), ft_error(cont->arg[0]), ft_error(MS));
+		(ft_error("exit\nmsh: exit: "), ft_error(cont->arg[i]), ft_error(MS));
 		exit(255);
 	}
-	else if (cont->arg[0] && ft_contain_num(cont->arg[0]))
-		ft_num_after_exit(cont);
+	else if (cont->arg[i] && ft_contain_num(cont->arg[i]))
+		ft_num_after_exit(cont->arg[i]);
 	else
 		(ft_error("exit\n"), exit(strp->status));
 }
