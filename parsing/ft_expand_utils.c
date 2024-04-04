@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 00:08:18 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/02 01:36:36 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/04 20:08:43 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,30 @@
 
 void	ft_push_middle(t_token *previous, t_token **current, t_token **newlist)
 {
-	t_token	*nextnode;
-	t_token	*lastnode;
-	t_token	*tobefreed;
+	t_push_middle	t;
 
-	tobefreed = (*current);
+	if (!newlist || !*newlist)
+		return ;
+	t.tobefreed = (*current);
 	if (previous == NULL)
 	{
-		nextnode = (*current)->next;
+		t.nextnode = (*current)->next;
 		*current = *newlist;
-		lastnode = ft_last_node(*newlist);
-		lastnode->next = nextnode;
+		t.lastnode = ft_last_node(*newlist);
+		t.lastnode->next = t.nextnode;
 	}
 	else
 	{
-		nextnode = (*current)->next;
+		t.nextnode = (*current)->next;
 		previous->next = *newlist;
-		lastnode = ft_last_node(*newlist);
-		lastnode->next = nextnode;
+		t.lastnode = ft_last_node(*newlist);
+		t.lastnode->next = t.nextnode;
 		if ((*newlist)->next == NULL)
 			*current = NULL;
 		else
 			*current = (*newlist)->next;
 	}
-	(free(tobefreed->token), free(tobefreed));
+	(free(t.tobefreed->token), free(t.tobefreed));
 }
 
 void	ft_token_list(t_token *current, t_token **new_list)
@@ -79,13 +79,15 @@ t_token	*ft_split_and_push_node(t_token **current)
 	return (new_list);
 }
 
-int	ft_check_after_expand(t_token **current)
+int	ft_check_after_expand(t_token **current, int is_quote)
 {
 	int	i;
 	int	flag;
 
 	(1) && (i = 0, flag = 0);
 	if ((*current)->type == FILENAME)
+		return (0);
+	if (is_quote == 1)
 		return (0);
 	while ((*current)->token[i] != '\0')
 	{

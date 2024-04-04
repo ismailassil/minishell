@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:42:41 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/04 09:53:18 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/04 20:00:26 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,55 +67,85 @@ static char	*ft_check_path(char *cmd, t_struct *strp, t_cont *cont)
 		(ft_return_path(f.path, cmd, strp, cont), exit(127));
 	return (f.envp_path);
 }
-char	**ft_fill_again(t_cont *cont)
-{
-	int		i;
-	int		j;
-	char	**args;
 
-	(1) && (i = 1, j = 0);
-	while (cont->arg && cont->arg[i] != 0)
-		i++;
-	args = malloc(i * sizeof(char *));
-	ft_check_allocation(args);
-	i = 1;
-	while (cont->arg && cont->arg[i] != 0)
+char	**ft_fill_again(t_cont *cont, int *st)
+{
+	t_fill_again	f;
+
+	(1) && (f.i = 0, f.j = 0, f.count = 0);
+	while (cont->arg && cont->arg[f.i] != 0)
 	{
-		args[j] = ft_strdup(cont->arg[i]);
-		ft_check_allocation(args[j]);
-		(1) && (j++, i++);
+		if (cont->arg && cont->arg_is_var[f.i] == 1 && cont->arg[f.i][0] == '\0')
+			f.i++;
+		else
+			(1) && (f.count++, f.i++);
 	}
-	args[j] = 0;
+	f.args = malloc((f.count + 1) * sizeof(char *));
+	ft_check_allocation(f.args);
+	(*st)++;
+	while (cont->arg && cont->arg[*st] != 0)
+	{
+		if (cont->arg && cont->arg_is_var[*st] == 1 && cont->arg[*st][0] == '\0')
+			(*st)++;
+		else
+		{
+			f.args[f.j] = ft_strdup(cont->arg[*st]);
+			ft_check_allocation(f.args[f.j]);
+			(1) && (f.j++, (*st)++);
+		}
+	}
+	f.args[f.j] = 0;
 	ft_f(cont->arg);
-	return (args);
+	return (f.args);
 }
 
 void	ft_check_first_cmd(char **cmd, t_cont *cont)
 {
+	int	i;
+
+	i = 0;
 	if (*cmd && cont->cmd_is_arg == 1 && (*cmd)[0] == '\0')
 	{
-		if (cont->arg[0] != 0)
+		while (cont->arg && cont->arg[i])
+		{
+			if (cont->arg_is_var[i] == 1 && cont->arg[i][0] == '\0')
+				i++;
+			else
+				break ;
+		}
+		if (cont->arg[i] != 0)
 		{
 			free(*cmd);
-			*cmd = ft_strdup(cont->arg[0]);
-			cont->arg = ft_fill_again(cont);
+			*cmd = ft_strdup(cont->arg[i]);
+			cont->arg = ft_fill_again(cont, &i);
 		}
-		else if (cont->arg[0] == 0)
+		else if (cont->arg[i] == 0)
 			exit(SUCCESS);
 	}
 }
 
 void	ft_check_(char **envp_path, char **cmd, t_struct *strp, t_cont *cont)
 {
+	int	i;
+
+	i = 0;
 	ft_check_first_cmd(cmd, cont);
 	if (*cmd && ((*cmd)[0] == '\0'
 			|| ((*cmd)[0] == '.' && ((*cmd)[1] == '\0' || (*cmd)[1] == '.'))))
 	{
-		if (*cmd && (*cmd)[0] == '.' && (*cmd)[1] == '\0')
+		if (*cmd && (*cmd)[0] == '.' && (*cmd)[1] == '\0' && !cont->arg[i])
 		{
 			ft_error("msh: .: filename argument required\n");
 			ft_error(".: usage: . filename [arguments]\n");
 			exit(2);
+		}
+		else if (*cmd && (*cmd)[0] == '.' && (*cmd)[1] == '\0' && cont->arg[i])
+		{
+			while (cont->arg[i] && cont->arg_is_var[i] == 1 && cont->arg[i][0] == '\0')
+				i++;
+			ft_error("msh: ");
+			ft_error(cont->arg[i]), ft_error(": No such file or directory\n");
+			exit(1);
 		}
 		else
 			(ft_stat(*cmd, ": command not found\n", strp, cont), exit(127));

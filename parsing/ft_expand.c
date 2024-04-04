@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 10:36:20 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/03 21:26:38 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/04 20:07:44 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,10 +120,12 @@ void	ft_expand_argument(t_struct *strp, t_token **linked_list)
 		if (ft_strchr(f.head->token, '$') && f.head->type != DELIMITER)
 		{
 			f.head->is_var = 1;
+			if (ft_strchr(f.head->token, '\'') || ft_strchr(f.head->token, '"'))
+				f.head->is_quote = 1;
 			f.tmp = ft_handle_expand(strp, f.head->token);
 			free(f.head->token);
 			f.head->token = f.tmp;
-			if (ft_check_after_expand(&f.head) == 1)
+			if (ft_check_after_expand(&f.head, f.head->is_quote) == 1)
 				ft_split_node(&f, linked_list);
 		}
 		f.previous = f.head;

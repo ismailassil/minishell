@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 10:52:06 by aibn-che          #+#    #+#             */
-/*   Updated: 2024/04/04 00:05:31 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/04 19:54:23 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	ft_t_token_len(t_token *head)
 
 t_token	*ft_last_node(t_token *top)
 {
-	while (top->next)
+	while (top && top->next)
 	{
 		top = top->next;
 	}
