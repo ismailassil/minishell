@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 00:09:46 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/02 00:47:03 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/04 06:03:36 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ void	ft_check_path_cmd(char **envp_path, char *cmd,
 	stat(cmd, &file_stat);
 	if (access(cmd, F_OK) == 0 && stat(cmd, &file_stat) == 0)
 	{
+		if (S_ISREG(file_stat.st_mode) && file_stat.st_size == 0)
+			exit(SUCCESS);
 		if (S_ISREG(file_stat.st_mode))
 			*envp_path = ft_strdup(cmd);
 		else if (S_ISDIR(file_stat.st_mode))
