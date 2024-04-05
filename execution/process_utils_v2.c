@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 00:09:46 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/04 19:44:16 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/05 02:50:11 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ static void	ft_fill_argv(t_cont *cont, char ***argv, int *j)
 	i = 0;
 	while (cont->arg && cont->arg[i] != 0)
 	{
-		if (cont->arg_is_var[i] == 1 && cont->arg[i][0] == '\0')
+		if (ft_evar(cont->arg_is_var[i], \
+			cont->arg_is_quote[i], cont->arg[i]))
 			i++;
 		else
 		{
@@ -34,15 +35,16 @@ static void	ft_fill_argv(t_cont *cont, char ***argv, int *j)
 char	**ft_join_for_argv_execve(t_cont *cont)
 {
 	char	**argv;
+	int		count;
 	int		i;
 	int		j;
-	int		count;
 
 	(1) && (i = 0, j = 0, count = 0);
 	argv = NULL;
 	while (cont->arg && cont->arg[i] != 0)
 	{
-		if (cont->arg_is_var[i] == 1 && cont->arg[i][0] == '\0')
+		if (ft_evar(cont->arg_is_var[i], \
+			cont->arg_is_quote[i], cont->arg[i]))
 			i++;
 		else
 			(1) && (i++, count++);

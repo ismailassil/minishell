@@ -6,24 +6,24 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:43:43 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/04 04:02:23 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/05 02:26:14 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	ft_amb_rdt(char **str, int type)
+int	ft_amb_rdt(char **str, int isvar, int isquote)
 {
 	t_amb_rdt	r;
 
 	r.i = 0;
-	if (type == 2)
+	if (isvar == 2)
 		return (0);
-	if ((*str) && (*str)[0] == '\0')
+	if (isquote != 1 && (*str) && (*str)[0] == '\0')
 		return (ft_error("msh: ambiguous redirect\n"), 1);
 	while ((*str) && ft_strchr(" \t\n\v\f\r", (*str)[r.i]) && (*str)[r.i] != '\0')
 		r.i++;
-	if ((*str)[r.i] == '\0')
+	if (isquote == 2 && (*str)[r.i] == '\0')
 		return (ft_error("msh: ambiguous redirect\n"), 1);
 	while ((*str)[r.i] != '\0')
 	{
@@ -32,7 +32,7 @@ int	ft_amb_rdt(char **str, int type)
 			return (ft_error("msh: ambiguous redirect\n"), 1);
 		r.i++;
 	}
-	if (ft_iswhitespace(*str) == 1)
+	if (isvar == 1 && isquote != 1 && ft_iswhitespace(*str) == 1)
 	{
 		r.ptr = ft_split_v2((*str));
 		free((*str));
@@ -52,8 +52,8 @@ static int	ft_open_infile_or_heredoc(t_cont *cont, t_info *info,
 	fd.i = -1;
 	while (cont->infile && cont->infile[++fd.i] != 0)
 	{
-		if (ft_amb_rdt(&cont->infile[fd.i], \
-			cont->infile_is_var[fd.i]) == 1)
+		if (ft_amb_rdt(&cont->infile[fd.i], cont->infile_is_var[fd.i], \
+			cont->infile_is_quote[fd.i]) == 1)
 			return (strp->status = 1, 1);
 		fd.infile = open(cont->infile[fd.i], O_RDONLY);
 		if (fd.infile == -1)
@@ -82,7 +82,8 @@ int	ft_open_files(t_cont *cont, t_info *info, t_struct *strp)
 	fd.i = -1;
 	while (cont->outfile && cont->outfile[++fd.i] != 0)
 	{
-		if (ft_amb_rdt(&cont->outfile[fd.i], cont->outfile_is_var[fd.i]) == 1)
+		if (ft_amb_rdt(&cont->outfile[fd.i], cont->outfile_is_var[fd.i], \
+			cont->outfile_is_quote[fd.i]) == 1)
 			return (strp->status = 1, 1);
 		if (cont->outfile_type[fd.i] == 1)
 			fd.outfile = open(cont->outfile[fd.i], CR | WO, 0644);

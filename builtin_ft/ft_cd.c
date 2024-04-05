@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 15:33:58 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/31 19:44:58 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/05 01:59:07 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,8 @@ int	ft_cd(char *argument, t_struct **strp)
 {
 	t_info_cd	info;
 
+	if (argument && argument[0] == '\0')
+		return (0);
 	info.tmp = NULL;
 	if (getcwd(info.current_dir, sizeof(info.current_dir)) == NULL)
 		*info.current_dir = '\0';

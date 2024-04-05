@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 21:10:11 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/04 09:26:38 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/05 02:49:09 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,16 +57,18 @@ void	execute_cd(t_cont *cont, t_struct **strp)
 		ft_add_path_executed_cmd("cd", (*strp)->env);
 		return ;
 	}
-	while (cont->arg && cont->arg[i] != 0)
+	while (cont->arg && cont->arg[i])
 	{
-		if (cont->arg_is_var[i] == 1 && cont->arg[i][0] == '\0')
+		if (ft_evar(cont->arg_is_var[i], \
+			cont->arg_is_quote[i], cont->arg[i]))
 			i++;
 		else
-		{
-			ft_cd(cont->arg[i], strp);
 			break ;
-		}
 	}
+	if (cont->arg[i])
+		ft_cd(cont->arg[i], strp);
+	if (cont->arg[i] == 0)
+		ft_cd(NULL, strp);
 	while (cont->arg[i])
 		i++;
 	ft_add_path_executed_cmd(cont->arg[i - 1], (*strp)->env);
@@ -80,9 +82,9 @@ void	execute_env(t_cont *cont, t_struct **strp)
 	int	i;
 
 	i = 0;
-	while (cont->arg && cont->arg[0])
+	while (cont->arg && cont->arg[i])
 	{
-		while (cont->arg_is_var[i] == 1 && cont->arg[i][0] == '\0')
+		while (ft_evar(cont->arg_is_var[i], cont->arg_is_quote[i], cont->arg[i]))
 			i++;
 		if (cont->arg[i] != 0)
 		{
@@ -91,7 +93,7 @@ void	execute_env(t_cont *cont, t_struct **strp)
 			(*strp)->status = 127;
 			while (cont->arg && cont->arg[i] != 0)
 			{
-				if (cont->arg_is_var[i] == 1 && cont->arg[i][0] == '\0')
+				if (ft_evar(cont->arg_is_var[i], cont->arg_is_quote[i], cont->arg[i]))
 					i++;
 				else
 					(1) && (ft_add_path_executed_cmd(cont->arg[i], \
@@ -114,21 +116,21 @@ void	execute_export(t_cont *cont, t_struct **strp)
 	i = 0;
 	(*strp)->status = 0;
 	if (cont->arg == NULL || cont->arg[0] == NULL
-		|| (cont->arg_is_var[i] == 1 && cont->arg[i][0] == '\0'
-		&& !cont->arg[i + 1]))
+		|| (ft_evar(cont->arg_is_var[i], cont->arg_is_quote[i], cont->arg[i])
+			&& !cont->arg[i + 1]))
 	{
-		ft_export(NULL, *strp, cont->arg_is_var[0]);
+		ft_export(NULL, *strp);
 		ft_add_path_executed_cmd("export", (*strp)->env);
 	}
 	else
 	{
 		while (cont->arg && cont->arg[i] != 0)
 		{
-			if (cont->arg_is_var[i] == 1 && cont->arg[i][0] == '\0')
+			if (ft_evar(cont->arg_is_var[i], cont->arg_is_quote[i], cont->arg[i]))
 				i++;
 			else
 			{
-				ft_export(cont->arg[i], *strp, cont->arg_is_var[i]),
+				ft_export(cont->arg[i], *strp),
 				ft_add_path_executed_cmd(cont->arg[i], (*strp)->env);
 				i++;
 			}

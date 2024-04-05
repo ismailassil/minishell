@@ -6,13 +6,13 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 21:12:35 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/04 09:37:41 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/05 00:10:04 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static void	ft_allocate_for_rest_v2(t_tmp_cont *tmp, t_cont **new)
+static void	ft_allocate_for_here_doc(t_tmp_cont *tmp, t_cont **new)
 {
 	int	i;
 
@@ -30,31 +30,54 @@ static void	ft_allocate_for_rest_v2(t_tmp_cont *tmp, t_cont **new)
 	*(*new)->here_doc_fd = 0;
 }
 
-static void	ft_allocate_for_rest(t_tmp_cont *tmp, t_cont **new, int *i)
+static void	ft_allocate_for_infile(t_tmp_cont *tmp, t_cont **new, int *i)
+{
+	*i = 0;
+	while (tmp->inf && tmp->inf[*i] != 0)
+		(*i)++;
+	(*new)->infile = malloc((*i + 1) * sizeof(char *));
+	(*new)->infile_is_var = malloc((*i + 1) * sizeof(char *));
+	(*new)->infile_is_quote = malloc((*i + 1) * sizeof(char *));
+	*i = 0;
+	while (tmp->inf && tmp->inf[*i] != 0)
+	{
+		(*new)->infile[*i] = ft_strdup(tmp->inf[*i]);
+		(*new)->infile_is_var[*i] = tmp->inf_is_var[*i];
+		(*new)->infile_is_quote[*i] = tmp->inf_is_quote[*i];
+		(*i)++;
+	}
+	(*new)->infile[*i] = 0;
+	(*new)->infile_is_var[*i] = 0;
+	(*new)->infile_is_quote[*i] = 0;
+}
+
+static void	ft_allocate_for_outfile(t_tmp_cont *tmp, t_cont **new, int *i)
 {
 	int	j;
 
 	*i = 0;
 	while (tmp->out_t && tmp->out_t[*i] != 0)
 		(*i)++;
-	(*new)->outfile_type = malloc((*i + 1) * sizeof(char *));
-	(*new)->outfile_is_var = malloc((*i + 1) * sizeof(char *));
+	(*new)->outfile_type = malloc((*i + 1) * sizeof(int));
 	j = 0;
 	while (j < *i)
-	{
-		(*new)->outfile_type[j] = tmp->out_t[j];
-		(*new)->outfile_is_var[j] = tmp->out_is_var[j];
-		j++;
-	}
-	(1) && ((*new)->outfile_type[j] = 0, (*new)->outfile_is_var[j] = 0, *i = 0);
+		(1) && ((*new)->outfile_type[j] = tmp->out_t[j], j++);
+	(1) && ((*new)->outfile_type[j] = 0, *i = 0);
 	while (tmp->outf && tmp->outf[*i] != 0)
 		(*i)++;
 	(*new)->outfile = malloc((*i + 1) * sizeof(char *));
+	(*new)->outfile_is_var = malloc((*i + 1) * sizeof(int));
+	(*new)->outfile_is_quote = malloc((*i + 1) * sizeof(int));
 	*i = 0;
 	while (tmp->outf && tmp->outf[*i] != 0)
-		(1) && ((*new)->outfile[*i] = ft_strdup(tmp->outf[*i]), (*i)++);
-	(*new)->outfile[*i] = 0;
-	ft_allocate_for_rest_v2(tmp, new);
+	{
+		(*new)->outfile[*i] = ft_strdup(tmp->outf[*i]);
+		(*new)->outfile_is_var[*i] = tmp->out_is_var[*i];
+		(*new)->outfile_is_quote[*i] = tmp->out_is_quote[*i];
+		(*i)++;
+	}
+	(1) && ((*new)->outfile[*i] = 0, (*new)->outfile_is_var[*i] = 0);
+	(*new)->outfile_is_quote[*i] = 0;
 }
 
 static void	ft_allocate_(t_tmp_cont *tmp, t_cont **new, int *i)
@@ -64,26 +87,21 @@ static void	ft_allocate_(t_tmp_cont *tmp, t_cont **new, int *i)
 		(*i)++;
 	(*new)->arg = malloc((*i + 1) * sizeof(char *));
 	(*new)->arg_is_var = malloc((*i + 1) * sizeof(int));
+	(*new)->arg_is_quote = malloc((*i + 1) * sizeof(int));
 	*i = 0;
 	while (tmp->arg && tmp->arg[*i] != 0)
 	{
 		(*new)->arg[*i] = ft_strdup(tmp->arg[*i]);
 		(*new)->arg_is_var[*i] = tmp->arg_is_var[*i];
+		(*new)->arg_is_quote[*i] = tmp->arg_is_quote[*i];
 		(*i)++;
 	}
-	(1) && ((*new)->arg[*i] = 0, (*new)->arg_is_var[*i] = 0, *i = 0);
-	while (tmp->inf && tmp->inf[*i] != 0)
-		(*i)++;
-	(*new)->infile = malloc((*i + 1) * sizeof(char *));
-	(*new)->infile_is_var = malloc((*i + 1) * sizeof(char *));
+	(*new)->arg[*i] = 0;
+	(1) && ((*new)->arg_is_var[*i] = 0, (*new)->arg_is_quote[*i] = 0);
 	*i = 0;
-	while (tmp->inf && tmp->inf[*i] != 0)
-	{
-		(*new)->infile[*i] = ft_strdup(tmp->inf[*i]);
-		(1) && ((*new)->infile_is_var[*i] = tmp->inf_is_var[*i], (*i)++);
-	}
-	(1) && ((*new)->infile[*i] = 0, (*new)->infile_is_var[*i] = 0);
-	ft_allocate_for_rest(tmp, new, i);
+	ft_allocate_for_infile(tmp, new, i);
+	ft_allocate_for_outfile(tmp, new, i);
+	ft_allocate_for_here_doc(tmp, new);
 }
 
 t_cont	*ft_new_node_for_cont(t_tmp_cont *tmp)
@@ -101,6 +119,7 @@ t_cont	*ft_new_node_for_cont(t_tmp_cont *tmp)
 		new->cmd = ft_strdup(tmp->cmd);
 		ft_check_allocation(new->cmd);
 		new->cmd_is_arg = tmp->cmd_is_arg;
+		new->cmd_is_quote = tmp->cmd_is_quote;
 	}
 	i = 0;
 	ft_allocate_(tmp, &new, &i);

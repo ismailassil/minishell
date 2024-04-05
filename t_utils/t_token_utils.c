@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 10:52:06 by aibn-che          #+#    #+#             */
-/*   Updated: 2024/04/04 19:54:23 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/04 23:36:03 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ t_token	*ft_new_node(char *token)
 		return (NULL);
 	new->token = ft_strdup(token);
 	new->is_var = 0;
+	new->is_quote = 0;
 	if (!new->token)
 		return (NULL);
 	new->next = NULL;

@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:42:41 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/04 20:00:26 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/05 02:50:40 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,13 @@ static char	*ft_check_path(char *cmd, t_struct *strp, t_cont *cont)
 	return (f.envp_path);
 }
 
+int	ft_evar(int is_var, int is_quote, char *str)
+{
+	if (str && is_var == 1 && is_quote != 1 && str[0] == '\0')
+		return (1);
+	return (0);
+}
+
 char	**ft_fill_again(t_cont *cont, int *st)
 {
 	t_fill_again	f;
@@ -75,7 +82,8 @@ char	**ft_fill_again(t_cont *cont, int *st)
 	(1) && (f.i = 0, f.j = 0, f.count = 0);
 	while (cont->arg && cont->arg[f.i] != 0)
 	{
-		if (cont->arg && cont->arg_is_var[f.i] == 1 && cont->arg[f.i][0] == '\0')
+		if (ft_evar(cont->arg_is_var[f.i], \
+			cont->arg_is_quote[f.i], cont->arg[f.i]))
 			f.i++;
 		else
 			(1) && (f.count++, f.i++);
@@ -85,7 +93,8 @@ char	**ft_fill_again(t_cont *cont, int *st)
 	(*st)++;
 	while (cont->arg && cont->arg[*st] != 0)
 	{
-		if (cont->arg && cont->arg_is_var[*st] == 1 && cont->arg[*st][0] == '\0')
+		if (ft_evar(cont->arg_is_var[*st], \
+			cont->arg_is_quote[*st], cont->arg[*st]))
 			(*st)++;
 		else
 		{
@@ -104,11 +113,12 @@ void	ft_check_first_cmd(char **cmd, t_cont *cont)
 	int	i;
 
 	i = 0;
-	if (*cmd && cont->cmd_is_arg == 1 && (*cmd)[0] == '\0')
+	if (*cmd && cont->cmd_is_arg == 1 && cont->cmd_is_quote != 1 && (*cmd)[0] == '\0')
 	{
 		while (cont->arg && cont->arg[i])
 		{
-			if (cont->arg_is_var[i] == 1 && cont->arg[i][0] == '\0')
+			if (ft_evar(cont->arg_is_var[i], \
+				cont->arg_is_quote[i], cont->arg[i]))
 				i++;
 			else
 				break ;
@@ -131,25 +141,8 @@ void	ft_check_(char **envp_path, char **cmd, t_struct *strp, t_cont *cont)
 	i = 0;
 	ft_check_first_cmd(cmd, cont);
 	if (*cmd && ((*cmd)[0] == '\0'
-			|| ((*cmd)[0] == '.' && ((*cmd)[1] == '\0' || (*cmd)[1] == '.'))))
-	{
-		if (*cmd && (*cmd)[0] == '.' && (*cmd)[1] == '\0' && !cont->arg[i])
-		{
-			ft_error("msh: .: filename argument required\n");
-			ft_error(".: usage: . filename [arguments]\n");
-			exit(2);
-		}
-		else if (*cmd && (*cmd)[0] == '.' && (*cmd)[1] == '\0' && cont->arg[i])
-		{
-			while (cont->arg[i] && cont->arg_is_var[i] == 1 && cont->arg[i][0] == '\0')
-				i++;
-			ft_error("msh: ");
-			ft_error(cont->arg[i]), ft_error(": No such file or directory\n");
-			exit(1);
-		}
-		else
-			(ft_stat(*cmd, ": command not found\n", strp, cont), exit(127));
-	}
+		|| ((*cmd)[0] == '.' && ((*cmd)[1] == '\0' || (*cmd)[1] == '.'))))
+		(ft_stat(*cmd, ": command not found\n", strp, cont), exit(127));
 	if (ft_find_slash_or_point(*cmd) == 1)
 		ft_check_path_cmd(envp_path, *cmd, strp, cont);
 	else

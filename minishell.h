@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/04 20:08:31 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/05 01:21:08 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,12 +169,16 @@ typedef struct s_tmp_cont
 {
 	char	*cmd;
 	int		cmd_is_arg;
+	int		cmd_is_quote;
 	char	**arg;
 	int		*arg_is_var;
+	int		*arg_is_quote;
 	char	**inf;
 	int		*out_is_var;
+	int		*out_is_quote;
 	char	**outf;
 	int		*inf_is_var;
+	int		*inf_is_quote;
 	char	**here_doc;
 	int		*file_or_heredoc;
 	int		*out_t;
@@ -184,15 +188,19 @@ typedef struct s_container
 {
 	char				*cmd;
 	int					cmd_is_arg;
+	int					cmd_is_quote;
 	char				**arg;
 	int					*arg_is_var;
+	int					*arg_is_quote;
 	char				**infile;
 	int					*infile_is_var;
+	int					*infile_is_quote;
 	char				**here_doc;
 	int					*file_or_heredoc;
 	int					*here_doc_fd;
 	char				**outfile;
 	int					*outfile_is_var;
+	int					*outfile_is_quote;
 	int					*outfile_type;
 	struct s_container	*next;
 }						t_cont;
@@ -279,7 +287,7 @@ int						ft_cd(char *argument, t_struct **strp);
 void					ft_echo(char *argument);
 void					ft_env(t_env *envp);
 void					ft_exit(t_cont *cont, t_struct *strp);
-int						ft_export(char *arg, t_struct *strp, int type);
+int						ft_export(char *arg, t_struct *strp);
 void					ft_pwd(t_env *env);
 void					ft_unset(t_struct **strp, char *argument);
 //	Utils function for builtin function
@@ -373,6 +381,7 @@ void					ft_stat(char *cmd, char *str,
 							t_struct *strp, t_cont *cont);
 int						ft_find_slash_or_point(char *cmd);
 int						ft_iswhitespace(char *str);
+int						ft_evar(int is_var, int is_quote, char *str);
 
 /*==========UTILS FUNCIONS==========*/
 int						ft_check_if_chars_digit(int c);
