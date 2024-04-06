@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 15:41:50 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/05 02:49:25 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/06 03:17:07 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	close_opened_files(t_info *info)
 		close(info->fd.opened_fd[i++]);
 }
 
-static bool	ft_check_path_in_env(t_struct *strp, t_cont *cont)
+static bool	ft_check_path_in_env(t_struct *strp, t_cont *c)
 {
 	t_env	*head;
 	char	*tobedisplayed;
@@ -40,17 +40,17 @@ static bool	ft_check_path_in_env(t_struct *strp, t_cont *cont)
 		}
 		head = head->next;
 	}
-	if (cont->cmd && cont->cmd_is_arg == 1 && cont->cmd_is_quote != 1 && (cont->cmd)[0] == '\0')
+	if (ft_evar(c->cmd_is_var, c->cmd_is_quote, c->cmd))
 	{
-		while (ft_evar(cont->arg_is_var[i], cont->arg_is_quote[i], cont->arg[i]))
+		while (ft_evar(c->arg_is_var[i], c->arg_is_quote[i], c->arg[i]))
 			i++;
-		if (cont->arg[i] == 0)
+		if (c->arg[i] == 0)
 			return (true);
 		else
-			tobedisplayed = cont->arg[i];
+			tobedisplayed = c->arg[i];
 	}
 	else
-		tobedisplayed = cont->cmd;
+		tobedisplayed = c->cmd;
 	(ft_error("msh: "), ft_error(tobedisplayed));
 	ft_error(": No such file or directory\n");
 	strp->status = 127;

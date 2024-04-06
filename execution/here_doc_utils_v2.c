@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 23:12:33 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/30 02:57:44 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/06 03:16:43 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	ft_question_mark_here_doc(t_expand *exp, char *s,
 	char	*num;
 
 	num = ft_itoa(strp->status);
-	exp->new_str = ft_strjoin_(s, num);
+	exp->new_str = ft_join_(s, num);
 	*i += 1;
 	free(s);
 	free(num);
@@ -32,7 +32,7 @@ void	ft_special_chars_here_doc(t_expand *exp,
 	s = exp->new_str;
 	if (arg[(*i) + 1] == '-')
 	{
-		(1) && (exp->new_str = ft_strjoin_(s, "himBH"), *i += 1);
+		(1) && (exp->new_str = ft_join_(s, "himBH"), *i += 1);
 		free(s);
 	}
 	else if (arg[(*i) + 1] == '?')
@@ -53,7 +53,7 @@ int	ft_handle_irregulare_cases_here_doc(t_expand *exp, char *arg,
 	{
 		if (arg[(*i) + 1] == '0')
 		{
-			exp->new_str = ft_strjoin_(s, "minishell");
+			exp->new_str = ft_join_(s, "minishell");
 			free(s);
 		}
 		return ((*i += 2), 1);

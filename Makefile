@@ -6,7 +6,7 @@
 #    By: iassil <iassil@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/27 14:35:22 by iassil            #+#    #+#              #
-#    Updated: 2024/04/02 17:30:09 by iassil           ###   ########.fr        #
+#    Updated: 2024/04/06 03:18:30 by iassil           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,8 @@ EXEC_FILES	=	execution.c				process_utils_v1.c		execute_builtin.c		\
 				here_doc.c				fill_container.c		mutli_cmds.c			\
 				free_fun.c				here_doc_utils_v1.c		here_doc_utils_v2.c		\
 				execution_utils_v1.c	execution_utils_v2.c	execution_utils_v3.c	\
-				execute_builtin_utils.c	process_utils_v2.c
+				execute_builtin_utils.c	process_utils_v2.c		process_utils_v3.c		\
+				fill_container_utils.c
 
 PARS_FILES	=	parsing.c			ft_tokenize.c			ft_check_syntax.c	\
 				ft_expand.c			ft_remove_quotes.c		ft_split_tokens.c	\

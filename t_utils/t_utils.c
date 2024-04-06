@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 21:12:35 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/05 00:10:04 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/06 02:52:16 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ t_cont	*ft_new_node_for_cont(t_tmp_cont *tmp)
 	{
 		new->cmd = ft_strdup(tmp->cmd);
 		ft_check_allocation(new->cmd);
-		new->cmd_is_arg = tmp->cmd_is_arg;
+		new->cmd_is_var = tmp->cmd_is_var;
 		new->cmd_is_quote = tmp->cmd_is_quote;
 	}
 	i = 0;

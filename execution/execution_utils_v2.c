@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 01:49:47 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/31 20:15:24 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/06 03:16:43 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	ft_add_path_executed_cmd(char *str, t_env *env)
 		if (ft_strncmp(head->value, "_=", 2) == 0)
 		{
 			(free(head->value), head->value = NULL);
-			head->value = ft_strjoin_("_=", str);
+			head->value = ft_join_("_=", str);
 			ft_check_allocation(head->value);
 			return ;
 		}
@@ -51,7 +51,7 @@ void	ft_add_path_executed_cmd(char *str, t_env *env)
 	}
 	if (flag == 0)
 	{
-		cmd = ft_strjoin_("_=", str);
+		cmd = ft_join_("_=", str);
 		ft_check_allocation(cmd);
 		ft_push_value(cmd, &env);
 		free(cmd);

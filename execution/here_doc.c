@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 03:21:09 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/31 00:30:14 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/06 03:16:43 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ static void	ft_get_the_line(char *hold, int *pipefd, t_struct *strp)
 			break ;
 		}
 		ft_check_dollar_sign_here_doc(&f.line, pipefd[1], strp, f.flag);
-		f.push = ft_strjoin_(f.line, "\n");
+		f.push = ft_join_(f.line, "\n");
 		ft_check_allocation(f.push);
 		(ft_putstr(f.push, pipefd[1]), free(f.push), free(f.line));
 	}

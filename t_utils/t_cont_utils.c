@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 19:25:31 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/04 03:01:33 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/06 03:03:11 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,21 @@ int	ft_push_container(t_tmp_cont *tmp, t_cont **head)
 	return (1);
 }
 
+void	ft_free_the_rest(t_cont *c)
+{
+	free(c->here_doc);
+	free(c->outfile);
+	free(c->outfile_is_var);
+	free(c->outfile_type);
+	free(c->file_or_heredoc);
+	free(c->arg_is_var);
+	free(c->arg_is_quote);
+	free(c->infile_is_quote);
+	free(c->outfile_is_quote);
+	free(c->infile_is_var);
+	free(c->here_doc_fd);
+}
+
 void	ft_free_containers(t_cont **head)
 {
 	t_cont	*c;
@@ -72,9 +87,8 @@ void	ft_free_containers(t_cont **head)
 		i = 0;
 		while (c->here_doc[i] != NULL)
 			(1) && (free(c->here_doc[i]), i++);
-		(free(c->here_doc), free(c->outfile), free(c->outfile_is_var));
-		(free(c->outfile_type), free(c->file_or_heredoc), free(c->arg_is_var));
-		(free(c->infile_is_var), free(c->here_doc_fd), free(c), c = NULL);
+		ft_free_the_rest(c);
+		(free(c), c = NULL);
 	}
 	(free(*head), head = NULL);
 }

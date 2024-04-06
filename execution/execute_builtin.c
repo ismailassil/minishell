@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 16:55:35 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/06 01:13:42 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/06 02:56:43 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	ft_compare_arg(char *cmd, t_cont *cont, t_struct *strp, int *flag)
 	{
 		if (strp->nr_cont == 1)
 			printf("exit\n");
-		ft_exit(cont, strp), *flag = 1;
+		(1) && (ft_exit(cont, strp), *flag = 1);
 	}
 }
 

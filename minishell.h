@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/06 01:13:33 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/06 03:16:43 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ typedef struct s_info_cd
 {
 	char	current_dir[PATH_MAX];
 	char	buf[PATH_MAX];
-	char	*buffer;
+	char	*buff;
 	char	*tmp;
 	char	*cwd;
 	char	*dir;
@@ -129,15 +129,6 @@ typedef struct s_path
 	char	*envp_path;
 	char	*return_path;
 }			t_path;
-
-typedef struct s_tokens
-{
-	char			*token;
-	int				type;
-	int				is_var;
-	int				is_quote;
-	struct s_tokens	*next;
-}					t_token;
 
 typedef struct s_heredoc
 {
@@ -166,10 +157,19 @@ typedef struct s_count
 	int	here_doc;
 }		t_count;
 
+typedef struct s_tokens
+{
+	char			*token;
+	int				type;
+	int				is_var;
+	int				is_quote;
+	struct s_tokens	*next;
+}					t_token;
+
 typedef struct s_tmp_cont
 {
 	char	*cmd;
-	int		cmd_is_arg;
+	int		cmd_is_var;
 	int		cmd_is_quote;
 	char	**arg;
 	int		*arg_is_var;
@@ -188,7 +188,7 @@ typedef struct s_tmp_cont
 typedef struct s_container
 {
 	char				*cmd;
-	int					cmd_is_arg;
+	int					cmd_is_var;
 	int					cmd_is_quote;
 	char				**arg;
 	int					*arg_is_var;
@@ -337,6 +337,13 @@ int						ft_check_after_expand(t_token **current, int is_quote);
 void					ft_split_node(t_expand_arg *f, t_token **linked_list);
 
 /*==========EXECUTION FUNCIONS==========*/
+void					ft_fill_infile_outfile_here_doc(t_token *head, \
+							t_tmp_cont *t, t_cc *c);
+void					ft_fill_outfile_append(t_token *head, \
+							t_tmp_cont *t, t_cc *c);
+void					ft_allocate_tmp_cont(t_token *head, t_tmp_cont	**cont);
+void					ft_allocate_for_arg_types(t_tmp_cont **cont, t_count c);
+void					ft_count_(t_token *head, t_count *c);
 int						ft_check_cont_and_cmd(t_cont *cont, \
 							t_struct *strp, t_info *info, int nr_cont);
 int						ft_here_doc(char *delimiter, t_struct *strp);
@@ -383,6 +390,7 @@ void					ft_stat(char *cmd, char *str,
 int						ft_find_slash_or_point(char *cmd);
 int						ft_iswhitespace(char *str);
 int						ft_evar(int is_var, int is_quote, char *str);
+void					ft_check_first_cmd(char **cmd, t_cont *c);
 
 /*==========UTILS FUNCIONS==========*/
 int						ft_check_if_chars_digit(int c);
@@ -460,7 +468,7 @@ char					*ft_substr(char const *s, unsigned int start,
 							size_t len);
 char					*ft_strtrim(char const *s1, char const *set);
 char					*ft_strjoin(char const *s1, char const *s2);
-char					*ft_strjoin_(char *str1, char *str2);
+char					*ft_join_(char *str1, char *str2);
 char					*ft_itoa(int n);
 char					*ft_strmapi(char const *s,
 							char (*f)(unsigned int, char));

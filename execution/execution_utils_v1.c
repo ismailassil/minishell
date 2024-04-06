@@ -6,37 +6,37 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:43:43 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/05 03:35:21 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/06 03:17:41 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	ft_amb_rdt(char **str, int isvar, int isquote)
+int	ft_amb_rdt(char **s, int isvar, int isquote)
 {
 	t_amb_rdt	r;
 
 	r.i = 0;
 	if (isvar == 2)
 		return (0);
-	if (isquote != 1 && (*str) && (*str)[0] == '\0')
+	if (isquote != 1 && (*s) && (*s)[0] == '\0')
 		return (ft_error("msh: ambiguous redirect\n"), 1);
-	while ((*str) && ft_strchr(" \t\n\v\f\r", (*str)[r.i]) && (*str)[r.i] != '\0')
+	while ((*s) && ft_strchr(" \t\n\v\f\r", (*s)[r.i]) && (*s)[r.i] != '\0')
 		r.i++;
-	if (isquote != 1 && (*str)[r.i] == '\0')
+	if (isquote != 1 && (*s)[r.i] == '\0')
 		return (ft_error("msh: ambiguous redirect\n"), 1);
-	while ((*str)[r.i] != '\0')
+	while ((*s)[r.i] != '\0')
 	{
-		if (isquote != 1 && ft_strchr(" \t\n\v\f\r", (*str)[r.i])
-			&& !ft_strchr(" \t\n\v\f\r", (*str)[r.i + 1]))
+		if (isquote != 1 && ft_strchr(" \t\n\v\f\r", (*s)[r.i])
+			&& !ft_strchr(" \t\n\v\f\r", (*s)[r.i + 1]))
 			return (ft_error("msh: ambiguous redirect\n"), 1);
 		r.i++;
 	}
-	if (isvar == 1 && isquote != 1 && ft_iswhitespace(*str) == 1)
+	if (isvar == 1 && isquote != 1 && ft_iswhitespace(*s) == 1)
 	{
-		r.ptr = ft_split_v2((*str));
-		free((*str));
-		(*str) = r.ptr[0];
+		r.ptr = ft_split_v2((*s));
+		free((*s));
+		(*s) = r.ptr[0];
 	}
 	return (0);
 }
@@ -75,24 +75,23 @@ static int	ft_open_infile_or_heredoc(t_cont *cont, t_info *info,
 /*
 *	This function checks and open files for the outfiles
 */
-int	ft_open_files(t_cont *cont, t_info *info, t_struct *strp)
+int	ft_open_files(t_cont *c, t_info *info, t_struct *s)
 {
 	t_fd_	fd;
 
 	fd.i = -1;
-	while (cont->outfile && cont->outfile[++fd.i] != 0)
+	while (c->outfile && c->outfile[++fd.i] != 0)
 	{
-		if (ft_amb_rdt(&cont->outfile[fd.i], cont->outfile_is_var[fd.i], \
-			cont->outfile_is_quote[fd.i]) == 1)
-			return (strp->status = 1, 1);
-		if (cont->outfile_type[fd.i] == 1)
-			fd.outfile = open(cont->outfile[fd.i], CR | WO, 0644);
-		else if (cont->outfile_type[fd.i] == 2)
-			fd.outfile = open(cont->outfile[fd.i], CR | WO | AP, 0644);
+		if (ft_amb_rdt(&c->outfile[fd.i], c->outfile_is_var[fd.i], \
+			c->outfile_is_quote[fd.i]) == 1)
+			return (s->status = 1, 1);
+		if (c->outfile_type[fd.i] == 1)
+			fd.outfile = open(c->outfile[fd.i], CR | WO, 0644);
+		else if (c->outfile_type[fd.i] == 2)
+			fd.outfile = open(c->outfile[fd.i], CR | WO | AP, 0644);
 		if (fd.outfile == -1)
-			return (ft_error("msh: "), perror(cont->outfile[fd.i]), \
-				strp->status = 1, 1);
-		if (cont->outfile && cont->outfile[fd.i + 1] != 0)
+			return (ft_error("msh: "), perror(c->outfile[fd.i]), s->status = 1, 1);
+		if (c->outfile && c->outfile[fd.i + 1] != 0)
 			ft_syscall(close(fd.outfile), "msh: close");
 		else
 		{
@@ -100,7 +99,7 @@ int	ft_open_files(t_cont *cont, t_info *info, t_struct *strp)
 			info->fd.opened_fd[info->fd.len++] = info->fd.outfile;
 		}
 	}
-	if (ft_open_infile_or_heredoc(cont, info, strp) == 1)
+	if (ft_open_infile_or_heredoc(c, info, s) == 1)
 		return (1);
 	return (0);
 }

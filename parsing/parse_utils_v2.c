@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils_v2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 17:44:37 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/04 18:08:51 by aibn-che         ###   ########.fr       */
+/*   Updated: 2024/04/06 03:16:43 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	ft_question_mark(t_expand *exp, char *s, int *i, t_struct *strp)
 	char	*num;
 
 	num = ft_itoa(strp->status);
-	exp->new_str = ft_strjoin_(s, num);
+	exp->new_str = ft_join_(s, num);
 	*i += 1;
 	free(s);
 	free(num);
@@ -48,7 +48,7 @@ void	ft_special_chars(t_expand *exp, char *arg, int *i, t_struct *strp)
 	s = exp->new_str;
 	if (arg[(*i) + 1] == '-')
 	{
-		(1) && (exp->new_str = ft_strjoin_(s, "himBH"), *i += 1);
+		(1) && (exp->new_str = ft_join_(s, "himBH"), *i += 1);
 		free(s);
 	}
 	else if (arg[(*i) + 1] == '?')
@@ -72,7 +72,7 @@ int	ft_handle_irregulare_cases(t_expand *exp, char *arg, int *i, t_struct *strp)
 	{
 		if (arg[(*i) + 1] == '0')
 		{
-			exp->new_str = ft_strjoin_(s, "minishell");
+			exp->new_str = ft_join_(s, "minishell");
 			free(s);
 		}
 		return ((*i += 2), 1);
@@ -107,7 +107,7 @@ int	ft_expand_word_after_dollar(t_expand *exp, int *i,
 		return (1);
 	exp->expa = ft_arg_is_exist(strp->env, arg + (*i + 1));
 	s = exp->new_str;
-	exp->new_str = ft_strjoin_(exp->new_str, exp->expa);
+	exp->new_str = ft_join_(exp->new_str, exp->expa);
 	(free(s), free(exp->expa));
 	if (i_to_pass)
 		return ((*i) = (i_to_pass), 1);

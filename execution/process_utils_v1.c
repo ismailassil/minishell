@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:42:41 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/05 02:50:40 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/06 03:05:42 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,72 +66,6 @@ static char	*ft_check_path(char *cmd, t_struct *strp, t_cont *cont)
 	if (!f.envp_path)
 		(ft_return_path(f.path, cmd, strp, cont), exit(127));
 	return (f.envp_path);
-}
-
-int	ft_evar(int is_var, int is_quote, char *str)
-{
-	if (str && is_var == 1 && is_quote != 1 && str[0] == '\0')
-		return (1);
-	return (0);
-}
-
-char	**ft_fill_again(t_cont *cont, int *st)
-{
-	t_fill_again	f;
-
-	(1) && (f.i = 0, f.j = 0, f.count = 0);
-	while (cont->arg && cont->arg[f.i] != 0)
-	{
-		if (ft_evar(cont->arg_is_var[f.i], \
-			cont->arg_is_quote[f.i], cont->arg[f.i]))
-			f.i++;
-		else
-			(1) && (f.count++, f.i++);
-	}
-	f.args = malloc((f.count + 1) * sizeof(char *));
-	ft_check_allocation(f.args);
-	(*st)++;
-	while (cont->arg && cont->arg[*st] != 0)
-	{
-		if (ft_evar(cont->arg_is_var[*st], \
-			cont->arg_is_quote[*st], cont->arg[*st]))
-			(*st)++;
-		else
-		{
-			f.args[f.j] = ft_strdup(cont->arg[*st]);
-			ft_check_allocation(f.args[f.j]);
-			(1) && (f.j++, (*st)++);
-		}
-	}
-	f.args[f.j] = 0;
-	ft_f(cont->arg);
-	return (f.args);
-}
-
-void	ft_check_first_cmd(char **cmd, t_cont *cont)
-{
-	int	i;
-
-	i = 0;
-	if (*cmd && cont->cmd_is_arg == 1 && cont->cmd_is_quote != 1 && (*cmd)[0] == '\0')
-	{
-		while (cont->arg && cont->arg[i])
-		{
-			if (ft_evar(cont->arg_is_var[i], \
-				cont->arg_is_quote[i], cont->arg[i]))
-				i++;
-			else
-				break ;
-		}
-		if (cont->arg[i] != 0)
-		{
-			free(*cmd);
-			*cmd = ft_strdup(cont->arg[i]);
-			cont->arg = ft_fill_again(cont, &i);
-		}
-		else if (cont->arg[i] == 0)
-			exit(SUCCESS);
-	}
 }
 
 void	ft_check_(char **envp_path, char **cmd, t_struct *strp, t_cont *cont)

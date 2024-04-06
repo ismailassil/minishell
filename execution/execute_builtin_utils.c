@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 21:10:11 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/05 02:49:09 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/06 02:59:55 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,26 +77,26 @@ void	execute_cd(t_cont *cont, t_struct **strp)
 /*
 *	This function execute "env"
 */
-void	execute_env(t_cont *cont, t_struct **strp)
+void	execute_env(t_cont *c, t_struct **strp)
 {
 	int	i;
 
 	i = 0;
-	while (cont->arg && cont->arg[i])
+	while (c->arg && c->arg[i])
 	{
-		while (ft_evar(cont->arg_is_var[i], cont->arg_is_quote[i], cont->arg[i]))
+		while (ft_evar(c->arg_is_var[i], c->arg_is_quote[i], c->arg[i]))
 			i++;
-		if (cont->arg[i] != 0)
+		if (c->arg[i] != 0)
 		{
-			(ft_error("env: "), ft_error(cont->arg[i]));
+			(ft_error("env: "), ft_error(c->arg[i]));
 			ft_error(": No such file or directory\n");
 			(*strp)->status = 127;
-			while (cont->arg && cont->arg[i] != 0)
+			while (c->arg && c->arg[i] != 0)
 			{
-				if (ft_evar(cont->arg_is_var[i], cont->arg_is_quote[i], cont->arg[i]))
+				if (ft_evar(c->arg_is_var[i], c->arg_is_quote[i], c->arg[i]))
 					i++;
 				else
-					(1) && (ft_add_path_executed_cmd(cont->arg[i], \
+					(1) && (ft_add_path_executed_cmd(c->arg[i], \
 						(*strp)->env), i++);
 			}
 			return ;
@@ -109,29 +109,29 @@ void	execute_env(t_cont *cont, t_struct **strp)
 /*
 *	This function execute "export"
 */
-void	execute_export(t_cont *cont, t_struct **strp)
+void	execute_export(t_cont *c, t_struct **strp)
 {
 	int	i;
 
 	i = 0;
 	(*strp)->status = 0;
-	if (cont->arg == NULL || cont->arg[0] == NULL
-		|| (ft_evar(cont->arg_is_var[i], cont->arg_is_quote[i], cont->arg[i])
-			&& !cont->arg[i + 1]))
+	if (c->arg == NULL || c->arg[0] == NULL || (ft_evar(\
+		c->arg_is_var[i], c->arg_is_quote[i], c->arg[i])
+			&& !c->arg[i + 1]))
 	{
 		ft_export(NULL, *strp);
 		ft_add_path_executed_cmd("export", (*strp)->env);
 	}
 	else
 	{
-		while (cont->arg && cont->arg[i] != 0)
+		while (c->arg && c->arg[i] != 0)
 		{
-			if (ft_evar(cont->arg_is_var[i], cont->arg_is_quote[i], cont->arg[i]))
+			if (ft_evar(c->arg_is_var[i], c->arg_is_quote[i], c->arg[i]))
 				i++;
 			else
 			{
-				ft_export(cont->arg[i], *strp),
-				ft_add_path_executed_cmd(cont->arg[i], (*strp)->env);
+				ft_export(c->arg[i], *strp),
+				ft_add_path_executed_cmd(c->arg[i], (*strp)->env);
 				i++;
 			}
 		}
