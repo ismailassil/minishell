@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 15:16:54 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/04 09:24:22 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/06 00:34:33 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,15 +67,12 @@ void	ft_num_after_exit(char *str)
 	if (((sign == 1) && a > __LONG_MAX__)
 		|| ((sign == -1) && a > 9223372036854775808UL))
 	{
-		(ft_error("exit\nmsh: exit: "), ft_error(str));
+		(ft_error("msh: exit: "), ft_error(str));
 		ft_error(MS);
 		exit(255);
 	}
 	else
-	{
-		ft_error("exit\n");
 		exit(((int)a * sign) % 256);
-	}
 }
 
 void	ft_exit(t_cont *cont, t_struct *strp)
@@ -88,16 +85,16 @@ void	ft_exit(t_cont *cont, t_struct *strp)
 		i++;
 	if (ft_arg_len(cont) >= 2 && ft_contain_num(cont->arg[i]))
 	{
-		ft_error("exit\nmsh: exit: too many arguments\n");
+		ft_error("msh: exit: too many arguments\n");
 		strp->status = 1;
 	}
 	else if (cont->arg[i] && !ft_contain_num(cont->arg[i]))
 	{
-		(ft_error("exit\nmsh: exit: "), ft_error(cont->arg[i]), ft_error(MS));
+		(ft_error("msh: exit: "), ft_error(cont->arg[i]), ft_error(MS));
 		exit(255);
 	}
 	else if (cont->arg[i] && ft_contain_num(cont->arg[i]))
 		ft_num_after_exit(cont->arg[i]);
 	else
-		(ft_error("exit\n"), exit(strp->status));
+		exit(strp->status);
 }

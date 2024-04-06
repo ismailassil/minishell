@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 16:33:28 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/26 00:26:26 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/06 00:05:47 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@ t_stend	*ft_extract_start_end_of_token(char *str, int s)
 	int		c;
 
 	cord = malloc(sizeof(t_stend));
-	if (!cord)
-		(write(2, "Error: Allocation failed\n", 25), exit(FAIL));
+	ft_check_allocation(cord);
 	i = s;
 	c = 0;
 	cord->start = s;
@@ -28,7 +27,7 @@ t_stend	*ft_extract_start_end_of_token(char *str, int s)
 		(1) && (i++, c = '\'');
 	else if (str[i] == '\"')
 		(1) && (i++, c = '\"');
-	while (!c && str[i] && str[i] != ' ')
+	while (!c && str[i] && !ft_strchr(" \t\n\v\f\r", str[i]))
 		i++;
 	while (c && str[i] && str[i] != c)
 		i++;
@@ -48,8 +47,7 @@ char	*ft_alloc_str(t_token **tokens, char *str, t_stend *cord)
 	len = cord->end - cord->start;
 	i = 0;
 	tk = malloc(sizeof(char) * (len + 2));
-	if (!tk)
-		(write(2, "Error: Allocation failed\n", 25), exit(FAIL));
+	ft_check_allocation(tk);
 	str += cord->start;
 	while (cord->start <= cord->end)
 	{

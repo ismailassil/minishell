@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 10:47:56 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/28 02:08:41 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/06 00:07:30 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,7 @@ static char	*ft_allocate_for_the_string(char *str, int count)
 	char	*ptr;
 
 	ptr = (char *)malloc((ft_strlen(str) - count + 1) * sizeof(char));
-	if (!ptr)
-		(write(2, "Error: Allocation failed\n", 25), exit(FAIL));
+	ft_check_allocation(ptr);
 	ft_fill_ptr(str, &ptr);
 	return (ptr);
 }

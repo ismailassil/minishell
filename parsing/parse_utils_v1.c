@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 14:00:00 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/28 02:41:56 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/05 20:20:05 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	ft_init_tokens(t_token **head, char *str)
 	i = 0;
 	while (str[i])
 	{
-		while (str[i] && str[i] == ' ')
+		while (str[i] && ft_strchr(" \t\n\v\f\r", str[i]))
 			i++;
 		if (!str[i])
 			break ;
@@ -30,7 +30,7 @@ void	ft_init_tokens(t_token **head, char *str)
 		ft_push_token(token, head);
 		i = cord->end;
 		free(cord);
-		while (str[i] && str[i] == ' ')
+		while (str[i] && ft_strchr(" \t\n\v\f\r", str[i]))
 			i++;
 		if (str[i] == '\0')
 			break ;
