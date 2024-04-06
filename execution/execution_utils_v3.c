@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 20:15:13 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/03 03:00:07 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/06 01:15:11 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	ft_check_cont_and_cmd(t_cont *cont, \
 	}
 	if (nr_cont == 1 && ft_builtin_exist(cont) == 1)
 	{
+		strp->nr_cont = nr_cont;
 		if (ft_open_files(cont, info, strp) == 1)
 			return (1);
 		ft_check_commands(cont, strp, info, 1);

@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/05 01:21:08 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/06 01:13:33 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ typedef struct s_env
 typedef struct s_struct
 {
 	int		status;
+	int		nr_cont;
 	t_env	*env;
 }			t_struct;
 
