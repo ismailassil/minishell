@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
+/*   By: musashi <musashi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 16:33:28 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/06 00:05:47 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/07 22:10:34 by musashi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,16 +63,17 @@ static void	ft_parse_space_rest(char *input, char **shell, t_in *f)
 {
 	if (f->flag == 0 && (input[f->j] == '>' || input[f->j] == '<' \
 		|| input[f->j] == '|' ))
-		(1) && ((*shell)[f->i] = ' ', (*shell)[f->i + 1] = input[f->j], \
-			(*shell)[f->i + 2] = ' ', f->i += 3, f->j++);
+	{
+		(*shell)[f->i++] = ' ';
+		(*shell)[f->i++] = input[f->j++];
+		(*shell)[f->i++] = ' ';
+	}
 	else
 	{
-		(1) && ((*shell)[f->i] = input[f->j], f->i++, f->j++);
+		(*shell)[f->i++] = input[f->j++];
 		if (input[f->j] && f->tmp != f->j && input[f->j] == f->quote)
 		{
-			(*shell)[f->i] = input[f->j];
-			f->i++;
-			f->j++;
+			(*shell)[f->i++] = input[f->j++];
 			f->flag = 0;
 			f->quote = 0;
 		}
@@ -91,10 +92,10 @@ static void	*ft_parse_space(char *input, char **shell)
 		if (f.flag == 0 && ((input[f.j] == '>' && input[f.j + 1] == '>') \
 			|| (input[f.j] == '<' && input[f.j + 1] == '<')))
 		{
-			(1) && ((*shell)[f.i] = ' ', (*shell)[f.i + 1] = input[f.j]);
-			(*shell)[f.i + 2] = input[f.j + 1];
-			(*shell)[f.i + 3] = ' ';
-			(1) && (f.i += 4, f.j += 2);
+			(*shell)[f.i++] = ' ';
+			(*shell)[f.i++] = input[f.j++];
+			(*shell)[f.i++] = input[f.j++];
+			(*shell)[f.i++] = ' ';
 		}
 		else
 			ft_parse_space_rest(input, shell, &f);
@@ -116,16 +117,19 @@ char	*ft_add_space_to_input(char *input)
 	while (input[inf.i] != '\0')
 	{
 		if (input[inf.i] == '\"' || input[inf.i] == '\'')
-			(1) && (inf.flag = 1, inf.quote = input[inf.i]);
+		{
+			inf.flag = 1;
+			inf.quote = input[inf.i];
+		}
 		if (inf.flag == 0 && ((input[inf.i] == '>' && input[inf.i + 1] == '>') \
 			|| (input[inf.i] == '<' && input[inf.i + 1] == '<')))
-			inf.count++;
+			(1) && (inf.count++, inf.i++);
 		else if (inf.flag == 0 && (input[inf.i] == '>' \
 			|| input[inf.i] == '<' || input[inf.i] == '|'))
 			inf.count++;
-		inf.i++;
 		if (input[inf.i] != '\0' && input[inf.i] == inf.quote)
-			(1) && (inf.flag = 0, inf.i++);
+			inf.flag = 0;
+		inf.i++;
 	}
 	shell = (char *)malloc((inf.i + 1 + (inf.count * 2)) * sizeof(char));
 	if (!shell)
