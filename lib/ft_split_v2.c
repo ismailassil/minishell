@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 15:35:39 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/02 00:49:03 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/18 15:04:26 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ static size_t	ft_count_words(char const *str, char *whitespaces)
 		if (!ft_strchr(whitespaces, str[i])
 			&& (ft_strchr(whitespaces, str[i + 1]) || str[i + 1] == '\0'))
 			count++;
-		i++;
+		if (str[i])
+			i++;
 	}
 	return (count);
 }

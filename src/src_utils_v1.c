@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 18:32:41 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/24 19:56:51 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/19 12:42:40 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	ft_check_allocation(void *str)
 void	ft_syscall(int return_, char *str)
 {
 	if (return_ == -1)
-		(perror(str), exit(FAIL));
+		(ft_error("msh: "), perror(str), exit(FAIL));
 }
 
 /*

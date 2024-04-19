@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 15:41:50 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/06 03:17:07 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/18 19:52:49 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,8 @@ static bool	ft_check_path_in_env(t_struct *strp, t_cont *c)
 	while (head)
 	{
 		if (ft_strncmp(head->value, "PATH=", 5) == 0)
-		{
 			if (ft_strlen(head->value) > 5)
 				return (false);
-		}
 		head = head->next;
 	}
 	if (ft_evar(c->cmd_is_var, c->cmd_is_quote, c->cmd))
@@ -51,10 +49,8 @@ static bool	ft_check_path_in_env(t_struct *strp, t_cont *c)
 	}
 	else
 		tobedisplayed = c->cmd;
-	(ft_error("msh: "), ft_error(tobedisplayed));
-	ft_error(": No such file or directory\n");
-	strp->status = 127;
-	return (true);
+	(ft_error("msh: "), ft_error(tobedisplayed), ft_error(FNF));
+	return (strp->status = 127, true);
 }
 
 /*

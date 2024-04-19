@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:43:43 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/06 03:17:41 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/19 12:46:22 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	ft_open_files(t_cont *c, t_info *info, t_struct *s)
 		else if (c->outfile_type[fd.i] == 2)
 			fd.outfile = open(c->outfile[fd.i], CR | WO | AP, 0644);
 		if (fd.outfile == -1)
-			return (ft_error("msh: "), perror(c->outfile[fd.i]), s->status = 1, 1);
+			return (ft_throw_error(c->outfile[fd.i]), s->status = 1, 1);
 		if (c->outfile && c->outfile[fd.i + 1] != 0)
 			ft_syscall(close(fd.outfile), "msh: close");
 		else

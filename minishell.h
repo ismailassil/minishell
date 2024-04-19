@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/06 03:16:43 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/19 12:47:01 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <sys/fcntl.h>
 # include <sys/syslimits.h>
 # include <sys/stat.h>
+# include <dirent.h>
 # define SUCCESS		0
 # define FAIL			1
 # define CMD			0
@@ -42,7 +43,8 @@
 # define CR				O_CREAT
 # define WO				O_WRONLY
 # define AP				O_APPEND
-# define MS                ": numeric argument required\n"
+# define FNF			": No such file or directory\n"
+# define MS				": numeric argument required\n"
 # define GREEN			"\x1b[1;32m"
 # define YELLOW_		"\x1b[0;33m"
 # define YELLOW			"\x1b[1;33m"
@@ -139,6 +141,17 @@ typedef struct s_heredoc
 	int		status;
 }			t_heredoc;
 
+typedef struct s_tools
+{
+	char	*ptr;
+	int		i;
+	int		j;
+	int		count;
+	int		flag;
+	int		quote;
+	int		cquote;
+}			t_tools;
+
 typedef struct s_in
 {
 	int	count;
@@ -148,6 +161,12 @@ typedef struct s_in
 	int	quote;
 	int	tmp;
 }		t_in;
+
+typedef struct s_indexing
+{
+	int	i;
+	int	j;
+}		t_indexing;
 
 typedef struct s_count
 {
@@ -335,6 +354,7 @@ void					ft_token_list(t_token *current, t_token **new_list);
 t_token					*ft_split_and_push_node(t_token **current);
 int						ft_check_after_expand(t_token **current, int is_quote);
 void					ft_split_node(t_expand_arg *f, t_token **linked_list);
+char					**ft_wildcards(char *input, t_token *list);
 
 /*==========EXECUTION FUNCIONS==========*/
 void					ft_fill_infile_outfile_here_doc(t_token *head, \
@@ -398,6 +418,7 @@ void					ft_print(t_token *lst);
 void					ft_print_types(t_token *str);
 void					ft_print_container(t_cont *head);
 void					ft_putstr(char *str, int fd);
+void					ft_throw_error(char *str);
 
 /*==========SIGNAL FUNCIONS==========*/
 void					ft_signal_handler(void);
@@ -480,4 +501,6 @@ void					ft_putnbr_fd(int n, int fd);
 char					**ft_split(char const *s, char c);
 char					**ft_split_v2(char const *s);
 unsigned long long		ft__atoi(const char *str);
+char					**ft_split_vquote(char const *s, char c);
+
 #endif

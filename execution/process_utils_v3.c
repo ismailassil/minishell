@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 03:05:56 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/06 03:06:02 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/19 12:38:02 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,7 @@ char	**ft_fill_again(t_cont *c, int *st)
 	(*st)++;
 	while (c->arg && c->arg[*st] != 0)
 	{
-		if (ft_evar(c->arg_is_var[*st], \
-			c->arg_is_quote[*st], c->arg[*st]))
+		if (ft_evar(c->arg_is_var[*st], c->arg_is_quote[*st], c->arg[*st]))
 			(*st)++;
 		else
 		{
@@ -46,9 +45,7 @@ char	**ft_fill_again(t_cont *c, int *st)
 			(1) && (f.j++, (*st)++);
 		}
 	}
-	f.args[f.j] = 0;
-	ft_f(c->arg);
-	return (f.args);
+	return (f.args[f.j] = 0, ft_f(c->arg), f.args);
 }
 
 void	ft_check_first_cmd(char **cmd, t_cont *c)

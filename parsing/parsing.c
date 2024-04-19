@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: musashi <musashi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 16:33:28 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/07 22:10:34 by musashi          ###   ########.fr       */
+/*   Updated: 2024/04/19 12:36:53 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,8 +132,7 @@ char	*ft_add_space_to_input(char *input)
 		inf.i++;
 	}
 	shell = (char *)malloc((inf.i + 1 + (inf.count * 2)) * sizeof(char));
-	if (!shell)
-		exit(EXIT_FAILURE);
+	ft_check_allocation(shell);
 	ft_parse_space(input, &shell);
 	return (shell);
 }
