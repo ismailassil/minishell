@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:47:07 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/05 01:20:54 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/20 12:21:56 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static bool	ft_check_if_exists(char *arg, t_env *envp)
 
 	i = 0;
 	head = envp;
-	while (arg[i] != '\0' && arg[i] != '=' && arg[i] != '+')
+	while (arg && arg[i] != '\0' && arg[i] != '=' && arg[i] != '+')
 		i++;
 	while (head != NULL)
 	{
@@ -124,6 +124,7 @@ int	ft_export(char *arg, t_struct *strp)
 		return (ft_print_exported_variable(strp->env), 0);
 	if (ft_check_syntax_export(arg) == true)
 		return (strp->status = 1, 1);
+	ft_quotes_wildcard(&arg);
 	if (ft_check_if_exists(arg, strp->env) == true)
 	{
 		if (ft_add_already_exits(arg, strp->env) == 0)

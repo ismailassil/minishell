@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/20 11:41:17 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/20 12:20:08 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -404,11 +404,15 @@ int						ft_open_files(t_cont *cont, t_info *info,
 void					ft_add_path_executed_cmd(char *str, t_env *env);
 void					ft_return_path(char **path, char *cmd,
 							t_struct *strp, t_cont *cont);
+void					ft_rm_quotes(char **input);
+void					ft_quotes_wildcard(char **arg);
+
 //					CONTAINER FUNCTIONS
 void					ft_link_all_in_containers(t_token *head,
 							t_cont **container);
 void					ft_count_alc(t_token *head, t_tmp_cont **cont);
 void					ft_free_tmp(t_tmp_cont **tmp);
+
 //					BUILTINS FUNCTIONS
 int						ft_builtin_exist(t_cont *cont);
 void					execute_echo(t_cont *cont, t_struct **strp);
@@ -425,7 +429,6 @@ int						ft_find_slash_or_point(char *cmd);
 int						ft_iswhitespace(char *str);
 int						ft_evar(int is_var, int is_quote, char *str);
 void					ft_check_first_cmd(char **cmd, t_cont *c);
-void					ft_rm_quotes(char **input);
 
 /*==========UTILS FUNCIONS==========*/
 int						ft_check_if_chars_digit(int c);
