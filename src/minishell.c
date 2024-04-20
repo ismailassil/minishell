@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:06 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/06 02:55:58 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/20 09:48:06 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ void	ft_parse_and_execute_from_shell(t_struct *strp, char **input)
 	t_token	*head;
 	char	*shell;
 
-	(1) && (head = NULL, shell = ft_add_space_to_input(*input));
+	head = NULL;
+	shell = ft_add_space_to_input(*input);
 	free(*input);
 	if (!ft_check_quotes(shell))
 	{
