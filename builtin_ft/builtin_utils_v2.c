@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 17:43:17 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/20 12:29:39 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/20 16:12:26 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,23 @@ void	ft_quotes_wildcard(char **arg)
 {
 	char	*tmp;
 
-	if (ft_strchr((*arg), '*') && (ft_strchr((*arg), '"')
-			|| ft_strchr((*arg), '\'')))
+	if (*arg && ft_strchr((*arg), '*')
+		&& (ft_strchr((*arg), '"') || ft_strchr((*arg), '\'')))
 	{
 		tmp = ft_trim_quotes(*arg);
 		free(*arg);
 		*arg = tmp;
 	}
+}
+
+void	ft_handle_error(t_info_cd *f, char *arg, t_struct **s)
+{
+	f->cwd = ft_get_cwd(&(*s)->env);
+	ft_error(RETRIVING_CD);
+	ft_error(RETRIVING_C1);
+	ft_error(RETRIVING_C2);
+	f->tmp = ft_join_(f->cwd, "/");
+	f->buff = ft_join_(f->tmp, arg);
+	(free(f->tmp), free(f->cwd));
+	(*s)->status = 0;
 }

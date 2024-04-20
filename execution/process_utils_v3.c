@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 03:05:56 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/19 12:38:02 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/20 16:13:17 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ void	ft_check_first_cmd(char **cmd, t_cont *c)
 	int	i;
 
 	i = 0;
-	if (*cmd && c->cmd_is_var == 1 && c->cmd_is_quote != 1 && (*cmd)[0] == '\0')
+	if (*cmd && c->cmd_is_var == 1 && c->cmd_is_quote != 1
+		&& (*cmd)[0] == '\0')
 	{
 		while (c->arg && c->arg[i])
 		{

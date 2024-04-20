@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 15:33:58 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/06 03:16:43 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/20 14:53:23 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,11 @@ int	ft_cd(char *arg, t_struct **s)
 
 	if (arg && arg[0] == '\0')
 		return (0);
-	f.tmp = NULL;
+	(1) || (f.tmp = NULL, f.errt = NULL);
+	f.dirp = opendir(arg);
+	if (f.dirp == NULL)
+		return (ft_error("msh: cd: "), perror(arg), (*s)->status = 1, 1);
+	(void)closedir(f.dirp);
 	if (getcwd(f.current_dir, sizeof(f.current_dir)) == NULL)
 		*f.current_dir = '\0';
 	f.dir = ft_check_argument(arg);
@@ -113,13 +117,7 @@ int	ft_cd(char *arg, t_struct **s)
 	if (getcwd(f.buf, sizeof(f.buf)) != NULL)
 		(1) && ((*s)->status = 0, f.buff = ft_strdup(f.buf));
 	else
-	{
-		(ft_error("msh: cd: "), perror(arg));
-		f.cwd = ft_get_cwd(&(*s)->env);
-		(1) && (f.tmp = ft_join_(f.cwd, "/"), f.buff = ft_join_(f.tmp, arg));
-		(free(f.tmp), free(f.cwd));
-		(*s)->status = 0;
-	}
+		ft_handle_error(&f, arg, s);
 	(ft_add_cpwd(&(*s)->env, f.buff), ft_add_opwd(&(*s)->env, f.current_dir));
 	return (free(f.buff), free(f.dir), 0);
 }

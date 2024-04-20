@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 00:09:46 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/05 02:50:11 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/20 13:35:38 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,6 @@ void	ft_check_rest(char *cmd, t_struct *strp,
 		ft_stat(cmd, ": No such file or directory\n", strp, cont);
 		exit(127);
 	}
-	free(ptr);
 }
 
 void	ft_check_path_cmd(char **envp_path, char *cmd,

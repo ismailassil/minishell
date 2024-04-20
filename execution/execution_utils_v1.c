@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:43:43 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/19 12:46:22 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/20 16:08:36 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int	ft_open_files(t_cont *c, t_info *info, t_struct *s)
 	while (c->outfile && c->outfile[++fd.i] != 0)
 	{
 		if (ft_amb_rdt(&c->outfile[fd.i], c->outfile_is_var[fd.i], \
-			c->outfile_is_quote[fd.i]) == 1)
+			c->outfile_is_quote[fd.i]) == 1 || c->is_bad_sub == BAD_SUB)
 			return (s->status = 1, 1);
 		if (c->outfile_type[fd.i] == 1)
 			fd.outfile = open(c->outfile[fd.i], CR | WO, 0644);
@@ -120,6 +120,8 @@ int	ft_open_here_doc(t_cont *cont, t_info *info, t_struct *strp)
 		while (head->here_doc && head->here_doc[f_d.i] != 0)
 		{
 			*head->here_doc_fd = ft_here_doc(head->here_doc[f_d.i], strp);
+			if (strp->is_bad_sub == BAD_SUB)
+				(1) && (head->is_bad_sub = BAD_SUB, strp->is_bad_sub = 0);
 			if (*head->here_doc_fd == -1)
 				return (-1);
 			if (head->here_doc && head->here_doc[f_d.i + 1] != NULL)

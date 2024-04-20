@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 21:10:11 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/06 02:59:55 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/20 12:52:43 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ void	execute_export(t_cont *c, t_struct **strp)
 				i++;
 			else
 			{
-				ft_export(c->arg[i], *strp),
+				(ft_quotes_wildcard(&c->arg[i]), ft_export(c->arg[i], *strp)),
 				ft_add_path_executed_cmd(c->arg[i], (*strp)->env);
 				i++;
 			}

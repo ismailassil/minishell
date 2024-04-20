@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/20 12:20:08 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/20 16:12:15 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,13 @@
 # define DELIMITER		8
 # define CHILD			0
 # define ALLCHILDS		-1
+# define BAD_SUB		11
 # define CR				O_CREAT
 # define WO				O_WRONLY
 # define AP				O_APPEND
+# define RETRIVING_CD	"msh: error retrieving current directory: "
+# define RETRIVING_C1	"getcwd: cannot access parent directories: "
+# define RETRIVING_C2	"No such file or directory\n"
 # define FNF			": No such file or directory\n"
 # define MS				": numeric argument required\n"
 # define GREEN			"\x1b[1;32m"
@@ -109,6 +113,8 @@ typedef struct s_info_cd
 	char	*tmp;
 	char	*cwd;
 	char	*dir;
+	char	*errt;
+	DIR		*dirp;
 }			t_info_cd;
 
 typedef struct s_env
@@ -121,6 +127,7 @@ typedef struct s_struct
 {
 	int		status;
 	int		nr_cont;
+	int		is_bad_sub;
 	t_env	*env;
 }			t_struct;
 
@@ -202,6 +209,7 @@ typedef struct s_tmp_cont
 	char	**here_doc;
 	int		*file_or_heredoc;
 	int		*out_t;
+	int		is_bad_sub;
 }			t_tmp_cont;
 
 typedef struct s_container
@@ -222,6 +230,7 @@ typedef struct s_container
 	int					*outfile_is_var;
 	int					*outfile_is_quote;
 	int					*outfile_type;
+	int					is_bad_sub;
 	struct s_container	*next;
 }						t_cont;
 
@@ -429,6 +438,7 @@ int						ft_find_slash_or_point(char *cmd);
 int						ft_iswhitespace(char *str);
 int						ft_evar(int is_var, int is_quote, char *str);
 void					ft_check_first_cmd(char **cmd, t_cont *c);
+void					ft_handle_error(t_info_cd *f, char *arg, t_struct **s);
 
 /*==========UTILS FUNCIONS==========*/
 int						ft_check_if_chars_digit(int c);
