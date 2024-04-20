@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/19 12:47:01 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/20 11:41:17 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,6 +242,19 @@ typedef struct s_fd_
 	int	i;
 }		t_fd_;
 
+typedef struct s_wildcards
+{
+	t_token			*head;
+	t_token			*previous;
+	t_token			*newlist;
+	char			**dirs;
+	int				i;
+	int				is_export;
+	char			*tmp;
+	DIR				*dirp;
+	struct dirent	*name;
+}					t_wildcards;
+
 typedef struct s_amb_rdt
 {
 	int		i;
@@ -354,7 +367,8 @@ void					ft_token_list(t_token *current, t_token **new_list);
 t_token					*ft_split_and_push_node(t_token **current);
 int						ft_check_after_expand(t_token **current, int is_quote);
 void					ft_split_node(t_expand_arg *f, t_token **linked_list);
-char					**ft_wildcards(char *input, t_token *list);
+char					**ft_wildcards(char **input);
+void					ft_match_wildcards(t_token **token);
 
 /*==========EXECUTION FUNCIONS==========*/
 void					ft_fill_infile_outfile_here_doc(t_token *head, \
@@ -411,6 +425,7 @@ int						ft_find_slash_or_point(char *cmd);
 int						ft_iswhitespace(char *str);
 int						ft_evar(int is_var, int is_quote, char *str);
 void					ft_check_first_cmd(char **cmd, t_cont *c);
+void					ft_rm_quotes(char **input);
 
 /*==========UTILS FUNCIONS==========*/
 int						ft_check_if_chars_digit(int c);

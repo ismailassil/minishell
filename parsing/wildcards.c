@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 09:49:09 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/19 12:36:19 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/20 11:41:00 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,6 @@ int	ft_check_default(char *input, char *curdir)
 
 int	ft_check_dir(char *input, char *curdir)
 {
-	t_indexing	d;
-
 	if (input[ft_strlen(input) - 1] != '*')
 	{
 		if (!ft_check_last(input, curdir))
@@ -108,31 +106,28 @@ int	ft_check_input(char *input)
 	return (0);
 }
 
-char	**ft_wildcards(char *input, t_token *list)
+char	**ft_wildcards(char **input)
 {
-	int				i;
-	char			**dirs;
-	DIR				*dirp;
-	struct dirent	*name;
+	t_wildcards	w;
 
-	i = 0;
+	w.i = 0;
 	if (!input || !*input)
 		return (NULL);
-	if (ft_check_input(input))
+	if (ft_check_input(*input))
 		return (NULL);
-	list = NULL;
-	dirs = malloc(PATH_MAX * sizeof(char *));
-	ft_check_allocation(dirs);
-	dirp = opendir(".");
-	if (dirp == NULL)
+	ft_rm_quotes(input);
+	w.dirs = malloc(PATH_MAX * sizeof(char *));
+	ft_check_allocation(w.dirs);
+	w.dirp = opendir(".");
+	if (w.dirp == NULL)
 		return (perror("opendir"), NULL);
-	name = readdir(dirp);
-	while (name != NULL)
+	w.name = readdir(w.dirp);
+	while (w.name != NULL)
 	{
-		if (name->d_name[0] != '.' && ft_check_dir(input, name->d_name))
-			dirs[i++] = ft_strdup(name->d_name);
-		name = readdir(dirp);
+		if (w.name->d_name[0] != '.' && ft_check_dir(*input, w.name->d_name))
+			w.dirs[w.i++] = ft_strdup(w.name->d_name);
+		w.name = readdir(w.dirp);
 	}
-	dirs[i] = 0;
-	return ((void)closedir(dirp), dirs);
+	w.dirs[w.i] = 0;
+	return ((void)closedir(w.dirp), w.dirs);
 }

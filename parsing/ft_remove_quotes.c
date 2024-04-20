@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 10:47:56 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/06 00:07:30 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/20 09:57:08 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ static bool	ft_quotes_exists(char *s)
 	char	*str;
 
 	str = s;
-	while (*str && str)
+	while (str && *str)
 	{
 		if (*str == '\'' || *str == '\"')
 			return (true);
@@ -111,7 +111,8 @@ void	ft_remove_quotes(t_token **linked_list)
 			head = head->next;
 		else
 		{
-			if (ft_quotes_exists(head->token) == true)
+			if (ft_quotes_exists(head->token) == true
+				&& !ft_strchr(head->token, '*'))
 			{
 				tmp = ft_trim_quotes(head->token);
 				free(head->token);
