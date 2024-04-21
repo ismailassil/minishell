@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/20 16:12:15 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/21 01:19:37 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,6 @@ typedef struct s_struct
 {
 	int		status;
 	int		nr_cont;
-	int		is_bad_sub;
 	t_env	*env;
 }			t_struct;
 
@@ -209,7 +208,6 @@ typedef struct s_tmp_cont
 	char	**here_doc;
 	int		*file_or_heredoc;
 	int		*out_t;
-	int		is_bad_sub;
 }			t_tmp_cont;
 
 typedef struct s_container
@@ -230,7 +228,6 @@ typedef struct s_container
 	int					*outfile_is_var;
 	int					*outfile_is_quote;
 	int					*outfile_type;
-	int					is_bad_sub;
 	struct s_container	*next;
 }						t_cont;
 

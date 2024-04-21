@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 23:12:33 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/20 16:01:00 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/21 01:19:10 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ void	ft_check_dollar_sign_here_doc(char **line, int pipefd,
 		ft_putstr(*line, pipefd);
 		(free(*line), *line = NULL);
 		*line = ft_strdup(": bad substitution");
-		strp->is_bad_sub = BAD_SUB;
 	}
 	else if (ft_strchr(*line, '$') && flag == 0)
 	{
