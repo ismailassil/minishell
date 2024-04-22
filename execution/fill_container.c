@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 13:31:07 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/06 03:10:03 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/22 11:27:31 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,4 +82,5 @@ void	ft_link_all_in_containers(t_token *head, t_cont **container)
 		if (head != NULL && head->type == PIPE)
 			head = head->next;
 	}
+	ft_index_files(head, container);
 }

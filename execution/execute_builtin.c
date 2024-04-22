@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 16:55:35 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/06 02:56:43 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/22 13:33:10 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,14 @@ int	ft_check_commands(t_cont *cont, t_struct *strp, t_info *info, int j)
 	if (j == 1 && info->nbr_cont == 1 && info->fd.outfile != 1)
 	{
 		original_stdout = dup(STDOUT_FILENO);
-		ft_syscall(dup2(info->fd.outfile, STDOUT_FILENO), "msh: dup2");
-		ft_syscall(close(info->fd.outfile), "msh: close");
+		ft_syscall(dup2(info->fd.outfile, STDOUT_FILENO), "dup2");
+		ft_syscall(close(info->fd.outfile), "close");
 	}
 	ft_compare_arg(cmd, cont, strp, &flag);
 	if (j == 1 && flag == 1 && info->nbr_cont == 1 && info->fd.outfile != 1)
 	{
-		ft_syscall(dup2(original_stdout, STDOUT_FILENO), "msh: dup2");
-		ft_syscall(close(original_stdout), "msh: close");
+		ft_syscall(dup2(original_stdout, STDOUT_FILENO), "dup2");
+		ft_syscall(close(original_stdout), "close");
 		return (1);
 	}
 	else if (flag == 1)

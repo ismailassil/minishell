@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 19:25:31 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/06 03:03:11 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/22 11:28:27 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ void	ft_free_the_rest(t_cont *c)
 	free(c->outfile_is_quote);
 	free(c->infile_is_var);
 	free(c->here_doc_fd);
+	free(c->infile_index);
+	free(c->outfile_index);
 }
 
 void	ft_free_containers(t_cont **head)

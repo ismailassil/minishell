@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/21 01:19:37 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/22 13:46:52 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,22 @@ typedef struct s_c
 	int	quote;
 }		t_c;
 
+typedef struct s_del
+{
+	char	*ptr;
+	int		flag;
+	int		i;
+	int		j;
+	int		count;
+	int		len;
+	int		quote;
+}			t_del;
+
 typedef struct s_info_here_doc
 {
 	char	*line;
 	char	*delimiter;
+	char	*ch_delimiter;
 	char	*push;
 	int		flag;
 }			t_info_here_doc;
@@ -188,8 +200,17 @@ typedef struct s_tokens
 	int				type;
 	int				is_var;
 	int				is_quote;
+	int				findex;
 	struct s_tokens	*next;
 }					t_token;
+
+typedef struct s_tokenize
+{
+	t_token	*head;
+	int		flag;
+	int		i;	
+	int		index;
+}			t_tokenize;
 
 typedef struct s_tmp_cont
 {
@@ -219,15 +240,18 @@ typedef struct s_container
 	int					*arg_is_var;
 	int					*arg_is_quote;
 	char				**infile;
+	char				*infile_index;
 	int					*infile_is_var;
 	int					*infile_is_quote;
 	char				**here_doc;
 	int					*file_or_heredoc;
 	int					*here_doc_fd;
 	char				**outfile;
+	char				*outfile_index;
 	int					*outfile_is_var;
 	int					*outfile_is_quote;
 	int					*outfile_type;
+	int					nbr_files;
 	struct s_container	*next;
 }						t_cont;
 
@@ -247,6 +271,17 @@ typedef struct s_fd_
 	int	here_doc;
 	int	i;
 }		t_fd_;
+
+typedef struct s_index_files
+{
+	t_cont	*cont;
+	t_token	*tok;
+	int		outfile_len;
+	int		infile_len;
+	int		i;
+	int		j;
+	int		index_len;
+}			t_index_files;
 
 typedef struct s_wildcards
 {
@@ -307,6 +342,24 @@ typedef struct s_fill_again
 	int		count;
 	char	**args;
 }			t_fill_again;
+
+typedef struct s_open_files
+{
+	t_cont	*cont;
+	t_fd_	fd;
+	int		i;
+	int		o;
+	int		index;
+	int		nbr_files;
+}			t_open_files;
+
+typedef struct s_push_matching
+{
+	t_token	*newlist;
+	char	*tmp;
+	char	**dirs;
+	int		i;
+}			t_push_matching;
 
 typedef struct s_expand_arg
 {
@@ -377,6 +430,7 @@ char					**ft_wildcards(char **input);
 void					ft_match_wildcards(t_token **token);
 
 /*==========EXECUTION FUNCIONS==========*/
+void					ft_index_files(t_token *head, t_cont **container);
 void					ft_fill_infile_outfile_here_doc(t_token *head, \
 							t_tmp_cont *t, t_cc *c);
 void					ft_fill_outfile_append(t_token *head, \
@@ -405,13 +459,15 @@ void					ft_check_allocation(void *str);
 void					ft_syscall(int return_, char *str);
 void					ft_sig(void *return_, char *str);
 void					ft_f(char **str);
-int						ft_open_files(t_cont *cont, t_info *info,
-							t_struct *strp);
+// int						ft_open_files(t_cont *cont, t_info *info,
+							// t_struct *strp);
+int						ft_open_files(t_cont *c, t_info *info, t_struct *s);
 void					ft_add_path_executed_cmd(char *str, t_env *env);
 void					ft_return_path(char **path, char *cmd,
 							t_struct *strp, t_cont *cont);
 void					ft_rm_quotes(char **input);
 void					ft_quotes_wildcard(char **arg);
+char					*ft_check_delimiter(char *del);
 
 //					CONTAINER FUNCTIONS
 void					ft_link_all_in_containers(t_token *head,

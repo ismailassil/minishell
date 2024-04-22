@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 21:05:24 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/04 05:24:52 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/21 21:41:28 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 //	Utils functions for the 'ft_tokenize()' function
 static void	ft_check_rest_of_else(t_token *head, int *flag);
-static void	ft_check_else(t_token *head, int *flag);
+static void	ft_check_else(t_token *head, int *flag, int *index);
 
 /*
 *	This function tokenize the node
@@ -24,39 +24,44 @@ static void	ft_check_else(t_token *head, int *flag);
 */
 void	ft_tokenize(t_token **str)
 {
-	t_token	*head;
-	int		flag;
-	int		i;
+	t_tokenize	t;
 
-	i = 0;
-	head = *str;
-	flag = 0;
-	while (head != NULL)
+	(1) && (t.i = 0, t.flag = 0, t.head = *str, t.index = 0);
+	while (t.head != NULL)
 	{
-		if (ft_strncmp(head->token, ">", ft_strlen(head->token)) == 0)
+		if (ft_strncmp(t.head->token, ">", ft_strlen(t.head->token)) == 0)
 		{
-			if (head->next != NULL)
-				head->next->type = FILENAME;
-			head->type = OUTFILE;
+			if (t.head->next != NULL)
+			{
+				t.head->next->type = FILENAME;
+				t.head->next->findex = t.index++;
+			}
+			t.head->type = OUTFILE;
 		}
-		else if (ft_strncmp(head->token, "<", ft_strlen(head->token)) == 0)
+		else if (ft_strncmp(t.head->token, "<", ft_strlen(t.head->token)) == 0)
 		{
-			if (head->next != NULL)
-				head->next->type = FILENAME;
-			head->type = INFILE;
+			if (t.head->next != NULL)
+			{
+				t.head->next->type = FILENAME;
+				t.head->next->findex = t.index++;
+			}
+			t.head->type = INFILE;
 		}
 		else
-			ft_check_else(head, &flag);
-		head = head->next;
+			ft_check_else(t.head, &t.flag, &t.index);
+		t.head = t.head->next;
 	}
 }
 
-static void	ft_check_else(t_token *head, int *flag)
+static void	ft_check_else(t_token *head, int *flag, int *index)
 {
 	if (ft_strncmp(head->token, ">>", ft_strlen(head->token)) == 0)
 	{
 		if (head->next != NULL)
+		{
 			head->next->type = FILENAME;
+			head->next->findex = (*index)++;
+		}
 		head->type = APPEND;
 	}
 	else if (ft_strncmp(head->token, "<<", ft_strlen(head->token)) == 0)
@@ -66,7 +71,7 @@ static void	ft_check_else(t_token *head, int *flag)
 		head->type = HEREDOC;
 	}
 	else if (ft_strncmp(head->token, "|", ft_strlen(head->token)) == 0)
-		(1) && (head->type = PIPE, *flag = 0);
+		(1) && (head->type = PIPE, *flag = 0, *index = 0);
 	else
 		ft_check_rest_of_else(head, flag);
 }

@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 03:21:09 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/06 03:16:43 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/22 13:34:12 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,13 @@ static void	ft_get_the_line_parsing(char *hold)
 {
 	char	*line;
 	char	*delimiter;
+	char	*ch_delimiter;
 
 	line = NULL;
-	delimiter = ft_trim_quotes(hold);
+	ch_delimiter = ft_check_delimiter(hold);
+	free(hold);
+	delimiter = ft_trim_quotes(ch_delimiter);
+	free(ch_delimiter);
 	rl_catch_signals = 1;
 	while (true)
 	{
@@ -68,7 +72,7 @@ int	ft_here_doc_parsing(t_token *lst, t_struct *strp)
 				ft_get_the_line_parsing(info.del);
 				exit(SUCCESS);
 			}
-			ft_syscall(waitpid(CHILD, &info.status, 0), "msh: waitpid");
+			ft_syscall(waitpid(CHILD, &info.status, 0), "waitpid");
 			if (WIFSIGNALED(info.status) && WTERMSIG(info.status) == SIGINT)
 				return (strp->status = 1, 1);
 		}
@@ -84,8 +88,10 @@ static void	ft_get_the_line(char *hold, int *pipefd, t_struct *strp)
 	(1) && (f.line = NULL, f.flag = 0);
 	if (ft_strchr(hold, '\'') || ft_strchr(hold, '"'))
 		f.flag = 1;
-	f.delimiter = ft_strdup(hold);
+	f.ch_delimiter = ft_strdup(hold);
 	(free(hold), hold = NULL);
+	f.delimiter = ft_check_delimiter(f.ch_delimiter);
+	(free(f.ch_delimiter), f.ch_delimiter = NULL);
 	hold = ft_trim_quotes(f.delimiter);
 	(free(f.delimiter), f.delimiter = NULL);
 	rl_catch_signals = 1;
@@ -109,20 +115,20 @@ int	ft_here_doc(char *delimiter, t_struct *strp)
 	int			pipefd[2];
 	t_heredoc	info;
 
-	ft_syscall(pipe(pipefd), "msh: pipe");
+	ft_syscall(pipe(pipefd), "pipe");
 	info.id = fork();
-	ft_syscall(info.id, "msh: fork");
+	ft_syscall(info.id, "fork");
 	if (info.id == 0)
 	{
 		ft_sig(signal(SIGINT, SIG_DFL), "msh: signal");
 		ft_sig(signal(SIGQUIT, &ft_sig_quit), "msh: signal");
-		ft_syscall(close(pipefd[0]), "msh: close");
+		ft_syscall(close(pipefd[0]), "close");
 		ft_get_the_line(delimiter, pipefd, strp);
-		ft_syscall(close(pipefd[1]), "msh: close");
+		ft_syscall(close(pipefd[1]), "close");
 		exit(SUCCESS);
 	}
-	ft_syscall(close(pipefd[1]), "msh: close");
-	ft_syscall(waitpid(CHILD, &info.status, 0), "msh: waitpid");
+	ft_syscall(close(pipefd[1]), "close");
+	ft_syscall(waitpid(CHILD, &info.status, 0), "waitpid");
 	strp->status = WEXITSTATUS(info.status);
 	if (WIFSIGNALED(info.status) && WTERMSIG(info.status) == SIGINT)
 		return (strp->status = 1, -1);

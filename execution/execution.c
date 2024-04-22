@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 15:41:50 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/20 11:12:39 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/22 13:40:52 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void	ft_execution(t_token **token, t_struct *strp)
 	ft_match_wildcards(token);
 	(1) && (head = *token, nbr_cont = 0, info.fd.len = 0);
 	ft_link_all_in_containers(*token, &container);
+	ft_index_files(head, &container);
 	ft_free_tokens(&head);
 	nbr_cont = ft_t_cont_len(container);
 	if (ft_open_here_doc(container, &info, strp) == -1)

@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:12:31 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/20 16:28:49 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/22 13:47:18 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,27 @@
 
 static void	ft_push_matching(t_token **head, t_token *previous)
 {
-	t_token	*newlist;
-	char	*tmp;
-	char	**dirs;
-	int		i;
+	t_push_matching	p;
 
-	i = 0;
-	newlist = NULL;
-	dirs = NULL;
-	dirs = ft_wildcards(&(*head)->token);
-	if (dirs)
+	p.i = 0;
+	p.newlist = NULL;
+	p.dirs = NULL;
+	p.dirs = ft_wildcards(&(*head)->token);
+	if (p.dirs)
 	{
-		while (dirs[i])
-			ft_push_token(dirs[i++], &newlist);
-		ft_token_list(*head, &newlist);
-		ft_push_middle(previous, head, &newlist);
+		while (p.dirs[p.i])
+			ft_push_token(p.dirs[p.i++], &p.newlist);
+		ft_token_list(*head, &p.newlist);
+		ft_push_middle(previous, head, &p.newlist);
 	}
 	else
 	{
 		if ((ft_strchr((*head)->token, '"') || ft_strchr((*head)->token, '\''))
 			&& (*head)->is_var != 1)
 		{
-			tmp = ft_trim_quotes((*head)->token);
+			p.tmp = ft_trim_quotes((*head)->token);
 			free((*head)->token);
-			(*head)->token = tmp;
+			(*head)->token = p.tmp;
 		}
 	}
 }
