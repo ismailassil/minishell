@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 03:21:09 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/22 13:34:12 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/23 15:38:45 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,33 @@ void	ft_putstr(char *str, int fd)
 	}
 }
 
+bool	ft_check_del_and_quotes(char *hold)
+{
+	if (ft_strchr(hold, '"') || ft_strchr(hold, '\'') || ft_strchr(hold, '$'))
+		return (1);
+	return (0);
+}
+
+char	*ft_remove_for_del(char *hold)
+{
+	if ((ft_strchr(hold, '"') || ft_strchr(hold, '\'')) && !ft_strchr(hold, '$'))
+		return (ft_trim_quotes(hold));
+	if (ft_strchr(hold, '$') && (ft_strchr(hold, '\'') || ft_strchr(hold, '"')))
+		return (ft_trim_dollar(hold));
+	return (ft_strdup(hold));
+}
+
 static void	ft_get_the_line_parsing(char *hold)
 {
 	char	*line;
 	char	*delimiter;
-	char	*ch_delimiter;
 
 	line = NULL;
-	ch_delimiter = ft_check_delimiter(hold);
-	free(hold);
-	delimiter = ft_trim_quotes(ch_delimiter);
-	free(ch_delimiter);
+	if (ft_check_del_and_quotes(hold))
+	{
+		delimiter = ft_remove_for_del(hold);
+		free(hold);
+	}
 	rl_catch_signals = 1;
 	while (true)
 	{
@@ -88,12 +104,12 @@ static void	ft_get_the_line(char *hold, int *pipefd, t_struct *strp)
 	(1) && (f.line = NULL, f.flag = 0);
 	if (ft_strchr(hold, '\'') || ft_strchr(hold, '"'))
 		f.flag = 1;
-	f.ch_delimiter = ft_strdup(hold);
-	(free(hold), hold = NULL);
-	f.delimiter = ft_check_delimiter(f.ch_delimiter);
-	(free(f.ch_delimiter), f.ch_delimiter = NULL);
-	hold = ft_trim_quotes(f.delimiter);
-	(free(f.delimiter), f.delimiter = NULL);
+	if (ft_check_del_and_quotes(hold))
+	{
+		f.delimiter = ft_remove_for_del(hold);
+		free(hold);
+		hold = f.delimiter;
+	}
 	rl_catch_signals = 1;
 	while (true)
 	{

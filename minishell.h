@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/22 13:46:52 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/23 17:41:43 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ typedef struct s_del
 	int		count;
 	int		len;
 	int		quote;
+	int		is_dollar;
 }			t_del;
 
 typedef struct s_info_here_doc
@@ -467,7 +468,7 @@ void					ft_return_path(char **path, char *cmd,
 							t_struct *strp, t_cont *cont);
 void					ft_rm_quotes(char **input);
 void					ft_quotes_wildcard(char **arg);
-char					*ft_check_delimiter(char *del);
+char					*ft_trim_dollar(char *del);
 
 //					CONTAINER FUNCTIONS
 void					ft_link_all_in_containers(t_token *head,
