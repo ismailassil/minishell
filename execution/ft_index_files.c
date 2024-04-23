@@ -6,12 +6,11 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 20:10:13 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/23 20:14:54 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/23 20:41:03 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
 
 void	ft_allocate_for_index_cont(t_cont **cont)
 {
