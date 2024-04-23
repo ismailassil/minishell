@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 03:21:09 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/23 15:38:45 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/23 19:19:38 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,22 +26,6 @@ void	ft_putstr(char *str, int fd)
 		write(fd, &str[i], 1);
 		i++;
 	}
-}
-
-bool	ft_check_del_and_quotes(char *hold)
-{
-	if (ft_strchr(hold, '"') || ft_strchr(hold, '\'') || ft_strchr(hold, '$'))
-		return (1);
-	return (0);
-}
-
-char	*ft_remove_for_del(char *hold)
-{
-	if ((ft_strchr(hold, '"') || ft_strchr(hold, '\'')) && !ft_strchr(hold, '$'))
-		return (ft_trim_quotes(hold));
-	if (ft_strchr(hold, '$') && (ft_strchr(hold, '\'') || ft_strchr(hold, '"')))
-		return (ft_trim_dollar(hold));
-	return (ft_strdup(hold));
 }
 
 static void	ft_get_the_line_parsing(char *hold)
@@ -90,7 +74,7 @@ int	ft_here_doc_parsing(t_token *lst, t_struct *strp)
 			}
 			ft_syscall(waitpid(CHILD, &info.status, 0), "waitpid");
 			if (WIFSIGNALED(info.status) && WTERMSIG(info.status) == SIGINT)
-				return (strp->status = 1, 1);
+				return (printf("\n"), strp->status = 1, 1);
 		}
 		lst = lst->next;
 	}
@@ -147,6 +131,6 @@ int	ft_here_doc(char *delimiter, t_struct *strp)
 	ft_syscall(waitpid(CHILD, &info.status, 0), "waitpid");
 	strp->status = WEXITSTATUS(info.status);
 	if (WIFSIGNALED(info.status) && WTERMSIG(info.status) == SIGINT)
-		return (strp->status = 1, -1);
+		return (printf("\n"), strp->status = 1, -1);
 	return (pipefd[0]);
 }

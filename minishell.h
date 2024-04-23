@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/23 17:41:43 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/23 20:09:01 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,14 @@ typedef struct s_c
 	int	j;
 	int	quote;
 }		t_c;
+
+typedef struct s_check_file_name
+{
+	char						*before;
+	char						*after;
+	int							status;
+	struct s_check_file_name	*next;
+}								t_file;
 
 typedef struct s_del
 {
@@ -141,6 +149,7 @@ typedef struct s_struct
 	int		status;
 	int		nr_cont;
 	t_env	*env;
+	t_file	*head;
 }			t_struct;
 
 typedef struct s_path
@@ -241,14 +250,16 @@ typedef struct s_container
 	int					*arg_is_var;
 	int					*arg_is_quote;
 	char				**infile;
-	char				*infile_index;
+	int					*infile_index;
+	int					*inf_is_amb;
 	int					*infile_is_var;
 	int					*infile_is_quote;
 	char				**here_doc;
 	int					*file_or_heredoc;
 	int					*here_doc_fd;
 	char				**outfile;
-	char				*outfile_index;
+	int					*outfile_index;
+	int					*out_is_amb;
 	int					*outfile_is_var;
 	int					*outfile_is_quote;
 	int					*outfile_type;
@@ -282,6 +293,7 @@ typedef struct s_index_files
 	int		i;
 	int		j;
 	int		index_len;
+	t_file	*h;
 }			t_index_files;
 
 typedef struct s_wildcards
@@ -429,9 +441,12 @@ int						ft_check_after_expand(t_token **current, int is_quote);
 void					ft_split_node(t_expand_arg *f, t_token **linked_list);
 char					**ft_wildcards(char **input);
 void					ft_match_wildcards(t_token **token);
+int						ft_check_file_name(t_file *head);
+void					ft_add_back(t_file **lst, t_file *_new);
 
 /*==========EXECUTION FUNCIONS==========*/
-void					ft_index_files(t_token *head, t_cont **container);
+void					ft_index_files(t_token *head, t_cont **container,
+							t_struct *strp);
 void					ft_fill_infile_outfile_here_doc(t_token *head, \
 							t_tmp_cont *t, t_cc *c);
 void					ft_fill_outfile_append(t_token *head, \
@@ -460,8 +475,6 @@ void					ft_check_allocation(void *str);
 void					ft_syscall(int return_, char *str);
 void					ft_sig(void *return_, char *str);
 void					ft_f(char **str);
-// int						ft_open_files(t_cont *cont, t_info *info,
-							// t_struct *strp);
 int						ft_open_files(t_cont *c, t_info *info, t_struct *s);
 void					ft_add_path_executed_cmd(char *str, t_env *env);
 void					ft_return_path(char **path, char *cmd,
@@ -469,6 +482,9 @@ void					ft_return_path(char **path, char *cmd,
 void					ft_rm_quotes(char **input);
 void					ft_quotes_wildcard(char **arg);
 char					*ft_trim_dollar(char *del);
+bool					ft_check_del_and_quotes(char *hold);
+char					*ft_trim_dollar(char *del);
+char					*ft_remove_for_del(char *hold);
 
 //					CONTAINER FUNCTIONS
 void					ft_link_all_in_containers(t_token *head,

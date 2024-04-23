@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 10:24:39 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/23 17:46:45 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/23 19:25:06 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,17 @@ static int	ft_allocate_for_new_trim(char *del)
 {
 	t_del	d;
 
-	(1)	&& (d.i = 0, d.j = 0, d.count = 0, d.len = 0, d.flag = 0, d.quote = 0);
+	(1) && (d.i = 0, d.j = 0, d.count = 0, d.len = 0, d.flag = 0, d.quote = 0);
 	while (del && del[d.i] != '\0')
 	{
 		if (del[d.i] && d.flag == 0 && (del[d.i] == '"' || del[d.i] == '\''))
 		{
 			if (d.i > 0 && del[d.i - 1] == '$')
 				d.len++;
-			d.quote = del[d.i], d.flag = 1, d.i++, d.count++;
+			d.quote = del[d.i];
+			d.flag = 1;
+			d.i++;
+			d.count++;
 		}
 		while (del[d.i] && d.flag == 1 && del[d.i] != d.quote)
 			d.i++;
@@ -53,7 +56,7 @@ char	*ft_trim_dollar(char *del)
 {
 	t_del	d;
 
-	(1)	&& (d.i = 0, d.j = 0, d.count = 0, d.len = 0, d.flag = 0, d.quote = 0);
+	(1) && (d.i = 0, d.j = 0, d.count = 0, d.len = 0, d.flag = 0, d.quote = 0);
 	if (ft_check_before_trim(del))
 		return (ft_trim_quotes(del));
 	d.len = ft_allocate_for_new_trim(del);
@@ -65,7 +68,7 @@ char	*ft_trim_dollar(char *del)
 			&& (del[d.i + 1] == '"' || del[d.i + 1] == '\''))
 			d.i++;
 		if (del[d.i] && d.flag == 0 && (del[d.i] == '"' || del[d.i] == '\''))
-			d.quote = del[d.i], d.flag = 1, d.i++;
+			(1) && (d.quote = del[d.i], d.flag = 1, d.i++);
 		while (del[d.i] && d.flag == 1 && del[d.i] != d.quote)
 			d.ptr[d.j++] = del[d.i++];
 		if (del[d.i] && d.flag == 1 && del[d.i] == d.quote)
@@ -75,4 +78,22 @@ char	*ft_trim_dollar(char *del)
 	}
 	d.ptr[d.j] = '\0';
 	return (d.ptr);
+}
+
+bool	ft_check_del_and_quotes(char *hold)
+{
+	if (ft_strchr(hold, '"') || ft_strchr(hold, '\'') || ft_strchr(hold, '$'))
+		return (1);
+	return (0);
+}
+
+char	*ft_remove_for_del(char *hold)
+{
+	if ((ft_strchr(hold, '"') || ft_strchr(hold, '\''))
+		&& !ft_strchr(hold, '$'))
+		return (ft_trim_quotes(hold));
+	if (ft_strchr(hold, '$') && (ft_strchr(hold, '\'')
+			|| ft_strchr(hold, '"')))
+		return (ft_trim_dollar(hold));
+	return (ft_strdup(hold));
 }

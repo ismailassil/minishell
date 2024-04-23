@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:12:31 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/22 13:47:18 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/23 20:35:11 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,18 @@ static void	ft_push_matching(t_token **head, t_token *previous)
 	p.newlist = NULL;
 	p.dirs = NULL;
 	p.dirs = ft_wildcards(&(*head)->token);
-	if (p.dirs)
+	if (p.dirs && p.dirs[p.i])
 	{
 		while (p.dirs[p.i])
 			ft_push_token(p.dirs[p.i++], &p.newlist);
+		ft_f(p.dirs);
 		ft_token_list(*head, &p.newlist);
 		ft_push_middle(previous, head, &p.newlist);
 	}
 	else
 	{
+		if (!p.dirs)
+			ft_f(p.dirs);
 		if ((ft_strchr((*head)->token, '"') || ft_strchr((*head)->token, '\''))
 			&& (*head)->is_var != 1)
 		{

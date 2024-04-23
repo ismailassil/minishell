@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 16:10:26 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/22 13:34:59 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/23 19:16:38 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,7 @@ void	ctrl_c(int sig)
 {
 	(void)sig;
 	if (waitpid(ALLCHILDS, NULL, WNOHANG) == 0)
-	{
-		printf("\n");
 		return ;
-	}
 	printf("\n");
 	rl_replace_line("", 1);
 	rl_on_new_line();
@@ -57,7 +54,6 @@ void	ctrl_slash(int sig)
 			"tcsetattr");
 		rl_replace_line("", 1);
 		rl_on_new_line();
-		printf("\n");
 		return ;
 	}
 	rl_redisplay();

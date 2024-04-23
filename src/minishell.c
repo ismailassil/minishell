@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:06 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/22 13:34:55 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/23 18:11:13 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	ft_parse_and_execute_from_shell(t_struct *strp, char **input)
 		return ;
 	}
 	(ft_remove_quotes(&head), ft_expand_argument(strp, &head));
-	ft_execution(&head, strp);
+	(ft_check_file_name(strp->head), ft_execution(&head, strp));
 }
 
 int	main(int argc, char **argv, char **env)

@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 10:36:20 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/20 16:13:49 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/23 19:15:22 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,34 +103,49 @@ char	*ft_handle_expand(t_struct *strp, char *arg)
 /*
 *	This function expands the Variables from the env
 */
-void	ft_expand_argument(t_struct *strp, t_token **linked_list)
+void    ft_expand_argument(t_struct *strp, t_token **linked_list)
 {
-	t_expand_arg	f;
+	t_expand_arg    f;
+	t_file            *new;
 
-	(1) && (f.head = *linked_list, f.tmp = NULL, f.previous = NULL);
-	while (f.head != NULL)
-	{
-		if (f.head->type == CMD)
-		{
-			if (ft_strncmp(f.head->token, "export", 5) == 0)
-				f.type = 1;
-			else
-				f.type = 0;
-		}
-		if (ft_strchr(f.head->token, '$') && f.head->type != DELIMITER)
-		{
-			f.head->is_var = 1;
-			if (ft_strchr(f.head->token, '"')
-				|| ft_strchr(f.head->token, '\''))
-				f.head->is_quote = 1;
-			f.tmp = ft_handle_expand(strp, f.head->token);
-			free(f.head->token);
-			f.head->token = f.tmp;
-			if (ft_check_after_expand(&f.head, f.head->is_quote) == 1)
-				ft_split_node(&f, linked_list);
-		}
-		f.previous = f.head;
-		if (f.head)
-			f.head = f.head->next;
-	}
+    strp->head = NULL;
+    (1) && (f.head = *linked_list, f.tmp = NULL, f.previous = NULL);
+    while (f.head != NULL)
+    {
+        if (f.head->type == CMD)
+        {
+            if (ft_strncmp(f.head->token, "export", 5) == 0)
+                f.type = 1;
+            else
+                f.type = 0;
+        }
+        if (ft_strchr(f.head->token, '$') && f.head->type != DELIMITER)
+        {
+            f.head->is_var = 1;
+            if (ft_strchr(f.head->token, '"')
+                || ft_strchr(f.head->token, '\''))
+                f.head->is_quote = 1;
+            if (f.head->type == FILENAME)
+            {
+                new = malloc(sizeof(t_file));
+                if (!new)
+                    return ;
+                new->before = ft_strdup(f.head->token);
+                new->after = NULL;
+                new->next = NULL;
+                new->status = 0;
+                ft_add_back(&strp->head, new);
+            }
+            f.tmp = ft_handle_expand(strp, f.head->token);
+            if (f.head->type == FILENAME)
+                new->after = ft_strdup(f.tmp);
+            free(f.head->token);
+            f.head->token = f.tmp;
+            if (ft_check_after_expand(&f.head, f.head->is_quote) == 1)
+                ft_split_node(&f, linked_list);
+        }
+        f.previous = f.head;
+        if (f.head)
+            f.head = f.head->next;
+    }
 }

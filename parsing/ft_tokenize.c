@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 21:05:24 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/21 21:41:28 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/23 19:13:20 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,10 @@ static void	ft_check_else(t_token *head, int *flag, int *index);
 *	{ from their position if they are CMDs ARGs PIPE ... }
 *	like:	[ls -al > file		|		grep pipex < file2]
 *			CMD ARG OUTFILE	   PIPE		CMD   ARG    INFILE
+*	index : refer to the order of a certain file
+*	flag  : if [== 1] means that the cmd is found and the following
+*			is ARG or FILENAME or HEREDOC
+*			if [== 0] the cmd has not been found
 */
 void	ft_tokenize(t_token **str)
 {

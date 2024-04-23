@@ -6,59 +6,39 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 20:56:58 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/22 13:45:29 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/23 20:33:49 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_allocate_for_index_cont(t_cont **cont)
+static int	ft_check_ambigous_and_wildcard(char *filename, int is_amb)
 {
-	int	i;
+	char	**dir;
+	int		i;
 
 	i = 0;
-	while ((*cont)->infile && (*cont)->infile[i])
-		i++;
-	(*cont)->infile_index = malloc((i + 1) * sizeof(int));
-	ft_check_allocation((*cont)->infile_index);
-	(*cont)->nbr_files = i;
-	i = 0;
-	while ((*cont)->outfile && (*cont)->outfile[i])
-		i++;
-	(*cont)->outfile_index = malloc((i + 1) * sizeof(int));
-	ft_check_allocation((*cont)->outfile_index);
-	(*cont)->nbr_files += i;
-}
-
-void	ft_index_files(t_token *head, t_cont **container)
-{
-	t_index_files	i;
-
-	(1) && (i.cont = *container, i.tok = head, i.index_len = 0);
-	while (i.cont != NULL)
+	dir = NULL;
+	if (is_amb == 1)
+		return (1);
+	if (ft_strchr(filename, '*'))
 	{
-		ft_allocate_for_index_cont(&i.cont);
-		(1) && (i.i = 0, i.j = 0);
-		while (i.tok != NULL && i.tok->type != PIPE)
-		{
-			if (i.tok->type == APPEND || i.tok->type == OUTFILE)
-				i.cont->outfile_index[i.i++] = i.tok->next->findex;
-			else if (i.tok->type == INFILE)
-				i.cont->infile_index[i.j++] = i.tok->next->findex;
-			i.tok = i.tok->next;
-		}
-		(1) && (i.cont->outfile_index[i.i] = 0, i.cont->infile_index[i.j] = 0);
-		if (i.tok && i.tok->type == PIPE)
-			i.tok = i.tok->next;
-		i.cont = i.cont->next;
+		dir = ft_wildcards(&filename);
+		while (dir && dir[i])
+			i++;
+		ft_f(dir);
+		if (i >= 2)
+			return (1);
 	}
+	return (0);
 }
 
 static int	ft_open_outfiles(t_info *info, t_cont *cont, int o, t_struct *s)
 {
 	t_fd_	fd;
 
-	// Check ambigious
+	if (ft_check_ambigous_and_wildcard(cont->outfile[o], cont->out_is_amb[o]))
+		return (s->status = 1, 1);
 	if (cont->outfile_type[o] == 1)
 		fd.outfile = open(cont->outfile[o], CR | WO, 0644);
 	else if (cont->outfile_type[o] == 2)
@@ -79,7 +59,8 @@ static int	ft_open_infiles(t_info *info, t_cont *cont, int i, t_struct *s)
 {
 	t_fd_	fd;
 
-	// Check ambigious
+	if (ft_check_ambigous_and_wildcard(cont->infile[i], cont->inf_is_amb[i]))
+		return (s->status = 1, 1);
 	fd.infile = open(cont->infile[i], O_RDONLY);
 	if (fd.infile == -1)
 		return (ft_throw_error(cont->infile[i]), s->status = 1, 1);

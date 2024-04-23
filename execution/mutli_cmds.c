@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 13:48:38 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/22 13:34:48 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/23 19:25:31 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,9 @@ void	ft_execute_multiple_cmds(t_cont *cont, \
 		waitpid(info->id[info->i++], &status, 0);
 	strp->status = WEXITSTATUS(status);
 	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
-		strp->status = 131;
+		(1) && (printf("Quit: 3\n"), strp->status = 131);
 	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-		strp->status = 130;
+		(1) && (printf("\n"), strp->status = 130);
 	ft_add_cmd_or_arg_to_env(nr_cont, cont, strp);
 	free(info->id);
 }

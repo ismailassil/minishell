@@ -6,7 +6,7 @@
 #    By: iassil <iassil@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/27 14:35:22 by iassil            #+#    #+#              #
-#    Updated: 2024/04/22 12:19:54 by iassil           ###   ########.fr        #
+#    Updated: 2024/04/23 18:11:42 by iassil           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ EXEC_FILES	=	execution.c				process_utils_v1.c		execute_builtin.c		\
 				execution_utils_v1.c	execution_utils_v2.c	execution_utils_v3.c	\
 				execute_builtin_utils.c	process_utils_v2.c		process_utils_v3.c		\
 				execution_utils_v4.c	fill_container_utils.c	execute_wildcards.c		\
-				here_doc_utils_v3.c		ft_open_files.c
+				here_doc_utils_v3.c		ft_open_files.c			ft_check_file_name.c
 
 PARS_FILES	=	parsing.c			ft_tokenize.c			ft_check_syntax.c	\
 				ft_expand.c			ft_remove_quotes.c		ft_split_tokens.c	\
