@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:12:31 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/23 20:35:11 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/23 20:39:26 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,7 @@ static void	ft_push_matching(t_token **head, t_token *previous)
 	{
 		while (p.dirs[p.i])
 			ft_push_token(p.dirs[p.i++], &p.newlist);
-		ft_f(p.dirs);
-		ft_token_list(*head, &p.newlist);
+		(ft_f(p.dirs), ft_token_list(*head, &p.newlist));
 		ft_push_middle(previous, head, &p.newlist);
 	}
 	else
