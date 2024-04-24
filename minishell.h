@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/24 13:19:36 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/24 20:31:47 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -387,7 +387,8 @@ typedef struct s_expand_arg
 	t_token	*previous;
 	t_token	*newlist;
 	char	*tmp;
-	int		type;
+	char	*check;
+	int		is_export;
 	int		i;
 	int		is_dollar;
 }			t_expand_arg;

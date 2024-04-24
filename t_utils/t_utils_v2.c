@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 11:22:51 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/24 13:36:26 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/24 20:40:51 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	ft_free_t_file(t_file **filename_node)
 	t_file	*head;
 	t_file	*tobefreed;
 
-	head = 	*filename_node;
+	head = *filename_node;
 	while (head != NULL)
 	{
 		tobefreed = head;

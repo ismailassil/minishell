@@ -6,11 +6,31 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 21:10:11 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/20 16:27:21 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/24 20:00:48 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	ft_is_n(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (str && str[i] && str[i] != '-')
+		return (0);
+	i++;
+	while (str && str[i])
+	{
+		if (str[i] == 'n')
+			i++;
+		else
+			return (0);
+	}
+	if (str[i] == '\0')
+		return (1);
+	return (0);
+}
 
 /*
 *	This function execute "echo"
@@ -22,7 +42,8 @@ void	execute_echo(t_cont *cont, t_struct **strp)
 
 	(1) && (n = 0, i = 0);
 	if (cont->arg
-		&& ft_strncmp(cont->arg[0], "-n", ft_strlen(cont->arg[0])) == 0)
+		&& (ft_strncmp(cont->arg[0], "-n", ft_strlen(cont->arg[0])) == 0
+			|| ft_is_n(cont->arg[0])))
 	{
 		n = 1;
 		i++;

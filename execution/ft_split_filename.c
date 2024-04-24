@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 18:36:23 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/19 12:35:21 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/24 19:20:21 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ char	*ft_add_space(char *str, int len)
 	return (d.ptr);
 }
 
-char	**ft_split_filname(char *str)
+char	**ft_split_filename(char *str)
 {
 	int		len;
 	char	*ptr;

@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 00:08:18 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/23 19:53:29 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/24 20:39:09 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,9 @@ int	ft_check_after_expand(t_token **current, int is_quote)
 	int	i;
 	int	flag;
 
+	(void)is_quote;
 	(1) && (i = 0, flag = 0);
 	if ((*current)->type == FILENAME)
-		return (0);
-	if (is_quote == 1)
 		return (0);
 	while ((*current)->token[i] != '\0')
 	{
@@ -98,15 +97,43 @@ int	ft_check_after_expand(t_token **current, int is_quote)
 	return (0);
 }
 
+int	ft_is_between_quotesorequal(char *str)
+{
+	int	i;
+	int	flag;
+	int	quotes;
+	int	equal;
+
+	i = 0;
+	flag = 0;
+	quotes = 0;
+	equal = 0;
+	while (str && str[i] != '\0')
+	{
+		if (flag == 0 && str[i] == '=')
+			(1) && (equal = str[i], flag = 1, i++);
+		if (flag == 0 && (str[i] == '\'' || str[i] == '"'))
+			(1) && (quotes = str[i], flag = 2, i++);
+		while (flag == 1 && str[i])
+			if (str[i++] == '$')
+				return (1);
+		while (flag == 2 && str[i] && str[i] != quotes)
+			if (str[i++] == '$')
+				return (1);
+		if (str[i])
+			i++;
+	}
+	return (0);
+}
+
 void	ft_split_node(t_expand_arg *f, t_token **linked_list)
 {
-	if (f->type == 1)
-		;
-	else
-	{
-		f->newlist = ft_split_and_push_node(&f->head);
-		ft_push_middle(f->previous, &f->head, &f->newlist);
-		if (f->previous == NULL)
-			*linked_list = f->head;
-	}
+	if (f->is_export == 1 && ft_is_between_quotesorequal(f->check))
+		return ;
+	else if (ft_is_between_quotesorequal(f->check))
+		return ;
+	f->newlist = ft_split_and_push_node(&f->head);
+	ft_push_middle(f->previous, &f->head, &f->newlist);
+	if (f->previous == NULL)
+		*linked_list = f->head;
 }

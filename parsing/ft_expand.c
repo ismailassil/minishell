@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 10:36:20 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/24 13:41:39 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/24 20:32:47 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,9 +116,9 @@ void	ft_expand_argument(t_struct *strp, t_token **linked_list)
 		if (f.head->type == CMD)
 		{
 			if (ft_strncmp(f.head->token, "export", 5) == 0)
-				f.type = 1;
+				f.is_export = 1;
 			else
-				f.type = 0;
+				f.is_export = 0;
 		}
 		if (ft_strchr(f.head->token, '$') && f.head->type != DELIMITER)
 		{
@@ -147,6 +147,7 @@ void	ft_expand_argument(t_struct *strp, t_token **linked_list)
 				ft_add_back(&strp->head, new);
 			}
 			f.tmp = ft_handle_expand(strp, f.head->token);
+			f.check = ft_strdup(f.head->token);
 			if (f.head->type == FILENAME)
 			{
 				new->after = ft_strdup(f.tmp);
@@ -156,6 +157,7 @@ void	ft_expand_argument(t_struct *strp, t_token **linked_list)
 			f.head->token = f.tmp;
 			if (ft_check_after_expand(&f.head, f.head->is_quote) == 1)
 				ft_split_node(&f, linked_list);
+			free(f.check);
 		}
 		f.previous = f.head;
 		if (f.head)
