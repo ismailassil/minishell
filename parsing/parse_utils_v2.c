@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 17:44:37 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/24 21:56:37 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/24 23:09:38 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,8 @@ int	ft_handle_irregulare_cases(t_expand *exp, char *arg, int *i, t_struct *strp)
 	{
 		if (arg[(*i) + 1] == '0')
 		{
-			strp->current->vars[strp->current->i++] = ft_strdup("1");
+			strp->current->vars[strp->current->i] = ft_strdup("1");
+			ft_check_allocation(strp->current->vars[strp->current->i++]);
 			exp->new_str = ft_join_(s, "minishell");
 			free(s);
 		}
@@ -80,7 +81,8 @@ int	ft_handle_irregulare_cases(t_expand *exp, char *arg, int *i, t_struct *strp)
 	}
 	else if (!ft_check_if_chars_digit(arg[(*i) + 1]))
 	{
-		strp->current->vars[strp->current->i++] = ft_strdup("1");
+		strp->current->vars[strp->current->i] = ft_strdup("1");
+		ft_check_allocation(strp->current->vars[strp->current->i++]);
 		ft_special_chars(exp, arg, i, strp);
 		return ((*i += 1), 1);
 	}
@@ -97,7 +99,8 @@ int	ft_expand_word_after_dollar(t_expand *exp, int *i,
 	s = NULL;
 	if (exp->quote == '\'')
 	{
-		strp->current->vars[strp->current->i++] = ft_strdup("1");
+		strp->current->vars[strp->current->i] = ft_strdup("1");
+		ft_check_allocation(strp->current->vars[strp->current->i++]);
 		ft_append_char(&exp->new_str, arg[(*i)++]);
 		return (1);
 	}

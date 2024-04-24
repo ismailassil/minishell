@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 10:36:20 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/24 22:37:00 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/24 23:10:57 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,9 @@ char	*ft_arg_is_exist(t_struct *strp, char *var)
 			i++;
 		if (head->value[i] == '=' && !ft_check_if_chars_digit(var[i]))
 		{
-			strp->current->vars[strp->current->i++] = ft_substr(head->value, \
+			strp->current->vars[strp->current->i] = ft_substr(head->value, \
 				i + 1, ft_strlen(head->value) - i);
+			ft_check_allocation(strp->current->vars[strp->current->i++]);
 			flag = 1;
 			break ;
 		}
@@ -40,7 +41,10 @@ char	*ft_arg_is_exist(t_struct *strp, char *var)
 	if (head)
 		ptr = ft_allocate_for_var(flag, head->value, i);
 	else
-		strp->current->vars[strp->current->i++] = ft_strdup("1");
+	{
+		strp->current->vars[strp->current->i] = ft_strdup("1");
+		ft_check_allocation(strp->current->vars[strp->current->i++]);
+	}
 	return (ptr);
 }
 
