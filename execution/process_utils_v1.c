@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:42:41 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/06 03:05:42 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/24 13:40:39 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,7 @@ char	**ft_join_for_envp_execve(t_env *env)
 
 	(1) && (i = 0, envp = NULL, len = ft_t_env_len(env));
 	envp = malloc((len + 1) * sizeof(char *));
-	if (!envp)
-		(write(2, "Error: Allocation failed\n", 25), exit(FAIL));
+	ft_check_allocation(envp);
 	while (env != NULL)
 	{
 		envp[i] = ft_strdup(env->value);

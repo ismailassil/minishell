@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 12:27:22 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/20 13:27:52 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/24 13:40:05 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,7 @@ char	*ft_filter_arg(char *arg)
 		inf.i++;
 	}
 	value = (char *)malloc((inf.i - inf.count + 1) * sizeof(char));
-	if (!value)
-		return (NULL);
+	ft_check_allocation(value);
 	(1) && (inf.i = 0, inf.j = 0);
 	while (arg[inf.i] != '\0')
 	{

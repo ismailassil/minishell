@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 10:36:20 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/24 13:20:15 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/24 13:41:39 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,8 +129,7 @@ void	ft_expand_argument(t_struct *strp, t_token **linked_list)
 			if (f.head->type == FILENAME)
 			{
 				new = malloc(sizeof(t_file));
-				if (!new)
-					return ;
+				ft_check_allocation(new);
 				f.i = 0;
 				f.is_dollar = 0;
 				while (f.head->token[f.i])

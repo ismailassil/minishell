@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 10:52:06 by aibn-che          #+#    #+#             */
-/*   Updated: 2024/04/04 23:36:03 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/24 13:42:07 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,7 @@ t_token	*ft_new_node(char *token)
 	t_token	*new;
 
 	new = malloc(sizeof(t_token));
-	if (!new)
-		return (NULL);
+	ft_check_allocation(new);
 	new->token = ft_strdup(token);
 	new->is_var = 0;
 	new->is_quote = 0;

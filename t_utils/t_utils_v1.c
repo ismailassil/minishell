@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   t_utils.c                                          :+:      :+:    :+:   */
+/*   t_utils_v1.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 21:12:35 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/24 11:22:42 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/24 13:43:01 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,20 @@ static void	ft_allocate_for_here_doc(t_tmp_cont *tmp, t_cont **new)
 	while (tmp->here_doc && tmp->here_doc[i] != 0)
 		i++;
 	(*new)->here_doc = malloc((i + 1) * sizeof(char *));
+	ft_check_allocation((*new)->here_doc);
 	i = 0;
 	while (tmp->here_doc && tmp->here_doc[i] != 0)
-		(1) && ((*new)->here_doc[i] = ft_strdup(tmp->here_doc[i]), i++);
+	{
+		(*new)->here_doc[i] = ft_strdup(tmp->here_doc[i]);
+		ft_check_allocation((*new)->here_doc[i]);
+		i++;
+	}
 	(*new)->here_doc[i] = 0;
 	(*new)->file_or_heredoc = malloc(sizeof(int));
+	ft_check_allocation((*new)->file_or_heredoc);
 	*(*new)->file_or_heredoc = *tmp->file_or_heredoc;
 	(*new)->here_doc_fd = malloc(sizeof(int));
+	ft_check_allocation((*new)->here_doc_fd);
 	*(*new)->here_doc_fd = 0;
 }
 

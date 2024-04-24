@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 14:00:00 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/05 20:20:05 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/24 13:41:25 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,7 @@ void	ft_append_char(char **str, int c)
 	len = ft_strlen(*str);
 	s = *str;
 	*str = malloc(sizeof(char) * (len + 2));
-	if (!(*str))
-		return ;
+	ft_check_allocation(*str);
 	while (s && s[i])
 	{
 		(*str)[i] = s[i];
