@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_check_file_name.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 16:37:37 by aibn-che          #+#    #+#             */
-/*   Updated: 2024/04/23 19:56:08 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/24 19:02:55 by aibn-che         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,17 @@ int	ft_check_file_name(t_file *head)
 	{
 		if (ft_contain_quotes(head->before))
 		{
-			if (head->after[0] == '\0')
+			if (head->after[0] == '\0' || ft_contain_spaces(head->after))
+			{
 				return (head->status = 2, 1);
+			}
 		}
 		else
 		{
 			if (head->after[0] == '\0' || ft_contain_spaces(head->after))
+			{
 				return (head->status = 1, 1);
+			}
 		}
 		head = head->next;
 	}
