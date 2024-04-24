@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_check_file_name.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 16:37:37 by aibn-che          #+#    #+#             */
-/*   Updated: 2024/04/24 23:07:32 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/24 23:55:16 by aibn-che         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,14 @@ int	ft_contain_spaces(char *str)
 		i++;
 	if (str && !str[i])
 		return (1);
+	while (str && str[i] && !ft_strchr(" \t\n\v\f\r", str[i]))
+		i++;
+	while (str && str[i])
+	{
+		if (!ft_strchr(" \t\n\v\f\r", str[i]))
+			return (1);
+		i++;
+	}
 	return (0);
 }
 
@@ -55,26 +63,20 @@ int	ft_contain_quotes(char *str)
 	return (0);
 }
 
-bool	ft_check_is_amb(t_file *head, int index)
+int	within_quotes(char *str)
 {
-	char	**ptr;
-	int		i;
+	int	l_index;
+	int	quote;
 
-	ptr = NULL;
-	i = 0;
-	if (head->vars && head->vars[index])
+	quote = 0;
+	l_index = ft_strlen(str) - 1;
+	if (str[0] == '\"' || str[0] == '\'')
+		quote = str[0];
+	if (quote != 0 && quote == str[l_index])
 	{
-		if (head->vars[index] && ft_contain_spaces(head->vars[index]))
-			return (true);
-		ptr = ft_split_v2(head->vars[index]);
-		ft_check_allocation(ptr);
-		while (ptr && ptr[i])
-			i++;
-		ft_f(ptr);
-		if (i > 1)
-			return (true);
+		return (1);
 	}
-	return (false);
+	return (0);
 }
 
 /*
@@ -90,61 +92,20 @@ bool	ft_check_is_amb(t_file *head, int index)
 *
  * 0 => for regulare outfile
 */
-int	ft_check_file_name(t_file *hold)
+int	ft_check_file_name(t_file *head)
 {
-	int		i;
-	int		j;
-	int		quote;
-	int		flag;
-	t_file	*head;
-
-	head = hold;
 	while (head != NULL)
 	{
-		(1) && (i = 0, j = 0, flag = 0);
-		if (ft_strchr(head->before, '$') && !ft_strchr(head->before, '"') && !ft_strchr(head->before, '\'') && head->after[0] == '\0')
-			return (head->status = 1, 1);
-		while (head->before && head->before[i] != '\0')
+		if (ft_contain_quotes(head->before) && head->after[0] == '\0')
 		{
-			if (flag == 0 && head->before[i] && (head->before[i] == '"' || head->before[i] == '\''))
-				(1) && (quote = head->before[i], flag = 1, i++);
-			while (flag == 1 && head->before[i] && head->before[i] != quote)
-				if (head->before[i++] == '$')
-					j++;
-			while (flag == 0 && head->before[i] && head->before[i] != '"' && head->before[i] != '\'')
-			{
-				if (head->before[i] && head->before[i] == '$')
-				{
-					if ((ft_strchr(head->before, '\'') || ft_strchr(head->before, '"')) && head->after[0] == '\0')
-						;
-					else if (ft_check_is_amb(head, j))
-						return (head->status = 1, 1);
-					j++;
-				}
-				i++;
-			}
-			if (flag == 1 && head->before[i] && head->before[i] == quote)
-				(1) && (quote = 0, flag = 1, i++);
-			if (!head->before[i])
-				break ;
+			return (head->status = 2, 1);
+		}
+		if ((head->after[0] == '\0' || ft_contain_spaces(head->after))
+			&& !within_quotes(head->before))
+		{
+			return (head->status = 1, 1);
 		}
 		head = head->next;
 	}
-	return (ft_free_t_file(&hold), 0);
+	return (0);
 }
-
-	// while (head != NULL)
-	// {
-	// 	int	i = 0;
-	// 	// while (head->vars && head->vars[i])
-	// 	// 	printf("{%s}\n", head->vars[i++]);
-	// 	if (ft_contain_quotes(head->before) && head->after[0] == '\0')
-	// 	{
-	// 		return (head->status = 2, 1);
-	// 	}
-	// 	if (head->after[0] == '\0' || ft_contain_spaces(head->after))
-	// 	{
-	// 		return (head->status = 1, 1);
-	// 	}
-	// 	head = head->next;
-	// }

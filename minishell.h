@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/24 23:06:53 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/25 00:02:19 by aibn-che         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -433,7 +433,7 @@ char					*ft_handle_expand_for_here_doc(t_struct *strp,
 							char *arg);
 int						ft_expand_word_after_dollar(t_expand *exp, int *i,
 							char *arg, t_struct *strp);
-char					*ft_arg_is_exist(t_struct *strp, char *var);
+char					*ft_arg_is_exist(t_env *env, char *var);
 int						ft_between_bracket(char *str, int i);
 //					Utils function for Parsing
 void					ft_error(char *str);

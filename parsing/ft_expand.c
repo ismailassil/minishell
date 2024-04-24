@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_expand.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 10:36:20 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/24 23:10:57 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/25 00:01:09 by aibn-che         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 /*
 *	Checks if the expanded variable exists in the env
 */
-char	*ft_arg_is_exist(t_struct *strp, char *var)
+char	*ft_arg_is_exist(t_env *env, char *var)
 {
 	t_env	*head;
 	char	*ptr;
 	int		i;
 	int		flag;
 
-	(1) && (head = strp->env, i = 0, flag = 0, ptr = NULL);
+	(1) && (head = env, i = 0, flag = 0, ptr = NULL);
 	while (head != NULL)
 	{
 		i = 0;
@@ -30,9 +30,6 @@ char	*ft_arg_is_exist(t_struct *strp, char *var)
 			i++;
 		if (head->value[i] == '=' && !ft_check_if_chars_digit(var[i]))
 		{
-			strp->current->vars[strp->current->i] = ft_substr(head->value, \
-				i + 1, ft_strlen(head->value) - i);
-			ft_check_allocation(strp->current->vars[strp->current->i++]);
 			flag = 1;
 			break ;
 		}
@@ -40,11 +37,6 @@ char	*ft_arg_is_exist(t_struct *strp, char *var)
 	}
 	if (head)
 		ptr = ft_allocate_for_var(flag, head->value, i);
-	else
-	{
-		strp->current->vars[strp->current->i] = ft_strdup("1");
-		ft_check_allocation(strp->current->vars[strp->current->i++]);
-	}
 	return (ptr);
 }
 
@@ -108,13 +100,56 @@ char	*ft_handle_expand(t_struct *strp, char *arg)
 	return (exp.new_str);
 }
 
+void	save_var_name_and_value(t_expand_arg f, t_file **new, t_struct *strp)
+{
+	*new = malloc(sizeof(t_file));
+	ft_check_allocation(new);
+	f.i = 0;
+	f.is_dollar = 0;
+	while (f.head->token[f.i])
+	{
+		if (f.head->token[f.i++] == '$')
+			f.is_dollar++;
+	}
+	(*new)->vars = malloc((f.is_dollar + 1) * sizeof(char *));
+	ft_check_allocation((*new)->vars);
+	(*new)->before = ft_strdup(f.head->token);
+	ft_check_allocation((*new)->before);
+	(*new)->after = NULL;
+	(*new)->next = NULL;
+	(1) && ((*new)->status = 0, (*new)->i = 0);
+	ft_add_back(&strp->head, (*new));
+}
+
+void	expand_var(t_expand_arg f, t_struct *strp, t_token **linked_list)
+{
+	t_file			*new;
+
+	new = NULL;
+	f.head->is_var = 1;
+	if (ft_strchr(f.head->token, '"')
+		|| ft_strchr(f.head->token, '\''))
+		f.head->is_quote = 1;
+	if (f.head->type == FILENAME)
+		save_var_name_and_value(f, &new, strp);
+	f.tmp = ft_handle_expand(strp, f.head->token);
+	if (f.head->type == FILENAME)
+	{
+		new->after = ft_strdup(f.tmp);
+		ft_check_allocation(new->after);
+	}
+	free(f.head->token);
+	f.head->token = f.tmp;
+	if (ft_check_after_expand(&f.head, f.head->is_quote) == 1)
+		ft_split_node(&f, linked_list);
+}
+
 /*
 *	This function expands the Variables from the env
 */
 void	ft_expand_argument(t_struct *strp, t_token **linked_list)
 {
 	t_expand_arg	f;
-	t_file			*new;
 
 	strp->head = NULL;
 	f.i = 0;
@@ -130,45 +165,7 @@ void	ft_expand_argument(t_struct *strp, t_token **linked_list)
 		}
 		if (ft_strchr(f.head->token, '$') && f.head->type != DELIMITER)
 		{
-			f.head->is_var = 1;
-			if (ft_strchr(f.head->token, '"')
-				|| ft_strchr(f.head->token, '\''))
-				f.head->is_quote = 1;
-			if (f.head->type == FILENAME)
-			{
-				new = malloc(sizeof(t_file));
-				ft_check_allocation(new);
-				new->i = 0;
-				f.i = 0;
-				f.is_dollar = 0;
-				while (f.head->token[f.i])
-				{
-					if (f.head->token[f.i++] == '$')
-						f.is_dollar++;
-				}
-				new->vars = malloc((f.is_dollar + 1) * sizeof(char *));
-				ft_check_allocation(new->vars);
-				new->before = ft_strdup(f.head->token);
-				ft_check_allocation(new->before);
-				new->after = NULL;
-				new->next = NULL;
-				(1) && (new->status = 0, new->i = 0);
-				strp->current = new;
-				ft_add_back(&strp->head, new);
-			}
-			f.tmp = ft_handle_expand(strp, f.head->token);
-			f.check = ft_strdup(f.head->token);
-			if (f.head->type == FILENAME)
-			{
-				new->vars[new->i] = 0;
-				new->after = ft_strdup(f.tmp);
-				ft_check_allocation(new->after);
-			}
-			free(f.head->token);
-			f.head->token = f.tmp;
-			if (ft_check_after_expand(&f.head, f.head->is_quote) == 1)
-				ft_split_node(&f, linked_list);
-			free(f.check);
+			expand_var(f, strp, linked_list);
 		}
 		f.previous = f.head;
 		if (f.head)
