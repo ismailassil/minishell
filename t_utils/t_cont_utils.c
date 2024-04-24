@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 19:25:31 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/22 11:28:27 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/24 10:48:28 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,6 @@ int	ft_push_container(t_tmp_cont *tmp, t_cont **head)
 
 void	ft_free_the_rest(t_cont *c)
 {
-	free(c->here_doc);
-	free(c->outfile);
 	free(c->outfile_is_var);
 	free(c->outfile_type);
 	free(c->file_or_heredoc);
@@ -65,6 +63,8 @@ void	ft_free_the_rest(t_cont *c)
 	free(c->here_doc_fd);
 	free(c->infile_index);
 	free(c->outfile_index);
+	free(c->inf_is_amb);
+	free(c->out_is_amb);
 }
 
 void	ft_free_containers(t_cont **head)
@@ -76,19 +76,12 @@ void	ft_free_containers(t_cont **head)
 	{
 		(1) && (c = *head, *head = (*head)->next, i = 0);
 		free(c->cmd);
-		while (c->arg[i] != NULL)
-			(1) && (free(c->arg[i]), i++);
-		free(c->arg);
-		i = 0;
-		while (c->infile[i] != NULL)
-			(1) && (free(c->infile[i]), i++);
-		free(c->infile);
-		i = 0;
-		while (c->outfile[i] != NULL)
-			(1) && (free(c->outfile[i]), i++);
-		i = 0;
-		while (c->here_doc[i] != NULL)
-			(1) && (free(c->here_doc[i]), i++);
+		ft_f(c->arg);
+		ft_f(c->infile);
+		ft_f(c->inf_before);
+		ft_f(c->here_doc);
+		ft_f(c->outfile);
+		ft_f(c->out_before);
 		ft_free_the_rest(c);
 		(free(c), c = NULL);
 	}

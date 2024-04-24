@@ -6,28 +6,48 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 20:56:58 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/23 20:33:49 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/24 11:20:38 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static int	ft_check_ambigous_and_wildcard(char *filename, int is_amb)
+int	ft_check_wildcard(char **filename)
 {
-	char	**dir;
-	int		i;
+	t_amb_rdt	r;
 
-	i = 0;
-	dir = NULL;
-	if (is_amb == 1)
-		return (1);
-	if (ft_strchr(filename, '*'))
+	r.i = 0;
+	r.dir = NULL;
+	r.dir = ft_wildcards(filename);
+	while (r.dir && r.dir[r.i])
+		r.i++;
+	ft_f(r.dir);
+	if (r.i >= 2)
+		return (ft_error("msh: "), ft_error(*filename), ft_error(AMB), 1);
+	if (r.dir == NULL || r.dir[0] == 0)
 	{
-		dir = ft_wildcards(&filename);
-		while (dir && dir[i])
-			i++;
-		ft_f(dir);
-		if (i >= 2)
+		if (ft_strchr(*filename, '"') || ft_strchr(*filename, '\''))
+		{
+			r.tmp = ft_strdup(*filename);
+			free(*filename);
+			*filename = ft_trim_quotes(r.tmp);
+			free(r.tmp);
+		}
+		return (0);
+	}
+	free(*filename);
+	*filename = r.dir[0];
+	return (0);
+}
+
+static int	ft_check_ambigous_and_wildcard(char **filename,\
+	int is_amb, int is_var, char *before)
+{
+	if (is_var == 1 && is_amb == 1)
+		return (ft_error("msh: "), ft_error(before), ft_error(AMB), 1);
+	if (ft_strchr(*filename, '*'))
+	{
+		if (ft_check_wildcard(filename))
 			return (1);
 	}
 	return (0);
@@ -37,7 +57,8 @@ static int	ft_open_outfiles(t_info *info, t_cont *cont, int o, t_struct *s)
 {
 	t_fd_	fd;
 
-	if (ft_check_ambigous_and_wildcard(cont->outfile[o], cont->out_is_amb[o]))
+	if (ft_check_ambigous_and_wildcard(&cont->outfile[o],\
+		cont->out_is_amb[o], cont->outfile_is_var[o], cont->out_before[o]))
 		return (s->status = 1, 1);
 	if (cont->outfile_type[o] == 1)
 		fd.outfile = open(cont->outfile[o], CR | WO, 0644);
@@ -59,7 +80,8 @@ static int	ft_open_infiles(t_info *info, t_cont *cont, int i, t_struct *s)
 {
 	t_fd_	fd;
 
-	if (ft_check_ambigous_and_wildcard(cont->infile[i], cont->inf_is_amb[i]))
+	if (ft_check_ambigous_and_wildcard(&cont->infile[i],\
+		cont->inf_is_amb[i], cont->infile_is_var[i], cont->inf_before[i]))
 		return (s->status = 1, 1);
 	fd.infile = open(cont->infile[i], O_RDONLY);
 	if (fd.infile == -1)

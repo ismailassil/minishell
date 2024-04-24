@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/23 20:09:01 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/24 11:15:33 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@
 # define RETRIVING_C2	"No such file or directory\n"
 # define FNF			": No such file or directory\n"
 # define MS				": numeric argument required\n"
+# define AMB			": ambiguous redirect\n"
 # define GREEN			"\x1b[1;32m"
 # define YELLOW_		"\x1b[0;33m"
 # define YELLOW			"\x1b[1;33m"
@@ -252,6 +253,7 @@ typedef struct s_container
 	char				**infile;
 	int					*infile_index;
 	int					*inf_is_amb;
+	char				**inf_before;
 	int					*infile_is_var;
 	int					*infile_is_quote;
 	char				**here_doc;
@@ -260,6 +262,7 @@ typedef struct s_container
 	char				**outfile;
 	int					*outfile_index;
 	int					*out_is_amb;
+	char				**out_before;
 	int					*outfile_is_var;
 	int					*outfile_is_quote;
 	int					*outfile_type;
@@ -313,6 +316,8 @@ typedef struct s_amb_rdt
 {
 	int		i;
 	char	**ptr;
+	char	*tmp;
+	char	**dir;
 }			t_amb_rdt;
 
 typedef struct s_info
