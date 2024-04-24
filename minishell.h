@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/24 11:24:06 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/24 13:19:36 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,10 @@ typedef struct s_c
 
 typedef struct s_check_file_name
 {
+	int							i;
 	char						*before;
 	char						*after;
+	char						**vars;
 	int							status;
 	struct s_check_file_name	*next;
 }								t_file;
@@ -386,6 +388,8 @@ typedef struct s_expand_arg
 	t_token	*newlist;
 	char	*tmp;
 	int		type;
+	int		i;
+	int		is_dollar;
 }			t_expand_arg;
 
 /*=====Global Variable for Signal=====*/

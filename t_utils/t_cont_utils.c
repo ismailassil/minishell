@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 19:25:31 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/24 10:48:28 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/24 13:37:51 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,10 @@ void	ft_free_the_rest(t_cont *c)
 void	ft_free_containers(t_cont **head)
 {
 	t_cont	*c;
-	int		i;
 
 	while (*head)
 	{
-		(1) && (c = *head, *head = (*head)->next, i = 0);
+		(1) && (c = *head, *head = (*head)->next);
 		free(c->cmd);
 		ft_f(c->arg);
 		ft_f(c->infile);

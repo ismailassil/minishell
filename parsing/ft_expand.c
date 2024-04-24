@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 10:36:20 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/24 10:11:46 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/24 13:20:15 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ void	ft_expand_argument(t_struct *strp, t_token **linked_list)
 	t_file			*new;
 
 	strp->head = NULL;
+	f.i = 0;
 	(1) && (f.head = *linked_list, f.tmp = NULL, f.previous = NULL);
 	while (f.head != NULL)
 	{
@@ -130,15 +131,28 @@ void	ft_expand_argument(t_struct *strp, t_token **linked_list)
 				new = malloc(sizeof(t_file));
 				if (!new)
 					return ;
+				f.i = 0;
+				f.is_dollar = 0;
+				while (f.head->token[f.i])
+				{
+					if (f.head->token[f.i++] == '$')
+						f.is_dollar++;
+				}
+				new->vars = malloc((f.is_dollar + 1) * sizeof(char *));
+				ft_check_allocation(new->vars);
 				new->before = ft_strdup(f.head->token);
+				ft_check_allocation(new->before);
 				new->after = NULL;
 				new->next = NULL;
-				new->status = 0;
+				(1) && (new->status = 0, new->i = 0);
 				ft_add_back(&strp->head, new);
 			}
 			f.tmp = ft_handle_expand(strp, f.head->token);
 			if (f.head->type == FILENAME)
+			{
 				new->after = ft_strdup(f.tmp);
+				ft_check_allocation(new->after);
+			}
 			free(f.head->token);
 			f.head->token = f.tmp;
 			if (ft_check_after_expand(&f.head, f.head->is_quote) == 1)
