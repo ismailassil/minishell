@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/24 20:31:47 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/24 23:06:53 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,7 @@ typedef struct s_struct
 	int		nr_cont;
 	t_env	*env;
 	t_file	*head;
+	t_file	*current;
 }			t_struct;
 
 typedef struct s_path
@@ -411,6 +412,7 @@ char					*ft_get_cwd(t_env **envp);
 bool					ft_check_syntax_export(char *arg);
 char					*ft_filter_arg(char *arg);
 char					*ft_add_new_arg(t_append_export	*f);
+int						ft_is_n(char *str);
 
 /*==========PARSING FUNCIONS==========*/
 char					*ft_add_space_to_input(char *input);
@@ -431,7 +433,7 @@ char					*ft_handle_expand_for_here_doc(t_struct *strp,
 							char *arg);
 int						ft_expand_word_after_dollar(t_expand *exp, int *i,
 							char *arg, t_struct *strp);
-char					*ft_arg_is_exist(t_env *env, char *var);
+char					*ft_arg_is_exist(t_struct *strp, char *var);
 int						ft_between_bracket(char *str, int i);
 //					Utils function for Parsing
 void					ft_error(char *str);
@@ -453,6 +455,7 @@ char					**ft_wildcards(char **input);
 void					ft_match_wildcards(t_token **token);
 int						ft_check_file_name(t_file *head);
 void					ft_add_back(t_file **lst, t_file *_new);
+int						ft_is_between_quotesorequal(char *str, int f);
 
 /*==========EXECUTION FUNCIONS==========*/
 void					ft_index_files(t_token *head, t_cont **container,
@@ -561,6 +564,8 @@ int						ft_push_token(char *token, t_token **head);
 void					ft_free_tokens(t_token **head);
 void					ft_fill_for_outfile(t_tmp_cont *tmp, \
 							t_cont **_new, int *i);
+void					ft_free_t_file(t_file **filename_node);
+
 /*==========LIBFT FUNCIONS==========*/
 t_cont					*ft_lstnew(void *content);
 void					ft_lstadd_back(t_cont **lst, t_cont *_new);

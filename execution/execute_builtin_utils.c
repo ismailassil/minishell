@@ -6,31 +6,11 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 21:10:11 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/24 20:00:48 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/24 23:03:22 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-int	ft_is_n(char *str)
-{
-	int	i;
-
-	i = 0;
-	if (str && str[i] && str[i] != '-')
-		return (0);
-	i++;
-	while (str && str[i])
-	{
-		if (str[i] == 'n')
-			i++;
-		else
-			return (0);
-	}
-	if (str[i] == '\0')
-		return (1);
-	return (0);
-}
 
 /*
 *	This function execute "echo"

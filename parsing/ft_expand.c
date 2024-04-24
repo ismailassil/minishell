@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 10:36:20 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/24 20:32:47 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/24 22:37:00 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 /*
 *	Checks if the expanded variable exists in the env
 */
-char	*ft_arg_is_exist(t_env *env, char *var)
+char	*ft_arg_is_exist(t_struct *strp, char *var)
 {
 	t_env	*head;
 	char	*ptr;
 	int		i;
 	int		flag;
 
-	(1) && (head = env, i = 0, flag = 0, ptr = NULL);
+	(1) && (head = strp->env, i = 0, flag = 0, ptr = NULL);
 	while (head != NULL)
 	{
 		i = 0;
@@ -30,6 +30,8 @@ char	*ft_arg_is_exist(t_env *env, char *var)
 			i++;
 		if (head->value[i] == '=' && !ft_check_if_chars_digit(var[i]))
 		{
+			strp->current->vars[strp->current->i++] = ft_substr(head->value, \
+				i + 1, ft_strlen(head->value) - i);
 			flag = 1;
 			break ;
 		}
@@ -37,6 +39,8 @@ char	*ft_arg_is_exist(t_env *env, char *var)
 	}
 	if (head)
 		ptr = ft_allocate_for_var(flag, head->value, i);
+	else
+		strp->current->vars[strp->current->i++] = ft_strdup("1");
 	return (ptr);
 }
 
@@ -130,6 +134,7 @@ void	ft_expand_argument(t_struct *strp, t_token **linked_list)
 			{
 				new = malloc(sizeof(t_file));
 				ft_check_allocation(new);
+				new->i = 0;
 				f.i = 0;
 				f.is_dollar = 0;
 				while (f.head->token[f.i])
@@ -144,12 +149,14 @@ void	ft_expand_argument(t_struct *strp, t_token **linked_list)
 				new->after = NULL;
 				new->next = NULL;
 				(1) && (new->status = 0, new->i = 0);
+				strp->current = new;
 				ft_add_back(&strp->head, new);
 			}
 			f.tmp = ft_handle_expand(strp, f.head->token);
 			f.check = ft_strdup(f.head->token);
 			if (f.head->type == FILENAME)
 			{
+				new->vars[new->i] = 0;
 				new->after = ft_strdup(f.tmp);
 				ft_check_allocation(new->after);
 			}

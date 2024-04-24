@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 20:56:58 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/24 19:19:50 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/24 23:01:36 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,29 @@ int	ft_check_wildcard(char **filename)
 static int	ft_check_ambigous_and_wildcard(char **filename, \
 	int is_amb, int is_var, char *before)
 {
+	char	**ptr;
+	int		i;
+
+	ptr = NULL;
+	i = 0;
 	if (is_var == 1 && is_amb == 1)
 		return (ft_error("msh: "), ft_error(before), ft_error(AMB), 1);
 	if (ft_strchr(*filename, '*'))
 	{
 		if (ft_check_wildcard(filename))
 			return (1);
+	}
+	if (is_var == 1 && !ft_strchr(before, '"')
+		&& !ft_strchr(before, '\'') && ft_iswhitespace(*filename))
+	{
+		ptr = ft_split_v2(*filename);
+		ft_check_allocation(ptr);
+		while (ptr && ptr[i])
+			i++;
+		if (i > 2)
+			return (1);
+		free(*filename);
+		*filename = ptr[0];
 	}
 	return (0);
 }
