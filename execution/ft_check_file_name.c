@@ -6,7 +6,7 @@
 /*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 16:37:37 by aibn-che          #+#    #+#             */
-/*   Updated: 2024/04/24 19:02:55 by aibn-che         ###   ########.fr       */
+/*   Updated: 2024/04/24 20:13:27 by aibn-che         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,19 +80,15 @@ int	ft_check_file_name(t_file *head)
 {
 	while (head != NULL)
 	{
-		if (ft_contain_quotes(head->before))
+		if (ft_contain_quotes(head->before) && head->after[0] == '\0')
 		{
-			if (head->after[0] == '\0' || ft_contain_spaces(head->after))
-			{
-				return (head->status = 2, 1);
-			}
+			printf("no such file\n");
+			return (head->status = 2, 1);
 		}
-		else
+		if (head->after[0] == '\0' || ft_contain_spaces(head->after))
 		{
-			if (head->after[0] == '\0' || ft_contain_spaces(head->after))
-			{
-				return (head->status = 1, 1);
-			}
+			printf("ambiguous\n");
+			return (head->status = 1, 1);
 		}
 		head = head->next;
 	}
