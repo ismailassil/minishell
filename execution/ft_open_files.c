@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 20:56:58 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/24 11:20:38 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/24 11:22:22 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	ft_check_wildcard(char **filename)
 	return (0);
 }
 
-static int	ft_check_ambigous_and_wildcard(char **filename,\
+static int	ft_check_ambigous_and_wildcard(char **filename, \
 	int is_amb, int is_var, char *before)
 {
 	if (is_var == 1 && is_amb == 1)
@@ -57,7 +57,7 @@ static int	ft_open_outfiles(t_info *info, t_cont *cont, int o, t_struct *s)
 {
 	t_fd_	fd;
 
-	if (ft_check_ambigous_and_wildcard(&cont->outfile[o],\
+	if (ft_check_ambigous_and_wildcard(&cont->outfile[o], \
 		cont->out_is_amb[o], cont->outfile_is_var[o], cont->out_before[o]))
 		return (s->status = 1, 1);
 	if (cont->outfile_type[o] == 1)
@@ -80,7 +80,7 @@ static int	ft_open_infiles(t_info *info, t_cont *cont, int i, t_struct *s)
 {
 	t_fd_	fd;
 
-	if (ft_check_ambigous_and_wildcard(&cont->infile[i],\
+	if (ft_check_ambigous_and_wildcard(&cont->infile[i], \
 		cont->inf_is_amb[i], cont->infile_is_var[i], cont->inf_before[i]))
 		return (s->status = 1, 1);
 	fd.infile = open(cont->infile[i], O_RDONLY);

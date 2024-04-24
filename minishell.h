@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/24 11:15:33 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/24 11:24:06 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -554,7 +554,8 @@ t_token					*ft_last_node(t_token *top);
 int						ft_t_token_len(t_token *head);
 int						ft_push_token(char *token, t_token **head);
 void					ft_free_tokens(t_token **head);
-
+void					ft_fill_for_outfile(t_tmp_cont *tmp, \
+							t_cont **_new, int *i);
 /*==========LIBFT FUNCIONS==========*/
 t_cont					*ft_lstnew(void *content);
 void					ft_lstadd_back(t_cont **lst, t_cont *_new);
