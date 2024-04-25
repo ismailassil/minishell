@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_expand_utils.c                                  :+:      :+:    :+:   */
+/*   ft_expand_utils_v1.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 00:08:18 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/24 23:02:01 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/25 22:11:39 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ t_token	*ft_split_and_push_node(t_token **current)
 
 	i = 0;
 	new_list = NULL;
-	str = ft_split_v2((*current)->token);
+	str = ft_split_after_expanding((*current)->token);
 	ft_check_allocation(str);
 	while (str[i] != 0)
 	{

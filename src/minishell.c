@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:06 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/23 18:11:13 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/25 21:41:39 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	main(int argc, char **argv, char **env)
 
 	strp = NULL;
 	((void)argc, (void)argv);
-	ft_syscall(tcgetattr(STDIN_FILENO, &g_original_attr), "tcgetattr");
+	tcgetattr(STDIN_FILENO, &g_original_attr);
 	ft_signal_handler();
 	strp = ft_get_struct_and_env(env);
 	ft_check_allocation(strp);

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+         #
+#    By: iassil <iassil@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/27 14:35:22 by iassil            #+#    #+#              #
-#    Updated: 2024/04/25 20:53:51 by aibn-che         ###   ########.fr        #
+#    Updated: 2024/04/25 21:46:38 by iassil           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,8 @@ EXEC_FILES	=	execution.c				process_utils_v1.c		execute_builtin.c		\
 				execute_builtin_utils.c	process_utils_v2.c		process_utils_v3.c		\
 				execution_utils_v4.c	fill_container_utils.c	execute_wildcards.c		\
 				here_doc_utils_v3.c		ft_open_files.c			ft_check_file_name.c	\
-				ft_index_files.c		ft_check_file_name_utils.c
+				ft_index_files.c		ft_check_file_name_utils.c						\
+				ft_split_after_expanding.c
 
 PARS_FILES	=	parsing.c			ft_tokenize.c			ft_check_syntax.c	\
 				ft_expand.c			ft_remove_quotes.c		ft_split_tokens.c	\
@@ -57,7 +58,7 @@ LIB_FILES	=	ft_atoi.c			ft_bzero.c				ft_calloc.c			\
 				ft_lstnew.c			ft_lstadd_front.c		ft_lstsize.c		\
 				ft_lstlast.c		ft_lstadd_back.c		ft_lstdelone.c		\
 				ft_lstclear.c		ft_lstiter.c			ft_lstmap.c			\
-				ft_split.c			ft_split_v2.c
+				ft_split.c			ft_split_v2.c			ft_split_v3.c
 
 SRC_SRC		=	$(addprefix src/,$(SRC_FILES))
 UTILS_SRC	=	$(addprefix t_utils/,$(UTILS_FILES))

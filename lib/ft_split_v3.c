@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 14:54:15 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/18 15:53:00 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/25 21:50:45 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static char	**ft_free(char **big_ptr, size_t big_index)
 	return (NULL);
 }
 
-static size_t	ft_count_words(char const *str, char c)
+static size_t	ft_count_words(char const *str, char *whitespaces)
 {
 	size_t	i;
 	size_t	count;
@@ -39,7 +39,8 @@ static size_t	ft_count_words(char const *str, char c)
 				(1) && (flag = 0, i++);
 			count++;
 		}
-		if (str[i] && str[i] != c && (str[i + 1] == c || str[i + 1] == '\0'))
+		if (str[i] && !ft_strchr(whitespaces, str[i])
+			&& (ft_strchr(whitespaces, str[i + 1]) || str[i + 1] == '\0'))
 			count++;
 		if (str[i])
 			i++;
@@ -47,26 +48,28 @@ static size_t	ft_count_words(char const *str, char c)
 	return (count);
 }
 
-void	ft_indexing(char const *str, size_t *i, size_t *index, char c)
+void	ft_indexing(char const *str, size_t *i, size_t *index, char *whitespaces)
 {
 	int	quote;
 	int	flag;
 
 	(1) && (quote = 0, flag = 0);
-	if ((str[*i] == '"' || str[*i] == '\''))
+	while (str && str[*i] && !ft_strchr(whitespaces, str[*i]))
 	{
-		(1) && (quote = str[*i], flag = 1, (*i)++, (*index)++);
-		while (flag == 1 && str[*i] != quote && str[*i] != '\0')
+		if (str[*i] && (str[*i] == '"' || str[*i] == '\''))
+		{
+			(1) && (quote = str[*i], flag = 1, (*i)++, (*index)++);
+			while (flag == 1 && str[*i] != quote && str[*i] != '\0')
+				(1) && ((*index)++, (*i)++);
+			if (flag == 1 && str[*i] == quote)
+				(1) && (flag = 0, (*i)++, (*index)++);
+		}
+		if (str[*i] && !ft_strchr(whitespaces, str[*i]))
 			(1) && ((*index)++, (*i)++);
-		if (flag == 1 && str[*i] == quote)
-			(1) && (flag = 0, (*i)++, (*index)++);
-	}
-	else
-		while (str[*i] != c && str[*i] != '\0')
-			(1) && ((*index)++, (*i)++);
+	}	
 }
 
-static char	**ft_split_words(char **big_ptr, char const *str, char c)
+static char	**ft_split_words(char **big_ptr, char const *str, char *whitespaces)
 {
 	size_t	i;
 	size_t	index;
@@ -76,10 +79,10 @@ static char	**ft_split_words(char **big_ptr, char const *str, char c)
 	while (str && str[i] != '\0')
 	{
 		index = 0;
-		while (str[i] == c)
+		while (str[i] && ft_strchr(whitespaces, str[i]))
 			i++;
-		if (str[i] != c && str[i] != '\0')
-			ft_indexing(str, &i, &index, c);
+		if (str[i] && !ft_strchr(whitespaces, str[i]))
+			ft_indexing(str, &i, &index, whitespaces);
 		if (index > 0)
 		{
 			big_ptr[big_index++] = ft_substr(str, i - index, index);
@@ -91,17 +94,19 @@ static char	**ft_split_words(char **big_ptr, char const *str, char c)
 	return (big_ptr);
 }
 
-char	**ft_split_vquote(char const *s, char c)
+char	**ft_split_vquote(char const *s)
 {
 	size_t	nbr_of_words;
 	char	**big_ptr;
+	char	*whitespaces;
 
 	if (!s)
 		return (NULL);
-	nbr_of_words = ft_count_words(s, c) + 1;
+	whitespaces = " \t\n\v\f\r";
+	nbr_of_words = ft_count_words(s, whitespaces) + 1;
 	big_ptr = (char **)malloc(sizeof(char *) * nbr_of_words);
 	if (big_ptr == NULL)
 		return (NULL);
-	big_ptr = ft_split_words(big_ptr, s, c);
+	big_ptr = ft_split_words(big_ptr, s, whitespaces);
 	return (big_ptr);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/25 21:03:26 by aibn-che         ###   ########.fr       */
+/*   Updated: 2024/04/25 21:58:09 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -460,10 +460,11 @@ int						ft_occurence_of_amb(t_file	*head, int *flag,
 void					ft_add_back(t_file **lst, t_file *_new);
 int						ft_is_between_quotesorequal(char *str, int f);
 int						ft_surpass_cchars(char *var);
-void					ft_save_var_name_and_value(t_expand_arg f, t_file **new,
+void					ft_save_var_name_and_value(t_expand_arg *f, t_file **_new,
 							t_struct *strp);
 void					ft_add_val_to_vars(t_struct *strp, t_env *head, int i);
 void					ft_add_to_vars(t_struct *strp);
+
 /*==========EXECUTION FUNCIONS==========*/
 void					ft_index_files(t_token *head, t_cont **container,
 							t_struct *strp);
@@ -505,6 +506,7 @@ char					*ft_trim_dollar(char *del);
 bool					ft_check_del_and_quotes(char *hold);
 char					*ft_trim_dollar(char *del);
 char					*ft_remove_for_del(char *hold);
+char					**ft_split_after_expanding(char *str);
 
 //					CONTAINER FUNCTIONS
 void					ft_link_all_in_containers(t_token *head,
@@ -622,6 +624,6 @@ void					ft_putnbr_fd(int n, int fd);
 char					**ft_split(char const *s, char c);
 char					**ft_split_v2(char const *s);
 unsigned long long		ft__atoi(const char *str);
-char					**ft_split_vquote(char const *s, char c);
+char					**ft_split_vquote(char const *s);
 
 #endif

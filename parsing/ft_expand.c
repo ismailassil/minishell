@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_expand.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 10:36:20 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/25 21:02:38 by aibn-che         ###   ########.fr       */
+/*   Updated: 2024/04/25 22:15:08 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,30 +94,30 @@ char	*ft_handle_expand(t_struct *strp, char *arg)
 	return (exp.new_str);
 }
 
-void	ft_expand_var(t_expand_arg f, t_struct *strp, t_token **linked_list)
+void	ft_expand_var(t_expand_arg *f, t_struct *strp, t_token **linked_list)
 {
-	t_file			*new;
+	t_file	*new;
 
 	new = NULL;
-	f.head->is_var = 1;
-	if (ft_strchr(f.head->token, '"')
-		|| ft_strchr(f.head->token, '\''))
-		f.head->is_quote = 1;
-	if (f.head->type == FILENAME)
+	f->head->is_var = 1;
+	if (ft_strchr(f->head->token, '"')
+		|| ft_strchr(f->head->token, '\''))
+		f->head->is_quote = 1;
+	if (f->head->type == FILENAME)
 		ft_save_var_name_and_value(f, &new, strp);
-	f.tmp = ft_handle_expand(strp, f.head->token);
-	f.check = ft_strdup(f.head->token);
-	if (f.head->type == FILENAME)
+	f->tmp = ft_handle_expand(strp, f->head->token);
+	f->check = ft_strdup(f->head->token);
+	if (f->head->type == FILENAME)
 	{
 		new->vars[new->i] = 0;
-		new->after = ft_strdup(f.tmp);
+		new->after = ft_strdup(f->tmp);
 		ft_check_allocation(new->after);
 	}
-	free(f.head->token);
-	f.head->token = f.tmp;
-	if (ft_check_after_expand(&f.head, f.head->is_quote) == 1)
-		ft_split_node(&f, linked_list);
-	free(f.check);
+	free(f->head->token);
+	f->head->token = f->tmp;
+	if (ft_check_after_expand(&f->head, f->head->is_quote) == 1)
+		ft_split_node(f, linked_list);
+	free(f->check);
 }
 
 /*
@@ -141,9 +141,7 @@ void	ft_expand_argument(t_struct *strp, t_token **linked_list)
 		}
 		strp->is_filename = 0;
 		if (ft_strchr(f.head->token, '$') && f.head->type != DELIMITER)
-		{
-			ft_expand_var(f, strp, linked_list);
-		}
+			ft_expand_var(&f, strp, linked_list);
 		f.previous = f.head;
 		if (f.head)
 			f.head = f.head->next;
