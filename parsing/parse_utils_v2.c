@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils_v2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 17:44:37 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/25 17:39:22 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/25 20:46:38 by aibn-che         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,7 @@ int	ft_handle_irregulare_cases(t_expand *exp, char *arg, int *i, t_struct *strp)
 		if (arg[(*i) + 1] == '0')
 		{
 			if (strp->is_filename == 1)
-			{
-				strp->current->vars[strp->current->i] = ft_strdup("1");
-				ft_check_allocation(strp->current->vars[strp->current->i++]);
-			}
+				ft_add_to_vars(strp);
 			exp->new_str = ft_join_(s, "minishell");
 			free(s);
 		}
@@ -106,18 +103,12 @@ int	ft_expand_word_after_dollar(t_expand *exp, int *i,
 	if (exp->quote == '\'')
 	{
 		if (strp->is_filename)
-		{
-			strp->current->vars[strp->current->i] = ft_strdup("1");
-			ft_check_allocation(strp->current->vars[strp->current->i++]);
-		}
+			ft_add_to_vars(strp);
 		ft_append_char(&exp->new_str, arg[(*i)++]);
 		return (1);
 	}
 	if (ft_between_bracket(arg, *i + 1) >= 2)
-	{
-		i_to_pass = ft_between_bracket(arg, *i + 1);
-		(*i) += 1;
-	}
+		(1) && (i_to_pass = ft_between_bracket(arg, *i + 1), (*i) += 1);
 	if (ft_handle_irregulare_cases(exp, arg, i, strp))
 		return (1);
 	exp->expa = ft_arg_is_exist(strp, arg + (*i + 1));

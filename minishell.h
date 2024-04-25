@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/25 17:34:01 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/25 21:03:26 by aibn-che         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -455,9 +455,15 @@ void					ft_split_node(t_expand_arg *f, t_token **linked_list);
 char					**ft_wildcards(char **input);
 void					ft_match_wildcards(t_token **token);
 int						ft_check_file_name(t_file *head);
+int						ft_occurence_of_amb(t_file	*head, int *flag,
+							int *i, int *j);
 void					ft_add_back(t_file **lst, t_file *_new);
 int						ft_is_between_quotesorequal(char *str, int f);
-
+int						ft_surpass_cchars(char *var);
+void					ft_save_var_name_and_value(t_expand_arg f, t_file **new,
+							t_struct *strp);
+void					ft_add_val_to_vars(t_struct *strp, t_env *head, int i);
+void					ft_add_to_vars(t_struct *strp);
 /*==========EXECUTION FUNCIONS==========*/
 void					ft_index_files(t_token *head, t_cont **container,
 							t_struct *strp);

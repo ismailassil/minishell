@@ -3,17 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   ft_check_syntax.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 14:55:19 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/20 16:03:17 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/25 19:16:42 by aibn-che         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 //	Utils function for the 'ft_check_syntax()' function
-static int	ft_check_rest_syntax(t_token *head);
+static int	ft_check_rest_syntax(t_token *head)
+{
+	if (head->next != NULL
+		&& (head->type == INFILE || head->type == OUTFILE
+			|| head->type == APPEND || head->type == HEREDOC)
+		&& (head->next->type == INFILE || head->next->type == OUTFILE
+			|| head->next->type == APPEND || head->next->type == HEREDOC))
+		return (1);
+	else if (head->next == NULL
+		&& (head->type == PIPE || head->type == INFILE
+			|| head->type == OUTFILE || head->type == APPEND
+			|| head->type == HEREDOC))
+		return (1);
+	return (0);
+}
 
 /*
 *	This function checks the syntax of the line passed in the command line
@@ -112,20 +126,4 @@ int	ft_check_quotes(char *str)
 	if ((count % 2) == 0)
 		return (1);
 	return (ft_error("msh: syntax error\n"), 0);
-}
-
-static int	ft_check_rest_syntax(t_token *head)
-{
-	if (head->next != NULL
-		&& (head->type == INFILE || head->type == OUTFILE
-			|| head->type == APPEND || head->type == HEREDOC)
-		&& (head->next->type == INFILE || head->next->type == OUTFILE
-			|| head->next->type == APPEND || head->next->type == HEREDOC))
-		return (1);
-	else if (head->next == NULL
-		&& (head->type == PIPE || head->type == INFILE
-			|| head->type == OUTFILE || head->type == APPEND
-			|| head->type == HEREDOC))
-		return (1);
-	return (0);
 }
