@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 20:47:12 by aibn-che          #+#    #+#             */
-/*   Updated: 2024/04/25 21:58:42 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/25 22:16:34 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ void	ft_add_val_to_vars(t_struct *strp, t_env *head, int i)
 	ft_check_allocation(strp->current->vars[strp->current->i++]);
 }
 
-void	ft_save_var_name_and_value(t_expand_arg *f, t_file **new, t_struct *strp)
+void	ft_save_var_name_and_value(t_expand_arg *f, \
+	t_file **new, t_struct *strp)
 {
 	(*new) = malloc(sizeof(t_file));
 	ft_check_allocation((*new));

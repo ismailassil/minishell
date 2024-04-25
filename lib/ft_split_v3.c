@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 14:54:15 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/25 21:50:45 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/25 22:16:22 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ static size_t	ft_count_words(char const *str, char *whitespaces)
 	return (count);
 }
 
-void	ft_indexing(char const *str, size_t *i, size_t *index, char *whitespaces)
+void	ft_indexing(char const *str, size_t *i, size_t *index, \
+	char *whitespaces)
 {
 	int	quote;
 	int	flag;
@@ -66,10 +67,11 @@ void	ft_indexing(char const *str, size_t *i, size_t *index, char *whitespaces)
 		}
 		if (str[*i] && !ft_strchr(whitespaces, str[*i]))
 			(1) && ((*index)++, (*i)++);
-	}	
+	}
 }
 
-static char	**ft_split_words(char **big_ptr, char const *str, char *whitespaces)
+static char	**ft_split_words(char **big_ptr, char const *str, \
+	char *whitespaces)
 {
 	size_t	i;
 	size_t	index;
