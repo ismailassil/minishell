@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 16:55:35 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/24 23:03:36 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/25 17:15:22 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,19 +70,21 @@ int	ft_check_commands(t_cont *cont, t_struct *strp, t_info *info, int j)
 int	ft_is_n(char *str)
 {
 	int	i;
+	int	flag;
 
 	i = 0;
+	flag = 0;
 	if (str && str[i] && str[i] != '-')
 		return (0);
 	i++;
 	while (str && str[i])
 	{
 		if (str[i] == 'n')
-			i++;
+			(1) && (flag = 1, i++);
 		else
 			return (0);
 	}
-	if (str[i] == '\0')
+	if (flag == 1 && str[i] == '\0')
 		return (1);
 	return (0);
 }

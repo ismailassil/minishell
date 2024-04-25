@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/24 23:06:53 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/25 17:34:01 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,7 @@ typedef struct s_struct
 {
 	int		status;
 	int		nr_cont;
+	int		is_filename;
 	t_env	*env;
 	t_file	*head;
 	t_file	*current;

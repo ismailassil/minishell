@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 20:10:13 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/24 11:07:04 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/25 17:17:52 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,4 +92,5 @@ void	ft_index_files(t_token *head, t_cont **container, t_struct *s)
 			i.tok = i.tok->next;
 		i.cont = i.cont->next;
 	}
+	ft_free_t_file(&s->head);
 }

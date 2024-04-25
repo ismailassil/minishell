@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 20:56:58 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/24 23:01:36 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/25 17:13:57 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ int	ft_check_wildcard(char **filename)
 	r.dir = ft_wildcards(filename);
 	while (r.dir && r.dir[r.i])
 		r.i++;
-	ft_f(r.dir);
 	if (r.i >= 2)
-		return (ft_error("msh: "), ft_error(*filename), ft_error(AMB), 1);
+		return (ft_error("msh: "), ft_error(*filename), \
+			ft_f(r.dir), ft_error(AMB), 1);
 	if (r.dir == NULL || r.dir[0] == 0)
 	{
 		if (ft_strchr(*filename, '"') || ft_strchr(*filename, '\''))
@@ -33,7 +33,7 @@ int	ft_check_wildcard(char **filename)
 			*filename = ft_trim_quotes(r.tmp);
 			free(r.tmp);
 		}
-		return (0);
+		return (ft_f(r.dir), 0);
 	}
 	free(*filename);
 	*filename = ft_strdup(r.dir[0]);

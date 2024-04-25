@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 21:10:11 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/24 23:03:22 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/25 17:14:44 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	execute_echo(t_cont *cont, t_struct **strp)
 
 	(1) && (n = 0, i = 0);
 	if (cont->arg
-		&& (ft_strncmp(cont->arg[0], "-n", ft_strlen(cont->arg[0])) == 0
+		&& (ft_strncmp(cont->arg[0], "-n", 3) == 0
 			|| ft_is_n(cont->arg[0])))
 	{
 		n = 1;

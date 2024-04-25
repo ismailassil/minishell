@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 10:36:20 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/24 23:10:57 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/25 17:40:01 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,12 @@ char	*ft_arg_is_exist(t_struct *strp, char *var)
 			i++;
 		if (head->value[i] == '=' && !ft_check_if_chars_digit(var[i]))
 		{
-			strp->current->vars[strp->current->i] = ft_substr(head->value, \
-				i + 1, ft_strlen(head->value) - i);
-			ft_check_allocation(strp->current->vars[strp->current->i++]);
+			if (strp->is_filename)
+			{
+				strp->current->vars[strp->current->i] = ft_substr(head->value, \
+					i + 1, ft_strlen(head->value) - i);
+				ft_check_allocation(strp->current->vars[strp->current->i++]);
+			}
 			flag = 1;
 			break ;
 		}
@@ -40,7 +43,7 @@ char	*ft_arg_is_exist(t_struct *strp, char *var)
 	}
 	if (head)
 		ptr = ft_allocate_for_var(flag, head->value, i);
-	else
+	else if (strp->is_filename)
 	{
 		strp->current->vars[strp->current->i] = ft_strdup("1");
 		ft_check_allocation(strp->current->vars[strp->current->i++]);
@@ -128,6 +131,7 @@ void	ft_expand_argument(t_struct *strp, t_token **linked_list)
 			else
 				f.is_export = 0;
 		}
+		strp->is_filename = 0;
 		if (ft_strchr(f.head->token, '$') && f.head->type != DELIMITER)
 		{
 			f.head->is_var = 1;
@@ -155,6 +159,7 @@ void	ft_expand_argument(t_struct *strp, t_token **linked_list)
 				(1) && (new->status = 0, new->i = 0);
 				strp->current = new;
 				ft_add_back(&strp->head, new);
+				strp->is_filename = 1;
 			}
 			f.tmp = ft_handle_expand(strp, f.head->token);
 			f.check = ft_strdup(f.head->token);
