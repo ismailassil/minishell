@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:12:31 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/23 20:39:26 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/26 14:47:45 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ void	ft_match_wildcards(t_token **token)
 			w.is_export = 1;
 		else if (w.head->type == CMD)
 			w.is_export = 0;
-		if (w.is_export == 0 && ft_strchr(w.head->token, '*')
-			&& w.head->type != FILENAME && w.head->type != DELIMITER)
+		if (w.is_export == 0 && w.head->type != FILENAME && w.head->token
+			&& ft_strchr(w.head->token, '*') && w.head->type != DELIMITER)
 		{
 			ft_push_matching(&w.head, w.previous);
 			if (w.previous == NULL)

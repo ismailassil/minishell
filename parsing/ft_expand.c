@@ -6,11 +6,12 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 10:36:20 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/26 13:16:33 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/26 16:07:51 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+#include <stdio.h>
 
 /*
 *	Checks if the expanded variable exists in the env
@@ -74,8 +75,6 @@ char	*ft_handle_expand(t_struct *strp, char *arg)
 	t_expand	exp;
 
 	(1) && (exp.new_str = NULL, i = 0, exp.quote = 0);
-	if (arg[i] == '\'' || arg[i] == '\"')
-		(exp.quote = arg[i++]);
 	while (arg[i] != '\0')
 	{
 		if ((arg[i] == '\'' || arg[i] == '\"'))
@@ -106,6 +105,7 @@ void	ft_expand_var(t_expand_arg *f, t_struct *strp, t_token **linked_list)
 	if (f->head->type == FILENAME)
 		ft_save_var_name_and_value(f, &new, strp);
 	f->tmp = ft_handle_expand(strp, f->head->token);
+	printf("{%s}\n", f->tmp);
 	f->check = ft_strdup(f->head->token);
 	if (f->head->type == FILENAME)
 	{
@@ -117,7 +117,8 @@ void	ft_expand_var(t_expand_arg *f, t_struct *strp, t_token **linked_list)
 	f->head->token = f->tmp;
 	if (ft_check_after_expand(&f->head, f->head->is_quote) == 1)
 		ft_split_node(f, linked_list);
-	ft_check_special_quote(f->head->token);
+	if (f->head && f->head->type != FILENAME)
+		ft_check_special_quote(&f->head->token);
 	free(f->check);
 }
 

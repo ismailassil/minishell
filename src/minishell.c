@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:06 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/26 12:27:37 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/26 16:11:46 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	main(int argc, char **argv, char **env)
 	ft_check_allocation(strp);
 	while (true)
 	{
-		line = readline(YELLOW_"minishell$ "RESET);
+		line = readline("minishell$ ");
 		if (line == NULL)
 		{
 			ft_free_env(&strp->env);

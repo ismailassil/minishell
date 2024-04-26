@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/26 13:24:23 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/26 15:01:49 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -508,7 +508,7 @@ bool					ft_check_del_and_quotes(char *hold);
 char					*ft_trim_dollar(char *del);
 char					*ft_remove_for_del(char *hold);
 char					**ft_split_after_expanding(char *str);
-void					ft_check_special_quote(char *str);
+void					ft_check_special_quote(char **str);
 char					*ft_trim_special_quote(char *str);
 void					ft_skip_null_args(t_cont *cont);
 

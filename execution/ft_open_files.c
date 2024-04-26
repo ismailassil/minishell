@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 20:56:58 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/26 11:25:06 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/26 15:46:20 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,15 +56,10 @@ static int	ft_check_ambigous_and_wildcard(char **filename, \
 		if (ft_check_wildcard(filename))
 			return (1);
 	}
-	if (is_var == 1 && !ft_strchr(before, '"')
-		&& !ft_strchr(before, '\'') && ft_iswhitespace(*filename))
+	if (is_var == 1 && ft_iswhitespace(*filename))
 	{
-		ptr = ft_split_v2(*filename);
+		ptr = ft_split_vquote(*filename);
 		ft_check_allocation(ptr);
-		while (ptr && ptr[i])
-			i++;
-		if (i > 2)
-			return (1);
 		free(*filename);
 		*filename = ptr[0];
 	}
@@ -78,6 +73,7 @@ static int	ft_open_outfiles(t_info *info, t_cont *cont, int o, t_struct *s)
 	if (ft_check_ambigous_and_wildcard(&cont->outfile[o], \
 		cont->out_is_amb[o], cont->outfile_is_var[o], cont->out_before[o]))
 		return (s->status = 1, 1);
+	ft_check_special_quote(&cont->outfile[o]);
 	if (cont->outfile_type[o] == 1)
 		fd.outfile = open(cont->outfile[o], CR | WO, 0644);
 	else if (cont->outfile_type[o] == 2)
@@ -101,6 +97,7 @@ static int	ft_open_infiles(t_info *info, t_cont *cont, int i, t_struct *s)
 	if (ft_check_ambigous_and_wildcard(&cont->infile[i], \
 		cont->inf_is_amb[i], cont->infile_is_var[i], cont->inf_before[i]))
 		return (s->status = 1, 1);
+	ft_check_special_quote(&cont->infile[i]);
 	fd.infile = open(cont->infile[i], O_RDONLY);
 	if (fd.infile == -1)
 		return (ft_throw_error(cont->infile[i]), s->status = 1, 1);
