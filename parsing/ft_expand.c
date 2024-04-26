@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 10:36:20 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/26 16:07:51 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/26 16:58:42 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,6 @@ void	ft_expand_var(t_expand_arg *f, t_struct *strp, t_token **linked_list)
 	if (f->head->type == FILENAME)
 		ft_save_var_name_and_value(f, &new, strp);
 	f->tmp = ft_handle_expand(strp, f->head->token);
-	printf("{%s}\n", f->tmp);
 	f->check = ft_strdup(f->head->token);
 	if (f->head->type == FILENAME)
 	{
