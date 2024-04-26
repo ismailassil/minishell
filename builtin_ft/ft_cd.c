@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 15:33:58 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/20 14:53:23 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/26 13:23:59 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,8 @@ int	ft_cd(char *arg, t_struct **s)
 	if (arg && arg[0] == '\0')
 		return (0);
 	(1) || (f.tmp = NULL, f.errt = NULL);
+	if (ft_check_if_null(&arg))
+		return ((*s)->status = 1, 1);
 	f.dirp = opendir(arg);
 	if (f.dirp == NULL)
 		return (ft_error("msh: cd: "), perror(arg), (*s)->status = 1, 1);

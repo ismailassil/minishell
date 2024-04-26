@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 21:10:11 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/26 12:28:54 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/26 12:45:59 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,10 @@ void	execute_echo(t_cont *cont, t_struct **strp)
 	int	flag;
 
 	(1) && (n = 0, i = 0, flag = 0);
+	ft_skip_null_args(cont);
 	if (cont->arg && cont->arg[i] && (ft_strncmp(cont->arg[i], "-n", 3) == 0
 			|| ft_is_n(cont->arg[i])))
 		(1) && (n = 1, i++);
-	ft_skip_null_args(cont);
 	while (cont->arg && cont->arg[i] != 0)
 	{
 		flag = 1;
@@ -93,7 +93,8 @@ void	execute_cd(t_cont *cont, t_struct **strp)
 	int	i;
 
 	i = 0;
-	if (cont->arg == NULL || cont->arg[0] == NULL)
+	ft_skip_null_args(cont);
+	if (cont->arg == NULL || cont->arg[i] == 0)
 	{
 		ft_cd(NULL, strp);
 		ft_add_path_executed_cmd("cd", (*strp)->env);

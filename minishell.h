@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/26 12:27:44 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/26 13:24:23 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -510,6 +510,7 @@ char					*ft_remove_for_del(char *hold);
 char					**ft_split_after_expanding(char *str);
 void					ft_check_special_quote(char *str);
 char					*ft_trim_special_quote(char *str);
+void					ft_skip_null_args(t_cont *cont);
 
 //					CONTAINER FUNCTIONS
 void					ft_link_all_in_containers(t_token *head,
@@ -534,6 +535,7 @@ int						ft_iswhitespace(char *str);
 int						ft_evar(int is_var, int is_quote, char *str);
 void					ft_check_first_cmd(char **cmd, t_cont *c);
 void					ft_handle_error(t_info_cd *f, char *arg, t_struct **s);
+bool					ft_check_if_null(char **str);
 
 /*==========UTILS FUNCIONS==========*/
 int						ft_check_if_chars_digit(int c);

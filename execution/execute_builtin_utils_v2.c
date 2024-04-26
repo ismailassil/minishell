@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 10:48:15 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/26 11:19:50 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/26 12:41:16 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ void	execute_unset(t_cont *cont, t_struct **strp)
 	int		i;
 	t_env	*envp;
 
+	ft_skip_null_args(cont);
 	(1) && (i = 0, (*strp)->status = 0, envp = (*strp)->env);
 	while (cont->arg && cont->arg[i] != 0)
 		(1) && (ft_unset(strp, cont->arg[i]), i++);
