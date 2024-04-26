@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_check_file_name_utils.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 18:34:38 by aibn-che          #+#    #+#             */
-/*   Updated: 2024/04/25 18:39:38 by aibn-che         ###   ########.fr       */
+/*   Updated: 2024/04/26 10:17:35 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,28 +27,13 @@ int	ft_contain_spaces(char *str)
 bool	ft_is_word(char *str)
 {
 	int	i;
-	int	flag;
-	int	quote;
 
 	i = 0;
-	flag = 0;
-	quote = 0;
 	while (str && str[i])
 	{
-		if (flag == 0 && str[i] && (str[i] == '\'' || str[i] == '\"'))
-		{
-			(1) && (quote = str[i], i++);
-			while (str[i] != '\0' && str[i] != quote)
-			{
-				if (str[i] && ft_isalnum(str[i]))
-					return (false);
-				i++;
-			}
-			if (str[i])
-				i++;
-		}
-		if (str[i])
-			i++;
+		if (!ft_strchr(" \t\n\v\f\r", str[i]))
+			return (false);
+		i++;
 	}
 	return (true);
 }
@@ -76,7 +61,7 @@ bool	ft_check_is_amb(t_file *head, int index)
 	return (false);
 }
 
-int	ft_occurence_of_amb(t_file	*head, int *flag, int *i, int *j)
+int	ft_occurence_of_amb(t_file *head, int *flag, int *i, int *j)
 {
 	int	quote;
 

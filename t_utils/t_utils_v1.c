@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 21:12:35 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/24 13:43:01 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/26 11:30:38 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,8 +124,7 @@ t_cont	*ft_new_node_for_cont(t_tmp_cont *tmp)
 	int		i;
 
 	new = malloc(sizeof(t_cont));
-	if (!new)
-		return (NULL);
+	ft_check_allocation(new);
 	if (tmp->cmd == NULL)
 		new->cmd = NULL;
 	else

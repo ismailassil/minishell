@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 20:47:12 by aibn-che          #+#    #+#             */
-/*   Updated: 2024/04/25 22:16:34 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/26 12:28:07 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,17 @@ int	ft_surpass_cchars(char *var)
 	while (var[i] && ft_check_if_chars_digit(var[i]))
 		i++;
 	return (i + 1);
+}
+
+void	ft_check_special_quote(char *str)
+{
+	char	*tmp;
+
+	if (ft_strchr(str, SQ))
+	{
+		tmp = ft_trim_special_quote(str);
+		free(str);
+		str = ft_strdup(tmp);
+		free(tmp);
+	}
 }

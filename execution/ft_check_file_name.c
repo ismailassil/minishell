@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_check_file_name.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 16:37:37 by aibn-che          #+#    #+#             */
-/*   Updated: 2024/04/25 18:39:32 by aibn-che         ###   ########.fr       */
+/*   Updated: 2024/04/26 10:08:59 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,8 @@ int	ft_check_file_name(t_file *hold)
 		{
 			if (ft_occurence_of_amb(head, &flag, &i, &j))
 				return (1);
-			if (!head->before[i])
-				break ;
+			if (head->before[i])
+				i++;
 		}
 		head = head->next;
 	}

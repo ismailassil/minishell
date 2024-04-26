@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 23:02:17 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/24 23:02:24 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/26 12:06:33 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	ft_is_between_quotesorequal(char *str, int f)
 	{
 		if (flag == 0 && str[i] == '=' && f == 1)
 			(1) && (equal = str[i], flag = 1, i++);
-		if (flag == 0 && (str[i] == '\'' || str[i] == '"'))
+		if (flag == 0 && str[i] == SQ)
 			(1) && (quotes = str[i], flag = 2, i++);
 		while (flag == 1 && str[i])
 			if (str[i++] == '$')

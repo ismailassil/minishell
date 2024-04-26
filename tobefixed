@@ -1,0 +1,23 @@
+minishell$ echo $kjasdfkja
+
+
+minishell$ echo
+
+minishell$ echo $kjasdfklj
+
+
+minishell$ echo $kljadsfk""
+
+
+minishell$ 
+
+minishell$ export b="   "
+minishell$ echo hhh > $b
+msh: $b: ambiguous redirect
+minishell$ echo hhh > $b""
+msh: $b"": ambiguous redirect
+minishell$ echo hhh > $b"$asdfadsf"
+msh: $b"$asdfadsf": ambiguous redirect
+minishell$ echo hhh > $b"asdfadsf"
+msh: $b"asdfadsf": ambiguous redirect
+minishell$ 

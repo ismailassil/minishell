@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 10:36:20 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/25 22:15:08 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/26 12:04:31 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ void	ft_expand_var(t_expand_arg *f, t_struct *strp, t_token **linked_list)
 	f->head->token = f->tmp;
 	if (ft_check_after_expand(&f->head, f->head->is_quote) == 1)
 		ft_split_node(f, linked_list);
+	ft_check_special_quote(f->head->token);
 	free(f->check);
 }
 

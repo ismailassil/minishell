@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 14:54:15 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/25 22:16:22 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/26 11:53:58 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static size_t	ft_count_words(char const *str, char *whitespaces)
 	(1) && (i = 0, count = 0, quote = 0, flag = 0);
 	while (str && str[i] != '\0')
 	{
-		if (str[i] == '"' || str[i] == '\'')
+		if (str[i] == SQ)
 		{
 			(1) && (quote = str[i], flag = 1, i++);
 			while (flag == 1 && str[i] != quote && str[i] != '\0')
@@ -57,7 +57,7 @@ void	ft_indexing(char const *str, size_t *i, size_t *index, \
 	(1) && (quote = 0, flag = 0);
 	while (str && str[*i] && !ft_strchr(whitespaces, str[*i]))
 	{
-		if (str[*i] && (str[*i] == '"' || str[*i] == '\''))
+		if (str[*i] && str[*i] == SQ)
 		{
 			(1) && (quote = str[*i], flag = 1, (*i)++, (*index)++);
 			while (flag == 1 && str[*i] != quote && str[*i] != '\0')
@@ -107,8 +107,7 @@ char	**ft_split_vquote(char const *s)
 	whitespaces = " \t\n\v\f\r";
 	nbr_of_words = ft_count_words(s, whitespaces) + 1;
 	big_ptr = (char **)malloc(sizeof(char *) * nbr_of_words);
-	if (big_ptr == NULL)
-		return (NULL);
+	ft_check_allocation(big_ptr);
 	big_ptr = ft_split_words(big_ptr, s, whitespaces);
 	return (big_ptr);
 }

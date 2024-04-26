@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/25 22:15:57 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/26 12:27:44 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@
 # define CR				O_CREAT
 # define WO				O_WRONLY
 # define AP				O_APPEND
+# define SQ				-20
 # define RETRIVING_CD	"msh: error retrieving current directory: "
 # define RETRIVING_C1	"getcwd: cannot access parent directories: "
 # define RETRIVING_C2	"No such file or directory\n"
@@ -507,6 +508,8 @@ bool					ft_check_del_and_quotes(char *hold);
 char					*ft_trim_dollar(char *del);
 char					*ft_remove_for_del(char *hold);
 char					**ft_split_after_expanding(char *str);
+void					ft_check_special_quote(char *str);
+char					*ft_trim_special_quote(char *str);
 
 //					CONTAINER FUNCTIONS
 void					ft_link_all_in_containers(t_token *head,

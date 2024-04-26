@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 15:35:39 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/18 15:04:26 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/26 11:26:02 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,7 @@ char	**ft_split_v2(char const *s)
 		return (NULL);
 	nbr_of_words = ft_count_words(s, whitespaces) + 1;
 	big_ptr = (char **)malloc(sizeof(char *) * nbr_of_words);
-	if (big_ptr == NULL)
-		return (NULL);
+	ft_check_allocation(big_ptr);
 	big_ptr = ft_split_words(big_ptr, s, whitespaces);
 	return (big_ptr);
 }

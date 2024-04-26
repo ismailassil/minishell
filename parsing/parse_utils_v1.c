@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 14:00:00 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/24 13:41:25 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/26 12:28:12 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,12 +84,12 @@ void	ft_update_quote(char *arg, int *i, t_expand *exp)
 	if (exp->quote == arg[*i])
 	{
 		exp->quote = 0;
-		(*i)++;
+		arg[*i] = SQ;
 	}
 	else if (!exp->quote)
 	{
 		exp->quote = arg[*i];
-		(*i)++;
+		arg[*i] = SQ;
 	}
 	else
 	{

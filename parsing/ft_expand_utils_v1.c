@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 00:08:18 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/25 22:11:39 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/26 12:11:35 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,6 @@ int	ft_check_after_expand(t_token **current, int is_quote)
 void	ft_split_node(t_expand_arg *f, t_token **linked_list)
 {
 	if (f->is_export == 1 && ft_is_between_quotesorequal(f->check, 1))
-		return ;
-	else if (ft_is_between_quotesorequal(f->check, 0))
 		return ;
 	f->newlist = ft_split_and_push_node(&f->head);
 	ft_push_middle(f->previous, &f->head, &f->newlist);
