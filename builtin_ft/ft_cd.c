@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 15:33:58 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/26 13:23:59 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/27 23:12:24 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,17 @@ static void	ft_add_if_not_found(t_env **envp, int flag, char *arg, char *string)
 	}
 }
 
-static char	*ft_check_argument(char *argument)
+static char	*ft_check_argument(t_env *env, char *argument)
 {
 	char	*arg;
 
 	arg = ft_strdup(argument);
-	if (getenv("HOME") == NULL && argument == NULL)
+	if (get_env(env, "HOME") == NULL && argument == NULL)
 		return (free(arg), write(2, "msh: cd: HOME not set\n", 22), NULL);
 	else if (argument == NULL || argument[0] == '\0')
 	{
 		free(arg);
-		arg = ft_strdup(getenv("HOME"));
+		arg = ft_strdup(get_env(env, "HOME"));
 		if (!arg)
 			(write(2, "Error: Allocation failed\n", 25), exit(FAIL));
 	}
@@ -102,7 +102,7 @@ int	ft_cd(char *arg, t_struct **s)
 	if (arg && arg[0] == '\0')
 		return (0);
 	(1) || (f.tmp = NULL, f.errt = NULL);
-	if (ft_check_if_null(&arg))
+	if (ft_check_if_null((*s)->env, &arg))
 		return ((*s)->status = 1, 1);
 	f.dirp = opendir(arg);
 	if (f.dirp == NULL)
@@ -110,7 +110,7 @@ int	ft_cd(char *arg, t_struct **s)
 	(void)closedir(f.dirp);
 	if (getcwd(f.current_dir, sizeof(f.current_dir)) == NULL)
 		*f.current_dir = '\0';
-	f.dir = ft_check_argument(arg);
+	f.dir = ft_check_argument((*s)->env, arg);
 	if (f.dir == NULL)
 		return ((*s)->status = 1, 1);
 	if (chdir(f.dir) == -1)

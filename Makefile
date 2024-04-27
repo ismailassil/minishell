@@ -6,14 +6,14 @@
 #    By: iassil <iassil@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/27 14:35:22 by iassil            #+#    #+#              #
-#    Updated: 2024/04/26 13:20:13 by iassil           ###   ########.fr        #
+#    Updated: 2024/04/27 22:53:56 by iassil           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC			=	cc
-CC			+=	-Wall -Wextra -Werror
+# CC			+=	-Wall -Wextra -Werror
 READLINEDIR	=	$(shell brew --prefix readline)
-CC			+=	-fsanitize=address -fsanitize=undefined -g
+# CC			+=	-fsanitize=address -fsanitize=undefined -g
 LINKER		=	-lreadline
 RM			=	rm -f
 NAME		=	minishell
@@ -23,7 +23,7 @@ SRC_FILES	=	minishell.c			signals.c				src_utils_v1.c		\
 				src_utils_v2.c
 
 UTILS_FILES =	t_env_utils.c		t_token_utils.c			t_cont_utils.c		\
-				ft_sort_list.c		t_utils_v1.c			t_utils_v2.c
+				ft_sort_list.c		t_utils_v1.c			t_utils_v2.c		\
 
 EXEC_FILES	=	execution.c				process_utils_v1.c		execute_builtin.c		\
 				here_doc.c				fill_container.c		mutli_cmds.c			\
@@ -42,7 +42,8 @@ PARS_FILES	=	parsing.c			ft_tokenize.c			ft_check_syntax.c	\
 
 BUILT_FILES	=	ft_echo.c			ft_env.c				ft_pwd.c			\
 				ft_exit.c			ft_export.c				ft_unset.c			\
-				ft_cd.c				builtin_utils_v1.c		builtin_utils_v2.c
+				ft_cd.c				builtin_utils_v1.c		builtin_utils_v2.c	\
+				buitlin_utils_v3.c
 
 LIB_FILES	=	ft_atoi.c			ft_bzero.c				ft_calloc.c			\
 				ft_isalnum.c		ft_isalpha.c			ft_isascii.c		\

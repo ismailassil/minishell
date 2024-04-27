@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 00:08:18 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/26 15:41:42 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/27 22:32:28 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,21 +21,22 @@ void	ft_push_middle(t_token *previous, t_token **current, t_token **newlist)
 	t.tobefreed = (*current);
 	if (previous == NULL)
 	{
-		t.nextnode = (*current)->next;
+		t.next_node = (*current)->next;
 		*current = *newlist;
-		t.lastnode = ft_last_node(*newlist);
-		t.lastnode->next = t.nextnode;
+		t.last_node = ft_last_node(*newlist);
+		t.last_node->next = t.next_node;
 	}
 	else
 	{
-		t.nextnode = (*current)->next;
+		t.next_node = (*current)->next;
 		previous->next = *newlist;
-		t.lastnode = ft_last_node(*newlist);
-		t.lastnode->next = t.nextnode;
-		if ((*newlist)->next == NULL)
+		t.last_newlist = ft_last_node(*newlist);
+		t.last_node = ft_last_node(*newlist);
+		t.last_node->next = t.next_node;
+		if (t.last_node->next == NULL)
 			*current = NULL;
 		else
-			*current = (*newlist)->next;
+			*current = t.last_newlist;
 	}
 	(free(t.tobefreed->token), free(t.tobefreed));
 }
@@ -99,6 +100,8 @@ int	ft_check_after_expand(t_token **current, int is_quote)
 
 void	ft_split_node(t_expand_arg *f, t_token **linked_list)
 {
+	t_token	*last_node;
+
 	if (f->is_export == 1 && ft_is_between_quotesorequal(f->check, 1))
 		return ;
 	f->newlist = ft_split_and_push_node(&f->head);

@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 17:43:17 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/26 13:24:03 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/27 23:37:37 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,27 @@ void	ft_handle_error(t_info_cd *f, char *arg, t_struct **s)
 	(*s)->status = 0;
 }
 
-bool	ft_check_if_null(char **str)
+bool	ft_check_if_null(t_env *env, char **str)
 {
 	if (*str == NULL)
 	{
-		*str = getenv("HOME");
+		*str = get_env(env, "HOME");
 		if (*str == NULL)
 			return (write(2, "msh: cd: HOME not set\n", 22), true);
+	}
+	return (false);
+}
+
+bool	ft_is_plus_exist(char *arg)
+{
+	int	i;
+
+	i = 0;
+	while (arg && arg[i] && arg[i] != '=')
+	{
+		if (arg[i] == '+')
+			return (true);
+		i++;
 	}
 	return (false);
 }

@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 20:34:45 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/31 20:18:12 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/27 21:25:16 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,23 +61,23 @@ void	ft_del_node(t_env **env, t_env **previous_node, t_struct **strp)
 	tobefreed = NULL;
 }
 
-void	ft_unset(t_struct **strp, char *argument)
+void	ft_unset(t_struct **strp, char *arg)
 {
 	t_env	*head;
 	t_env	*previous_node;
 	int		i;
 
 	(1) && (i = 0, head = (*strp)->env, previous_node = NULL);
-	if (ft_check_arg(argument, strp) == 1)
+	if (ft_check_arg(arg, strp) == 1)
 		return ;
 	while (head != NULL && head->value)
 	{
 		i = 0;
 		while (head->value[i] != '\0' && head->value[i] != '='
-			&& head->value[i] == argument[i])
+			&& head->value[i] == arg[i])
 			i++;
-		if ((head->value[i] != '\0' && head->value[i] == '=')
-			|| (head->value[i] == '\0' && argument[i] == '\0'))
+		if ((head->value[i] && head->value[i] == '=' && arg[i] == '\0')
+			|| (head->value[i] == '\0' && arg[i] == '\0'))
 		{
 			ft_del_node(&head, &previous_node, strp);
 			return ;

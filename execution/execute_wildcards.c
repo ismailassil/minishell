@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 11:12:31 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/26 14:47:45 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/27 21:49:14 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	ft_push_matching(t_token **head, t_token *previous)
 	}
 	else
 	{
-		if (!p.dirs)
+		if (p.dirs)
 			ft_f(p.dirs);
 		if ((ft_strchr((*head)->token, '"') || ft_strchr((*head)->token, '\''))
 			&& (*head)->is_var != 1)

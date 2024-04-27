@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 12:27:22 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/24 13:40:05 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/27 22:51:59 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,19 +23,8 @@ void	ft_print_null_export(t_env *head)
 			head = head->next;
 		else
 		{
-			printf("declare -x ");
-			i = 0;
-			while (head->value[i] != '\0')
-			{
-				if (head->value[i] == '=' && head->value[i] != '\0')
-					(printf("=\""), flag = 1);
-				else
-					printf("%c", head->value[i]);
-				i++;
-			}
-			if (flag == 1)
-				(1) && (printf("\""), flag = 0);
-			printf("\n");
+			ft_putstr("declare -x ", 1);
+			ft_print_rest(head->value);
 			head = head->next;
 		}
 	}

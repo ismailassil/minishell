@@ -6,11 +6,12 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 00:09:46 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/20 13:35:38 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/27 23:34:01 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+#include <sys/stat.h>
 
 static void	ft_fill_argv(t_cont *cont, char ***argv, int *j)
 {
@@ -107,7 +108,10 @@ void	ft_check_path_cmd(char **envp_path, char *cmd,
 	stat(cmd, &file_stat);
 	if (access(cmd, F_OK) == 0 && stat(cmd, &file_stat) == 0)
 	{
-		if (S_ISREG(file_stat.st_mode) && file_stat.st_size == 0)
+		if (S_ISREG(file_stat.st_mode) && access(cmd, F_OK | X_OK))
+			(ft_stat(cmd, ": Permission denied\n", strp, cont), exit(126));
+		if (S_ISREG(file_stat.st_mode) && !access(cmd, X_OK)
+			&& file_stat.st_size == 0)
 			exit(SUCCESS);
 		if (S_ISREG(file_stat.st_mode))
 			*envp_path = ft_strdup(cmd);

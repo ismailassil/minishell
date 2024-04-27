@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/26 15:01:49 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/27 23:37:03 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -353,8 +353,9 @@ typedef struct s_execve
 
 typedef struct s_push_middle
 {
-	t_token	*nextnode;
-	t_token	*lastnode;
+	t_token	*next_node;
+	t_token	*last_node;
+	t_token	*last_newlist;
 	t_token	*tobefreed;
 }			t_push_middle;
 
@@ -535,7 +536,10 @@ int						ft_iswhitespace(char *str);
 int						ft_evar(int is_var, int is_quote, char *str);
 void					ft_check_first_cmd(char **cmd, t_cont *c);
 void					ft_handle_error(t_info_cd *f, char *arg, t_struct **s);
-bool					ft_check_if_null(char **str);
+bool					ft_is_plus_exist(char *arg);
+void					ft_print_rest(char *str);
+bool					ft_check_if_null(t_env *env, char **str);
+char					*get_env(t_env *env, char *str);
 
 /*==========UTILS FUNCIONS==========*/
 int						ft_check_if_chars_digit(int c);

@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:47:07 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/20 12:39:57 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/27 21:36:43 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static int	ft_add_already_exits(char *arg, t_env *envp)
 	{
 		if (ft_strncmp(arg, head->value, i) == 0)
 		{
-			if (!ft_strchr(arg, '+'))
+			if (!ft_is_plus_exist(arg))
 				tmp = ft_strdup(arg);
 			else
 				tmp = ft_append_value(arg, &head->value, 0);
@@ -92,7 +92,7 @@ static int	ft_add_new_env(char *arg, t_env *envp)
 {
 	char	*tmp;
 
-	if (!ft_strchr(arg, '+'))
+	if (!ft_is_plus_exist(arg))
 	{
 		if (ft_push_value(arg, &envp) == 0)
 			return (1);
