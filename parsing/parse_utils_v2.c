@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils_v2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 17:44:37 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/25 20:46:38 by aibn-che         ###   ########.fr       */
+/*   Updated: 2024/04/28 18:06:10 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,13 @@
 static void	ft_question_mark(t_expand *exp, char *s, int *i, t_struct *strp)
 {
 	char	*num;
+	int		new_status;
 
-	num = ft_itoa(strp->status);
+	new_status = ft_status(1, 0);
+	if (new_status == 1)
+		num = ft_itoa(new_status);
+	else
+		num = ft_itoa(strp->status);
 	exp->new_str = ft_join_(s, num);
 	*i += 1;
 	free(s);

@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 16:10:26 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/28 16:15:30 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/28 18:07:40 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,14 @@ void	ft_signal_handler(void)
 	ft_sig(signal(SIGQUIT, ctrl_slash), "msh: signal");
 }
 
-void	ft_exit_status(int exit_, int status_)
+int	ft_status(int mode, int status_)
 {
-	status_ = exit_;
+	static int	status;
+
+	if (mode && status)
+		return (status = 0, 1);
+	status = status_;
+	return (0);
 }
 
 /*
@@ -40,7 +45,7 @@ void	ctrl_c(int sig)
 	(void)sig;
 	if (waitpid(ALLCHILDS, NULL, WNOHANG) == 0)
 		return ;
-	// ft_exit_status(1, 1);
+	ft_status(0, 1);
 	printf("\n");
 	rl_replace_line("", 1);
 	rl_on_new_line();
