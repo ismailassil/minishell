@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 18:36:23 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/26 12:24:46 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/28 15:48:37 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	ft_fill_new_ptr_(char ***new_ptr, char **big_ptr)
 		if (big_ptr[i][0] == '\0')
 			i++;
 		else
-			(*new_ptr)[j++] = big_ptr[i++];
+			(*new_ptr)[j++] = ft_strdup(big_ptr[i++]);
 	}
 	(*new_ptr)[j] = 0;
 }
@@ -75,7 +75,7 @@ void	ft_skip_null_arg(char ***big_ptr)
 	new_ptr = malloc((i - j + 1) * sizeof(char *));
 	ft_check_allocation(new_ptr);
 	ft_fill_new_ptr_(&new_ptr, *big_ptr);
-	free(*big_ptr);
+	ft_f(*big_ptr);
 	*big_ptr = new_ptr;
 }
 
@@ -84,8 +84,10 @@ char	**ft_split_after_expanding(char *str)
 	char	**big_ptr;
 	char	*tmp;
 	int		i;
+	int		flag;
 
 	i = 0;
+	flag = 0;
 	big_ptr = ft_split_vquote(str);
 	while (big_ptr && big_ptr[i])
 	{
@@ -95,6 +97,7 @@ char	**ft_split_after_expanding(char *str)
 			free(big_ptr[i]);
 			big_ptr[i] = ft_strdup(tmp);
 			free(tmp);
+			flag = 1;
 		}
 		i++;
 	}

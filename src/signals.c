@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 16:10:26 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/23 19:16:38 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/28 16:15:30 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,11 @@ void	ft_signal_handler(void)
 	ft_sig(signal(SIGQUIT, ctrl_slash), "msh: signal");
 }
 
+void	ft_exit_status(int exit_, int status_)
+{
+	status_ = exit_;
+}
+
 /*
 *	It specifies that the waitpid() function should not wait for a child process
 *	to exit if there are no child processes that have already exited and are
@@ -35,6 +40,7 @@ void	ctrl_c(int sig)
 	(void)sig;
 	if (waitpid(ALLCHILDS, NULL, WNOHANG) == 0)
 		return ;
+	// ft_exit_status(1, 1);
 	printf("\n");
 	rl_replace_line("", 1);
 	rl_on_new_line();

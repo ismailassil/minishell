@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/27 23:37:03 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/28 16:02:49 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -556,6 +556,7 @@ void					ctrl_slash(int sig);
 void					ft_disable_attr(void);
 void					ft_default_signals(void);
 void					ft_sig_quit(int sig);
+void					ft_exit_status(int exit_, int status_);
 
 /*==========ENV LINKED LIST UTILS FUNCIONS==========*/
 int						ft_t_env_len(t_env *head);

@@ -6,11 +6,12 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 00:08:18 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/27 22:32:28 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/28 15:46:24 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+#include <term.h>
 
 void	ft_push_middle(t_token *previous, t_token **current, t_token **newlist)
 {
@@ -45,6 +46,8 @@ void	ft_token_list(t_token *current, t_token **new_list)
 {
 	t_token	*head;
 
+	if (!new_list || !*new_list)
+		return ;
 	head = *new_list;
 	if (current->type == CMD)
 	{
@@ -68,7 +71,7 @@ t_token	*ft_split_and_push_node(t_token **current)
 	new_list = NULL;
 	str = ft_split_after_expanding((*current)->token);
 	ft_check_allocation(str);
-	while (str[i] != 0)
+	while (str && str[i] != 0)
 	{
 		if (ft_push_token(str[i], &new_list) == 0)
 			(write(2, "Error: Allocation failed\n", 25), exit(FAIL));
@@ -100,8 +103,6 @@ int	ft_check_after_expand(t_token **current, int is_quote)
 
 void	ft_split_node(t_expand_arg *f, t_token **linked_list)
 {
-	t_token	*last_node;
-
 	if (f->is_export == 1 && ft_is_between_quotesorequal(f->check, 1))
 		return ;
 	f->newlist = ft_split_and_push_node(&f->head);

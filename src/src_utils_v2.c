@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 16:34:02 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/25 21:54:00 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/28 15:38:21 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,9 @@ void	ft_print(t_token *lst)
 	t_token	*head;
 
 	head = lst;
-	printf("\n");
 	while (head != NULL)
 	{
-		printf(WHT"=={is_var:[%d]%s}=="RESET, head->is_var, head->token);
+		printf(YELLOW"=={%s}[%p]=="RESET, head->token, &head->token);
 		head = head->next;
 	}
 	printf("\n");

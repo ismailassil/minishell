@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 12:27:22 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/27 22:51:59 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/28 15:03:07 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 
 void	ft_print_null_export(t_env *head)
 {
-	int		i;
-	int		flag;
-
 	while (head)
 	{
 		if (head->value[0] == '_' && head->value[1] == '=')
