@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 03:05:56 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/20 16:13:17 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/28 17:27:16 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,20 @@ void	ft_check_first_cmd(char **cmd, t_cont *c)
 		else if (c->arg[i] == 0)
 			exit(SUCCESS);
 	}
+}
+
+int	ft_check_env_path(t_struct *strp, char *cmd, int *status)
+{
+	t_env	*envp;
+
+	envp = strp->env;
+	while (envp)
+	{
+		if (ft_strncmp(envp->value, "PATH=", 5) == 0)
+			if (ft_strlen(envp->value) > 5)
+				return (false);
+		envp = envp->next;
+	}
+	(ft_error("msh: "), ft_error(cmd), ft_error(FNF));
+	return (*status = 127, true);
 }

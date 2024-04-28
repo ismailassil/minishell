@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 15:41:50 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/24 09:51:53 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/28 17:15:21 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,35 +22,6 @@ void	close_opened_files(t_info *info)
 	i = 0;
 	while (i < info->fd.len)
 		close(info->fd.opened_fd[i++]);
-}
-
-static bool	ft_check_path_in_env(t_struct *strp, t_cont *c)
-{
-	t_env	*head;
-	char	*tobedisplayed;
-	int		i;
-
-	(1) && (i = 0, head = strp->env);
-	while (head)
-	{
-		if (ft_strncmp(head->value, "PATH=", 5) == 0)
-			if (ft_strlen(head->value) > 5)
-				return (false);
-		head = head->next;
-	}
-	if (ft_evar(c->cmd_is_var, c->cmd_is_quote, c->cmd))
-	{
-		while (ft_evar(c->arg_is_var[i], c->arg_is_quote[i], c->arg[i]))
-			i++;
-		if (c->arg[i] == 0)
-			return (true);
-		else
-			tobedisplayed = c->arg[i];
-	}
-	else
-		tobedisplayed = c->cmd;
-	(ft_error("msh: "), ft_error(tobedisplayed), ft_error(FNF));
-	return (strp->status = 127, true);
 }
 
 /*
@@ -72,11 +43,6 @@ void	ft_execution(t_token **token, t_struct *strp)
 	if (ft_open_here_doc(container, &info, strp) == -1)
 	{
 		close_opened_files(&info);
-		ft_free_containers(&container);
-		return ;
-	}
-	if (ft_check_path_in_env(strp, container))
-	{
 		ft_free_containers(&container);
 		return ;
 	}

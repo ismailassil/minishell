@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:42:41 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/24 13:40:39 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/28 17:25:51 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,16 +71,24 @@ static char	*ft_check_path(char *cmd, t_struct *strp, t_cont *cont)
 void	ft_check_(char **envp_path, char **cmd, t_struct *strp, t_cont *cont)
 {
 	int	i;
+	int	status;
 
 	i = 0;
+	status = 0;
 	ft_check_first_cmd(cmd, cont);
 	if (*cmd && ((*cmd)[0] == '\0'
 		|| ((*cmd)[0] == '.' && ((*cmd)[1] == '\0' || (*cmd)[1] == '.'))))
+	{
+		if (ft_check_env_path(strp, cont->cmd, &status))
+			(ft_exitf(&strp, &cont), free(strp), exit(status));
 		(ft_stat(*cmd, ": command not found\n", strp, cont), exit(127));
+	}
 	if (ft_find_slash_or_point(*cmd) == 1)
 		ft_check_path_cmd(envp_path, *cmd, strp, cont);
 	else
 	{
+		if (ft_check_env_path(strp, cont->cmd, &status))
+			(ft_exitf(&strp, &cont), free(strp), exit(status));
 		*envp_path = ft_check_path(*cmd, strp, cont);
 		if (*envp_path == NULL)
 			(ft_exitf(&strp, &cont), free(strp), exit(FAIL));

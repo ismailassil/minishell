@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 00:09:46 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/27 23:34:01 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/28 17:21:55 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,9 @@ void	ft_check_path_cmd(char **envp_path, char *cmd,
 			t_struct *strp, t_cont *cont)
 {
 	struct stat	file_stat;
+	int			status;
 
+	status = 0;
 	stat(cmd, &file_stat);
 	if (access(cmd, F_OK) == 0 && stat(cmd, &file_stat) == 0)
 	{
@@ -118,7 +120,11 @@ void	ft_check_path_cmd(char **envp_path, char *cmd,
 		else if (S_ISDIR(file_stat.st_mode))
 			(ft_stat(cmd, ": is a directory\n", strp, cont), exit(126));
 		else
+		{
+			if (ft_check_env_path(strp, cont->cmd, &status))
+				(ft_exitf(&strp, &cont), free(strp), exit(status));
 			(ft_stat(cmd, ": command not found\n", strp, cont), exit(127));
+		}
 	}
 	else
 		ft_check_rest(cmd, strp, cont, file_stat);
