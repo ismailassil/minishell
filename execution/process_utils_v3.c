@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 03:05:56 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/28 20:23:48 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/28 21:03:58 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,21 +98,17 @@ void	ft_get_exit_status(t_info *info, int nr_cont, t_struct *strp)
 	info->i = 0;
 	while (info->i < nr_cont)
 	{
+		status = 0;
+		strp->status = 0;
 		waitpid(info->id[info->i], &status, 0);
 		if (WIFEXITED(status))
 			strp->status = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
 		{
 			if (WTERMSIG(status) == SIGQUIT && nr_cont == 1)
-			{
-				printf("Quit: 3\n");
-				strp->status = 131;
-			}
+				(ft_putstr("Quit: 3", 1), strp->status = 131);
 			else if (WTERMSIG(status) == SIGINT)
-			{
-				printf("\n");
-				strp->status = 130;
-			}
+				(ft_putstr("\n", 1), strp->status = 130);
 		}
 		info->i++;
 	}
