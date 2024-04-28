@@ -6,12 +6,12 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 13:48:38 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/28 19:21:36 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/28 20:22:18 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-#include <errno.h>
+#include <sys/wait.h>
 
 static void	ft_pipe_to_outfile(t_info *info)
 {
@@ -61,7 +61,7 @@ static void	ft_child_process(t_cont *cont, t_struct *strp, t_info *info)
 	(ft_exitf(&strp, &cont), free(strp));
 	if (execve(exec.cmd_path, exec.argv, exec.envp) == -1)
 		(ft_f(exec.argv), ft_f(exec.envp), ft_error("msh: "),
-			perror(exec.cmd_path), free(exec.cmd_path), exit(1));
+			perror(exec.cmd_path), free(exec.cmd_path), exit(FAIL));
 }
 
 void	ft_execute_child(t_cont *cont, t_struct *strp, t_info *info)
@@ -85,12 +85,36 @@ void	ft_execute_child(t_cont *cont, t_struct *strp, t_info *info)
 			cont = cont->next;
 	}
 }
+void	ft_get_exit_status(t_info *info, int nr_cont, t_struct *strp)
+{
+	int		status;
+
+	info->i = 0;
+	while (info->i < nr_cont)
+	{
+		waitpid(info->id[info->i], &status, 0);
+		if (WIFEXITED(status))
+			strp->status = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+		{
+			if (WTERMSIG(status) == SIGQUIT && nr_cont == 1)
+			{
+				printf("Quit: 3\n");
+				strp->status = 131;
+			}
+			else if (WTERMSIG(status) == SIGINT)
+			{
+				printf("\n");
+				strp->status = 130;
+			}
+		}
+		info->i++;
+	}
+}
 
 void	ft_execute_multiple_cmds(t_cont *cont, \
 	t_struct *strp, t_info *info, int nr_cont)
 {
-	int		status;
-
 	info->i = 0;
 	(1) && (info->fd.infile = 0, info->fd.outfile = 1);
 	info->nbr_cont = nr_cont;
@@ -100,16 +124,7 @@ void	ft_execute_multiple_cmds(t_cont *cont, \
 	ft_check_allocation(info->id);
 	ft_execute_child(cont, strp, info);
 	(ft_syscall(close(info->pipe[0]), "close"));
-	info->i = 0;
-	while (info->i < nr_cont)
-	{
-		waitpid(info->id[info->i++], &status, 0);
-		strp->status = WEXITSTATUS(status);
-		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
-			(printf("Quit: 3\n"), strp->status = 131);
-		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-			(printf("\n"), strp->status = 130);
-	}
+	ft_get_exit_status(info, nr_cont, strp);
 	ft_add_cmd_or_arg_to_env(nr_cont, cont, strp);
 	free(info->id);
 }
