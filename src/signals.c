@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 16:10:26 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/28 18:07:40 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/28 19:07:40 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ void	ctrl_c(int sig)
 	(void)sig;
 	if (waitpid(ALLCHILDS, NULL, WNOHANG) == 0)
 		return ;
-	ft_status(0, 1);
+	if (waitpid(0, 0, 0) == -1)
+		ft_status(0, 1);
 	printf("\n");
 	rl_replace_line("", 1);
 	rl_on_new_line();

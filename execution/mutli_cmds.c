@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 13:48:38 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/27 23:30:23 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/28 19:21:36 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,12 +102,14 @@ void	ft_execute_multiple_cmds(t_cont *cont, \
 	(ft_syscall(close(info->pipe[0]), "close"));
 	info->i = 0;
 	while (info->i < nr_cont)
+	{
 		waitpid(info->id[info->i++], &status, 0);
-	strp->status = WEXITSTATUS(status);
-	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
-		(1) && (printf("Quit: 3\n"), strp->status = 131);
-	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-		(1) && (printf("\n"), strp->status = 130);
+		strp->status = WEXITSTATUS(status);
+		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
+			(printf("Quit: 3\n"), strp->status = 131);
+		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+			(printf("\n"), strp->status = 130);
+	}
 	ft_add_cmd_or_arg_to_env(nr_cont, cont, strp);
 	free(info->id);
 }
