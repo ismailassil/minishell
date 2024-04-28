@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 03:05:56 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/28 17:27:16 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/28 20:23:48 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,4 +89,31 @@ int	ft_check_env_path(t_struct *strp, char *cmd, int *status)
 	}
 	(ft_error("msh: "), ft_error(cmd), ft_error(FNF));
 	return (*status = 127, true);
+}
+
+void	ft_get_exit_status(t_info *info, int nr_cont, t_struct *strp)
+{
+	int		status;
+
+	info->i = 0;
+	while (info->i < nr_cont)
+	{
+		waitpid(info->id[info->i], &status, 0);
+		if (WIFEXITED(status))
+			strp->status = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+		{
+			if (WTERMSIG(status) == SIGQUIT && nr_cont == 1)
+			{
+				printf("Quit: 3\n");
+				strp->status = 131;
+			}
+			else if (WTERMSIG(status) == SIGINT)
+			{
+				printf("\n");
+				strp->status = 130;
+			}
+		}
+		info->i++;
+	}
 }

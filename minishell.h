@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/28 17:57:01 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/28 20:24:08 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -514,6 +514,8 @@ char					*ft_trim_special_quote(char *str);
 void					ft_skip_null_args(t_cont *cont);
 int						ft_check_env_path(t_struct *strp, \
 							char *cmd, int *status);
+void					ft_get_exit_status(t_info *info, int nr_cont, \
+							t_struct *strp);
 
 //					CONTAINER FUNCTIONS
 void					ft_link_all_in_containers(t_token *head,

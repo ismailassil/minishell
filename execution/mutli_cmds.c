@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 13:48:38 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/28 20:22:18 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/28 20:23:42 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,32 +83,6 @@ void	ft_execute_child(t_cont *cont, t_struct *strp, t_info *info)
 		info->i++;
 		if (cont->next != NULL)
 			cont = cont->next;
-	}
-}
-void	ft_get_exit_status(t_info *info, int nr_cont, t_struct *strp)
-{
-	int		status;
-
-	info->i = 0;
-	while (info->i < nr_cont)
-	{
-		waitpid(info->id[info->i], &status, 0);
-		if (WIFEXITED(status))
-			strp->status = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status))
-		{
-			if (WTERMSIG(status) == SIGQUIT && nr_cont == 1)
-			{
-				printf("Quit: 3\n");
-				strp->status = 131;
-			}
-			else if (WTERMSIG(status) == SIGINT)
-			{
-				printf("\n");
-				strp->status = 130;
-			}
-		}
-		info->i++;
 	}
 }
 
