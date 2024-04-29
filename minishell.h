@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/29 15:51:01 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/29 15:56:51 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -422,7 +422,7 @@ typedef struct s_check_filename
 }			t_check_filename;
 
 /*=====Global Variable for Signal=====*/
-struct termios	g_original_attr;
+extern struct termios	g_original_attr;
 
 /*==========BUILTIN FUNCIONS==========*/
 t_struct				*ft_get_struct_and_env(char **env);
