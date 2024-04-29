@@ -6,13 +6,11 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:06 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/28 16:04:21 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/29 15:51:07 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-struct termios	g_original_attr;
 
 /*	Parse the input from the shell	*/
 void	ft_parse_and_execute_from_shell(t_struct *strp, char **input)
