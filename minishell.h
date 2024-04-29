@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/28 20:24:08 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/29 09:36:58 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,6 +201,12 @@ typedef struct s_indexing
 	int	i;
 	int	j;
 }		t_indexing;
+
+typedef struct s_exit
+{
+	int	status;
+	int	flag;
+}		t_exit;
 
 typedef struct s_count
 {

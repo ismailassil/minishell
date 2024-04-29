@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 03:05:56 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/28 21:03:58 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/29 09:36:37 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,23 +93,29 @@ int	ft_check_env_path(t_struct *strp, char *cmd, int *status)
 
 void	ft_get_exit_status(t_info *info, int nr_cont, t_struct *strp)
 {
-	int		status;
+	t_exit	e;
 
-	info->i = 0;
+	(1) && (info->i = 0, e.flag = 0);
 	while (info->i < nr_cont)
 	{
-		status = 0;
-		strp->status = 0;
-		waitpid(info->id[info->i], &status, 0);
-		if (WIFEXITED(status))
-			strp->status = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status))
+		(1) && (e.status = 0, strp->status = 0);
+		waitpid(info->id[info->i++], &e.status, 0);
+		if (WIFEXITED(e.status))
+			strp->status = WEXITSTATUS(e.status);
+		else if (WIFSIGNALED(e.status))
 		{
-			if (WTERMSIG(status) == SIGQUIT && nr_cont == 1)
-				(ft_putstr("Quit: 3", 1), strp->status = 131);
-			else if (WTERMSIG(status) == SIGINT)
-				(ft_putstr("\n", 1), strp->status = 130);
+			if (WTERMSIG(e.status) == SIGQUIT)
+			{
+				if (info->i == nr_cont)
+					ft_putstr("Quit: 3\n", 1);
+				strp->status = 131;
+			}
+			else if (WTERMSIG(e.status) == SIGINT)
+			{
+				if (e.flag == 0)
+					ft_putstr("\n", 1);
+				(1) && (strp->status = 130, e.flag = 1);
+			}
 		}
-		info->i++;
 	}
 }
