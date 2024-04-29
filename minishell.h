@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aibn-che <aibn-che@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/29 09:36:58 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/29 15:42:03 by aibn-che         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,15 @@ typedef struct s_env
 	char			*value;
 	struct s_env	*next;
 }					t_env;
+
+typedef struct s_shlvl
+{
+	t_env	*env;
+	int		flag;
+	int		num;
+	char	*new_value;
+	char	*tmp;
+}			t_shlvl;
 
 typedef struct s_struct
 {
@@ -402,6 +411,15 @@ typedef struct s_expand_arg
 	int		i;
 	int		is_dollar;
 }			t_expand_arg;
+
+typedef struct s_check_filename
+{
+	int		i;
+	int		j;
+	int		flag;
+	t_file	*head;
+	char	*tmp;
+}			t_check_filename;
 
 /*=====Global Variable for Signal=====*/
 extern struct termios	g_original_attr;
