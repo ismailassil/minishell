@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 15:33:58 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/24 19:46:33 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/27 23:12:24 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,25 +27,27 @@ static void	ft_add_if_not_found(t_env **envp, int flag, char *arg, char *string)
 	}
 }
 
-static char	*ft_check_argument(char *argument)
+static char	*ft_check_argument(t_env *env, char *argument)
 {
 	char	*arg;
 
 	arg = ft_strdup(argument);
-	if (getenv("HOME") == NULL && argument == NULL)
-		return (write(2, "msh: cd: HOME not set\n", 22), NULL);
+	if (get_env(env, "HOME") == NULL && argument == NULL)
+		return (free(arg), write(2, "msh: cd: HOME not set\n", 22), NULL);
 	else if (argument == NULL || argument[0] == '\0')
 	{
-		arg = ft_strdup(getenv("HOME"));
+		free(arg);
+		arg = ft_strdup(get_env(env, "HOME"));
 		if (!arg)
 			(write(2, "Error: Allocation failed\n", 25), exit(FAIL));
 	}
 	else if (argument[0] == '~' || argument[0] == '-')
-		return (write(2, "msh: syntax not supported\n", 26), NULL);
+		return (free(arg), write(2, "msh: cd: syntax not supported\n", 30),
+			NULL);
 	return (arg);
 }
 
-static void	ft_add_current_pwd(t_env **envp, char *argument)
+static void	ft_add_cpwd(t_env **envp, char *argument)
 {
 	t_env	*head;
 	int		flag;
@@ -59,8 +61,7 @@ static void	ft_add_current_pwd(t_env **envp, char *argument)
 		{
 			(1) && (free(head->value), head->value = NULL);
 			tmp = ft_strjoin("PWD=", argument);
-			if (!tmp)
-				(write(2, "Error: Allocation failed\n", 25), exit(FAIL));
+			ft_check_allocation(tmp);
 			head->value = tmp;
 			flag = 1;
 			break ;
@@ -70,7 +71,7 @@ static void	ft_add_current_pwd(t_env **envp, char *argument)
 	ft_add_if_not_found(envp, flag, argument, "PWD=");
 }
 
-static void	ft_add_old_pwd(t_env **envp, char *argument)
+static void	ft_add_opwd(t_env **envp, char *argument)
 {
 	t_env	*head;
 	int		flag;
@@ -84,8 +85,7 @@ static void	ft_add_old_pwd(t_env **envp, char *argument)
 		{
 			(1) && (free(head->value), head->value = NULL);
 			tmp = ft_strjoin("OLDPWD=", argument);
-			if (!tmp)
-				(write(2, "Error: Allocation failed\n", 25), exit(FAIL));
+			ft_check_allocation(tmp);
 			head->value = tmp;
 			flag = 1;
 			break ;
@@ -95,31 +95,31 @@ static void	ft_add_old_pwd(t_env **envp, char *argument)
 	ft_add_if_not_found(envp, flag, argument, "OLDPWD=");
 }
 
-int	ft_cd(char *argument, t_env **envp)
+int	ft_cd(char *arg, t_struct **s)
 {
-	t_info_cd	info;
+	t_info_cd	f;
 
-	info.tmp = NULL;
-	if (getcwd(info.current_dir, sizeof(info.current_dir)) == NULL)
-		*info.current_dir = '\0';
-	info.dir = ft_check_argument(argument);
-	if (info.dir == NULL)
-		return (1);
-	if (chdir(info.dir) == -1)
-		return (ft_error("msh: "), perror(info.dir), \
-			free(info.dir), (*envp)->status = 1, 1);
-	if (getcwd(info.buf, sizeof(info.buf)) != NULL)
-		(1) && ((*envp)->status = 0, info.buffer = ft_strdup(info.buf));
+	if (arg && arg[0] == '\0')
+		return (0);
+	(1) || (f.tmp = NULL, f.errt = NULL);
+	if (ft_check_if_null((*s)->env, &arg))
+		return ((*s)->status = 1, 1);
+	f.dirp = opendir(arg);
+	if (f.dirp == NULL)
+		return (ft_error("msh: cd: "), perror(arg), (*s)->status = 1, 1);
+	(void)closedir(f.dirp);
+	if (getcwd(f.current_dir, sizeof(f.current_dir)) == NULL)
+		*f.current_dir = '\0';
+	f.dir = ft_check_argument((*s)->env, arg);
+	if (f.dir == NULL)
+		return ((*s)->status = 1, 1);
+	if (chdir(f.dir) == -1)
+		return (ft_error("msh: cd: "), perror(f.dir), \
+			free(f.dir), (*s)->status = 1, 1);
+	if (getcwd(f.buf, sizeof(f.buf)) != NULL)
+		(1) && ((*s)->status = 0, f.buff = ft_strdup(f.buf));
 	else
-	{
-		(ft_error("msh: "), perror(argument));
-		info.tmp = ft_strjoin_(ft_get_cwd(envp), "/");
-		info.buffer = ft_strjoin_(info.tmp, argument);
-		free(info.tmp);
-		(*envp)->status = 258;
-	}
-	ft_add_current_pwd(envp, info.buffer);
-	ft_add_old_pwd(envp, info.current_dir);
-	(free(info.buffer), free(info.dir));
-	return (0);
+		ft_handle_error(&f, arg, s);
+	(ft_add_cpwd(&(*s)->env, f.buff), ft_add_opwd(&(*s)->env, f.current_dir));
+	return (free(f.buff), free(f.dir), 0);
 }

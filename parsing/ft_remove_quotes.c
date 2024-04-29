@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 10:47:56 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/07 21:10:57 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/20 09:57:08 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,12 @@ static char	*ft_allocate_for_the_string(char *str, int count)
 	char	*ptr;
 
 	ptr = (char *)malloc((ft_strlen(str) - count + 1) * sizeof(char));
-	if (!ptr)
-		(write(2, "Error: Allocation failed\n", 25), exit(FAIL));
+	ft_check_allocation(ptr);
 	ft_fill_ptr(str, &ptr);
 	return (ptr);
 }
 
-static char	*ft_trim_quotes(char *str)
+char	*ft_trim_quotes(char *str)
 {
 	char	*ptr;
 	int		count;
@@ -86,7 +85,7 @@ static bool	ft_quotes_exists(char *s)
 	char	*str;
 
 	str = s;
-	while (*str && str)
+	while (str && *str)
 	{
 		if (*str == '\'' || *str == '\"')
 			return (true);
@@ -108,11 +107,12 @@ void	ft_remove_quotes(t_token **linked_list)
 	head = *linked_list;
 	while (head)
 	{
-		if (ft_strchr(head->token, '$'))
+		if (ft_strchr(head->token, '$') || head->type == DELIMITER)
 			head = head->next;
 		else
 		{
-			if (ft_quotes_exists(head->token) == true)
+			if (ft_quotes_exists(head->token) == true
+				&& !ft_strchr(head->token, '*'))
 			{
 				tmp = ft_trim_quotes(head->token);
 				free(head->token);

@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 15:35:39 by iassil            #+#    #+#             */
-/*   Updated: 2024/02/27 16:20:34 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/26 11:25:26 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ static char	**ft_split_words(char **big_ptr, char const *str, char c)
 	while (str[i] != '\0')
 	{
 		index = 0;
-		while (str[i] == c)
+		while (str && str[i] == c)
 			i++;
-		while (str[i] != c && str[i] != '\0')
+		while (str && str[i] != c && str[i] != '\0')
 		{
 			index++;
 			i++;
@@ -74,8 +74,7 @@ char	**ft_split(char const *s, char c)
 		return (NULL);
 	nbr_of_words = ft_count_words(s, c) + 1;
 	big_ptr = (char **)malloc(sizeof(char *) * nbr_of_words);
-	if (big_ptr == NULL)
-		return (NULL);
+	ft_check_allocation(big_ptr);
 	big_ptr = ft_split_words(big_ptr, s, c);
 	return (big_ptr);
 }

@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 19:25:31 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/24 20:55:44 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/24 13:37:51 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	ft_t_cont_len(t_cont *head)
 	return (i);
 }
 
-static t_cont	*ft_last_node(t_cont *top)
+static t_cont	*ft_last_node_cont(t_cont *top)
 {
 	while (top->next != NULL)
 		top = top->next;
@@ -44,37 +44,45 @@ int	ft_push_container(t_tmp_cont *tmp, t_cont **head)
 		*head = newnode;
 	else
 	{
-		last = ft_last_node(*head);
+		last = ft_last_node_cont(*head);
 		last->next = newnode;
 	}
 	return (1);
 }
 
+void	ft_free_the_rest(t_cont *c)
+{
+	free(c->outfile_is_var);
+	free(c->outfile_type);
+	free(c->file_or_heredoc);
+	free(c->arg_is_var);
+	free(c->arg_is_quote);
+	free(c->infile_is_quote);
+	free(c->outfile_is_quote);
+	free(c->infile_is_var);
+	free(c->here_doc_fd);
+	free(c->infile_index);
+	free(c->outfile_index);
+	free(c->inf_is_amb);
+	free(c->out_is_amb);
+}
+
 void	ft_free_containers(t_cont **head)
 {
-	t_cont	*current;
-	int		i;
+	t_cont	*c;
 
 	while (*head)
 	{
-		(1) && (current = *head, *head = (*head)->next, i = 0);
-		free(current->cmd);
-		while (current->arg[i] != NULL)
-			(1) && (free(current->arg[i]), i++);
-		free(current->arg);
-		i = 0;
-		while (current->infile[i] != NULL)
-			(1) && (free(current->infile[i]), i++);
-		free(current->infile);
-		i = 0;
-		while (current->outfile[i] != NULL)
-			(1) && (free(current->outfile[i]), i++);
-		i = 0;
-		while (current->here_doc[i] != NULL)
-			(1) && (free(current->here_doc[i]), i++);
-		(free(current->here_doc), free(current->outfile));
-		(free(current->outfile_type), free(current->file_or_heredoc));
-		(free(current->here_doc_fd), free(current), current = NULL);
+		(1) && (c = *head, *head = (*head)->next);
+		free(c->cmd);
+		ft_f(c->arg);
+		ft_f(c->infile);
+		ft_f(c->inf_before);
+		ft_f(c->here_doc);
+		ft_f(c->outfile);
+		ft_f(c->out_before);
+		ft_free_the_rest(c);
+		(free(c), c = NULL);
 	}
 	(free(*head), head = NULL);
 }

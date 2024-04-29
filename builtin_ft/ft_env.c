@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 19:41:44 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/21 15:02:55 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/21 01:20:02 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,31 +24,42 @@ static t_env	*ft_create_new_env(void)
 		return (NULL);
 	tmp = ft_strjoin("PWD=", getcwd(pwd, sizeof(pwd)));
 	if (!tmp)
-		(write(2, "Error: Allocation failed\n", 19), exit(FAIL));
+		(write(2, "Error: Allocation failed\n", 25), exit(FAIL));
 	if (ft_push_value(tmp, &envp) == 0)
 		return (NULL);
 	(free(tmp), tmp = NULL);
 	return (envp);
 }
 
-t_env	*ft_get_env(char **env)
+/*
+*	This function transform the envir that comes with the process
+*	to a linked list if they exist and do not exist
+*/
+t_struct	*ft_get_struct_and_env(char **env)
 {
-	t_env	*envp;
+	t_struct	*strp;
 
-	envp = NULL;
+	strp = malloc(sizeof(t_struct));
+	ft_check_allocation(strp);
+	strp->env = NULL;
 	if (*env == NULL || env == NULL)
-		envp = ft_create_new_env();
+		strp->env = ft_create_new_env();
 	else
 	{
 		while (*env)
 		{
-			if (ft_push_value(*env, &envp) == 0)
-				return (NULL);
-			env++;
+			if (ft_strncmp(*env, "_=", 2) == 0)
+				env++;
+			else
+			{
+				if (ft_push_value(*env, &strp->env) == 0)
+					return (NULL);
+				env++;
+			}
 		}
 	}
-	envp->status = 0;
-	return (envp);
+	strp->status = 0;
+	return (strp);
 }
 
 void	ft_env(t_env *envp)
@@ -60,18 +71,3 @@ void	ft_env(t_env *envp)
 		envp = envp->next;
 	}
 }
-
-// void	v(void)
-// {
-// 	system("leaks env");
-// }
-
-// int main(int ac, char **av, char **env)
-// {
-// 	t_env	*envp;
-
-// 	atexit(v);
-// 	envp = ft_get_env(env);
-// 	ft_env(envp);
-// 	ft_free_env(&envp);
-// }

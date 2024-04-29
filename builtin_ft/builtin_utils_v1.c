@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   b_utils_v1.c                                       :+:      :+:    :+:   */
+/*   builtin_utils_v1.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 12:27:22 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/22 02:31:48 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/28 15:03:07 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,16 @@
 
 void	ft_print_null_export(t_env *head)
 {
-	int		i;
-	int		flag;
-
 	while (head)
 	{
-		printf("declare -x ");
-		i = 0;
-		while (head->value[i] != '\0')
+		if (head->value[0] == '_' && head->value[1] == '=')
+			head = head->next;
+		else
 		{
-			if (head->value[i] == '=' && head->value[i] != '\0')
-				(printf("=\""), flag = 1);
-			else
-				printf("%c", head->value[i]);
-			i++;
+			ft_putstr("declare -x ", 1);
+			ft_print_rest(head->value);
+			head = head->next;
 		}
-		if (flag == 1)
-			(1) && (printf("\""), flag = 0);
-		printf("\n");
-		head = head->next;
 	}
 }
 
@@ -83,8 +74,7 @@ char	*ft_filter_arg(char *arg)
 		inf.i++;
 	}
 	value = (char *)malloc((inf.i - inf.count + 1) * sizeof(char));
-	if (!value)
-		return (NULL);
+	ft_check_allocation(value);
 	(1) && (inf.i = 0, inf.j = 0);
 	while (arg[inf.i] != '\0')
 	{
@@ -102,19 +92,20 @@ bool	ft_check_syntax_export(char *arg)
 	int	i;
 
 	i = 0;
-	if (arg[0] == '=' || ft_isalpha(arg[0]) == 0 || arg[0] == '-')
+	if (arg && ft_isalpha(arg[0]) == 0 && arg[0] != '_')
 	{
-		(ft_error("msh: export: "), ft_error(arg));
-		ft_error(": not a valid identifier\n");
+		(ft_error("msh: export: \'"), ft_error(arg));
+		ft_error("\': not a valid identifier\n");
 		return (true);
 	}
 	while (arg && arg[i] != '\0' && arg[i] != '=')
 	{
-		if (arg[i] == '-' || (arg[i] == '+' && arg[i + 1] != '\0'
-				&& arg[i + 1] != '='))
+		if ((ft_isalnum(arg[i]) == 0 && arg[i] != '_' && arg[i] != '+')
+			|| (arg[i] == '+' && arg[i + 1] != '\0' && arg[i + 1] != '=')
+			|| (arg[i] == '+' && arg[i + 1] == '\0'))
 		{
-			(ft_error("msh: export: "), ft_error(arg));
-			ft_error(": not a valid identifier\n");
+			(ft_error("msh: export: \'"), ft_error(arg));
+			ft_error("\': not a valid identifier\n");
 			return (true);
 		}
 		i++;

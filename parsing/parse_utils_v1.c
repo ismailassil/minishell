@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   p_utils_v1.c                                       :+:      :+:    :+:   */
+/*   parse_utils_v1.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 14:00:00 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/23 17:45:01 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/26 16:01:58 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	ft_init_tokens(t_token **head, char *str)
 	i = 0;
 	while (str[i])
 	{
-		while (str[i] && str[i] == ' ')
+		while (str[i] && ft_strchr(" \t\n\v\f\r", str[i]))
 			i++;
 		if (!str[i])
 			break ;
@@ -30,7 +30,7 @@ void	ft_init_tokens(t_token **head, char *str)
 		ft_push_token(token, head);
 		i = cord->end;
 		free(cord);
-		while (str[i] && str[i] == ' ')
+		while (str[i] && ft_strchr(" \t\n\v\f\r", str[i]))
 			i++;
 		if (str[i] == '\0')
 			break ;
@@ -48,8 +48,7 @@ void	ft_append_char(char **str, int c)
 	len = ft_strlen(*str);
 	s = *str;
 	*str = malloc(sizeof(char) * (len + 2));
-	if (!(*str))
-		return ;
+	ft_check_allocation(*str);
 	while (s && s[i])
 	{
 		(*str)[i] = s[i];
@@ -85,16 +84,22 @@ void	ft_update_quote(char *arg, int *i, t_expand *exp)
 	if (exp->quote == arg[*i])
 	{
 		exp->quote = 0;
-		(*i)++;
+		arg[*i] = SQ;
 	}
 	else if (!exp->quote)
 	{
 		exp->quote = arg[*i];
-		(*i)++;
+		arg[*i] = SQ;
 	}
 	else
 	{
 		ft_append_char(&exp->new_str, arg[*i]);
 		(*i)++;
 	}
+}
+
+void	ft_error(char *str)
+{
+	if (str != NULL)
+		write(2, str, ft_strlen(str));
 }

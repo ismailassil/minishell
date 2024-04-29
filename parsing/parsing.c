@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 16:33:28 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/20 14:31:30 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/19 12:36:53 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@ t_stend	*ft_extract_start_end_of_token(char *str, int s)
 	int		c;
 
 	cord = malloc(sizeof(t_stend));
-	if (!cord)
-		(write(2, "Error: Allocation failed\n", 25), exit(FAIL));
+	ft_check_allocation(cord);
 	i = s;
 	c = 0;
 	cord->start = s;
@@ -28,7 +27,7 @@ t_stend	*ft_extract_start_end_of_token(char *str, int s)
 		(1) && (i++, c = '\'');
 	else if (str[i] == '\"')
 		(1) && (i++, c = '\"');
-	while (!c && str[i] && str[i] != ' ')
+	while (!c && str[i] && !ft_strchr(" \t\n\v\f\r", str[i]))
 		i++;
 	while (c && str[i] && str[i] != c)
 		i++;
@@ -48,8 +47,7 @@ char	*ft_alloc_str(t_token **tokens, char *str, t_stend *cord)
 	len = cord->end - cord->start;
 	i = 0;
 	tk = malloc(sizeof(char) * (len + 2));
-	if (!tk)
-		(write(2, "Error: Allocation failed\n", 25), exit(FAIL));
+	ft_check_allocation(tk);
 	str += cord->start;
 	while (cord->start <= cord->end)
 	{
@@ -65,16 +63,17 @@ static void	ft_parse_space_rest(char *input, char **shell, t_in *f)
 {
 	if (f->flag == 0 && (input[f->j] == '>' || input[f->j] == '<' \
 		|| input[f->j] == '|' ))
-		(1) && ((*shell)[f->i] = ' ', (*shell)[f->i + 1] = input[f->j], \
-			(*shell)[f->i + 2] = ' ', f->i += 3, f->j++);
+	{
+		(*shell)[f->i++] = ' ';
+		(*shell)[f->i++] = input[f->j++];
+		(*shell)[f->i++] = ' ';
+	}
 	else
 	{
-		(1) && ((*shell)[f->i] = input[f->j], f->i++, f->j++);
+		(*shell)[f->i++] = input[f->j++];
 		if (input[f->j] && f->tmp != f->j && input[f->j] == f->quote)
 		{
-			(*shell)[f->i] = input[f->j];
-			f->i++;
-			f->j++;
+			(*shell)[f->i++] = input[f->j++];
 			f->flag = 0;
 			f->quote = 0;
 		}
@@ -93,10 +92,10 @@ static void	*ft_parse_space(char *input, char **shell)
 		if (f.flag == 0 && ((input[f.j] == '>' && input[f.j + 1] == '>') \
 			|| (input[f.j] == '<' && input[f.j + 1] == '<')))
 		{
-			(1) && ((*shell)[f.i] = ' ', (*shell)[f.i + 1] = input[f.j]);
-			(*shell)[f.i + 2] = input[f.j + 1];
-			(*shell)[f.i + 3] = ' ';
-			(1) && (f.i += 4, f.j += 2);
+			(*shell)[f.i++] = ' ';
+			(*shell)[f.i++] = input[f.j++];
+			(*shell)[f.i++] = input[f.j++];
+			(*shell)[f.i++] = ' ';
 		}
 		else
 			ft_parse_space_rest(input, shell, &f);
@@ -118,20 +117,22 @@ char	*ft_add_space_to_input(char *input)
 	while (input[inf.i] != '\0')
 	{
 		if (input[inf.i] == '\"' || input[inf.i] == '\'')
-			(1) && (inf.flag = 1, inf.quote = input[inf.i]);
+		{
+			inf.flag = 1;
+			inf.quote = input[inf.i];
+		}
 		if (inf.flag == 0 && ((input[inf.i] == '>' && input[inf.i + 1] == '>') \
 			|| (input[inf.i] == '<' && input[inf.i + 1] == '<')))
-			inf.count++;
+			(1) && (inf.count++, inf.i++);
 		else if (inf.flag == 0 && (input[inf.i] == '>' \
 			|| input[inf.i] == '<' || input[inf.i] == '|'))
 			inf.count++;
-		inf.i++;
 		if (input[inf.i] != '\0' && input[inf.i] == inf.quote)
-			(1) && (inf.flag = 0, inf.i++);
+			inf.flag = 0;
+		inf.i++;
 	}
 	shell = (char *)malloc((inf.i + 1 + (inf.count * 2)) * sizeof(char));
-	if (!shell)
-		exit(EXIT_FAILURE);
+	ft_check_allocation(shell);
 	ft_parse_space(input, &shell);
 	return (shell);
 }

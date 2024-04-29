@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 20:15:25 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/08 22:05:14 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/06 00:07:12 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@ static void	ft_add_to_linked_list(t_token **head, char *str, int start, int end)
 	char	*ptr;
 
 	ptr = ft_substr(str, start, end - start);
-	if (!ptr)
-		(write(2, "Error: Allocation failed\n", 25), exit(FAIL));
+	ft_check_allocation(ptr);
 	if (ptr[0] != '\0')
 		ft_push_token(ptr, head);
 	free(ptr);

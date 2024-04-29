@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 10:52:06 by aibn-che          #+#    #+#             */
-/*   Updated: 2024/03/21 21:18:20 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/28 15:20:21 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,23 +25,24 @@ int	ft_t_token_len(t_token *head)
 	return (i);
 }
 
-static t_token	*ft_last_node(t_token *top)
+t_token	*ft_last_node(t_token *top)
 {
-	while (top->next)
+	while (top && top->next)
 	{
 		top = top->next;
 	}
 	return (top);
 }
 
-static t_token	*ft_new_node(char *token)
+t_token	*ft_new_node(char *token)
 {
 	t_token	*new;
 
 	new = malloc(sizeof(t_token));
-	if (!new)
-		return (NULL);
+	ft_check_allocation(new);
 	new->token = ft_strdup(token);
+	new->is_var = 0;
+	new->is_quote = 0;
 	if (!new->token)
 		return (NULL);
 	new->next = NULL;

@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 16:10:26 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/24 21:34:30 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/28 21:05:25 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,16 @@ void	ft_signal_handler(void)
 	ft_sig(signal(SIGQUIT, ctrl_slash), "msh: signal");
 }
 
+int	ft_status(int mode, int status_)
+{
+	static int	status;
+
+	if (mode && status)
+		return (status = 0, 1);
+	status = status_;
+	return (0);
+}
+
 /*
 *	It specifies that the waitpid() function should not wait for a child process
 *	to exit if there are no child processes that have already exited and are
@@ -34,14 +44,15 @@ void	ctrl_c(int sig)
 {
 	(void)sig;
 	if (waitpid(ALLCHILDS, NULL, WNOHANG) == 0)
-	{
-		printf("\n");
 		return ;
+	if (waitpid(0, 0, 0) == -1)
+	{
+		ft_putstr("\n", 1);
+		ft_status(0, 1);
+		rl_replace_line("", 1);
+		rl_on_new_line();
+		rl_redisplay();
 	}
-	printf("\n");
-	rl_replace_line("", 1);
-	rl_on_new_line();
-	rl_redisplay();
 }
 
 /*
@@ -54,8 +65,9 @@ void	ctrl_slash(int sig)
 	if (waitpid(ALLCHILDS, NULL, WNOHANG) == 0)
 	{
 		ft_syscall(tcsetattr(STDIN_FILENO, TCSANOW, &g_original_attr), \
-			"msh: tcsetattr");
-		printf("Quit: 3\n");
+			"tcsetattr");
+		rl_replace_line("", 1);
+		rl_on_new_line();
 		return ;
 	}
 	rl_redisplay();

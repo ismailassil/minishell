@@ -6,13 +6,13 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 13:31:07 by iassil            #+#    #+#             */
-/*   Updated: 2024/03/23 18:04:10 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/23 20:00:59 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_count_(t_token *head, t_count	*c)
+void	ft_count_(t_token *head, t_count *c)
 {
 	t_token	*temp;
 
@@ -31,68 +31,31 @@ void	ft_count_(t_token *head, t_count	*c)
 	}
 }
 
-void	ft_allocate_tmp_cont(t_token *head, t_tmp_cont	**cont)
-{
-	t_count	c;
-
-	(*cont) = malloc(sizeof(t_tmp_cont));
-	ft_check_allocation((*cont));
-	(1) && (c.arg = 0, c.infile = 0, c.outfile = 0, c.here_doc = 0);
-	ft_count_(head, &c);
-	(*cont)->arg = malloc((c.arg + 1) * sizeof(char *));
-	ft_check_allocation((*cont)->arg);
-	(*cont)->inf = malloc((c.infile + 1) * sizeof(char *));
-	ft_check_allocation((*cont)->inf);
-	(*cont)->outf = malloc((c.outfile + 1) * sizeof(char *));
-	ft_check_allocation((*cont)->outf);
-	(*cont)->out_t = malloc((c.outfile + 1) * sizeof(int));
-	ft_check_allocation((*cont)->out_t);
-	(*cont)->here_doc = malloc((c.here_doc + 1) * sizeof(char *));
-	ft_check_allocation((*cont)->here_doc);
-	(*cont)->file_or_heredoc = malloc(sizeof(int));
-	ft_check_allocation((*cont)->file_or_heredoc);
-}
-
-void	ft_fill_rest(t_token *head, t_tmp_cont *t, t_cc *c)
-{
-	if (head->type == OUTFILE || head->type == APPEND)
-	{
-		t->outf[c->y] = ft_strdup(head->next->token);
-		ft_check_allocation(t->outf[c->y]);
-		if (head->type == OUTFILE)
-			t->out_t[c->y] = 1;
-		if (head->type == APPEND)
-			t->out_t[c->y] = 2;
-		c->y++;
-	}
-	else if (head->type == HEREDOC)
-	{
-		t->here_doc[c->h] = ft_strdup(head->next->token);
-		ft_check_allocation(t->here_doc[c->h++]);
-		*t->file_or_heredoc = 1;
-	}
-}
-
 void	ft_fill_container(t_token *head, t_tmp_cont *t, t_cc *c)
 {
 	if (head->type == CMD)
 	{
 		t->cmd = ft_strdup(head->token);
 		ft_check_allocation(t->cmd);
+		(1) && (t->cmd_is_var = 2, t->cmd_is_quote = 2);
+		if (head->is_var == 1)
+			t->cmd_is_var = 1;
+		if (head->is_quote == 1)
+			t->cmd_is_quote = 1;
 	}
 	else if (head->type == ARG)
 	{
 		t->arg[c->i] = ft_strdup(head->token);
-		ft_check_allocation(t->arg[c->i++]);
-	}
-	else if (head->type == INFILE)
-	{
-		t->inf[c->j] = ft_strdup(head->next->token);
-		ft_check_allocation(t->inf[c->j++]);
-		*t->file_or_heredoc = 0;
+		ft_check_allocation(t->arg[c->i]);
+		(1) && (t->arg_is_var[c->i] = 2, t->arg_is_quote[c->i] = 2);
+		if (head->is_var == 1)
+			t->arg_is_var[c->i] = 1;
+		if (head->is_quote == 1)
+			t->arg_is_quote[c->i] = 1;
+		c->i++;
 	}
 	else
-		ft_fill_rest(head, t, c);
+		ft_fill_infile_outfile_here_doc(head, t, c);
 }
 
 void	ft_link_all_in_containers(t_token *head, t_cont **container)
@@ -113,6 +76,7 @@ void	ft_link_all_in_containers(t_token *head, t_cont **container)
 		}
 		(1) && (t->arg[c.i] = 0, t->inf[c.j] = 0, \
 			t->outf[c.y] = 0, t->out_t[c.y] = 0, \
+			t->out_is_var[c.y] = 0, t->inf_is_var[c.j] = 0, \
 			t->here_doc[c.h] = 0);
 		(ft_push_container(t, container), ft_free_tmp(&t));
 		if (head != NULL && head->type == PIPE)
