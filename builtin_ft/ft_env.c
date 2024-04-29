@@ -6,12 +6,11 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 19:41:44 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/29 13:36:11 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/29 13:39:28 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-#include <readline/readline.h>
 
 static t_env	*ft_create_new_env(void)
 {
