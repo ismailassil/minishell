@@ -6,11 +6,12 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 19:41:44 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/21 01:20:02 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/29 13:36:11 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+#include <readline/readline.h>
 
 static t_env	*ft_create_new_env(void)
 {
@@ -29,6 +30,32 @@ static t_env	*ft_create_new_env(void)
 		return (NULL);
 	(free(tmp), tmp = NULL);
 	return (envp);
+}
+
+void	ft_add_shell_level(t_env *envp)
+{
+	t_shlvl	s;
+
+	s.env = envp;
+	s.flag = 0;
+	while (s.env)
+	{
+		if (ft_strncmp(s.env->value, "SHLVL=", 6) == 0)
+		{
+			s.num = ft_atoi(s.env->value + 6) + 1;
+			s.new_value = ft_itoa(s.num);
+			free(s.env->value);
+			s.tmp = ft_strjoin("SHLVL=", s.new_value);
+			s.env->value = ft_strdup(s.tmp);
+			(free(s.new_value), free(s.tmp));
+			s.flag = 1;
+			break ;
+		}
+		s.env = s.env->next;
+	}
+	if (s.flag == 0)
+		if (ft_push_value("SHLVL=1", &envp) == 0)
+			return ;
 }
 
 /*
@@ -58,6 +85,7 @@ t_struct	*ft_get_struct_and_env(char **env)
 			}
 		}
 	}
+	ft_add_shell_level(strp->env);
 	strp->status = 0;
 	return (strp);
 }
