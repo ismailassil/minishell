@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:20:57 by iassil            #+#    #+#             */
-/*   Updated: 2024/04/29 13:35:43 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/29 15:36:16 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -411,6 +411,15 @@ typedef struct s_expand_arg
 	int		i;
 	int		is_dollar;
 }			t_expand_arg;
+
+typedef struct s_check_filename
+{
+	int		i;
+	int		j;
+	int		flag;
+	t_file	*head;
+	char	*tmp;
+}			t_check_filename;
 
 /*=====Global Variable for Signal=====*/
 extern struct termios	g_original_attr;

@@ -6,7 +6,7 @@
 /*   By: iassil <iassil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 16:37:37 by aibn-che          #+#    #+#             */
-/*   Updated: 2024/04/26 16:07:19 by iassil           ###   ########.fr       */
+/*   Updated: 2024/04/29 15:36:11 by iassil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,6 @@ int	ft_contain_quotes(char *str)
 	}
 	return (0);
 }
-
-typedef struct s_check_filename
-{
-	int		i;
-	int		j;
-	int		flag;
-	t_file	*head;
-	char	*tmp;
-}			t_check_filename;
 
 /*
  * Checking by file_name
